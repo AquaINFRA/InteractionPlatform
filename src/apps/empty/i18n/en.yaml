@@ -6,3 +6,7 @@ messages:
   header:
     user-support: "User Support"
     login: "Login"
+  search:
+    search-bar:
+      button-label: "Search"
+      placeholder: "Search for data repositories, software tools, information or research data materials"

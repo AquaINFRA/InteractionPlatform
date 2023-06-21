@@ -72,3 +72,12 @@ export const LoginIcon = (props: IconProps) => (
         </g>
     </Icon>
 );
+
+export const SearchIcon = (props: IconProps) => (
+    <Icon viewBox="0 0 12 12" {...props}>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <circle cx="5.25" cy="5.25" r="4.25" stroke="white" />
+            <line x1="8.20711" y1="8.29289" x2="11.2071" y2="11.2929" stroke="white" />
+        </svg>
+    </Icon>
+);
