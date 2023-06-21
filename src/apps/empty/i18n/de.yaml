@@ -2,7 +2,7 @@
 # (might be empty if all messages are defined in the packages used by this app)
 messages:
   picker:
-    choose: "Please choose a language:"
+    choose: "Wählen Sie eine Sprache aus:"
   header:
-    user-support: "User Support"
+    user-support: "Nutzer Support"
     login: "Login"

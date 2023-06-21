@@ -6,7 +6,14 @@ import { AppUI } from "./AppUI";
 
 const Element = createCustomElement({
     component: AppUI,
-    appMetadata
+    appMetadata,
+    async resolveConfig(ctx) {
+        const locale = ctx.getAttribute("forced-locale");
+        if (!locale) {
+            return undefined;
+        }
+        return { locale };
+    }
 });
 
 customElements.define("empty-app", Element);

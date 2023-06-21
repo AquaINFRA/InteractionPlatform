@@ -3,8 +3,12 @@
 import { defineBuildConfig } from "@open-pioneer/build-support";
 
 export default defineBuildConfig({
-    i18n: ["en"],
+    i18n: ["en", "de"],
     ui: {
-        references: ["sample-package.Greeter"]
+        references: [
+            "sample-package.Greeter",
+            "runtime.ApplicationContext",
+            "integration.ExternalEventService"
+        ]
     }
 });
