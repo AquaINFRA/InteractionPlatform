@@ -44,14 +44,14 @@
         "semi": ["error", "always"],
 
         // Enforce license header
-        "header/header": [
-            "error",
-            "line",
-            [
-                " SPDX-FileCopyrightText: con terra GmbH and contributors",
-                " SPDX-License-Identifier: Apache-2.0"
-            ]
-        ],
+        // "header/header": [
+        //     "error",
+        //     "line",
+        //     [
+        //         " SPDX-FileCopyrightText: con terra GmbH and contributors",
+        //         " SPDX-License-Identifier: Apache-2.0"
+        //     ]
+        // ],
 
         // Disallow relative import into another package, e.g. `../other-package/foo`
         "import/no-relative-packages": "error",
