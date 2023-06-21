@@ -53,6 +53,8 @@
         //     ]
         // ],
 
+        "no-debugger": "warn",
+
         // Disallow relative import into another package, e.g. `../other-package/foo`
         "import/no-relative-packages": "error",
 
