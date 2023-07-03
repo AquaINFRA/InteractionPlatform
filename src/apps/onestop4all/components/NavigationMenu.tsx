@@ -19,7 +19,7 @@ export function NavigationMenu() {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const menuHandler = useService("empty.MenuHandler");
+    const menuHandler = useService("onestop4all.MenuHandler");
 
     useEffect(() => {
         const handle = menuHandler.on("open-menu", (val) => {

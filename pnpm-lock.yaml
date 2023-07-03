@@ -179,7 +179,7 @@ importers:
         specifier: ^0.31.4
         version: 0.31.4(jsdom@22.1.0)(sass@1.63.2)
 
-  src/apps/empty:
+  src/apps/onestop4all:
     dependencies:
       '@open-pioneer/chakra-integration':
         specifier: ^1.0.0

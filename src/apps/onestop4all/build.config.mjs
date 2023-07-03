@@ -4,14 +4,14 @@ export default defineBuildConfig({
     i18n: ["en", "de"],
     services: {
         MenuHandler: {
-            provides: ["empty.MenuHandler"]
+            provides: ["onestop4all.MenuHandler"]
         }
     },
     ui: {
         references: [
             "runtime.ApplicationContext",
             "integration.ExternalEventService",
-            "empty.MenuHandler"
+            "onestop4all.MenuHandler"
         ]
     }
 });

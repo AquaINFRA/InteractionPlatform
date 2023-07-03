@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Empty Site</title>
+        <title>onestop4all</title>
     </head>
 
     <body>
@@ -15,7 +15,7 @@
         </style>
     </body>
     <script type="module">
-        import "/apps/empty/app.ts";
+        import "/apps/onestop4all/app.ts";
 
         const container = document.getElementById("container");
         restartApp(undefined);
@@ -25,7 +25,7 @@
             console.info(`Starting app with locale ${locale}`);
 
             // (re-) create the app component
-            const app = document.createElement("empty-app");
+            const app = document.createElement("onestop4all-app");
             if (locale) {
                 app.setAttribute("forced-locale", locale);
             }

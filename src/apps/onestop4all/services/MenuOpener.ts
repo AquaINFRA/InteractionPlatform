@@ -16,6 +16,6 @@ export class MenuHandler extends EventEmitter<MenuOpenerEvents> {
 import "@open-pioneer/runtime";
 declare module "@open-pioneer/runtime" {
     interface ServiceRegistry {
-        "empty.MenuHandler": MenuHandler;
+        "onestop4all.MenuHandler": MenuHandler;
     }
 }

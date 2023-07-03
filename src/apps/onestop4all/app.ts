@@ -16,4 +16,4 @@ const Element = createCustomElement({
     }
 });
 
-customElements.define("empty-app", Element);
+customElements.define("onestop4all-app", Element);

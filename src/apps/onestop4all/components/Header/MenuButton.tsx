@@ -4,7 +4,7 @@ import { MenuIcon } from "../Icons";
 import { useService } from "open-pioneer:react-hooks";
 
 export function MenuButton() {
-    const menuHandler = useService("empty.MenuHandler");
+    const menuHandler = useService("onestop4all.MenuHandler");
 
     return (
         <HStack>
