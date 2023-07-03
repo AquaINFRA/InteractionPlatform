@@ -4,6 +4,7 @@ import { BorderColor } from "../../Theme";
 import { LanguageToggler } from "./LanguageToggler";
 import { Login } from "./Login";
 import { Logo } from "./Logo";
+import { MenuButton } from "./MenuButton";
 import { UserSupportLink } from "./UserSupportLink";
 
 export const Header = () => {
@@ -22,7 +23,7 @@ export const Header = () => {
             <UserSupportLink></UserSupportLink>
             <Login></Login>
             <LanguageToggler></LanguageToggler>
-            <div>MenuToggler</div>
+            <MenuButton></MenuButton>
         </HStack>
     );
 };
