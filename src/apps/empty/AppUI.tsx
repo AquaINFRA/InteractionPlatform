@@ -1,8 +1,7 @@
-// SPDX-FileCopyrightText: con terra GmbH and contributors
-// SPDX-License-Identifier: Apache-2.0
 import { Box, ChakraProvider, Container, Image } from "@open-pioneer/chakra-integration";
 
 import { Header } from "./components/Header/Header";
+import { NavigationMenu } from "./components/NavigationMenu";
 import { SearchBar } from "./components/SearchBar";
 import { Theme } from "./Theme";
 
@@ -18,6 +17,7 @@ export function AppUI() {
                     <SearchBar></SearchBar>
                 </Container>
             </Box>
+            <NavigationMenu></NavigationMenu>
         </ChakraProvider>
     );
 }

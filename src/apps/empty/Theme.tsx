@@ -1,4 +1,4 @@
-import { defineStyleConfig, extendTheme } from "@chakra-ui/react";
+import { defineStyleConfig, extendTheme } from "@open-pioneer/chakra-integration";
 
 export const PrimaryColor = "#05668D";
 

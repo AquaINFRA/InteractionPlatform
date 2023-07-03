@@ -6,7 +6,6 @@ import { WorldIcon } from "../Icons";
 export function LanguageToggler() {
     const appCtx = useService("runtime.ApplicationContext");
     const locale = appCtx.getLocale();
-    console.log(locale);
 
     const eventService = useService("integration.ExternalEventService");
 

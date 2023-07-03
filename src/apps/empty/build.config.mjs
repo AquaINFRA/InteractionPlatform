@@ -1,14 +1,17 @@
-// SPDX-FileCopyrightText: con terra GmbH and contributors
-// SPDX-License-Identifier: Apache-2.0
 import { defineBuildConfig } from "@open-pioneer/build-support";
 
 export default defineBuildConfig({
     i18n: ["en", "de"],
+    services: {
+        MenuHandler: {
+            provides: ["empty.MenuHandler"]
+        }
+    },
     ui: {
         references: [
-            "sample-package.Greeter",
             "runtime.ApplicationContext",
-            "integration.ExternalEventService"
+            "integration.ExternalEventService",
+            "empty.MenuHandler"
         ]
     }
 });
