@@ -1,0 +1,7 @@
+{
+    "name": "map-sample-logging",
+    "private": true,
+    "devDependencies": {
+        "@open-pioneer/runtime": "^1.0.0"
+    }
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>onestop4all</title>
+    </head>
+
+    <body>
+        <div id="container"></div>
+        <style>
+            body {
+                margin: 0px;
+            }
+        </style>
+    </body>
+    <script type="module">
+        import "/apps/onestop4all/app.ts";
+
+        const container = document.getElementById("container");
+        restartApp(undefined);
+
+        function restartApp(locale) {
+            container.replaceChildren();
+            console.info(`Starting app with locale ${locale}`);
+
+            // (re-) create the app component
+            const app = document.createElement("onestop4all-app");
+            if (locale) {
+                app.setAttribute("forced-locale", locale);
+            }
+
+            // listen for selection event emitted from the react UI
+            // and recreate the app with the new locale
+            app.addEventListener("locale-changed", (event) => {
+                const newLocale = event.detail.locale;
+                restartApp(newLocale);
+            });
+
+            container.appendChild(app);
+        }
+    </script>
+</html>

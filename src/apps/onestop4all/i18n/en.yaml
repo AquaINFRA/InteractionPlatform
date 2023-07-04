@@ -1,0 +1,12 @@
+# at least one empty yaml file must exist for each supported language
+# (might be empty if all messages are defined in the packages used by this app)
+messages:
+  picker:
+    choose: "Please choose a language:"
+  header:
+    user-support: "User Support"
+    login: "Login"
+  search:
+    search-bar:
+      button-label: "Search"
+      placeholder: "Search for data repositories, software tools, information or research data materials"
