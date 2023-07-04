@@ -1,9 +1,29 @@
-import { Box, ChakraProvider, Container, Image } from "@open-pioneer/chakra-integration";
+import { ChakraProvider, Container } from "@open-pioneer/chakra-integration";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 
 import { Header } from "./components/Header/Header";
 import { NavigationMenu } from "./components/NavigationMenu";
-import { SearchBar } from "./components/SearchBar";
 import { Theme } from "./Theme";
+import { SearchView } from "./views/Search";
+import { StartView } from "./views/Start";
+
+const basePath = "/sites/onestop4all/";
+// const basePath = "/";
+
+const router = createBrowserRouter([
+    {
+        path: `${basePath}`,
+        element: <StartView />
+    },
+    {
+        path: `${basePath}search`,
+        element: <SearchView />
+    },
+    {
+        path: "*",
+        element: <Navigate to="/" />
+    }
+]);
 
 export function AppUI() {
     return (
@@ -11,13 +31,8 @@ export function AppUI() {
             <Container maxW="80%">
                 <Header></Header>
             </Container>
-            <Image src="/image1.png" width="100%" />
-            <Box position="absolute" width="100%" marginTop="-50px">
-                <Container maxW="80%">
-                    <SearchBar></SearchBar>
-                </Container>
-            </Box>
             <NavigationMenu></NavigationMenu>
+            <RouterProvider router={router}></RouterProvider>
         </ChakraProvider>
     );
 }
