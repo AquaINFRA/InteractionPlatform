@@ -5,6 +5,9 @@ export const PrimaryColor = "#05668D";
 export const BorderColor = "#CCCCCC";
 
 export const Theme = extendTheme({
+    breakpoints: {
+        custombreak: "1000px"
+    },
     components: {
         Button: defineStyleConfig({
             baseStyle: {
@@ -21,6 +24,12 @@ export const Theme = extendTheme({
                         bg: "green"
                     }
                 }
+            }
+        }),
+        Link: defineStyleConfig({
+            baseStyle: {
+                color: PrimaryColor,
+                fontWeight: 700
             }
         })
     }

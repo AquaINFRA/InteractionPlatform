@@ -1,4 +1,4 @@
-import { Box, HStack } from "@open-pioneer/chakra-integration";
+import { Box, Hide, HStack } from "@open-pioneer/chakra-integration";
 
 import { BorderColor } from "../../Theme";
 import { LanguageToggler } from "./LanguageToggler";
@@ -20,8 +20,12 @@ export const Header = () => {
                 <Logo />
             </Box>
             <Box w="100%"></Box>
-            <UserSupportLink></UserSupportLink>
-            <Login></Login>
+            <Hide below="custombreak">
+                <UserSupportLink></UserSupportLink>
+            </Hide>
+            <Hide below="custombreak">
+                <Login></Login>
+            </Hide>
             <LanguageToggler></LanguageToggler>
             <MenuButton></MenuButton>
         </HStack>

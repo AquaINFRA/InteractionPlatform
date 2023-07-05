@@ -1,0 +1,33 @@
+.navigation-menu {
+    .seperator {
+        width: 100%;
+        min-height: 1px;
+        background: #ccc;
+    }
+
+    .initial-block {
+        padding: 0 70px 40px;
+    }
+
+    .block {
+        padding: 40px 70px;
+
+        .block-header {
+            color: var(--primary-primary-main, #05668d);
+            font-size: 32px;
+            font-family: Open Sans;
+            font-style: normal;
+            font-weight: 300;
+            line-height: 26px;
+            text-transform: uppercase;
+            padding-bottom: 40px;
+        }
+
+        .block-content {
+            .chakra-link {
+                display: block;
+                line-height: 36px;
+            }
+        }
+    }
+}
