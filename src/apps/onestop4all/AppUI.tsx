@@ -6,7 +6,7 @@ import { Header } from "./components/Header/Header";
 import { NavigationMenu } from "./components/NavigationMenu";
 import { Theme } from "./Theme";
 import { SearchView } from "./views/Search";
-import { StartView } from "./views/Start";
+import { StartView } from "./views/Start/Start";
 
 const basePath = "/sites/onestop4all/";
 // const basePath = "/";
@@ -35,6 +35,7 @@ export function AppUI() {
                 <Header></Header>
             </Container>
             <RouterProvider router={router}></RouterProvider>
+
             <Footer></Footer>
         </ChakraProvider>
     );

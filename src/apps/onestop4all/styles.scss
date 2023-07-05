@@ -1,6 +1,15 @@
 [data-theme][data-theme="light"] {
     --primary-primary-main: #05668d;
+    --border-grey: #cccccc;
+}
+
+// global styles
+.seperator {
+    width: 100%;
+    min-height: 1px;
+    background: var(--border-grey);
 }
 
 @import "./components/NavigationMenu.scss";
 @import "./components/Footer/Footer.scss";
+@import "./views/Start/Mission/Mission.scss";
