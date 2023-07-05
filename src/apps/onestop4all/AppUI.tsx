@@ -1,6 +1,7 @@
 import { ChakraProvider, Container } from "@open-pioneer/chakra-integration";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 
+import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { NavigationMenu } from "./components/NavigationMenu";
 import { Theme } from "./Theme";
@@ -28,11 +29,13 @@ const router = createBrowserRouter([
 export function AppUI() {
     return (
         <ChakraProvider theme={Theme}>
+            <NavigationMenu></NavigationMenu>
+
             <Container maxW="80%">
                 <Header></Header>
             </Container>
-            <NavigationMenu></NavigationMenu>
             <RouterProvider router={router}></RouterProvider>
+            <Footer></Footer>
         </ChakraProvider>
     );
 }
