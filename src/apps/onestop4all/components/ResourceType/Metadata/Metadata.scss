@@ -1,0 +1,42 @@
+.metadataBlock {
+    width: "50%";
+}
+
+.metaHeader {
+    color: #000;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 40px;
+    text-transform: uppercase;
+}
+
+.tag {
+    color: #666;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 60px;
+}
+
+.value {
+    color: #000000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 60px;
+}
+
+.keyword {
+    border-radius: 50px;
+    background: rgba(34, 192, 210, 0.2);
+    padding: 10px;
+    min-width: fit-content;
+    display: inline-block;
+    text-decoration: underline;
+    margin-right: 1%;
+}
+
+.link {
+    text-decoration: underline;
+}
