@@ -1,6 +1,7 @@
 [data-theme][data-theme="light"] {
     --primary-primary-main: #05668d;
     --border-grey: #cccccc;
+    --primary-primary-transparent-background: #e0f6fa80;
 }
 
 // global styles
@@ -13,3 +14,4 @@
 @import "./components/NavigationMenu.scss";
 @import "./components/Footer/Footer.scss";
 @import "./views/Start/Start.scss";
+@import "./views/Start/HowTo/HowToEntry.scss";

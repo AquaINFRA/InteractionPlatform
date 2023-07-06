@@ -1,6 +1,7 @@
 import { Box, Container, Flex, Image, Spacer } from "@open-pioneer/chakra-integration";
 
 import { SearchBar } from "../../components/SearchBar";
+import { HowToEntry } from "./HowTo/HowToEntry";
 
 export function StartView() {
     return (
@@ -49,6 +50,40 @@ export function StartView() {
                 </Box>
 
                 <div className="seperator"></div>
+
+                <Box className="how-to">
+                    <Box className="text-centered-box">
+                        <Box className="text-centered-box-header">
+                            We provide guidance on Research Data Management in ESS
+                        </Box>
+                        <Box className="text-centered-box-text">
+                            Here, you will find introductory articles to research data management in
+                            the ESS.
+                        </Box>
+                    </Box>
+
+                    <Flex className="how-to-entries" gap="32px">
+                        <HowToEntry
+                            description="Data and service discovery benefits from complete and up-to-date metadata and description of spatio-temporal context..."
+                            heading="Discover and Explore Earth Data Sources"
+                        />
+
+                        <HowToEntry
+                            description="Simplifying FAIR data publications and implementing curation with affordable efforts becomes increasingly important..."
+                            heading="Data Publication and Data Curation"
+                        />
+
+                        <HowToEntry
+                            description="Implementing FAIR, open and innovative RDM in ESS needs methods and services along all phases of the research data life cycle..."
+                            heading="Research Data Management"
+                        />
+
+                        <HowToEntry
+                            description="Sharing concepts of dataflows, distributed data processing and data portal technologies is key to create innovative data products..."
+                            heading="Create and publish Information Products"
+                        />
+                    </Flex>
+                </Box>
             </Container>
         </>
     );
