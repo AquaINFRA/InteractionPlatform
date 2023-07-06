@@ -1,0 +1,72 @@
+.footer {
+    height: 437px;
+    position: relative;
+    width: 100%;
+    background-color: #05668d;
+
+    &:before {
+        content: " ";
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background-image: url("/footer-background.png");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        background-size: cover;
+    }
+
+    .footer-navigation {
+        padding: 84px 0;
+
+        .section {
+            padding-bottom: 24px;
+            display: flex;
+            color: #ffffff;
+            gap: 10px;
+
+            .section-header {
+                font-size: 16px;
+                font-weight: 400;
+                left: 0;
+                letter-spacing: 0;
+                opacity: 0.7;
+                white-space: nowrap;
+            }
+
+            .section-entry {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .social-media {
+        display: flex;
+        gap: 52px;
+
+        .entry {
+            height: 32px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        .label {
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 26px;
+            white-space: nowrap;
+        }
+    }
+
+    .dfg-logo {
+        height: 81px;
+        right: 0px;
+        position: absolute;
+        bottom: 0px;
+    }
+}
