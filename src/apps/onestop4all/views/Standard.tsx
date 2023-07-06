@@ -51,8 +51,10 @@ export function StandardView() {
                     <SearchBar></SearchBar>
                 </Container>
             </Box>
-            <ResourceTypeHeader resType="standard"></ResourceTypeHeader>
-            <Metadata hide={hideMetadata} metadataElements={metadataElements} />
+            <Container maxW="100%">
+                <ResourceTypeHeader resType="standard"></ResourceTypeHeader>
+                <Metadata hide={hideMetadata} metadataElements={metadataElements} />
+            </Container>
         </>
     );
 }
