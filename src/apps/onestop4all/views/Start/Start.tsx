@@ -8,14 +8,14 @@ export function StartView() {
         <>
             <Image src="/image1.png" width="100%" />
 
-            <Box position="absolute" width="100%" marginTop="-50px">
+            <Box position="absolute" width="100%" marginTop="-70px">
                 <Container maxW="80%">
                     <SearchBar></SearchBar>
                 </Container>
             </Box>
 
             <Container maxW="80%">
-                <Box height="100px"> </Box>
+                <Box height="80px"></Box>
                 <Mission></Mission>
                 <div className="seperator"></div>
             </Container>
