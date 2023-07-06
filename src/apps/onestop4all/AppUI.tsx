@@ -31,7 +31,7 @@ export function AppUI() {
         <ChakraProvider theme={Theme}>
             <NavigationMenu></NavigationMenu>
 
-            <Flex as="header" position="fixed" w="100%">
+            <Flex as="header" position="fixed" w="100%" bg="white" zIndex="1000">
                 <Container maxW="80%">
                     <Header></Header>
                 </Container>
