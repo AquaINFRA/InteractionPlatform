@@ -1,0 +1,52 @@
+.mission {
+    position: relative;
+    padding: 80px 0;
+
+    .bg-icon {
+        height: 258px;
+        right: 100px;
+        position: absolute;
+        bottom: 0;
+        width: 322px;
+    }
+}
+
+.how-to {
+    padding: 80px 0;
+
+    .how-to-entries {
+        padding-top: 32px;
+    }
+}
+
+.text-centered-box {
+    padding: 0px 200px;
+
+    .text-centered-box-header {
+        color: #000;
+        font-family: Open Sans;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        text-transform: uppercase;
+        padding-bottom: 18px;
+    }
+
+    .text-centered-box-text {
+        color: #000;
+        font-family: Open Sans;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+
+        .bold {
+            font-weight: 700;
+        }
+
+        .link {
+            color: var(--primary-primary-main);
+        }
+    }
+}

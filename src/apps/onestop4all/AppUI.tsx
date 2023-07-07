@@ -1,4 +1,4 @@
-import { ChakraProvider, Container } from "@open-pioneer/chakra-integration";
+import { Box, ChakraProvider, Container, Flex } from "@open-pioneer/chakra-integration";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 
 import { Footer } from "./components/Footer/Footer";
@@ -36,12 +36,19 @@ export function AppUI() {
         <ChakraProvider theme={Theme}>
             <NavigationMenu></NavigationMenu>
 
-            <Container maxW="80%">
-                <Header></Header>
-            </Container>
-            <RouterProvider router={router}></RouterProvider>
+            <Flex as="header" position="fixed" w="100%" bg="white" zIndex="1000">
+                <Container maxW="80%">
+                    <Header></Header>
+                </Container>
+            </Flex>
 
-            <Footer></Footer>
+            <Box as="main" w="100%" pt="152px">
+                <RouterProvider router={router}></RouterProvider>
+            </Box>
+
+            <Box as="footer" w="100%">
+                <Footer></Footer>
+            </Box>
         </ChakraProvider>
     );
 }

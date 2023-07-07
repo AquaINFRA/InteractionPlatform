@@ -21,7 +21,7 @@ export const Theme = extendTheme({
                     paddingLeft: "50px",
                     paddingRight: "50px",
                     _hover: {
-                        bg: "green"
+                        bg: PrimaryColor
                     }
                 }
             }

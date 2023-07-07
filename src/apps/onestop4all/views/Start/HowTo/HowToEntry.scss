@@ -1,0 +1,51 @@
+.how-to-entry {
+    background-color: white;
+    align-items: center;
+    border: 1px solid;
+    transition: all 300ms ease-out;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 15px 30px;
+    width: 415px;
+
+    .frame {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 0px 16px;
+        text-align: center;
+    }
+
+    .heading {
+        color: var(--primary-primary-main);
+        font-size: 20px;
+        line-height: 20px;
+    }
+
+    .abstract {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .chakra-button {
+        transition: padding 300ms ease-out;
+    }
+
+    &.default {
+        border-color: #cccccc;
+    }
+
+    &.hover {
+        background-color: var(--primary-primary-transparent-background);
+        border-color: var(--primary-primary-main);
+
+        cursor: pointer;
+
+        .chakra-button {
+            transition: padding 300ms ease-out;
+            padding-left: 60px;
+            padding-right: 60px;
+        }
+    }
+}
