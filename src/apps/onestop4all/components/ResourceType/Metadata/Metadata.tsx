@@ -1,7 +1,8 @@
 import { HStack } from "@open-pioneer/chakra-integration";
 
-export const Metadata = (props: { hide: boolean; metadataElements: object }) => {
+export const Metadata = (props: { hide: boolean; metadataElements: object; width: string }) => {
     const hide = props.hide;
+    const width = props.width;
     const metadataElements = Object.values(props.metadataElements);
 
     function isUrl(url: string) {
@@ -10,7 +11,7 @@ export const Metadata = (props: { hide: boolean; metadataElements: object }) => 
     }
 
     return (
-        <div hidden={hide} style={{ maxWidth: "50%", marginLeft: "10%" }}>
+        <div hidden={hide} style={{ maxWidth: width }}>
             <p className="resTypeHeader">Metadata</p>
             <div className="seperator"></div>
             <>

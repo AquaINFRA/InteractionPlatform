@@ -6,7 +6,7 @@ import { Header } from "./components/Header/Header";
 import { NavigationMenu } from "./components/NavigationMenu";
 import { Theme } from "./Theme";
 import { SearchView } from "./views/Search";
-import { StandardView } from "./views/Standard";
+import { StandardView } from "./views/Standard/Standard";
 import { StartView } from "./views/Start/Start";
 
 const basePath = "/";

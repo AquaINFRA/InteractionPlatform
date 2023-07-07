@@ -1,12 +1,12 @@
-import { Box, Container, Image } from "@open-pioneer/chakra-integration";
-import { SearchBar } from "../components/SearchBar";
-import { ResourceTypeHeader } from "../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
-import { Metadata } from "../components/ResourceType/Metadata/Metadata";
-import { Abstract } from "../components/ResourceType/Abstract/Abstract";
-import { ActionButton } from "../components/ResourceType/ActionButton/ActionButton";
-import { ResultsNavigation } from "../components/ResultsNavigation/ResultsNavigation";
+import { Box, Container, HStack, Image } from "@open-pioneer/chakra-integration";
+import { SearchBar } from "../../components/SearchBar";
+import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
+import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
+import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
+import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
+import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
-import { PdfIcon, MetadataSourceIcon } from "../components/Icons";
+import { PdfIcon, MetadataSourceIcon } from "../../components/Icons";
 
 export function StandardView() {
     const metadataElements = [
@@ -81,10 +81,14 @@ export function StandardView() {
                     <SearchBar></SearchBar>
                 </Container>
             </Box>
-            <Container maxW="100%">
-                <ResourceTypeHeader resType="standard"></ResourceTypeHeader>
-                <Metadata hide={hideMetadata} metadataElements={metadataElements} />
-                <Abstract abstractText={abstractText}></Abstract>
+            <Container maxW="80%" marginTop="5%" marginLeft="10%" marginRight="10%">
+                <ResourceTypeHeader resType="standard" width="60%" />
+                <div className="blockSection">
+                    <Metadata hide={hideMetadata} metadataElements={metadataElements} width="60%" />
+                </div>
+                <div className="blockSection">
+                    <Abstract abstractText={abstractText} width="60%"></Abstract>
+                </div>
                 <div className="actionButtonGroup">
                     <ActionButton
                         label="VISIT STANDARD WEBSITE"

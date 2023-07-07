@@ -1,7 +1,7 @@
-export const Abstract = (props: { abstractText: string }) => {
-    const abstractText = props.abstractText;
+export const Abstract = (props: { abstractText: string; width: string }) => {
+    const { abstractText, width } = props;
     return (
-        <div style={{ maxWidth: "50%", marginLeft: "10%" }}>
+        <div style={{ maxWidth: width }}>
             <p className="resTypeHeader">Abstract</p>
             <p className="abstractText">{abstractText}</p>
         </div>
