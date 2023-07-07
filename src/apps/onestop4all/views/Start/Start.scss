@@ -19,6 +19,11 @@
     }
 }
 
+.resources {
+    background: #a4e5ec30;
+    padding: 60px 0;
+}
+
 .text-centered-box {
     padding: 0px 200px;
 
@@ -47,6 +52,7 @@
 
         .link {
             color: var(--primary-primary-main);
+            text-decoration: underline;
         }
     }
 }

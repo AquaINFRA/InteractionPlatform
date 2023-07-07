@@ -2,8 +2,39 @@ import { Box, Container, Flex, Image, Spacer } from "@open-pioneer/chakra-integr
 
 import { SearchBar } from "../../components/SearchBar";
 import { HowToEntry } from "./HowTo/HowToEntry";
+import { ResourceEntry, ResourceEntryProps, ResourceType } from "./ResourceEntry/ResourceEntry";
 
 export function StartView() {
+    const resources: ResourceEntryProps[] = [
+        {
+            resourceType: ResourceType.Repos,
+            resultCount: 958
+        },
+        {
+            resourceType: ResourceType.Services,
+            resultCount: 86
+        },
+        {
+            resourceType: ResourceType.Tools,
+            resultCount: 75
+        },
+        {
+            resourceType: ResourceType.Standards,
+            resultCount: 54
+        },
+        {
+            resourceType: ResourceType.Educational,
+            resultCount: 325
+        },
+        {
+            resourceType: ResourceType.Documents,
+            resultCount: 52364
+        },
+        {
+            resourceType: ResourceType.Organisations,
+            resultCount: 216
+        }
+    ];
     return (
         <>
             <Box position="relative">
@@ -85,6 +116,30 @@ export function StartView() {
                     </Flex>
                 </Box>
             </Container>
+
+            <Box className="resources">
+                <Container maxW="80%">
+                    <Box className="text-centered-box">
+                        <Box className="text-centered-box-header">
+                            We provide a harmonized view on linked ESS resources
+                        </Box>
+                        <Box className="text-centered-box-text">
+                            Here you will find easy access to relevant resources from the Earth
+                            System Sciences provided by the{" "}
+                            <span className="link">NFDI4Earth members</span> and the{" "}
+                            <span className="link">ESS community</span>.
+                        </Box>
+                    </Box>
+
+                    <Flex justifyContent="space-between" pt="32px">
+                        {resources.map((e, i) => (
+                            <Box key={i} flex="1 1 0px">
+                                <ResourceEntry {...e}></ResourceEntry>
+                            </Box>
+                        ))}
+                    </Flex>
+                </Container>
+            </Box>
         </>
     );
 }
