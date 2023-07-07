@@ -3,6 +3,9 @@ import { SearchBar } from "../components/SearchBar";
 import { ResourceTypeHeader } from "../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { Metadata } from "../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../components/ResourceType/Abstract/Abstract";
+import { ActionButton } from "../components/ResourceType/ActionButton/ActionButton";
+import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
+import { PdfIcon, MetadataSourceIcon } from "../components/Icons";
 
 export function StandardView() {
     const metadataElements = [
@@ -52,7 +55,7 @@ export function StandardView() {
         "Transaction operations allow features to be created, changed, replaced and deleted from the underlying data store." +
         "Stored query operations allow clients to create, drop, list and described parameterized query expressions that are stored by the server and can be repeatedly invoked using different parameter values." +
         "This International Standard defines eleven operations:<br>" +
-        "<ul><li>GetCapabilities (discovery operation)</li></ul>" +
+        "GetCapabilities (discovery operation)" +
         "- DescribeFeatureType (discovery operation)" +
         "- GetPropertyValue (query operation)" +
         "- GetFeature (query operation)" +
@@ -65,6 +68,9 @@ export function StandardView() {
         "- DescribeStoredQueries (stored query operation)" +
         "In the taxonomy of services defined in ISO 19119, the WFS is primarily a feature access service but also includes elements of a feature type service, a coordinate conversion/transformation service and geographic format conversion service.";
     const hideMetadata = false;
+    const fun = () => {
+        console.log("This is a fun");
+    };
     return (
         <>
             <Image src="/image2.png" width="100%" />
@@ -78,6 +84,32 @@ export function StandardView() {
                 <ResourceTypeHeader resType="standard"></ResourceTypeHeader>
                 <Metadata hide={hideMetadata} metadataElements={metadataElements} />
                 <Abstract abstractText={abstractText}></Abstract>
+                <div className="actionButtonGroup">
+                    <ActionButton
+                        label="VISIT STANDARD WEBSITE"
+                        icon={<ExternalLinkIcon color="white" />}
+                        variant="solid"
+                        fun={fun}
+                    ></ActionButton>
+                    <ActionButton
+                        label="DOWNLOAD AS PDF"
+                        icon={<PdfIcon color="white" />}
+                        variant="solid"
+                        fun={fun}
+                    ></ActionButton>
+                    <ActionButton
+                        label="VISIT METADATA SOURCE"
+                        icon={<MetadataSourceIcon color="#05668D" />}
+                        variant="outline"
+                        fun={fun}
+                    ></ActionButton>
+                    <ActionButton
+                        label="COPY PERMALINK"
+                        icon={<LinkIcon color="#05668D" />}
+                        variant="outline"
+                        fun={fun}
+                    ></ActionButton>
+                </div>
             </Container>
         </>
     );
