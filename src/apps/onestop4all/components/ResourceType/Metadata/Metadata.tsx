@@ -11,7 +11,7 @@ export const Metadata = (props: { hide: boolean; metadataElements: object }) => 
 
     return (
         <div hidden={hide} style={{ maxWidth: "50%", marginLeft: "10%" }}>
-            <p className="metaHeader">Metadata</p>
+            <p className="resTypeHeader">Metadata</p>
             <div className="seperator"></div>
             <>
                 {metadataElements.map((elem) =>
