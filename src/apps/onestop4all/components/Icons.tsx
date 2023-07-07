@@ -307,3 +307,94 @@ export const StandardIcon = (props: IconProps) => (
         </svg>
     </Icon>
 );
+
+export const ResultsNavigationLeftLeft = (props: IconProps) => (
+    <Icon viewBox="0 0 17 26" {...props}>
+        <svg
+            width="17"
+            height="26"
+            viewBox="0 0 17 26"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <g opacity="0.3">
+                <path
+                    d="M15.2266 23.5L3.67656 13L15.2266 2.5"
+                    stroke="#05668D"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                />
+                <path
+                    d="M1.67578 1.5V24.5"
+                    stroke="#05668D"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                />
+            </g>
+        </svg>
+    </Icon>
+);
+
+export const ResultsNavigationLeft = (props: IconProps) => (
+    <Icon viewBox="0 0 17 26" {...props}>
+        <svg
+            width="17"
+            height="28"
+            viewBox="0 0 17 26"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                opacity="0.3"
+                d="M14.7754 22.5L3.22539 12L14.7754 1.5"
+                stroke="#05668D"
+                strokeWidth="3"
+                strokeLinecap="round"
+            />
+        </svg>
+    </Icon>
+);
+
+export const ResultsNavigationRightRight = (props: IconProps) => (
+    <Icon viewBox="0 0 17 26" {...props}>
+        <svg
+            width="17"
+            height="26"
+            viewBox="0 0 17 26"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M1.77344 2.5L13.3234 13L1.77343 23.5"
+                stroke="#05668D"
+                strokeWidth="3"
+                strokeLinecap="round"
+            />
+            <path
+                d="M15.3242 24.5L15.3242 1.5"
+                stroke="#05668D"
+                strokeWidth="3"
+                strokeLinecap="round"
+            />
+        </svg>
+    </Icon>
+);
+
+export const ResultsNavigationRight = (props: IconProps) => (
+    <Icon viewBox="0 0 17 26" {...props}>
+        <svg
+            width="17"
+            height="28"
+            viewBox="0 0 17 26"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M1.77539 1.5L12.7754 12L1.77539 22.5"
+                stroke="#05668D"
+                strokeWidth="3"
+                strokeLinecap="round"
+            />
+        </svg>
+    </Icon>
+);

@@ -4,6 +4,7 @@ import { ResourceTypeHeader } from "../components/ResourceType/ResourceTypeHeade
 import { Metadata } from "../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../components/ResourceType/Abstract/Abstract";
 import { ActionButton } from "../components/ResourceType/ActionButton/ActionButton";
+import { ResultsNavigation } from "../components/ResultsNavigation/ResultsNavigation";
 import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
 import { PdfIcon, MetadataSourceIcon } from "../components/Icons";
 
@@ -110,6 +111,7 @@ export function StandardView() {
                         fun={fun}
                     ></ActionButton>
                 </div>
+                <ResultsNavigation result={1} of={100}></ResultsNavigation>
             </Container>
         </>
     );
