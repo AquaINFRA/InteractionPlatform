@@ -1,4 +1,5 @@
-import { Container, Image, HStack, Grid, GridItem } from "@open-pioneer/chakra-integration";
+import { HStack, Grid, GridItem } from "@open-pioneer/chakra-integration";
+import { StandardIcon } from "../../Icons";
 import { BorderColor } from "../../../Theme";
 
 export function ResourceTypeHeader(props: { resType: string }) {
@@ -6,7 +7,7 @@ export function ResourceTypeHeader(props: { resType: string }) {
     const resourceIcon = "/" + resourceType + ".png";
     return (
         <Grid
-            gridTemplateColumns={"2% 8% 40% 6% 4%"}
+            gridTemplateColumns={"2% 8% 40% 5% 4%"}
             //gridTemplateRows={"500px 1fr 300px"}
             //h="100px"
             //gap="1"
@@ -82,7 +83,7 @@ export function ResourceTypeHeader(props: { resType: string }) {
                 </p>
             </GridItem>
             <GridItem>
-                <Image src={resourceIcon} width="60%" />
+                <StandardIcon boxSize={9} />
             </GridItem>
         </Grid>
     );
