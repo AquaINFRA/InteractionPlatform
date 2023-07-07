@@ -2,6 +2,7 @@ import { Box, Container, Flex, Image, Spacer } from "@open-pioneer/chakra-integr
 
 import { SearchBar } from "../../components/SearchBar";
 import { HowToEntry } from "./HowTo/HowToEntry";
+import { ParticipateEntry, ParticipateEntryProps } from "./ParticipateEntry/ParticipateEntry";
 import { ResourceEntry, ResourceEntryProps, ResourceType } from "./ResourceEntry/ResourceEntry";
 
 export function StartView() {
@@ -35,6 +36,29 @@ export function StartView() {
             resultCount: 216
         }
     ];
+    const getInvolvedEntries: ParticipateEntryProps[] = [
+        {
+            imageUrl: "image1.png",
+            text: "Apply for a pilot or incubator"
+        },
+        {
+            imageUrl: "image2.png",
+            text: "Join the NFDI4Earth Academy"
+        },
+        {
+            imageUrl: "image3.png",
+            text: "Join or propose an NFDI4Earth Interest Group"
+        },
+        {
+            imageUrl: "image4.png",
+            text: "Contribute a Living Handbook article"
+        },
+        {
+            imageUrl: "image5.png",
+            text: "Sign the NFDI4Earth FAIRness &amp; Openness Commitment"
+        }
+    ];
+
     return (
         <>
             <Box position="relative">
@@ -135,6 +159,29 @@ export function StartView() {
                         {resources.map((e, i) => (
                             <Box key={i} flex="1 1 0px">
                                 <ResourceEntry {...e}></ResourceEntry>
+                            </Box>
+                        ))}
+                    </Flex>
+                </Container>
+            </Box>
+
+            <Box className="get-involved">
+                <Container maxW="80%">
+                    <Box className="text-centered-box">
+                        <Box className="text-centered-box-header">
+                            We welcome your participation
+                        </Box>
+                        <Box className="text-centered-box-text">
+                            NFDI4Earth is a community-driven process. We welcome you to join our
+                            NFDI4Earth activities. Here you will find information on how to
+                            participate.
+                        </Box>
+                    </Box>
+
+                    <Flex justifyContent="space-around" pt="32px">
+                        {getInvolvedEntries.map((e, i) => (
+                            <Box key={i}>
+                                <ParticipateEntry {...e}></ParticipateEntry>
                             </Box>
                         ))}
                     </Flex>
