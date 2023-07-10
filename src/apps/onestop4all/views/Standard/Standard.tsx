@@ -1,4 +1,4 @@
-import { Box, Container, HStack, Image } from "@open-pioneer/chakra-integration";
+import { Box, Container, Image, Flex } from "@open-pioneer/chakra-integration";
 import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
@@ -74,48 +74,29 @@ export function StandardView() {
     };
     return (
         <>
-            <Image src="/image2.png" width="100%" />
-            <Box position="absolute" width="100%" marginTop="-50px">
-                BorderColor
+            <Box position="relative">
+                <Image src="/image2.png" width="100%" />
+            </Box>
+
+            <Box position="absolute" width="100%" marginTop="-70px">
                 <Container maxW="80%">
                     <SearchBar></SearchBar>
                 </Container>
             </Box>
-            <Container maxW="80%" marginTop="5%" marginLeft="10%" marginRight="10%">
-                <ResourceTypeHeader resType="standard" width="60%" />
-                <div className="blockSection">
-                    <Metadata hide={hideMetadata} metadataElements={metadataElements} width="60%" />
-                </div>
-                <div className="blockSection">
-                    <Abstract abstractText={abstractText} width="60%"></Abstract>
-                </div>
-                <div className="actionButtonGroup">
-                    <ActionButton
-                        label="VISIT STANDARD WEBSITE"
-                        icon={<ExternalLinkIcon color="white" />}
-                        variant="solid"
-                        fun={fun}
-                    ></ActionButton>
-                    <ActionButton
-                        label="DOWNLOAD AS PDF"
-                        icon={<PdfIcon color="white" />}
-                        variant="solid"
-                        fun={fun}
-                    ></ActionButton>
-                    <ActionButton
-                        label="VISIT METADATA SOURCE"
-                        icon={<MetadataSourceIcon color="#05668D" />}
-                        variant="outline"
-                        fun={fun}
-                    ></ActionButton>
-                    <ActionButton
-                        label="COPY PERMALINK"
-                        icon={<LinkIcon color="#05668D" />}
-                        variant="outline"
-                        fun={fun}
-                    ></ActionButton>
-                </div>
-                <ResultsNavigation result={1} of={100}></ResultsNavigation>
+
+            <Container maxW="80%">
+                <Box height="80px"></Box>
+                <Flex gap="10%">
+                    <Box w="65%">
+                        <ResourceTypeHeader resType="standard" />
+                        <Box hidden={hideMetadata}>
+                            <Metadata metadataElements={metadataElements} />
+                        </Box>
+                    </Box>
+                    <Box w="25%">
+                        <ResultsNavigation result={1} of={100} />
+                    </Box>
+                </Flex>
             </Container>
         </>
     );

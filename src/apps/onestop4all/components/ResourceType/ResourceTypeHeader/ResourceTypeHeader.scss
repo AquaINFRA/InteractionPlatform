@@ -1,21 +1,13 @@
 .back {
     font-size: 14px;
     font-style: normal;
-    font-weight: 700;
-    line-height: 24px;
     letter-spacing: 0.6px;
     text-transform: uppercase;
-    margin-left: -15%;
-    min-width: 140px;
+    min-width: fit-content;
 
     .to {
+        font-weight: 700;
         color: #05668d;
-        display: inline-block;
-    }
-
-    .resultList {
-        color: "#333333";
-        display: inline-block;
     }
 }
 
@@ -24,7 +16,13 @@
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
-    line-height: 24px;
     letter-spacing: 0.8px;
     text-transform: uppercase;
+}
+
+.inbetweenLine {
+    margin-left: 2%;
+    margin-right: 2%;
+    min-height: 1px;
+    background: var(--border-grey);
 }

@@ -1,4 +1,4 @@
-import { Icon, HStack } from "@open-pioneer/chakra-integration";
+import { Flex, Divider, Box } from "@open-pioneer/chakra-integration";
 import {
     ResultsNavigationLeftLeft,
     ResultsNavigationLeft,
@@ -9,33 +9,39 @@ import {
 export const ResultsNavigation = (props: { result: number; of: number }) => {
     const { result, of } = props;
     return (
-        <HStack>
-            <a href="/search?">
-                <Icon boxSize={10}>
+        <Flex>
+            <Box>
+                <a href="/search?">
                     <ResultsNavigationLeftLeft />
-                </Icon>
-            </a>
-            <a href="/search?">
-                <Icon boxSize={10} marginLeft="-4">
+                </a>
+            </Box>
+
+            <Box>
+                <a href="/search?">
                     <ResultsNavigationLeft />
-                </Icon>
-            </a>
-            <div className="seperator" style={{ width: "3%" }} />
-            <div>
-                Result <span className="resultsNavigation">{result}</span> of{" "}
-                <span className="resultsNavigation">{of}</span>
-            </div>
-            <div className="seperator" style={{ width: "3%" }} />
-            <a href="/search?">
-                <Icon boxSize={10} marginRight="-4">
+                </a>
+            </Box>
+
+            <Divider className="inbetweenLine" />
+
+            <Box className="resultsNavigation">
+                Result <span className="resultHit">{result}</span> of{" "}
+                <span className="resultHit">{of}</span>
+            </Box>
+
+            <Divider className="inbetweenLine" />
+
+            <Box>
+                <a href="/search?">
                     <ResultsNavigationRight />
-                </Icon>
-            </a>
-            <a href="/search?">
-                <Icon boxSize={10}>
+                </a>
+            </Box>
+
+            <Box>
+                <a href="/search?">
                     <ResultsNavigationRightRight />
-                </Icon>
-            </a>
-        </HStack>
+                </a>
+            </Box>
+        </Flex>
     );
 };

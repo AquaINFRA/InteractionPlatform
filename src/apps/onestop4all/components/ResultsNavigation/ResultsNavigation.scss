@@ -1,3 +1,7 @@
 .resultsNavigation {
-    color: #05668d;
+    min-width: fit-content;
+
+    .resultHit {
+        color: #05668d;
+    }
 }
