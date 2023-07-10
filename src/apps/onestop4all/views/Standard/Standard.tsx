@@ -1,8 +1,9 @@
-import { Box, Container, Image, Flex } from "@open-pioneer/chakra-integration";
+import { Box, Container, Image, Flex, Divider } from "@open-pioneer/chakra-integration";
 import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
+import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
@@ -70,11 +71,33 @@ export function StandardView() {
         "In the taxonomy of services defined in ISO 19119, the WFS is primarily a feature access service but also includes elements of a feature type service, a coordinate conversion/transformation service and geographic format conversion service.";
     const hideMetadata = false;
     const title = "OGC Web Map Service";
+    const relatedContentItems = [
+        {
+            resourceType: "Repositories/Archives",
+            title: "Environmental Information Data Centre",
+            url: "https://www.nfdi4earth.de/"
+        },
+        {
+            resourceType: "Repositories/Archives",
+            title: "Environmental Information Data Centre",
+            url: "https://www.nfdi4earth.de/"
+        },
+        {
+            resourceType: "Repositories/Archives",
+            title: "Environmental Information Data Centre",
+            url: "https://www.nfdi4earth.de/"
+        },
+        {
+            resourceType: "Repositories/Archives",
+            title: "Environmental Information Data Centre",
+            url: "https://www.nfdi4earth.de/"
+        }
+    ];
     const fun = () => {
         console.log("This is a fun");
     };
     return (
-        <>
+        <Box>
             <Box position="relative">
                 <Image src="/image2.png" width="100%" />
             </Box>
@@ -86,10 +109,10 @@ export function StandardView() {
             </Box>
 
             <Container maxW="80%">
-                <Box height="80px"></Box>
+                <Box height="80px" />
                 <Flex gap="10%">
                     <Box w="65%">
-                        <ResourceTypeHeader resType="standard" />
+                        <ResourceTypeHeader resType="Standards" />
                         <Box className="title" pt="15px">
                             {title}
                         </Box>
@@ -130,7 +153,19 @@ export function StandardView() {
                         </Box>
                     </Box>
                 </Flex>
+                <Box w="100%">
+                    <Box pt="36px">
+                        <RelatedContent relatedContentItems={relatedContentItems} />
+                    </Box>
+                    <Flex>
+                        <Divider className="inbetweenLine" w="65%" />
+                        <Box w="35%">
+                            <ResultsNavigation result={1} of={100} />
+                        </Box>
+                    </Flex>
+                </Box>
+                <Box pt="120" />
             </Container>
-        </>
+        </Box>
     );
 }
