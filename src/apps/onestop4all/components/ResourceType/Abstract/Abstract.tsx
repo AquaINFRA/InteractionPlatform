@@ -1,9 +1,11 @@
-export const Abstract = (props: { abstractText: string; width: string }) => {
-    const { abstractText, width } = props;
+import { Box } from "@open-pioneer/chakra-integration";
+
+export const Abstract = (props: { abstractText: string }) => {
+    const { abstractText } = props;
     return (
-        <div style={{ maxWidth: width }}>
+        <Box>
             <p className="resTypeHeader">Abstract</p>
             <p className="abstractText">{abstractText}</p>
-        </div>
+        </Box>
     );
 };

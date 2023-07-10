@@ -69,6 +69,7 @@ export function StandardView() {
         "- DescribeStoredQueries (stored query operation)" +
         "In the taxonomy of services defined in ISO 19119, the WFS is primarily a feature access service but also includes elements of a feature type service, a coordinate conversion/transformation service and geographic format conversion service.";
     const hideMetadata = false;
+    const title = "OGC Web Map Service";
     const fun = () => {
         console.log("This is a fun");
     };
@@ -89,12 +90,44 @@ export function StandardView() {
                 <Flex gap="10%">
                     <Box w="65%">
                         <ResourceTypeHeader resType="standard" />
-                        <Box hidden={hideMetadata}>
+                        <Box className="title" pt="15px">
+                            {title}
+                        </Box>
+                        <Box hidden={hideMetadata} pt="36px">
                             <Metadata metadataElements={metadataElements} />
+                        </Box>
+                        <Box pt="36px">
+                            <Abstract abstractText={abstractText} />
                         </Box>
                     </Box>
                     <Box w="25%">
                         <ResultsNavigation result={1} of={100} />
+                        <Box className="actionButtonGroup" pt="74px">
+                            <ActionButton
+                                label="VISIT STANDARD WEBSITE"
+                                icon={<ExternalLinkIcon color="white" />}
+                                variant="solid"
+                                fun={fun}
+                            />
+                            <ActionButton
+                                label="DOWNLOAD AS PDF"
+                                icon={<PdfIcon color="white" />}
+                                variant="solid"
+                                fun={fun}
+                            />
+                            <ActionButton
+                                label="VISIT METADATA SOURCE"
+                                icon={<MetadataSourceIcon color="#05668D" />}
+                                variant="outline"
+                                fun={fun}
+                            />
+                            <ActionButton
+                                label="COPY PERMALINK"
+                                icon={<LinkIcon color="#05668D" />}
+                                variant="outline"
+                                fun={fun}
+                            />
+                        </Box>
                     </Box>
                 </Flex>
             </Container>

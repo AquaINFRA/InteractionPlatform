@@ -8,13 +8,8 @@
 }
 
 .actionButtonGroup {
-    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
-    align-self: stretch;
-    margin-left: 10%;
-    max-width: 10%;
-    min-width: 300px;
 }

@@ -1,4 +1,4 @@
-import { HStack } from "@open-pioneer/chakra-integration";
+import { Flex } from "@open-pioneer/chakra-integration";
 
 export const Metadata = (props: { metadataElements: object }) => {
     const metadataElements = Object.values(props.metadataElements);
@@ -17,19 +17,19 @@ export const Metadata = (props: { metadataElements: object }) => {
                     <>
                         <div>
                             {!isUrl(elem.val) ? (
-                                <HStack>
-                                    <span className="tag">{elem.tag}: </span>
+                                <Flex>
+                                    <span className="tag">{elem.tag}:&nbsp;</span>
                                     <span className="value">{elem.val}</span>
-                                </HStack>
+                                </Flex>
                             ) : (
-                                <HStack>
-                                    <span className="tag">{elem.tag}: </span>{" "}
+                                <Flex>
+                                    <span className="tag">{elem.tag}:&nbsp;</span>{" "}
                                     <span className="value">
                                         <a href={elem.val} className="link">
                                             {elem.val}
                                         </a>
                                     </span>
-                                </HStack>
+                                </Flex>
                             )}
                         </div>
                         <div className="seperator"></div>
@@ -37,7 +37,7 @@ export const Metadata = (props: { metadataElements: object }) => {
                 ) : (
                     <>
                         <div>
-                            <span className="tag">{elem.tag}: </span>
+                            <span className="tag">{elem.tag}:&nbsp;</span>
                             {elem.val.map((e: string) => (
                                 <>
                                     <div className="keyword">

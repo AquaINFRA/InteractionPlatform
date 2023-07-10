@@ -21,7 +21,7 @@ export function ResourceTypeHeader(props: { resType: string }) {
 
             <Divider className="inbetweenLine" />
 
-            <Flex className="resourceType">
+            <Flex className="resourceType" gap="10px">
                 {resourceType}
                 <StandardIcon />
             </Flex>

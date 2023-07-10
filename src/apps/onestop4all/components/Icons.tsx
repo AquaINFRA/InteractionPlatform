@@ -282,7 +282,7 @@ export const MetadataSourceIcon = (props: IconProps) => (
     </Icon>
 );
 
-export const StandardIcon = (props: IconProps) => (
+export const StandardIcon = () => (
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clipPath="url(#clip0_338_4908)">
             <path
@@ -300,7 +300,7 @@ export const StandardIcon = (props: IconProps) => (
     </svg>
 );
 
-export const ResultsNavigationLeftLeft = (props: IconProps) => (
+export const ResultsNavigationLeftLeft = () => (
     <svg width="28" height="28" viewBox="0 0 1 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g opacity="0.3">
             <path
@@ -314,7 +314,7 @@ export const ResultsNavigationLeftLeft = (props: IconProps) => (
     </svg>
 );
 
-export const ResultsNavigationLeft = (props: IconProps) => (
+export const ResultsNavigationLeft = () => (
     <svg width="28" height="28" viewBox="0 0 5 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             opacity="0.3"
@@ -326,7 +326,7 @@ export const ResultsNavigationLeft = (props: IconProps) => (
     </svg>
 );
 
-export const BackIcon = (props: IconProps) => (
+export const BackIcon = () => (
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             d="M14.7754 22.5L3.22539 12L14.7754 1.5"
@@ -337,7 +337,7 @@ export const BackIcon = (props: IconProps) => (
     </svg>
 );
 
-export const ResultsNavigationRightRight = (props: IconProps) => (
+export const ResultsNavigationRightRight = () => (
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             d="M1.77344 2.5L13.3234 13L1.77343 23.5"
@@ -354,7 +354,7 @@ export const ResultsNavigationRightRight = (props: IconProps) => (
     </svg>
 );
 
-export const ResultsNavigationRight = (props: IconProps) => (
+export const ResultsNavigationRight = () => (
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             d="M1.77539 1.5L12.7754 12L1.77539 22.5"
