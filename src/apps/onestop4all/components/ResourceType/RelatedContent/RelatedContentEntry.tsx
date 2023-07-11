@@ -1,4 +1,4 @@
-import { Box, Button } from "@open-pioneer/chakra-integration";
+import { Box, Button, Flex } from "@open-pioneer/chakra-integration";
 import { ResourceIcon } from "../../../views/Start/ResourceEntry/ResourceIcons";
 import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
 
@@ -10,20 +10,23 @@ export interface RelatedContentEntryProps {
 
 export const RelatedContentEntry = ({ title, resourceType, url }: RelatedContentEntryProps) => {
     return (
-        <div className="relatedContentEntry">
-            <div className="overlap">
-                <div className="circle-group"></div>
-                <div className="icon-base"></div>
-                <div className="icon">
-                    <div className="relatedContentLabel">{resourceType}</div>
-                </div>
-            </div>
+        <Box>
+            <Flex className="relatedContentResource-entry" alignItems="center">
+                <Box className="relatedContentOverlap">
+                    <div className="relatedContentCircle-group"></div>
+                    <div className="relatedContentIcon-base"></div>
+                    <div className="relatedContentIcon">
+                        <ResourceIcon type={resourceType} size={30} />
+                    </div>
+                </Box>
+                <Box className="relatedContentLabel">{resourceType}</Box>
+            </Flex>
             <Box className="relatedContentTitle">{title}</Box>
             <Button className="relatedContentButton">
                 <a href={url} className="relatedContentButtonLabel">
-                    Learn More
+                    Visit {resourceType}
                 </a>
             </Button>
-        </div>
+        </Box>
     );
 };

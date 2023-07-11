@@ -78,17 +78,17 @@ export function StandardView() {
             url: "https://www.nfdi4earth.de/"
         },
         {
-            resourceType: "Repositories/Archives",
+            resourceType: "Services",
             title: "Environmental Information Data Centre",
             url: "https://www.nfdi4earth.de/"
         },
         {
-            resourceType: "Repositories/Archives",
+            resourceType: "Educational resources",
             title: "Environmental Information Data Centre",
             url: "https://www.nfdi4earth.de/"
         },
         {
-            resourceType: "Repositories/Archives",
+            resourceType: "Documents",
             title: "Environmental Information Data Centre",
             url: "https://www.nfdi4earth.de/"
         }
@@ -157,9 +157,9 @@ export function StandardView() {
                     <Box pt="36px">
                         <RelatedContent relatedContentItems={relatedContentItems} />
                     </Box>
-                    <Flex>
-                        <Divider className="inbetweenLine" w="65%" />
-                        <Box w="35%">
+                    <Flex gap="10%" alignItems="center">
+                        <Divider className="seperator" w="65%" />
+                        <Box w="25%">
                             <ResultsNavigation result={1} of={100} />
                         </Box>
                     </Flex>
