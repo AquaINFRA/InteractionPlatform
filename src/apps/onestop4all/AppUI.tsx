@@ -32,7 +32,7 @@ export function AppUI() {
             <NavigationMenu></NavigationMenu>
 
             <Flex as="header" position="fixed" w="100%" bg="white" zIndex="1000">
-                <Container maxW="80%">
+                <Container maxW={{ base: "100%", custombreak: "80%" }}>
                     <Header></Header>
                 </Container>
             </Flex>

@@ -31,6 +31,13 @@ export const Theme = extendTheme({
                 color: PrimaryColor,
                 fontWeight: 700
             }
+        }),
+        Drawer: defineStyleConfig({
+            sizes: {
+                customMenu: {
+                    dialog: { maxWidth: "360px" }
+                }
+            }
         })
     }
 });

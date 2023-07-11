@@ -28,8 +28,35 @@ export function NavigationMenu() {
         return () => openMenuListener.destroy();
     });
 
+    function createBlock(header: string, links: string[]): import("react").ReactNode {
+        return (
+            <Box
+                className="block"
+                padding={{ base: "30px 50px 30px 70px;", custombreak: "40px 70px;" }}
+            >
+                <Box
+                    className="block-header"
+                    fontSize={{ base: "24px", custombreak: "36px" }}
+                    paddingBottom={{ base: "20px", custombreak: "40px" }}
+                >
+                    {header}
+                </Box>
+                <div className="block-content">
+                    {links.map((link, i) => (
+                        <Link key={i}>{link}</Link>
+                    ))}
+                </div>
+            </Box>
+        );
+    }
+
     return (
-        <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={"md"}>
+        <Drawer
+            isOpen={isOpen}
+            placement="right"
+            onClose={onClose}
+            size={{ base: "customMenu", custombreak: "md" }}
+        >
             <DrawerOverlay bg={"var(--chakra-colors-blackAlpha-200)"} />
             <DrawerContent className="navigation-menu">
                 <HStack padding={{ base: "52px 52px 0px", custombreak: "52px 52px 100px" }}>
@@ -43,36 +70,23 @@ export function NavigationMenu() {
                     />
                 </HStack>
                 <Hide above="custombreak">
-                    <div className="initial-block">
+                    <Box
+                        className="initial-block"
+                        padding={{ base: "0 70px 40px", custombreak: "0 70px 40px" }}
+                        marginTop={{ base: "-20px", custombreak: "0px" }}
+                        lineHeight="36px"
+                    >
                         <UserSupportLink></UserSupportLink>
                         <Login></Login>
                         <LanguageToggler></LanguageToggler>
-                    </div>
+                    </Box>
                 </Hide>
                 <div className="seperator"></div>
-                <Box className="block">
-                    <div className="block-header">Get Connected</div>
-                    <div className="block-content">
-                        <Link>About us</Link>
-                        <Link>Partners</Link>
-                        <Link>Contact</Link>
-                    </div>
-                </Box>
+                {createBlock("Get connected", ["About us", "Partners", "Contact"])}
                 <div className="seperator"></div>
-                <Box className="block">
-                    <div className="block-header">Support</div>
-                    <div className="block-content">
-                        <Link>User Support</Link>
-                    </div>
-                </Box>
+                {createBlock("Support", ["User Support"])}
                 <div className="seperator"></div>
-                <Box className="block">
-                    <div className="block-header">Legal information</div>
-                    <div className="block-content">
-                        <Link>Legal information</Link>
-                        <Link>Privacy</Link>
-                    </div>
-                </Box>
+                {createBlock("Legal information", ["Legal information", "Privacy"])}
                 <div className="seperator"></div>
             </DrawerContent>
         </Drawer>

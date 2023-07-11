@@ -1,4 +1,4 @@
-import { HStack, Icon, Link } from "@open-pioneer/chakra-integration";
+import { Box, HStack, Icon, Link } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
 
 import { PrimaryColor } from "../../Theme";
@@ -21,9 +21,14 @@ export function LanguageToggler() {
             <Icon boxSize={6} color={PrimaryColor}>
                 <WorldIcon />
             </Icon>
-            <Link whiteSpace="nowrap" onClick={() => toggleLocale()}>
-                <span style={{ fontWeight: locale === "en" ? "bold" : "lighter" }}>EN</span>
-                <span style={{ fontWeight: "lighter" }}> / </span>
+            <Link
+                whiteSpace="nowrap"
+                display="flex"
+                gap={{ base: "0px", custombreak: "4px" }}
+                onClick={() => toggleLocale()}
+            >
+                <Box style={{ fontWeight: locale === "en" ? "bold" : "lighter" }}>EN</Box>
+                <Box style={{ fontWeight: "lighter" }}>/</Box>
                 <span style={{ fontWeight: locale === "de" ? "bold" : "lighter" }}>DE</span>
             </Link>
         </HStack>

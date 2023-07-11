@@ -1,5 +1,4 @@
 .footer {
-    height: 437px;
     position: relative;
     width: 100%;
     background-color: #05668d;
@@ -20,15 +19,14 @@
     }
 
     .footer-navigation {
-        padding: 84px 0;
-
         .section {
             padding-bottom: 24px;
             display: flex;
             color: #ffffff;
-            gap: 10px;
+            align-items: center;
 
             .section-header {
+                text-transform: uppercase;
                 font-size: 16px;
                 font-weight: 400;
                 left: 0;
@@ -44,8 +42,8 @@
     }
 
     .social-media {
-        display: flex;
-        gap: 52px;
+        padding-bottom: 93px;
+        align-items: center;
 
         .entry {
             height: 32px;
@@ -61,12 +59,5 @@
             line-height: 26px;
             white-space: nowrap;
         }
-    }
-
-    .dfg-logo {
-        height: 81px;
-        right: 0px;
-        position: absolute;
-        bottom: 0px;
     }
 }
