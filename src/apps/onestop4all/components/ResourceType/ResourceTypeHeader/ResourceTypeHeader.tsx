@@ -15,7 +15,7 @@ export function ResourceTypeHeader(props: { resType: string }) {
     const resourceType = props.resType;
 
     return (
-        <Flex>
+        <Flex alignItems="center">
             <Box>
                 <a href="/search?">
                     <BackIcon />
@@ -31,27 +31,26 @@ export function ResourceTypeHeader(props: { resType: string }) {
 
             <Divider className="inbetweenLine" />
 
+            <Box className="resourceType">{resourceType}</Box>
+
             <Box>
-                <Flex className="resourceType" gap="10px">
-                    <span>{resourceType}</span>
-                    {resourceType == ResourceType.Repos ? (
-                        <RepositoriesIcon />
-                    ) : resourceType == ResourceType.Services ? (
-                        <ServicesIcon />
-                    ) : resourceType == ResourceType.Tools ? (
-                        <ToolSoftwareIcon />
-                    ) : resourceType == ResourceType.Standards ? (
-                        <StandardIcon />
-                    ) : resourceType == ResourceType.Educational ? (
-                        <EducationalResourceIcon />
-                    ) : resourceType == ResourceType.Documents ? (
-                        <DocumentsIcon />
-                    ) : resourceType == ResourceType.Organisations ? (
-                        <OrganisationsIcon />
-                    ) : (
-                        <></>
-                    )}
-                </Flex>
+                {resourceType == ResourceType.Repos ? (
+                    <RepositoriesIcon />
+                ) : resourceType == ResourceType.Services ? (
+                    <ServicesIcon />
+                ) : resourceType == ResourceType.Tools ? (
+                    <ToolSoftwareIcon />
+                ) : resourceType == ResourceType.Standards ? (
+                    <StandardIcon />
+                ) : resourceType == ResourceType.Educational ? (
+                    <EducationalResourceIcon />
+                ) : resourceType == ResourceType.Documents ? (
+                    <DocumentsIcon />
+                ) : resourceType == ResourceType.Organisations ? (
+                    <OrganisationsIcon />
+                ) : (
+                    <></>
+                )}
             </Box>
         </Flex>
     );
