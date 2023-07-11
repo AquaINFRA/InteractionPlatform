@@ -1,4 +1,4 @@
-import { Flex } from "@open-pioneer/chakra-integration";
+import { Flex, Box } from "@open-pioneer/chakra-integration";
 
 export const Metadata = (props: { metadataElements: object }) => {
     const metadataElements = Object.values(props.metadataElements);
@@ -9,46 +9,42 @@ export const Metadata = (props: { metadataElements: object }) => {
     }
 
     return (
-        <>
-            <p className="resTypeHeader">Metadata</p>
+        <Box>
+            <p className="metadataSectionHeader">Metadata</p>
             <div className="seperator"></div>
-            {metadataElements.map((elem) =>
-                elem.tag != "Keywords" ? (
-                    <>
+            {metadataElements.map((e, i) =>
+                e.tag != "Keywords" ? (
+                    <Box key={i}>
                         <div>
-                            {!isUrl(elem.val) ? (
+                            {!isUrl(e.val) ? (
                                 <Flex>
-                                    <span className="tag">{elem.tag}:&nbsp;</span>
-                                    <span className="value">{elem.val}</span>
+                                    <span className="metadataTag">{e.tag}:&nbsp;</span>
+                                    <span className="metadataValue">{e.val}</span>
                                 </Flex>
                             ) : (
                                 <Flex>
-                                    <span className="tag">{elem.tag}:&nbsp;</span>{" "}
-                                    <span className="value">
-                                        <a href={elem.val} className="link">
-                                            {elem.val}
+                                    <span className="metadataTag">{e.tag}:&nbsp;</span>{" "}
+                                    <span className="metadataValue">
+                                        <a href={e.val} className="metadataLink">
+                                            {e.val}
                                         </a>
                                     </span>
                                 </Flex>
                             )}
                         </div>
                         <div className="seperator"></div>
-                    </>
+                    </Box>
                 ) : (
-                    <>
-                        <div>
-                            <span className="tag">{elem.tag}:&nbsp;</span>
-                            {elem.val.map((e: string) => (
-                                <>
-                                    <div className="keyword">
-                                        <a href={"/search?keyword=" + e}>{e}</a>
-                                    </div>
-                                </>
-                            ))}
-                        </div>
-                    </>
+                    <Box key={i}>
+                        <span className="metadataTag">{e.tag}:&nbsp;</span>
+                        {e.val.map((elem: string, j: number) => (
+                            <a href={"/search?keyword=" + elem} className="metadataKeyword" key={j}>
+                                {elem}
+                            </a>
+                        ))}
+                    </Box>
                 )
             )}
-        </>
+        </Box>
     );
 };

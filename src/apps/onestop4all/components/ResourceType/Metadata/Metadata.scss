@@ -2,42 +2,39 @@
     width: "50%";
 }
 
-.resTypeHeader {
+.metadataSectionHeader {
     color: #000;
     font-size: 24px;
-    font-style: normal;
     font-weight: 400;
-    line-height: 40px;
     text-transform: uppercase;
 }
 
-.tag {
+.metadataTag {
     color: #666;
     font-size: 16px;
-    font-style: normal;
     font-weight: 700;
-    line-height: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
-.value {
+.metadataValue {
     color: #000000;
     font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
-.keyword {
+.metadataKeyword {
     border-radius: 50px;
     background: rgba(34, 192, 210, 0.2);
     padding: 0px 8px;
     display: inline-block;
     text-decoration: underline;
-    margin-right: 1%;
-    margin-top: 1%;
+    margin-right: 5px;
+    margin-top: 10px;
 }
 
-.link {
+.metadataLink {
     text-decoration: underline;
     color: #05668d;
 }

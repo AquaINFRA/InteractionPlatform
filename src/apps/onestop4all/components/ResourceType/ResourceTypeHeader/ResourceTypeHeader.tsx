@@ -22,14 +22,14 @@ export function ResourceTypeHeader(props: { resType: string }) {
                 </a>
             </Box>
 
-            <Box className="ResTypeHeaderBackBtn">
+            <Box className="resTypeHeaderBackBtn">
                 <a href="/search">
                     <span className="to">Back&nbsp;</span>
                     to result list
                 </a>
             </Box>
 
-            <Divider className="ResTypeHeaderLine" />
+            <Divider className="resTypeHeaderLine" />
 
             <Box className="resTypeHeader">{resType}</Box>
 
