@@ -4,7 +4,7 @@ export const Abstract = (props: { abstractText: string }) => {
     const { abstractText } = props;
     return (
         <Box>
-            <p className="resTypeHeader">Abstract</p>
+            <p className="abstractSectionHeader">Abstract</p>
             <p className="abstractText">{abstractText}</p>
         </Box>
     );
