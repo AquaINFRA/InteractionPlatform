@@ -112,7 +112,7 @@ export function StandardView() {
                 <Box height="80px" />
                 <Flex gap="10%">
                     <Box w="65%">
-                        <ResourceTypeHeader resType="Standards" />
+                        <ResourceTypeHeader resType="Organisations" />
                         <Box className="title" pt="15px">
                             {title}
                         </Box>

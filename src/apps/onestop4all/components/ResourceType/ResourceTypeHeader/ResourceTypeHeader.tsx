@@ -1,5 +1,15 @@
 import { Box, Flex, Divider } from "@open-pioneer/chakra-integration";
-import { StandardIcon, EducationalResourceIcon, BackIcon } from "../../Icons";
+import {
+    StandardIcon,
+    EducationalResourceIcon,
+    BackIcon,
+    RepositoriesIcon,
+    ServicesIcon,
+    ToolSoftwareIcon,
+    DocumentsIcon,
+    OrganisationsIcon
+} from "../../Icons";
+import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
 
 export function ResourceTypeHeader(props: { resType: string }) {
     const resourceType = props.resType;
@@ -21,16 +31,28 @@ export function ResourceTypeHeader(props: { resType: string }) {
 
             <Divider className="inbetweenLine" />
 
-            <Flex className="resourceType" gap="10px">
-                {resourceType}
-                {resourceType == "Standards" ? (
-                    <StandardIcon />
-                ) : resourceType == "Educational resources" ? (
-                    <EducationalResourceIcon />
-                ) : (
-                    <></>
-                )}
-            </Flex>
+            <Box>
+                <Flex className="resourceType" gap="10px">
+                    <span>{resourceType}</span>
+                    {resourceType == ResourceType.Repos ? (
+                        <RepositoriesIcon />
+                    ) : resourceType == ResourceType.Services ? (
+                        <ServicesIcon />
+                    ) : resourceType == ResourceType.Tools ? (
+                        <ToolSoftwareIcon />
+                    ) : resourceType == ResourceType.Standards ? (
+                        <StandardIcon />
+                    ) : resourceType == ResourceType.Educational ? (
+                        <EducationalResourceIcon />
+                    ) : resourceType == ResourceType.Documents ? (
+                        <DocumentsIcon />
+                    ) : resourceType == ResourceType.Organisations ? (
+                        <OrganisationsIcon />
+                    ) : (
+                        <></>
+                    )}
+                </Flex>
+            </Box>
         </Flex>
     );
 }
