@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Image, Spacer } from "@open-pioneer/chakra-integration";
+import { Box, Container, Flex, Image } from "@open-pioneer/chakra-integration";
 
 import { SearchBar } from "../../components/SearchBar";
 import { HowToEntry } from "./HowTo/HowToEntry";
@@ -55,24 +55,24 @@ export function StartView() {
         },
         {
             imageUrl: "image5.png",
-            text: "Sign the NFDI4Earth FAIRness &amp; Openness Commitment"
+            text: "Sign the NFDI4Earth FAIRness & Openness Commitment"
         }
     ];
 
     return (
-        <>
+        <Box className="start-view">
             <Box position="relative">
-                <Image src="/image1.png" width="100%" />
+                <Box className="header-image" />
                 <Box w="100%" position="absolute" top="0">
-                    <Container maxW="80%">
-                        <Flex pt="60px" color="white" textAlign="center" fontSize="24px">
-                            <Spacer></Spacer>
-                            <Box w="50%">
-                                <div>Your One-Stop to FAIR, open and innovative</div>
-                                <div>
-                                    Research Data Management in{" "}
-                                    <span style={{ fontWeight: 700 }}>Earth System Sciences</span>.
-                                </div>
+                    <Container maxW={{ base: "100%", custombreak: "80%" }}>
+                        <Flex pt="60px" textAlign="center" justifyContent="flex-end">
+                            <Box
+                                maxW={{ base: "70%", custombreak: "50%" }}
+                                fontSize={{ base: "16px", custombreak: "24px" }}
+                                color="white"
+                            >
+                                Your One-Stop to FAIR, open and innovative Research Data Management
+                                in <span style={{ fontWeight: 700 }}>Earth System Sciences</span>.
                             </Box>
                         </Flex>
                     </Container>
@@ -80,16 +80,16 @@ export function StartView() {
             </Box>
 
             <Box position="absolute" width="100%" marginTop="-70px">
-                <Container maxW="80%">
+                <Container maxW={{ base: "100%", custombreak: "80%" }}>
                     <SearchBar></SearchBar>
                 </Container>
             </Box>
 
-            <Container maxW="80%">
+            <Container maxW={{ base: "100%", custombreak: "80%" }}>
                 <Box height="80px"></Box>
 
                 <Box className="mission">
-                    <img className="bg-icon" alt="Bg icon" src="/bg-icon.png" />
+                    <Image className="bg-icon" alt="Bg icon" src="/bg-icon.png" />
                     <Box className="mission-text text-centered-box">
                         <Box className="text-centered-box-text">
                             The <span className="bold">OneStop4All</span> is the primary visual and
@@ -155,9 +155,9 @@ export function StartView() {
                         </Box>
                     </Box>
 
-                    <Flex justifyContent="space-between" pt="32px">
+                    <Flex className="entries" justifyContent="space-between" pt="32px">
                         {resources.map((e, i) => (
-                            <Box key={i} flex="1 1 0px">
+                            <Box key={i}>
                                 <ResourceEntry {...e}></ResourceEntry>
                             </Box>
                         ))}
@@ -178,7 +178,7 @@ export function StartView() {
                         </Box>
                     </Box>
 
-                    <Flex justifyContent="space-around" pt="32px">
+                    <Flex className="entries" justifyContent="space-between" pt="32px">
                         {getInvolvedEntries.map((e, i) => (
                             <Box key={i}>
                                 <ParticipateEntry {...e}></ParticipateEntry>
@@ -187,6 +187,6 @@ export function StartView() {
                     </Flex>
                 </Container>
             </Box>
-        </>
+        </Box>
     );
 }

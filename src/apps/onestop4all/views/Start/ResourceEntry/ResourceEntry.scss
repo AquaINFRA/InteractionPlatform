@@ -4,6 +4,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 0 10px;
+    max-width: 140px;
 
     .overlap {
         width: 110px;
@@ -61,6 +63,7 @@
     }
 
     .label {
+        text-align: center;
         padding-top: 6px;
         color: var(--primary-primary-main);
         font-family: Open Sans;
@@ -68,6 +71,7 @@
         font-style: normal;
         font-weight: 700;
         line-height: 18px;
+        height: 40px;
     }
 
     .count {

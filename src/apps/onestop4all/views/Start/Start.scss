@@ -1,62 +1,129 @@
-.mission {
-    position: relative;
-    padding: 80px 0;
+@import "../variables.scss";
 
-    .bg-icon {
-        height: 258px;
-        right: 100px;
-        position: absolute;
-        bottom: 0;
-        width: 322px;
-    }
-}
+.start-view {
+    .header-image {
+        width: 100%;
+        height: 20vw;
+        max-height: 500px;
+        flex-shrink: 0;
+        background-image: url("/image_desktop.png");
+        background-position-x: 0;
+        background-position-y: center;
+        background-size: cover;
 
-.how-to {
-    padding: 80px 0;
-
-    .how-to-entries {
-        padding-top: 32px;
-    }
-}
-
-.resources {
-    background: #a4e5ec30;
-    padding: 60px 0;
-}
-
-.get-involved {
-    padding: 100px 0 130px;
-}
-
-.text-centered-box {
-    padding: 0px 200px;
-
-    .text-centered-box-header {
-        color: #000;
-        font-family: Open Sans;
-        font-size: 24px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: normal;
-        text-transform: uppercase;
-        padding-bottom: 18px;
+        @media only screen and (max-width: $customBreakpoint) {
+            height: 300px;
+            background-image: url("/image_mobile.png");
+        }
     }
 
-    .text-centered-box-text {
-        color: #000;
-        font-family: Open Sans;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 26px;
+    .mission {
+        position: relative;
+        padding: 80px 0;
 
-        .bold {
-            font-weight: 700;
+        @media only screen and (max-width: $customBreakpoint) {
+            padding: 40px 0;
         }
 
-        .link {
-            color: var(--primary-primary-main);
-            text-decoration: underline;
+        .bg-icon {
+            height: 258px;
+            right: 100px;
+            position: absolute;
+            bottom: 0;
+            width: 322px;
+
+            @media only screen and (max-width: $customBreakpoint) {
+                height: 193.5px;
+                right: 30px;
+                top: 0;
+                width: 241.5px;
+            }
+        }
+    }
+
+    .how-to {
+        padding: 80px 0;
+
+        .how-to-entries {
+            padding-top: 32px;
+            overflow: auto;
+
+            @media only screen and (max-width: $customBreakpoint) {
+                padding-bottom: 4px;
+            }
+        }
+    }
+
+    .resources {
+        background: #a4e5ec30;
+        padding: 60px 0;
+
+        .entries {
+            overflow: auto;
+        }
+    }
+
+    .get-involved {
+        padding: 100px 0 130px;
+
+        .entries {
+            overflow: auto;
+        }
+    }
+
+    .text-centered-box {
+        padding: 0px 200px;
+
+        @media only screen and (max-width: $customBreakpoint) {
+            padding: 0px 0px;
+        }
+
+        .text-centered-box-header {
+            color: #000;
+            font-family: Open Sans;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            text-transform: uppercase;
+            padding-bottom: 18px;
+        }
+
+        .text-centered-box-text {
+            color: #000;
+            font-family: Open Sans;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 26px;
+
+            .bold {
+                font-weight: 700;
+            }
+
+            .link {
+                color: var(--primary-primary-main);
+                text-decoration: underline;
+            }
+        }
+    }
+
+    @media only screen and (max-width: $customBreakpoint) {
+        $scrollbar-height: 5px;
+        $padding-scrollbar-width: 2px;
+
+        ::-webkit-scrollbar {
+            height: $scrollbar-height;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #05668d80;
+            border-top: $padding-scrollbar-width solid white;
+            border-bottom: $padding-scrollbar-width solid white;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--primary-primary-main);
         }
     }
 }

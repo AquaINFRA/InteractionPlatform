@@ -6,7 +6,7 @@ export interface ResourceEntryProps {
 }
 
 export enum ResourceType {
-    Repos = "Repositories/Archives",
+    Repos = "Repositories / Archives",
     Services = "Services",
     Tools = "Tools/Software",
     Standards = "Standards",
