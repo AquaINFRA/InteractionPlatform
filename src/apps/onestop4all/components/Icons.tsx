@@ -545,21 +545,21 @@ export const OrganisationsIcon = () => (
 );
 
 export const ResultsNavigationLeftLeft = () => (
-    <svg width="28" height="28" viewBox="0 0 1 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="17" height="26" viewBox="0 0 17 26" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g opacity="0.3">
             <path
-                d="M15.2266 23.5L3.67656 13L15.2266 2.5"
+                d="M15.2246 23.5L3.67461 13L15.2246 2.5"
                 stroke="#05668D"
                 strokeWidth="3"
                 strokeLinecap="round"
             />
-            <path d="M1.67578 1.5V24.5" stroke="#05668D" strokeWidth="3" strokeLinecap="round" />
+            <path d="M1.6748 1.5V24.5" stroke="#05668D" strokeWidth="3" strokeLinecap="round" />
         </g>
     </svg>
 );
 
 export const ResultsNavigationLeft = () => (
-    <svg width="28" height="28" viewBox="0 0 5 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="17" height="24" viewBox="0 0 17 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             opacity="0.3"
             d="M14.7754 22.5L3.22539 12L14.7754 1.5"
@@ -582,15 +582,15 @@ export const BackIcon = () => (
 );
 
 export const ResultsNavigationRightRight = () => (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="17" height="26" viewBox="0 0 17 26" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
-            d="M1.77344 2.5L13.3234 13L1.77343 23.5"
+            d="M1.77539 2.5L13.3254 13L1.77539 23.5"
             stroke="#05668D"
             strokeWidth="3"
             strokeLinecap="round"
         />
         <path
-            d="M15.3242 24.5L15.3242 1.5"
+            d="M15.3252 24.5L15.3252 1.5"
             stroke="#05668D"
             strokeWidth="3"
             strokeLinecap="round"
@@ -599,7 +599,7 @@ export const ResultsNavigationRightRight = () => (
 );
 
 export const ResultsNavigationRight = () => (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="15" height="24" viewBox="0 0 15 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             d="M1.77539 1.5L12.7754 12L1.77539 22.5"
             stroke="#05668D"

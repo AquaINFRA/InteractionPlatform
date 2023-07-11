@@ -9,7 +9,7 @@ import {
 export const ResultsNavigation = (props: { result: number; of: number }) => {
     const { result, of } = props;
     return (
-        <Flex>
+        <Flex alignItems="center">
             <Box>
                 <a href="/search?">
                     <ResultsNavigationLeftLeft />
@@ -22,14 +22,14 @@ export const ResultsNavigation = (props: { result: number; of: number }) => {
                 </a>
             </Box>
 
-            <Divider className="inbetweenLine" />
+            <Divider className="resultsNavigationLine" />
 
-            <Box className="resultsNavigation">
+            <Box className="resultsNavigationText">
                 Result <span className="resultHit">{result}</span> of{" "}
                 <span className="resultHit">{of}</span>
             </Box>
 
-            <Divider className="inbetweenLine" />
+            <Divider className="resultsNavigationLine" />
 
             <Box>
                 <a href="/search?">

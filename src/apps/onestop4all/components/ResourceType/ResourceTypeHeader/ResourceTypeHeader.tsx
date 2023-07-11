@@ -22,16 +22,16 @@ export function ResourceTypeHeader(props: { resType: string }) {
                 </a>
             </Box>
 
-            <Box className="back">
+            <Box className="ResTypeHeaderBackBtn">
                 <a href="/search">
                     <span className="to">Back&nbsp;</span>
-                    <span className="resultList">to result list</span>
+                    to result list
                 </a>
             </Box>
 
-            <Divider className="inbetweenLine" />
+            <Divider className="ResTypeHeaderLine" />
 
-            <Box className="resourceType">{resourceType}</Box>
+            <Box className="resourceTypeHeader">{resourceType}</Box>
 
             <Box>
                 {resourceType == ResourceType.Repos ? (
