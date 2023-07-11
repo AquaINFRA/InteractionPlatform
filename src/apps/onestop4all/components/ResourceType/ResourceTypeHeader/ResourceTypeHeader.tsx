@@ -12,10 +12,10 @@ import {
 import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
 
 export function ResourceTypeHeader(props: { resType: string }) {
-    const resourceType = props.resType;
+    const { resType } = props;
 
     return (
-        <Flex alignItems="center">
+        <Flex alignItems="center" display="flex" gap="12px">
             <Box>
                 <a href="/search?">
                     <BackIcon />
@@ -31,22 +31,22 @@ export function ResourceTypeHeader(props: { resType: string }) {
 
             <Divider className="ResTypeHeaderLine" />
 
-            <Box className="resourceTypeHeader">{resourceType}</Box>
+            <Box className="resTypeHeader">{resType}</Box>
 
             <Box>
-                {resourceType == ResourceType.Repos ? (
+                {resType == ResourceType.Repos ? (
                     <RepositoriesIcon />
-                ) : resourceType == ResourceType.Services ? (
+                ) : resType == ResourceType.Services ? (
                     <ServicesIcon />
-                ) : resourceType == ResourceType.Tools ? (
+                ) : resType == ResourceType.Tools ? (
                     <ToolSoftwareIcon />
-                ) : resourceType == ResourceType.Standards ? (
+                ) : resType == ResourceType.Standards ? (
                     <StandardIcon />
-                ) : resourceType == ResourceType.Educational ? (
+                ) : resType == ResourceType.Educational ? (
                     <EducationalResourceIcon />
-                ) : resourceType == ResourceType.Documents ? (
+                ) : resType == ResourceType.Documents ? (
                     <DocumentsIcon />
-                ) : resourceType == ResourceType.Organisations ? (
+                ) : resType == ResourceType.Organisations ? (
                     <OrganisationsIcon />
                 ) : (
                     <></>

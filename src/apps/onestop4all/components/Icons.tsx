@@ -571,9 +571,9 @@ export const ResultsNavigationLeft = () => (
 );
 
 export const BackIcon = () => (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
-            d="M14.7754 22.5L3.22539 12L14.7754 1.5"
+            d="M14.4541 22.5L2.99955 12L14.4541 1.5"
             stroke="#05668D"
             strokeWidth="3"
             strokeLinecap="round"
