@@ -24,7 +24,6 @@ export const RelatedContent = (props: { relatedContentItems: object }) => {
                     </Flex>
                 ))}
             </Flex>
-            <Box pt="120px"></Box>
         </Box>
     );
 };

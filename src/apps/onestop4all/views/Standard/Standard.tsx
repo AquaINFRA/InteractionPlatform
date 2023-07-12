@@ -129,7 +129,7 @@ export function StandardView() {
                         <Box hidden={hideMetadata} pt="36px">
                             <Metadata metadataElements={metadataElements} />
                         </Box>
-                        <Box pt="36px">
+                        <Box pt="80px">
                             <Abstract abstractText={abstractText} />
                         </Box>
                     </Box>
@@ -163,18 +163,18 @@ export function StandardView() {
                         </Box>
                     </Box>
                 </Flex>
-                <Box w="100%">
-                    <Box pt="36px">
+                <Box w="100%" pt="80px">
+                    <Box>
                         <RelatedContent relatedContentItems={relatedContentItems} />
                     </Box>
-                    <Flex gap="10%" alignItems="center">
+                    <Flex gap="10%" alignItems="center" pt="120px">
                         <Divider className="seperator" w="65%" />
                         <Box w="25%">
                             <ResultsNavigation result={1} of={100} />
                         </Box>
                     </Flex>
                 </Box>
-                <Box pt="120" />
+                <Box pt="135px" />
             </Container>
         </Box>
     );

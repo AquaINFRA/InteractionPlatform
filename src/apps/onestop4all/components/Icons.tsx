@@ -608,3 +608,27 @@ export const ResultsNavigationRight = () => (
         />
     </svg>
 );
+
+export const UpIcon = () => (
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M0.859375 11.309L12.9518 0.831459C13.0028 0.787262 13.0654 0.751874 13.1356 0.727636C13.2058 0.703398 13.2819 0.690864 13.3588 0.690864C13.4358 0.690864 13.5119 0.703398 13.5821 0.727636C13.6522 0.751874 13.7149 0.787262 13.7659 0.831459L25.8594 11.309"
+            stroke="#808080"
+            strokeWidth="1.25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
+
+export const DownIcon = () => (
+    <svg width="27" height="13" viewBox="0 0 27 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M1 1L13.0924 11.4775C13.1434 11.5217 13.206 11.5571 13.2762 11.5813C13.3464 11.6056 13.4225 11.6181 13.4995 11.6181C13.5764 11.6181 13.6525 11.6056 13.7227 11.5813C13.7929 11.5571 13.8555 11.5217 13.9065 11.4775L26 1"
+            stroke="#808080"
+            strokeWidth="1.25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
