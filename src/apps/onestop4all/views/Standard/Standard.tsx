@@ -91,6 +91,16 @@ export function StandardView() {
             resourceType: "Documents",
             title: "Environmental Information Data Centre",
             url: "https://www.nfdi4earth.de/"
+        },
+        {
+            resourceType: "Documents",
+            title: "Environmental Information Data Centre",
+            url: "https://www.nfdi4earth.de/"
+        },
+        {
+            resourceType: "Documents",
+            title: "Environmental Information Data Centre",
+            url: "https://www.nfdi4earth.de/"
         }
     ];
     const fun = () => {

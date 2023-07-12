@@ -9,6 +9,27 @@ export interface RelatedContentEntryProps {
 }
 
 export const RelatedContentEntry = ({ title, resourceType, url }: RelatedContentEntryProps) => {
+    const getResType = (resType: string) => {
+        switch (resType) {
+            case "Repositories / Archives":
+                return "Repository";
+            case "Services":
+                return "Service";
+            case "Tools/Software":
+                return "Tool/Software";
+            case "Standards":
+                return "Standard";
+            case "Educational resources":
+                return "Educational Resource";
+            case "Documents":
+                return "Document";
+            case "Organisations":
+                return "Organisation";
+            default:
+                return "";
+        }
+    };
+
     return (
         <Box>
             <Flex className="relatedContentResource-entry" alignItems="center">
@@ -24,7 +45,7 @@ export const RelatedContentEntry = ({ title, resourceType, url }: RelatedContent
             <Box className="relatedContentTitle">{title}</Box>
             <Button className="relatedContentButton">
                 <a href={url} className="relatedContentButtonLabel">
-                    Visit {resourceType}
+                    Visit {getResType(resourceType)}
                 </a>
             </Button>
         </Box>
