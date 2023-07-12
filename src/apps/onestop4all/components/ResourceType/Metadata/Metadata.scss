@@ -1,0 +1,40 @@
+.metadataBlock {
+    width: "50%";
+}
+
+.metadataSectionHeader {
+    color: #000;
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.metadataTag {
+    color: #666;
+    font-size: 16px;
+    font-weight: 700;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.metadataValue {
+    color: #000000;
+    font-size: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.metadataKeyword {
+    border-radius: 50px;
+    background: rgba(34, 192, 210, 0.2);
+    padding: 0px 8px;
+    display: inline-block;
+    text-decoration: underline;
+    margin-right: 5px;
+    margin-top: 10px;
+}
+
+.metadataLink {
+    text-decoration: underline;
+    color: #05668d;
+}

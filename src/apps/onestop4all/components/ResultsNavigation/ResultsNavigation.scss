@@ -1,0 +1,14 @@
+.resultsNavigationText {
+    min-width: fit-content;
+
+    .resultHit {
+        color: #05668d;
+    }
+}
+
+.resultsNavigationLine {
+    margin-left: 1%;
+    margin-right: 1%;
+    min-height: 1px;
+    background: var(--border-grey);
+}

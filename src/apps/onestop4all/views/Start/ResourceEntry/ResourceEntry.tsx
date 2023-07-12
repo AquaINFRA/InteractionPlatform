@@ -26,7 +26,7 @@ export const ResourceEntry = ({ resultCount, resourceType }: ResourceEntryProps)
                 </div>
                 <div className="icon-base"></div>
                 <div className="icon">
-                    <ResourceIcon type={resourceType} />
+                    <ResourceIcon type={resourceType} size={48} />
                 </div>
             </div>
             <div className="label">

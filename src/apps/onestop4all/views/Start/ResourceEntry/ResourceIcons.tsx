@@ -2,6 +2,7 @@ import { ResourceType } from "./ResourceEntry";
 
 export interface ResourceIconProps {
     type: ResourceType;
+    size: number;
 }
 
 export const ResourceIcon = (props: ResourceIconProps) => {
@@ -9,8 +10,8 @@ export const ResourceIcon = (props: ResourceIconProps) => {
         case ResourceType.Repos:
             return (
                 <svg
-                    width="48"
-                    height="48"
+                    width={props.size}
+                    height={props.size}
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -33,9 +34,9 @@ export const ResourceIcon = (props: ResourceIconProps) => {
             return (
                 <svg
                     fill="none"
-                    height="48"
+                    width={props.size}
+                    height={props.size}
                     viewBox="0 0 48 48"
-                    width="48"
                     xmlns="http://www.w3.org/2000/svg"
                 >
                     <path
@@ -50,8 +51,8 @@ export const ResourceIcon = (props: ResourceIconProps) => {
         case ResourceType.Tools:
             return (
                 <svg
-                    width="48"
-                    height="48"
+                    width={props.size}
+                    height={props.size}
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -65,8 +66,8 @@ export const ResourceIcon = (props: ResourceIconProps) => {
         case ResourceType.Standards:
             return (
                 <svg
-                    width="48"
-                    height="48"
+                    width={props.size}
+                    height={props.size}
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -80,8 +81,8 @@ export const ResourceIcon = (props: ResourceIconProps) => {
         case ResourceType.Educational:
             return (
                 <svg
-                    width="48"
-                    height="48"
+                    width={props.size}
+                    height={props.size}
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -95,8 +96,8 @@ export const ResourceIcon = (props: ResourceIconProps) => {
         case ResourceType.Documents:
             return (
                 <svg
-                    width="48"
-                    height="48"
+                    width={props.size}
+                    height={props.size}
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -134,8 +135,8 @@ export const ResourceIcon = (props: ResourceIconProps) => {
         case ResourceType.Organisations:
             return (
                 <svg
-                    width="48"
-                    height="48"
+                    width={props.size}
+                    height={props.size}
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"

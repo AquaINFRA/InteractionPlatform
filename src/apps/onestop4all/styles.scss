@@ -13,7 +13,14 @@
 
 @import "./components/NavigationMenu.scss";
 @import "./components/Footer/Footer.scss";
+@import "./components/ResourceType/Metadata/Metadata.scss";
+@import "./components/ResourceType/Abstract/Abstract.scss";
 @import "./views/Start/Start.scss";
 @import "./views/Start/HowTo/HowToEntry.scss";
+@import "./components/ResourceType/ActionButton/ActionButton.scss";
+@import "./components/ResultsNavigation/ResultsNavigation.scss";
+@import "./components/ResourceType/ResourceTypeHeader/ResourceTypeHeader.scss";
+@import "./views/Standard/Standard.scss";
 @import "./views/Start/ResourceEntry/ResourceEntry.scss";
 @import "./views/Start/ParticipateEntry/ParticipateEntry.scss";
+@import "./components/ResourceType/RelatedContent/RelatedContent.scss";

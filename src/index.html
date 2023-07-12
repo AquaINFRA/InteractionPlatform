@@ -3,72 +3,41 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Open Pioneer Test Site</title>
+        <title>onestop4all</title>
+    </head>
+
+    <body>
+        <div id="container"></div>
         <style>
             body {
-                max-width: 600px;
-                margin: auto;
+                margin: 0px;
             }
         </style>
-    </head>
-    <body>
-        <h1>Open Pioneer Test Site</h1>
-
-        <p>Welcome to the open pioneer client framework!</p>
-
-        <h2>OneStop4All App</h2>
-        <ul>
-            <li><a href="./sites/onestop4all/">OneStop4All Site</a></li>
-            <li>App Code: <code>src/apps/onestop4all/app.ts</code></li>
-            <li>Site Code: <code>src/sites/onestop4all/index.html</code></li>
-        </ul>
-
-        <h2>Samples</h2>
-        <p>
-            Follow one of the links below to see some samples. The source code for the samples can
-            be found in the <code>src/samples/</code> directory.
-        </p>
-        <ul>
-            <li>
-                <a href="./samples/chakra-sample/">Chakra UI Sample</a>
-                <br />
-                Demonstrates a few Chakra components.
-            </li>
-            <li>
-                <a href="./samples/extension-sample/">Extension Sample</a>
-                <br />
-                Contains an extensible service with a few plugins using 1-to-N service references.
-            </li>
-            <li>
-                <a href="./samples/properties-sample/">Properties sample</a>
-                <br />
-                Demonstrates how package properties can be used.
-            </li>
-            <li>
-                <a href="./samples/map-sample/">Open Layers Sample</a>
-                <br />
-                Integrates an Open Layers map.
-            </li>
-            <li>
-                <a href="./samples/styling-sample/">Styling Sample</a>
-                <br />
-                Demonstrates how packages can use CSS rules.
-            </li>
-            <li>
-                <a href="./samples/api-sample/">API Sample</a>
-                <br />
-                Demonstrates how to provide an API and emit events from the Web Component.
-            </li>
-            <li>
-                <a href="./samples/i18n-sample/">I18n Sample</a>
-                <br />
-                Demonstrates how to translate an app in multiple languages.
-            </li>
-            <li>
-                <a href="./samples/i18n-howto/">I18n HowTo</a>
-                <br />
-                This is the full app for the "How to translate an app" guide.
-            </li>
-        </ul>
     </body>
+    <script type="module">
+        import "/apps/onestop4all/app.ts";
+
+        const container = document.getElementById("container");
+        restartApp(undefined);
+
+        function restartApp(locale) {
+            container.replaceChildren();
+            console.info(`Starting app with locale ${locale}`);
+
+            // (re-) create the app component
+            const app = document.createElement("onestop4all-app");
+            if (locale) {
+                app.setAttribute("forced-locale", locale);
+            }
+
+            // listen for selection event emitted from the react UI
+            // and recreate the app with the new locale
+            app.addEventListener("locale-changed", (event) => {
+                const newLocale = event.detail.locale;
+                restartApp(newLocale);
+            });
+
+            container.appendChild(app);
+        }
+    </script>
 </html>
