@@ -7,6 +7,7 @@ import { NavigationMenu } from "./components/NavigationMenu";
 import { Theme } from "./Theme";
 import { SearchView } from "./views/Search";
 import { StandardView } from "./views/Standard/Standard";
+import { ServiceView } from "./views/Service/Service";
 import { StartView } from "./views/Start/Start";
 
 const basePath = "/";
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
     {
         path: `${basePath}standard`,
         element: <StandardView />
+    },
+    {
+        path: `${basePath}service`,
+        element: <ServiceView />
     },
     {
         path: "*",
