@@ -73,7 +73,7 @@ export function StandardView() {
     const title = "OGC Web Map Service";
     const relatedContentItems = [
         {
-            resourceType: "Repositories/Archives",
+            resourceType: "Repositories / Archives",
             title: "Environmental Information Data Centre",
             url: "https://www.nfdi4earth.de/"
         },
