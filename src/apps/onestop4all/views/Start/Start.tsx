@@ -79,7 +79,11 @@ export function StartView() {
                 </Box>
             </Box>
 
-            <Box position="absolute" width="100%" marginTop="-70px">
+            <Box
+                position="absolute"
+                width="100%"
+                marginTop={{ base: "-40px", custombreak: "-70px" }}
+            >
                 <Container maxW={{ base: "100%", custombreak: "80%" }}>
                     <SearchBar></SearchBar>
                 </Container>
