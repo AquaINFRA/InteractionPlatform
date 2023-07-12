@@ -6,9 +6,10 @@ import { Header } from "./components/Header/Header";
 import { NavigationMenu } from "./components/NavigationMenu";
 import { Theme } from "./Theme";
 import { SearchView } from "./views/Search";
+import { StandardView } from "./views/Standard/Standard";
 import { StartView } from "./views/Start/Start";
 
-const basePath = "/sites/onestop4all/";
+const basePath = "/";
 // const basePath = "/";
 
 const router = createBrowserRouter([
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
     {
         path: `${basePath}search`,
         element: <SearchView />
+    },
+    {
+        path: `${basePath}standard`,
+        element: <StandardView />
     },
     {
         path: "*",
