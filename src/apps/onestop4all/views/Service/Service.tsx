@@ -89,11 +89,11 @@ export function ServiceView() {
                             <Metadata
                                 metadataElements={[
                                     {
-                                        tag: "Service Provider",
+                                        tag: "Service provider",
                                         val: metadataResponse["serviceProvider"]
                                     },
                                     {
-                                        tag: "Service Type",
+                                        tag: "Service type",
                                         val: metadataResponse["serviceType"]
                                     },
                                     { tag: "URL", val: metadataResponse["url"] },
