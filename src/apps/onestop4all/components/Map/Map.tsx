@@ -10,49 +10,50 @@ import { MAP_ID } from "./services";
 
 import { Feature } from "ol";
 import { Polygon } from "ol/geom";
-import { Style, Fill, Stroke } from "ol/style";
-import { Vector as VectorLayer } from "ol/layer";
-import { Vector as VectorSource } from "ol/source";
-
-const coordinates = [
-    [
-        [-180, -85],
-        [180, -85],
-        [180, 85],
-        [-180, 85],
-        [-180, -85]
-    ]
-];
-const polygonGeometry = new Polygon(coordinates);
-const polygonFeature = new Feature(polygonGeometry);
-const polygonStyle = new Style({
-    fill: new Fill({
-        color: "rgba(255, 0, 0, 0.5)"
-    }),
-    stroke: new Stroke({
-        color: "red",
-        width: 1
-    })
-});
-
-// polygonFeature.setStyle(polygonStyle);
-// const vectorSource = new VectorSource();
-// vectorSource.addFeature(polygonFeature);
-// const vectorLayer = new VectorLayer({
-//     source: vectorSource,
-// });
-
-const berlin = [1489200, 6894026, 1489200, 6894026];
+import { Fill, Stroke, Style } from "ol/style";
+import VectorLayer from "ol/layer/Vector";
+import VectorSource from "ol/source/Vector";
 
 export function Map() {
     const [viewPadding, setViewPadding] = useState<MapPadding>();
+
+    const coordinates = [
+        [
+            [-18, -8],
+            [18, -8],
+            [18, 8],
+            [-18, 8],
+            [-18, -8]
+        ]
+    ];
+    const polygonGeometry = new Polygon(coordinates);
+    polygonGeometry.transform("EPSG:4326", "EPSG:3857");
+    const polygonFeature = new Feature(polygonGeometry);
+    const polygonStyle = new Style({
+        fill: new Fill({
+            color: "rgba(255, 0, 0, 0.5)"
+        }),
+        stroke: new Stroke({
+            color: "red",
+            width: 1
+        })
+    });
+
+    polygonFeature.setStyle(polygonStyle);
+    const vectorSource = new VectorSource();
+    vectorSource.addFeature(polygonFeature);
+    const vectorLayer = new VectorLayer({
+        source: vectorSource
+    });
+
+    const berlin = [1489200, 6894026, 1489200, 6894026];
 
     const olMapRegistry = useService("ol-map.MapRegistry");
     const mapState = useAsync(async () => await olMapRegistry.getMap(MAP_ID));
 
     if (mapState.value) {
-        mapState.value.getView().fit(berlin, { maxZoom: 13 });
-        //mapState.value.addLayer(vectorLayer);
+        //     mapState.value.getView().fit(berlin, { maxZoom: 13 });
+        mapState.value.addLayer(vectorLayer);
     }
 
     return (
