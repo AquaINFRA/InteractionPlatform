@@ -8,6 +8,40 @@ import { useAsync } from "react-use";
 
 import { MAP_ID } from "./services";
 
+// import { Feature } from "ol";
+// import { Polygon } from "ol/geom";
+// import { Style, Fill, Stroke } from "ol/style";
+// import { Vector as VectorLayer } from "ol/layer";
+// import { Vector as VectorSource } from "ol/source";
+
+// const coordinates = [
+//     [
+//         [-180, -85],
+//         [180, -85],
+//         [180, 85],
+//         [-180, 85],
+//         [-180, -85]
+//     ]
+// ];
+// const polygonGeometry = new Polygon(coordinates);
+// const polygonFeature = new Feature(polygonGeometry);
+// const polygonStyle = new Style({
+//     fill: new Fill({
+//         color: "rgba(255, 0, 0, 0.5)"
+//     }),
+//     stroke: new Stroke({
+//         color: "red",
+//         width: 1
+//     })
+// });
+
+// polygonFeature.setStyle(polygonStyle);
+// const vectorSource = new VectorSource();
+// vectorSource.addFeature(polygonFeature);
+// const vectorLayer = new VectorLayer({
+//     source: vectorSource,
+// });
+
 const berlin = [1489200, 6894026, 1489200, 6894026];
 
 export function Map() {
@@ -18,6 +52,7 @@ export function Map() {
 
     if (mapState.value) {
         mapState.value.getView().fit(berlin, { maxZoom: 13 });
+        //mapState.value.addLayer(vectorLayer);
     }
 
     return (
