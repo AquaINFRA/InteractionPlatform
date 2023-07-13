@@ -5,7 +5,7 @@ import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { NavigationMenu } from "./components/NavigationMenu";
 import { Theme } from "./Theme";
-import { SearchView } from "./views/Search";
+import { SearchView } from "./views/Search/Search";
 import { StandardView } from "./views/Standard/Standard";
 import { StartView } from "./views/Start/Start";
 

@@ -5,6 +5,10 @@
         "@open-pioneer/chakra-integration": "^1.0.0",
         "@open-pioneer/integration": "^1.0.0",
         "@open-pioneer/runtime": "^1.0.0",
+        "luxon": "^3.3.0",
         "sample-package": "workspace:^"
+    },
+    "devDependencies": {
+        "@types/luxon": "^3.3.0"
     }
 }
