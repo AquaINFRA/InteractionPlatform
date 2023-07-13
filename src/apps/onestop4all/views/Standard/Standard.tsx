@@ -124,6 +124,7 @@ export function StandardView() {
                                     { tag: "Keywords", val: metadataResponse["keywords"] }
                                 ]}
                                 visibleElements={4}
+                                expandedByDefault={true}
                             />
                         </Box>
                         <Box pt="80px">

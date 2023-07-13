@@ -38,7 +38,7 @@ export const MetadataContent = (props: {
                         </div>
                     </Box>
                 ) : (
-                    <Box key={i}>
+                    <Box key={i} className="metadataKeywords">
                         <div className="seperator"></div>
                         <span className="metadataTag">{e.tag}:&nbsp;</span>
                         {e.val.map((elem: string, j: number) => (

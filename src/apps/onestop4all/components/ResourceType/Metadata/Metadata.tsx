@@ -10,9 +10,13 @@ import { useState } from "react";
 import { UpIcon, DownIcon } from "../../Icons";
 import { MetadataContent } from "./MetadataContent";
 
-export const Metadata = (props: { metadataElements: object; visibleElements: number }) => {
-    const visibleElements = props.visibleElements;
-    const [expanded, setExpanded] = useState(true);
+export const Metadata = (props: {
+    metadataElements: object;
+    visibleElements: number;
+    expandedByDefault: boolean;
+}) => {
+    const { visibleElements, expandedByDefault } = props;
+    const [expanded, setExpanded] = useState(expandedByDefault);
     const metadataElements = Object.values(props.metadataElements);
 
     return (

@@ -6,14 +6,14 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
-import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
+import { LinkIcon } from "@chakra-ui/icons";
 import { MetadataSourceIcon, OpenCapabilitiesIcon } from "../../components/Icons";
 
 export function ServiceView() {
     const metadataResponse = {
         resourceType: "Services",
         title: "WMS-Dienst des Deutschen Wetterdienst",
-        abstract: "WMS Dienst für meteorologische und klimatologische Daten",
+        abstract: "WMS Dienst für meteorologische und klimatologische Daten.",
         serviceProvider: "Deutscher Wetterdienst",
         serviceType: "WMS",
         url: "https://maps.dwd.de/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities",
@@ -103,7 +103,8 @@ export function ServiceView() {
                                         val: metadataResponse["label"]
                                     }
                                 ]}
-                                visibleElements={5}
+                                visibleElements={0}
+                                expandedByDefault={true}
                             />
                         </Box>
                         <Box pt="80px">
