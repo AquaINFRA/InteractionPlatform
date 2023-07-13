@@ -8,6 +8,7 @@ import { ActionButton } from "../../components/ResourceType/ActionButton/ActionB
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { LinkIcon } from "@chakra-ui/icons";
 import { MetadataSourceIcon, OpenCapabilitiesIcon } from "../../components/Icons";
+import { MapApp } from "../../components/MapApp/MapApp";
 
 export function ServiceView() {
     const metadataResponse = {
@@ -109,6 +110,9 @@ export function ServiceView() {
                         </Box>
                         <Box pt="80px">
                             <Abstract abstractText={metadataResponse["abstract"]} />
+                        </Box>
+                        <Box>
+                            <MapApp></MapApp>
                         </Box>
                     </Box>
                     <Box w="25%">
