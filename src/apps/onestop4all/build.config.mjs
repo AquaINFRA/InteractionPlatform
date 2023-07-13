@@ -12,7 +12,8 @@ export default defineBuildConfig({
         references: [
             "runtime.ApplicationContext",
             "integration.ExternalEventService",
-            "onestop4all.MenuHandler"
+            "onestop4all.MenuHandler",
+            "ol-map.MapRegistry"
         ]
     }
 });
