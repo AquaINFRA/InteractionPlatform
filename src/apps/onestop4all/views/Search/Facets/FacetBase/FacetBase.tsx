@@ -12,10 +12,11 @@ import { DropdownArrowIcon } from "../../../../components/Icons";
 
 export interface FacetBaseProps {
     title: string;
+    expanded?: boolean;
 }
 
 export function FacetBase(props: PropsWithChildren<FacetBaseProps>) {
-    const { title, children } = props;
+    const { title, children, expanded } = props;
 
     const labelStyles: CSSProperties = {
         paddingInline: 0,
@@ -39,7 +40,7 @@ export function FacetBase(props: PropsWithChildren<FacetBaseProps>) {
     }
 
     return (
-        <Accordion allowMultiple>
+        <Accordion allowMultiple defaultIndex={expanded ? [0] : []}>
             <AccordionItem border="0px">
                 {({ isExpanded }) => (
                     <>

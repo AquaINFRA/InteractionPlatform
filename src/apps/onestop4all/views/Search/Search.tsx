@@ -9,6 +9,9 @@ import { SearchParameterType, SearchResultItem } from "../../services/SearchServ
 import { BorderColor, PrimaryColor } from "../../Theme";
 import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
 import { ResourceTypeFacet } from "./Facets/ResourceTypeFacet/ResourceTypeFacet";
+import { SpatialCoverageFacet } from "./Facets/SpatialCoverageFacet/SpatialCoverageFacet";
+import { SubjectFacet } from "./Facets/SubjectFacet/SubjectFacet";
+import { TemporalCoverageFacet } from "./Facets/TemporalCoverageFacet/TemporalCoverageFacet";
 import { ResultCountSelector } from "./ResultCountSelector/ResultCountSelector";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
@@ -164,12 +167,18 @@ export function SearchView() {
                         <Box>
                             <ResultsNavigation result={1} of={100} />
                         </Box>
-                        <Box padding={"64px 0px"}>
+                        <Box padding={"64px 0px 32px"}>
                             <ResourceTypeFacet></ResourceTypeFacet>
                         </Box>
-                        <Box>TODO: Subject Facet</Box>
-                        <Box>TODO: Spatial Coverage Facet</Box>
-                        <Box>TODO: Temporal Coverage Facet</Box>
+                        <Box padding={"32px 0px"}>
+                            <SubjectFacet></SubjectFacet>
+                        </Box>
+                        <Box padding={"32px 0px"}>
+                            <SpatialCoverageFacet></SpatialCoverageFacet>
+                        </Box>
+                        <Box padding={"32px 0px"}>
+                            <TemporalCoverageFacet></TemporalCoverageFacet>
+                        </Box>
                         <Spacer></Spacer>
                         <Box>
                             <ResultsNavigation result={1} of={100} />
