@@ -12,6 +12,7 @@ export interface SearchParams {
 }
 
 export interface SearchResultItem {
+    id: number;
     title: string;
     resourceType: ResourceType;
     date?: Date;
