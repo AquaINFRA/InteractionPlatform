@@ -11,7 +11,7 @@
     background: var(--border-grey);
 }
 
-@import "./components/NavigationMenu.scss";
+@import "./components/BaseMenu/BaseMenu.scss";
 @import "./components/Footer/Footer.scss";
 @import "./components/ResourceType/Metadata/Metadata.scss";
 @import "./components/ResourceType/Abstract/Abstract.scss";
