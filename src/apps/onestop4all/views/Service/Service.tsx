@@ -8,7 +8,7 @@ import { ActionButton } from "../../components/ResourceType/ActionButton/ActionB
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { LinkIcon } from "@chakra-ui/icons";
 import { MetadataSourceIcon, OpenCapabilitiesIcon } from "../../components/Icons";
-import { MapApp } from "../../components/MapApp/MapApp";
+import { SpatialInformation } from "../../components/ResourceType/SpatialInformation/SpatialInformation";
 
 export function ServiceView() {
     const metadataResponse = {
@@ -60,6 +60,22 @@ export function ServiceView() {
                 title: "Environmental Information Data Centre",
                 url: "https://www.nfdi4earth.de/"
             }
+        ],
+        bbox: [-180, -85, 180, 85],
+        referenceSystems: [
+            "EPSG:3044",
+            "EPSG:3045",
+            "EPSG:3413",
+            "EPSG:3857",
+            "EPSG 4258",
+            "EPSG 4326",
+            "EPSG:4839",
+            "EPSG:25832",
+            "EPSG:25833",
+            "EPSG:31467",
+            "EPSG:31468",
+            "EPSG:900913",
+            "EPSG:1000001"
         ]
     };
 
@@ -104,15 +120,12 @@ export function ServiceView() {
                                         val: metadataResponse["label"]
                                     }
                                 ]}
-                                visibleElements={0}
-                                expandedByDefault={true}
+                                visibleElements={3}
+                                expandedByDefault={false}
                             />
                         </Box>
                         <Box pt="80px">
                             <Abstract abstractText={metadataResponse["abstract"]} />
-                        </Box>
-                        <Box>
-                            <MapApp></MapApp>
                         </Box>
                     </Box>
                     <Box w="25%">
@@ -139,6 +152,20 @@ export function ServiceView() {
                         </Box>
                     </Box>
                 </Flex>
+                <Box pt="80px">
+                    <SpatialInformation
+                        metadataElements={[
+                            {
+                                tag: "Bounding box",
+                                val: metadataResponse["bbox"]
+                            },
+                            {
+                                tag: "Reference systems",
+                                val: metadataResponse["referenceSystems"]
+                            }
+                        ]}
+                    />
+                </Box>
                 <Box w="100%" pt="80px">
                     <Box>
                         <RelatedContent
