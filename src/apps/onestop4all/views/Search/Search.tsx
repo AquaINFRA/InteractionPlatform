@@ -1,5 +1,5 @@
 import { Box, Button, Container, Flex, Spacer } from "@open-pioneer/chakra-integration";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { FilterIcon } from "../../components/Icons";
@@ -8,6 +8,7 @@ import { SearchBar } from "../../components/SearchBar";
 import { SearchParameterType, SearchResultItem } from "../../services/SearchService";
 import { BorderColor, PrimaryColor } from "../../Theme";
 import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
+import { MobileFilterMenu } from "./Facets/MobileFilterMenu/MobileFilterMenu";
 import { ResourceTypeFacet } from "./Facets/ResourceTypeFacet/ResourceTypeFacet";
 import { SpatialCoverageFacet } from "./Facets/SpatialCoverageFacet/SpatialCoverageFacet";
 import { SubjectFacet } from "./Facets/SubjectFacet/SubjectFacet";
@@ -86,6 +87,10 @@ export function SearchView() {
         }
     ];
 
+    const [openMenu, setOpenMenu] = useState(false);
+
+    const menu = useRef(null);
+
     return (
         <Box className="search-view">
             <Box position="relative">
@@ -135,10 +140,10 @@ export function SearchView() {
                                         leftIcon={<FilterIcon />}
                                         variant="ghost"
                                         color={PrimaryColor}
+                                        onClick={() => setOpenMenu(true)}
                                     >
                                         Filter
                                     </Button>
-                                    TODO: FilterMenu
                                 </Box>
                             </Flex>
                         </Flex>
@@ -167,7 +172,7 @@ export function SearchView() {
                         <Box>
                             <ResultsNavigation result={1} of={100} />
                         </Box>
-                        <Box padding={"64px 0px 32px"}>
+                        <Box padding={"64px 0px 32px"} ref={menu}>
                             <ResourceTypeFacet></ResourceTypeFacet>
                         </Box>
                         <Box padding={"32px 0px"}>
@@ -185,6 +190,10 @@ export function SearchView() {
                         </Box>
                     </Flex>
                 </Flex>
+                <MobileFilterMenu
+                    openMenu={openMenu}
+                    menuClosed={() => setOpenMenu(false)}
+                ></MobileFilterMenu>
             </Container>
         </Box>
     );
