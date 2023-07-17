@@ -61,7 +61,15 @@ export function ServiceView() {
                 url: "https://www.nfdi4earth.de/"
             }
         ],
-        bbox: [-180, -85, 180, 85],
+        bbox: [
+            [
+                [5, 47],
+                [5, 55],
+                [15, 55],
+                [15, 47],
+                [5, 47]
+            ]
+        ],
         referenceSystems: [
             "EPSG:3044",
             "EPSG:3045",
@@ -164,6 +172,7 @@ export function ServiceView() {
                                 val: metadataResponse["referenceSystems"]
                             }
                         ]}
+                        bbox={metadataResponse["bbox"]}
                     />
                 </Box>
                 <Box w="100%" pt="80px">

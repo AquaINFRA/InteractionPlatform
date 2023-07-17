@@ -14,27 +14,19 @@ import { Fill, Stroke, Style } from "ol/style";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 
-export function Map() {
+export function Map(props: { bbox: object }) {
     const [viewPadding, setViewPadding] = useState<MapPadding>();
+    const bbox = Object.values(props.bbox);
 
-    const coordinates = [
-        [
-            [-18, -8],
-            [18, -8],
-            [18, 8],
-            [-18, 8],
-            [-18, -8]
-        ]
-    ];
-    const polygonGeometry = new Polygon(coordinates);
+    const polygonGeometry = new Polygon(bbox);
     polygonGeometry.transform("EPSG:4326", "EPSG:3857");
     const polygonFeature = new Feature(polygonGeometry);
     const polygonStyle = new Style({
         fill: new Fill({
-            color: "rgba(255, 0, 0, 0.5)"
+            color: "rgba(34, 192, 210, 0.2)"
         }),
         stroke: new Stroke({
-            color: "red",
+            color: "#05668D",
             width: 1
         })
     });
@@ -46,14 +38,13 @@ export function Map() {
         source: vectorSource
     });
 
-    const berlin = [1489200, 6894026, 1489200, 6894026];
-
     const olMapRegistry = useService("ol-map.MapRegistry");
     const mapState = useAsync(async () => await olMapRegistry.getMap(MAP_ID));
 
     if (mapState.value) {
-        //     mapState.value.getView().fit(berlin, { maxZoom: 13 });
-        mapState.value.addLayer(vectorLayer);
+        const map = mapState.value;
+        map.getView().fit(vectorSource.getExtent());
+        map.addLayer(vectorLayer);
     }
 
     return (
