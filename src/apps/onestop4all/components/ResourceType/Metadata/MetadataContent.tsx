@@ -1,4 +1,6 @@
 import { Flex, Box } from "@open-pioneer/chakra-integration";
+import { Keywords } from "./Keywords";
+import { Authors } from "./Authors";
 
 export const MetadataContent = (props: {
     metadataElements: object;
@@ -16,7 +18,11 @@ export const MetadataContent = (props: {
     return (
         <Box>
             {metadataElements.slice(start, end).map((e, i) =>
-                e.tag != "Keywords" ? (
+                e.tag == "Keywords" ? (
+                    <Keywords key={i} keywords={e.val} />
+                ) : e.tag == "Authors" ? (
+                    <Authors key={i} authors={e.val} />
+                ) : (
                     <Box key={i}>
                         <div className="seperator"></div>
                         <div>
@@ -36,16 +42,6 @@ export const MetadataContent = (props: {
                                 </Flex>
                             )}
                         </div>
-                    </Box>
-                ) : (
-                    <Box key={i} className="metadataKeywords">
-                        <div className="seperator"></div>
-                        <span className="metadataTag">{e.tag}:&nbsp;</span>
-                        {e.val.map((elem: string, j: number) => (
-                            <a href={"/search?keyword=" + elem} className="metadataKeyword" key={j}>
-                                {elem}
-                            </a>
-                        ))}
                     </Box>
                 )
             )}

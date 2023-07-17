@@ -687,3 +687,22 @@ export const DropdownArrowIcon = (props: IconProps) => (
         </svg>
     </Icon>
 );
+
+export const GoToOpenIssuesIcon = () => (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M11 20.375C16.1777 20.375 20.375 16.1777 20.375 11C20.375 5.82233 16.1777 1.625 11 1.625C5.82233 1.625 1.625 5.82233 1.625 11C1.625 16.1777 5.82233 20.375 11 20.375Z"
+            stroke="#05668D"
+            strokeWidth="1.875"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+        <path
+            d="M10.9993 13.0834C12.1499 13.0834 13.0827 12.1506 13.0827 11C13.0827 9.84943 12.1499 8.91669 10.9993 8.91669C9.84876 8.91669 8.91602 9.84943 8.91602 11C8.91602 12.1506 9.84876 13.0834 10.9993 13.0834Z"
+            stroke="#05668D"
+            strokeWidth="1.875"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
