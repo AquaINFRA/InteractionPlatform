@@ -706,3 +706,69 @@ export const GoToOpenIssuesIcon = () => (
         />
     </svg>
 );
+
+export const SeeOtherCoursesIcon = () => (
+    <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clipPath="url(#clip0_381_7034)">
+            <path
+                d="M8.5375 11.9334H2.06667C1.81684 11.9331 1.57733 11.8337 1.40076 11.657C1.22418 11.4803 1.125 11.2407 1.125 10.9909V1.57002C1.125 1.32028 1.22421 1.08076 1.40081 0.904165C1.5774 0.727568 1.81692 0.628357 2.06667 0.628357H14.3167C14.5664 0.628357 14.8059 0.727568 14.9825 0.904165C15.1591 1.08076 15.2583 1.32028 15.2583 1.57002V6.78086"
+                stroke="#05668D"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M5.83594 14.7592L6.3076 11.9333"
+                stroke="#05668D"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M4.42188 14.7592H8.53688"
+                stroke="#05668D"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M11.9766 4.86749V6.28083"
+                stroke="#05668D"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M10.0928 5.70502V8.16668C9.4506 8.7573 8.61433 9.09228 7.74198 9.10835C6.86742 9.09094 6.02899 8.75627 5.38281 8.16668V5.70502"
+                stroke="#05668D"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M3.49805 4.8675L7.73721 6.75167L11.9764 4.8675L7.73721 2.98334L3.49805 4.8675Z"
+                stroke="#05668D"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M14.4159 17.6917C16.5031 17.6917 18.1951 15.9997 18.1951 13.9125C18.1951 11.8254 16.5031 10.1334 14.4159 10.1334C12.3287 10.1334 10.6367 11.8254 10.6367 13.9125C10.6367 15.9997 12.3287 17.6917 14.4159 17.6917Z"
+                stroke="#05668D"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M17.0879 16.585L19.8746 19.3717"
+                stroke="#05668D"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </g>
+        <defs>
+            <clipPath id="clip0_381_7034">
+                <rect width="20" height="20" fill="white" transform="translate(0.5)" />
+            </clipPath>
+        </defs>
+    </svg>
+);

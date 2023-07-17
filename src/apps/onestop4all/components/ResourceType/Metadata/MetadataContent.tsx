@@ -18,7 +18,7 @@ export const MetadataContent = (props: {
                 .map((e, i) =>
                     e.tag == "Keywords" ? (
                         <Keywords key={i} keywords={e.val} />
-                    ) : e.tag == "Authors" ? (
+                    ) : e.tag == "Authors" || e.tag == "Resource providers" ? (
                         <Authors key={i} authors={e.val} />
                     ) : (
                         <Misc key={i} tag={e.tag} val={e.val} />
