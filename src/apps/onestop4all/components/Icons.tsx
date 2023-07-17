@@ -679,3 +679,11 @@ export const OpenCapabilitiesIcon = () => (
         </defs>
     </svg>
 );
+
+export const DropdownArrowIcon = (props: IconProps) => (
+    <Icon viewBox="0 0 9 6" {...props}>
+        <svg width="9" height="6" viewBox="0 0 9 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1L4.5 4.5L8 1" stroke="#05668D" strokeWidth="2" />
+        </svg>
+    </Icon>
+);
