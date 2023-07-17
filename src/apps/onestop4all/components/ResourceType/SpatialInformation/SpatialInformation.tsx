@@ -1,8 +1,12 @@
 import { Flex, Box } from "@open-pioneer/chakra-integration";
 import { Map } from "../../Map/Map";
 
-export const SpatialInformation = (props: { metadataElements: object }) => {
+export const SpatialInformation = (props: {
+    metadataElements: object;
+    bbox: Array<Array<Array<number>>>;
+}) => {
     const metadataElements = Object.values(props.metadataElements);
+    const bbox = props.bbox;
     return (
         <Box>
             <p className="metadataSectionHeader">Spatial Extent</p>
@@ -13,11 +17,11 @@ export const SpatialInformation = (props: { metadataElements: object }) => {
                         <div>
                             <Flex alignItems="center">
                                 <span className="metadataTag">{e.tag}:&nbsp;</span>
-                                {e.val.map((elem: number, i: number) => (
+                                {e.val[0].map((elem: Array<number>, i: number) => (
                                     <div key={i}>
                                         <span>
-                                            {elem}
-                                            {i < e.val.length - 1 ? "," : ""}&nbsp;
+                                            ({elem[0]} , {elem[1]})
+                                            {i < e.val[0].length - 1 ? "," : ""}&nbsp;
                                         </span>
                                     </div>
                                 ))}
@@ -46,7 +50,7 @@ export const SpatialInformation = (props: { metadataElements: object }) => {
                 )
             )}
             <Box pt="22px">
-                <Map />
+                <Map bbox={bbox} />
             </Box>
         </Box>
     );
