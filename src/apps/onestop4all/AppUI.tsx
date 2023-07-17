@@ -9,6 +9,8 @@ import { SearchView } from "./views/Search";
 import { StandardView } from "./views/Standard/Standard";
 import { ServiceView } from "./views/Service/Service";
 import { StartView } from "./views/Start/Start";
+import { ToolsSoftwareView } from "./views/ToolsSoftware/ToolsSoftware";
+import { OerView } from "./views/OpenEducationalResource/Oer";
 
 const basePath = "/";
 // const basePath = "/";
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
     {
         path: `${basePath}service`,
         element: <ServiceView />
+    },
+    {
+        path: `${basePath}tools_software`,
+        element: <ToolsSoftwareView />
+    },
+    {
+        path: `${basePath}oer`,
+        element: <OerView />
     },
     {
         path: "*",
