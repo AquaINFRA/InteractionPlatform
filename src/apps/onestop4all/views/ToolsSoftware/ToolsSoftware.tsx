@@ -89,7 +89,7 @@ export function ToolsSoftwareView() {
                                         val: metadataResponse["url"]
                                     },
                                     {
-                                        tag: "license",
+                                        tag: "License",
                                         val: metadataResponse["license"]
                                     },
                                     { tag: "Keywords", val: metadataResponse["keywords"] }
