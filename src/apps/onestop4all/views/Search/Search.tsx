@@ -1,11 +1,12 @@
 import { Box, Button, Container, Flex, Spacer } from "@open-pioneer/chakra-integration";
+import { useService } from "open-pioneer:react-hooks";
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { FilterIcon } from "../../components/Icons";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { SearchBar } from "../../components/SearchBar";
-import { SearchParameterType, SearchResultItem } from "../../services/SearchService";
+import { SearchResultItem } from "../../services/SearchService";
 import { BorderColor, PrimaryColor } from "../../Theme";
 import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
 import { MobileFilterMenu } from "./Facets/MobileFilterMenu/MobileFilterMenu";
@@ -18,11 +19,13 @@ import { SearchResult } from "./SearchResult/SearchResult";
 import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
 
 export function SearchView() {
-    const [search] = useSearchParams();
+    const [searchParams] = useSearchParams();
+    const searchSrv = useService("onestop4all.SearchService");
     const [resultCount] = useState(2567);
 
-    const searchterm = search.get(SearchParameterType.Searchterm);
-    const resourceType = search.getAll(SearchParameterType.ResourceType);
+    searchSrv.setSearchParams(searchParams);
+
+    searchSrv.triggerSearch();
 
     const searchResults: SearchResultItem[] = [
         {
@@ -103,7 +106,7 @@ export function SearchView() {
                 marginTop={{ base: "-40px", custombreak: "-50px" }}
             >
                 <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                    <SearchBar searchTerm={searchterm}></SearchBar>
+                    <SearchBar></SearchBar>
                 </Container>
             </Box>
 

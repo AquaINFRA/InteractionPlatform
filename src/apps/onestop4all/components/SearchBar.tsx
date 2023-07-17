@@ -1,19 +1,15 @@
 import { Box, Button, HStack, IconButton, Input, Select } from "@open-pioneer/chakra-integration";
-import { useIntl } from "open-pioneer:react-hooks";
+import { useIntl, useService } from "open-pioneer:react-hooks";
 import { useState } from "react";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { SearchParameterType, SearchParams } from "../services/SearchService";
 import { BorderColor, PrimaryColor } from "../Theme";
 import { ResourceType } from "../views/Start/ResourceEntry/ResourceEntry";
 import { DropdownArrowIcon, SearchIcon } from "./Icons";
 
-export interface SearchBarProps {
-    searchTerm?: string | null;
-}
-
-export function SearchBar(props: SearchBarProps) {
-    const [searchTerm, setSearchTerm] = useState(props.searchTerm || "");
+export function SearchBar() {
+    const searchSrv = useService("onestop4all.SearchService");
+    const [searchTerm, setSearchTerm] = useState(searchSrv.getSearchTerm());
     const [selectedResource, setSelectResource] = useState("");
 
     const intl = useIntl();
@@ -21,20 +17,8 @@ export function SearchBar(props: SearchBarProps) {
     const resourceTypes = Object.values(ResourceType);
 
     function startSearch(): void {
-        console.log(searchTerm);
-        const params: SearchParams = {};
-
-        if (searchTerm) {
-            params[SearchParameterType.Searchterm] = searchTerm;
-        }
-        if (selectedResource) {
-            params[SearchParameterType.ResourceType] = selectedResource;
-        }
-
-        navigate({
-            pathname: "/search",
-            search: `?${createSearchParams({ ...params })}`
-        });
+        searchSrv.setSearchTerm(searchTerm);
+        searchSrv.navigateToCurrentSearch(navigate);
     }
 
     return (
