@@ -31,7 +31,7 @@ export const RelatedContentEntry = ({ title, resourceType, url }: RelatedContent
     };
 
     return (
-        <Box>
+        <Box className="relatedContentEntry">
             <Flex className="relatedContentResource-entry" alignItems="center">
                 <Box className="relatedContentOverlap">
                     <div className="relatedContentCircle-group"></div>
@@ -40,7 +40,7 @@ export const RelatedContentEntry = ({ title, resourceType, url }: RelatedContent
                         <ResourceIcon type={resourceType} size={30} />
                     </div>
                 </Box>
-                <Box className="relatedContentLabel">{resourceType}</Box>
+                <Box className="relatedContentResourceType">{resourceType}</Box>
             </Flex>
             <Box className="relatedContentTitle">{title}</Box>
             <Button className="relatedContentButton">

@@ -129,11 +129,7 @@ export function OerView() {
                     </Box>
                 </Flex>
                 <Box w="100%" pt="80px">
-                    <Box>
-                        <RelatedContent
-                            relatedContentItems={metadataResponse["relatedContentItems"]}
-                        />
-                    </Box>
+                    <RelatedContent relatedContentItems={metadataResponse["relatedContentItems"]} />
                     <Flex gap="10%" alignItems="center" pt="120px">
                         <Divider className="seperator" w="65%" />
                         <Box w="25%">
