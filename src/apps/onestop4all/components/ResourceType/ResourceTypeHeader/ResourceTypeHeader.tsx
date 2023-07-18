@@ -10,6 +10,7 @@ import {
     OrganisationsIcon
 } from "../../Icons";
 import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
+import { ResourceIcon } from "../../../views/Start/ResourceEntry/ResourceIcons";
 
 export function ResourceTypeHeader(props: { resType: string }) {
     const { resType } = props;
@@ -48,6 +49,8 @@ export function ResourceTypeHeader(props: { resType: string }) {
                     <DocumentsIcon />
                 ) : resType == ResourceType.Organisations ? (
                     <OrganisationsIcon />
+                ) : resType == ResourceType.Datasets ? (
+                    <ResourceIcon type={resType} size={32} /> //To do: make that consistent
                 ) : (
                     <></>
                 )}
