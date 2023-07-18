@@ -6,12 +6,14 @@ import { ResourceType } from "../views/Start/ResourceEntry/ResourceEntry";
 
 export enum SearchParameterType {
     Searchterm = "searchterm",
-    ResourceType = "resourcetype"
+    ResourceType = "resourcetype",
+    SpatialFilter = "spatialfilter"
 }
 
 export interface SearchParams {
     [SearchParameterType.Searchterm]?: string;
     [SearchParameterType.ResourceType]?: string[];
+    [SearchParameterType.SpatialFilter]?: string;
 }
 
 export interface SearchResultItem {
@@ -37,6 +39,8 @@ export class SearchService {
     private searchTerm: string | null = null;
 
     private selectedResourceTypes: Set<string> = new Set();
+
+    private spatialFilter: number[] = [];
 
     addResourceType(resourceType: string) {
         this.selectedResourceTypes.add(resourceType);
@@ -102,6 +106,18 @@ export class SearchService {
         return this.searchTerm || "";
     }
 
+    setSpatialFilter(coords: number[]) {
+        this.spatialFilter = coords;
+    }
+
+    getSpatialFilter(): number[] {
+        return this.spatialFilter;
+    }
+
+    clearSpatialFilter() {
+        this.spatialFilter = [];
+    }
+
     /**
      * Validates the given saerch params and constructs the internal search parameter
      */
@@ -115,6 +131,13 @@ export class SearchService {
                 }
             });
         }
+        const coordString = searchParams.get(SearchParameterType.SpatialFilter);
+        if (coordString) {
+            const coords = coordString.split(",").map((c) => Number.parseFloat(c));
+            if (coords.length === 2 || coords.length === 4) {
+                this.spatialFilter = coords;
+            }
+        }
     }
 
     /**
@@ -127,6 +150,9 @@ export class SearchService {
         }
         if (this.selectedResourceTypes.size > 0) {
             params[SearchParameterType.ResourceType] = Array.from(this.selectedResourceTypes);
+        }
+        if (this.spatialFilter.length > 0) {
+            params[SearchParameterType.SpatialFilter] = this.spatialFilter.join(",");
         }
         navigate({
             pathname: "/search",

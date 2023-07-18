@@ -34,15 +34,17 @@ export function Chips() {
     // TODO: implement chip for subject
 
     // spatial coverage
-    // TODO: implement chip for spatial coverage
-    // chips.push({
-    //     title: "Spatial Coverage",
-    //     values: ["13.7685", "51.085", "13.770", "51.0867"],
-    //     deleteCb: () => {
-    //         // searchSrv.clearResourceTypes();
-    //         // searchSrv.navigateToCurrentSearch(navigate);
-    //     }
-    // });
+    const spatialFilter = searchSrv.getSpatialFilter();
+    if (spatialFilter.length) {
+        chips.push({
+            title: "Spatial Coverage",
+            values: spatialFilter.map((e) => `${e}`),
+            deleteCb: () => {
+                searchSrv.clearSpatialFilter();
+                searchSrv.navigateToCurrentSearch(navigate);
+            }
+        });
+    }
 
     // temporal coverage
     // TODO: implement chip for temporal coverage
@@ -111,7 +113,7 @@ export function Chips() {
     }
 
     return (
-        <Flex gap={"10px"}>
+        <Flex gap={"10px"} flexWrap="wrap">
             {chips.map((c, i) => {
                 return <Box key={i}>{createChip(c.title, c.values, c.deleteCb)}</Box>;
             })}
