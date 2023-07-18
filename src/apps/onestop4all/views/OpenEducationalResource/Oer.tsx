@@ -102,25 +102,25 @@ export function OerView() {
                         <ResultsNavigation result={1} of={100} />
                         <Box className="actionButtonGroup" pt="74px">
                             <ActionButton
-                                label="START LEARNING"
+                                label="Start learning"
                                 icon={<ExternalLinkIcon color="white" />}
                                 variant="solid"
                                 fun={fun}
                             />
                             <ActionButton
-                                label="SEE OTHER COURSES"
+                                label="See other courses"
                                 icon={<SeeOtherCoursesIcon />}
                                 variant="outline"
                                 fun={fun}
                             />
                             <ActionButton
-                                label="VISIT METADATA SOURCE"
+                                label="Visit metadata source"
                                 icon={<MetadataSourceIcon color="#05668D" />}
                                 variant="outline"
                                 fun={fun}
                             />
                             <ActionButton
-                                label="COPY PERMALINK"
+                                label="Copy permalink"
                                 icon={<LinkIcon color="#05668D" />}
                                 variant="outline"
                                 fun={fun}

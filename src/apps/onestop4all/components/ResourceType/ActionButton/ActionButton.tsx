@@ -13,7 +13,7 @@ export const ActionButton = (props: { label: string; icon: any; variant: string;
             <Icon boxSize={6} color={PrimaryColor}>
                 {icon}
             </Icon>
-            {label}
+            <div className={variant=="solid" ? "actionButtonLabelSolid" : "actionButtonLabelOutline"}>{label}</div>
         </Button>
     );
 };
