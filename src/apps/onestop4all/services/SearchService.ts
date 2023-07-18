@@ -46,6 +46,14 @@ export class SearchService {
         this.selectedResourceTypes.delete(resourceType);
     }
 
+    clearResourceTypes() {
+        this.selectedResourceTypes.clear();
+    }
+
+    getSelectedResourceTypes() {
+        return Array.from(this.selectedResourceTypes);
+    }
+
     getSelecteableResourceTypes(): SelecteableResourceType[] {
         return [
             {

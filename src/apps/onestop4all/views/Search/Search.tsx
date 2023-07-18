@@ -9,6 +9,7 @@ import { SearchBar } from "../../components/SearchBar";
 import { SearchResultItem } from "../../services/SearchService";
 import { BorderColor, PrimaryColor } from "../../Theme";
 import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
+import { Chips } from "./Chips/Chips";
 import { MobileFilterMenu } from "./Facets/MobileFilterMenu/MobileFilterMenu";
 import { ResourceTypeFacet } from "./Facets/ResourceTypeFacet/ResourceTypeFacet";
 import { SpatialCoverageFacet } from "./Facets/SpatialCoverageFacet/SpatialCoverageFacet";
@@ -151,8 +152,8 @@ export function SearchView() {
                             </Flex>
                         </Flex>
                         <Box className="seperator" hideFrom="custombreak"></Box>
-                        <Box hideBelow="custombreak" paddingBottom={{ base: "40px" }}>
-                            TODO: Search-chips
+                        <Box hideBelow="custombreak" padding={{ base: "40px 0px" }}>
+                            <Chips></Chips>
                         </Box>
                         <Box>
                             {searchResults.map((e) => {
