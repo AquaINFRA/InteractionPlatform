@@ -37,7 +37,7 @@ export const RelatedContentEntry = ({ title, resourceType, url }: RelatedContent
                     <div className="relatedContentCircle-group"></div>
                     <div className="relatedContentIcon-base"></div>
                     <div className="relatedContentIcon">
-                        <ResourceIcon type={resourceType} size={30} />
+                        <ResourceIcon type={resourceType} size={20} />
                     </div>
                 </Box>
                 <Box className="relatedContentResourceType">{resourceType}</Box>
