@@ -13,10 +13,15 @@ import { Point, Polygon } from "ol/geom";
 import { Fill, Stroke, Style } from "ol/style";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
+import WKT from "ol/format/WKT";
 
 export function Map(props: { bbox: object }) {
     const [viewPadding, setViewPadding] = useState<MapPadding>();
     const bbox = Object.values(props.bbox);
+
+    const wkt = new WKT();
+    const pt = wkt.readFeature("POINT (9.9930200000000000 53.5507300000000000)");
+    pt.getGeometry()?.transform("EPSG:4326", "EPSG:3857");
 
     const polygonGeometry = new Polygon(bbox);
     //const pointGeometry = new Point();
@@ -37,6 +42,7 @@ export function Map(props: { bbox: object }) {
     polygonFeature.setStyle(polygonStyle);
     const vectorSource = new VectorSource();
     vectorSource.addFeature(polygonFeature);
+    vectorSource.addFeature(pt);
     const vectorLayer = new VectorLayer({
         source: vectorSource
     });
@@ -49,6 +55,8 @@ export function Map(props: { bbox: object }) {
         map.getView().fit(vectorSource.getExtent());
         map.addLayer(vectorLayer);
     }
+
+    //ADD map.zoomToExtent
 
     return (
         <Box w="100%" h="70vh" overflow="hidden" position="relative" flex="1">
