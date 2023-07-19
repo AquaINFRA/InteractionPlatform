@@ -28,7 +28,9 @@ export function SearchResult(props: SearchResultProps) {
                         ></ResourceIcon>
                     </Box>
                     <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
-                    <Box className="title">{item.title}</Box>
+                    <Box className="title">
+                        <a href={"http://localhost:5173/" + item.url}>{item.title}</a>
+                    </Box>
                 </Flex>
                 <Box className="abstract">{item.abstract}</Box>
             </Box>

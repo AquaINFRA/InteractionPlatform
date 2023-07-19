@@ -23,6 +23,7 @@ export interface SearchResultItem {
     date?: Date;
     location?: string;
     abstract: string;
+    url: string;
 }
 
 export interface MenuOpenerEvents {
