@@ -6,6 +6,9 @@ export default defineBuildConfig({
     services: {
         MenuHandler: {
             provides: ["onestop4all.MenuHandler"]
+        },
+        SearchService: {
+            provides: ["onestop4all.SearchService"]
         }
     },
     ui: {
@@ -13,6 +16,7 @@ export default defineBuildConfig({
             "runtime.ApplicationContext",
             "integration.ExternalEventService",
             "onestop4all.MenuHandler",
+            "onestop4all.SearchService",
             "ol-map.MapRegistry"
         ]
     }

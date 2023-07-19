@@ -1,24 +1,15 @@
 import { Box, Button, HStack, IconButton, Input, Select } from "@open-pioneer/chakra-integration";
-import { useIntl } from "open-pioneer:react-hooks";
+import { useIntl, useService } from "open-pioneer:react-hooks";
 import { useState } from "react";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { BorderColor, PrimaryColor } from "../Theme";
 import { ResourceType } from "../views/Start/ResourceEntry/ResourceEntry";
 import { DropdownArrowIcon, SearchIcon } from "./Icons";
 
-export interface SearchBarProps {
-    searchTerm?: string;
-}
-
-// TODO: move to a model file later
-export interface SearchParams {
-    searchTerm?: string;
-    resourceType?: string;
-}
-
-export function SearchBar(props: SearchBarProps) {
-    const [searchTerm, setSearchTerm] = useState(props.searchTerm || "");
+export function SearchBar() {
+    const searchSrv = useService("onestop4all.SearchService");
+    const [searchTerm, setSearchTerm] = useState(searchSrv.getSearchTerm());
     const [selectedResource, setSelectResource] = useState("");
 
     const intl = useIntl();
@@ -26,19 +17,8 @@ export function SearchBar(props: SearchBarProps) {
     const resourceTypes = Object.values(ResourceType);
 
     function startSearch(): void {
-        console.log(searchTerm);
-        const params: SearchParams = {};
-        if (searchTerm) {
-            params.searchTerm = searchTerm;
-        }
-        if (selectedResource) {
-            params.resourceType = selectedResource;
-        }
-
-        navigate({
-            pathname: "search",
-            search: `?${createSearchParams({ ...params })}`
-        });
+        searchSrv.setSearchTerm(searchTerm);
+        searchSrv.navigateToCurrentSearch(navigate);
     }
 
     return (
@@ -46,7 +26,7 @@ export function SearchBar(props: SearchBarProps) {
             borderWidth={{ base: "10px", custombreak: "15px" }}
             borderColor="rgb(5, 102, 141, 0.7)"
         >
-            <HStack padding={{ base: "5px 10px", custombreak: "15px" }} w="100%" bg="white">
+            <HStack padding={{ base: "5px 10px", custombreak: "8px 15px" }} w="100%" bg="white">
                 <Select
                     icon={<DropdownArrowIcon />}
                     iconSize="12"
@@ -80,6 +60,7 @@ export function SearchBar(props: SearchBarProps) {
                     aria-label="start search"
                     size="sm"
                     hideFrom="custombreak"
+                    onClick={() => startSearch()}
                     icon={<SearchIcon />}
                 />
             </HStack>

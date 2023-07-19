@@ -13,12 +13,12 @@ import {
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect } from "react";
 
-import { LanguageToggler } from "./Header/LanguageToggler";
-import { Login } from "./Header/Login";
-import { UserSupportLink } from "./Header/UserSupportLink";
-import { MenuCloseIcon } from "./Icons";
+import { LanguageToggler } from "../Header/LanguageToggler";
+import { Login } from "../Header/Login";
+import { UserSupportLink } from "../Header/UserSupportLink";
+import { MenuCloseIcon } from "../Icons";
 
-export function NavigationMenu() {
+export function BaseMenu() {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const menuHandler = useService("onestop4all.MenuHandler");

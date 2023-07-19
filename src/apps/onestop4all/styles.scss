@@ -11,7 +11,7 @@
     background: var(--border-grey);
 }
 
-@import "./components/NavigationMenu.scss";
+@import "./components/BaseMenu/BaseMenu.scss";
 @import "./components/Footer/Footer.scss";
 @import "./components/ResourceType/Metadata/Metadata.scss";
 @import "./components/ResourceType/Abstract/Abstract.scss";
@@ -25,3 +25,5 @@
 @import "./views/Start/ResourceEntry/ResourceEntry.scss";
 @import "./views/Start/ParticipateEntry/ParticipateEntry.scss";
 @import "./components/ResourceType/RelatedContent/RelatedContent.scss";
+@import "./views/Search/Search.scss";
+@import "./views/Search/SearchResult/SearchResult.scss";

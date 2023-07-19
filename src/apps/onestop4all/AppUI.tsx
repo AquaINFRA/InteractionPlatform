@@ -1,13 +1,13 @@
 import { Box, ChakraProvider, Container, Flex } from "@open-pioneer/chakra-integration";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 
+import { BaseMenu } from "./components/BaseMenu/BaseMenu";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
-import { NavigationMenu } from "./components/NavigationMenu";
 import { Theme } from "./Theme";
-import { SearchView } from "./views/Search";
-import { StandardView } from "./views/Standard/Standard";
+import { SearchView } from "./views/Search/Search";
 import { ServiceView } from "./views/Service/Service";
+import { StandardView } from "./views/Standard/Standard";
 import { StartView } from "./views/Start/Start";
 import { ToolsSoftwareView } from "./views/ToolsSoftware/ToolsSoftware";
 import { OerView } from "./views/OpenEducationalResource/Oer";
@@ -64,7 +64,7 @@ const router = createBrowserRouter([
 export function AppUI() {
     return (
         <ChakraProvider theme={Theme}>
-            <NavigationMenu></NavigationMenu>
+            <BaseMenu></BaseMenu>
 
             <Flex as="header" position="fixed" w="100%" bg="white" zIndex="1000">
                 <Container maxW={{ base: "100%", custombreak: "80%" }}>

@@ -6,6 +6,10 @@
         "@open-pioneer/integration": "^1.0.0",
         "@open-pioneer/runtime": "^1.0.0",
         "@open-pioneer/experimental-ol-map": "^0.1.6",
+        "luxon": "^3.3.0",
         "sample-package": "workspace:^"
+    },
+    "devDependencies": {
+        "@types/luxon": "^3.3.0"
     }
 }
