@@ -9,7 +9,7 @@ import { useAsync } from "react-use";
 import { MAP_ID } from "./services";
 
 import { Feature } from "ol";
-import { Polygon } from "ol/geom";
+import { Point, Polygon } from "ol/geom";
 import { Fill, Stroke, Style } from "ol/style";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
@@ -19,8 +19,11 @@ export function Map(props: { bbox: object }) {
     const bbox = Object.values(props.bbox);
 
     const polygonGeometry = new Polygon(bbox);
+    //const pointGeometry = new Point();
     polygonGeometry.transform("EPSG:4326", "EPSG:3857");
+    //pointGeometry.transform("EPSG:4326", "EPSG:3857");
     const polygonFeature = new Feature(polygonGeometry);
+    //const pointFeature = new Feature(pointGeometry);
     const polygonStyle = new Style({
         fill: new Fill({
             color: "rgba(34, 192, 210, 0.2)"

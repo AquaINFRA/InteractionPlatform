@@ -13,6 +13,7 @@ import { ToolsSoftwareView } from "./views/ToolsSoftware/ToolsSoftware";
 import { OerView } from "./views/OpenEducationalResource/Oer";
 import { RepositoryView } from "./views/Repository/Repository";
 import { DatasetView } from "./views/Dataset/Dataset";
+import { OrganisationView } from "./views/Organisation/Organisation";
 
 const basePath = "/";
 // const basePath = "/";
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
     {
         path: `${basePath}dataset`,
         element: <DatasetView />
+    },
+    {
+        path: `${basePath}organisation`,
+        element: <OrganisationView />
     },
     {
         path: "*",
