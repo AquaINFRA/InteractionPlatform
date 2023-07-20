@@ -51,6 +51,8 @@ export function ResourceTypeHeader(props: { resType: string }) {
                     <OrganisationsIcon />
                 ) : resType == ResourceType.Datasets ? (
                     <ResourceIcon type={resType} size={32} /> //To do: make that consistent
+                ) : resType == ResourceType.Documents ? (
+                    <DocumentsIcon />
                 ) : (
                     <></>
                 )}

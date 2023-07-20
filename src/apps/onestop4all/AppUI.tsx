@@ -14,9 +14,9 @@ import { OerView } from "./views/OpenEducationalResource/Oer";
 import { RepositoryView } from "./views/Repository/Repository";
 import { DatasetView } from "./views/Dataset/Dataset";
 import { OrganisationView } from "./views/Organisation/Organisation";
+import { DocumentView } from "./views/Document/Document";
 
 const basePath = "/";
-// const basePath = "/";
 
 const router = createBrowserRouter([
     {
@@ -54,6 +54,10 @@ const router = createBrowserRouter([
     {
         path: `${basePath}organisation`,
         element: <OrganisationView />
+    },
+    {
+        path: `${basePath}document`,
+        element: <DocumentView />
     },
     {
         path: "*",
