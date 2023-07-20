@@ -36,7 +36,7 @@ export function SearchView() {
                 "Bernard, Lars; Braesicke, Peter; Bertelmann, Roland; Frickenhaus, Stephan; Gödde,Hildegard; + 13 more",
             date: new Date(2021, 10),
             resourceType: ResourceType.Documents,
-            url: ""
+            url: "document/"
         },
         {
             id: 2,

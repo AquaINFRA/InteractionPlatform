@@ -35,15 +35,17 @@ export function SearchResult(props: SearchResultProps) {
                 <Box className="abstract">{item.abstract}</Box>
             </Box>
             <Box flex="0 0 75px" hideBelow="custombreak">
-                <svg
-                    width="76"
-                    height="76"
-                    viewBox="0 0 76 76"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path opacity="0.3" d="M44 7.5L75 38L44 68.5" stroke="#05668D" />
-                </svg>
+                <a href={"http://localhost:5173/" + item.url}>
+                    <svg
+                        width="76"
+                        height="76"
+                        viewBox="0 0 76 76"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path opacity="0.3" d="M44 7.5L75 38L44 68.5" stroke="#05668D" />
+                    </svg>
+                </a>
             </Box>
         </Flex>
     );
