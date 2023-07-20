@@ -29,11 +29,11 @@ export function Map(props: { geometry: string }) {
         })
     });
 
-    const pointStyle = new Style({
+    /*const pointStyle = new Style({
         image: new Icon({
             src: ""
         })
-    });
+    });*/
 
     switch (wktGeometryType) {
         case "Polygon":
