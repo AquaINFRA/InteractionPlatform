@@ -1,4 +1,4 @@
-import { Box, Container } from "@open-pioneer/chakra-integration";
+import { Box, Container, Flex } from "@open-pioneer/chakra-integration";
 
 export const Footer = () => {
     return (
@@ -19,11 +19,35 @@ export const Footer = () => {
                         >
                             <Box className="section-header">Get connected:</Box>
                             <Box display="flex" gap="8px">
-                                <span className="section-entry">About us</span>
+                                <span className="section-entry">
+                                    <a
+                                        href="https://www.nfdi4earth.de/about-us"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        About us
+                                    </a>
+                                </span>
                                 <span>|</span>
-                                <span className="section-entry">Partners</span>
+                                <span className="section-entry">
+                                    <a
+                                        href="https://www.nfdi4earth.de/about-us/consortium"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        Partners
+                                    </a>
+                                </span>
                                 <span>|</span>
-                                <span className="section-entry">Contact</span>
+                                <span className="section-entry">
+                                    <a
+                                        href="https://www.nfdi4earth.de/2coordinate/coordination-office"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        Contact
+                                    </a>
+                                </span>
                             </Box>
                         </Box>
                         <Box
@@ -45,9 +69,25 @@ export const Footer = () => {
                         >
                             <Box className="section-header">Legal information:</Box>
                             <Box display="flex" gap="8px">
-                                <span className="section-entry">Legal information</span>
+                                <span className="section-entry">
+                                    <a
+                                        href="https://www.nfdi4earth.de/legal-notice"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        Legal information
+                                    </a>
+                                </span>
                                 <span>|</span>
-                                <span className="section-entry">Privacy</span>
+                                <span className="section-entry">
+                                    <a
+                                        href="https://www.nfdi4earth.de/privacy-policy"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        Privacy
+                                    </a>
+                                </span>
                             </Box>
                         </Box>
                     </Box>
@@ -58,16 +98,40 @@ export const Footer = () => {
                         gap={{ base: "20px", custombreak: "52px" }}
                     >
                         <Box className="entry">
-                            <img src="/gitlab-logo.svg" />
-                            <div className="label">GITLAB</div>
+                            <a
+                                href="https://git.rwth-aachen.de/nfdi4earth"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                <Flex gap="10px" alignItems="center">
+                                    <img src="/gitlab-logo.svg" />
+                                    <div className="label">GITLAB</div>
+                                </Flex>
+                            </a>
                         </Box>
                         <Box className="entry">
-                            <img src="/twitter.svg" />
-                            <div className="label">TWITTER</div>
+                            <a
+                                href="https://twitter.com/nfdi4earth"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                <Flex gap="10px" alignItems="center">
+                                    <img src="/twitter.svg" />
+                                    <div className="label">TWITTER</div>
+                                </Flex>
+                            </a>
                         </Box>
                         <Box className="entry">
-                            <img src="/cc-by.svg" />
-                            <div className="label">CC BY 2.0</div>
+                            <a
+                                href="https://creativecommons.org/licenses/by/4.0/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                <Flex gap="10px" alignItems="center">
+                                    <img src="/cc-by.svg" />
+                                    <div className="label">CC BY 4.0</div>
+                                </Flex>
+                            </a>
                         </Box>
                         <Box flex="1 1 50px"></Box>
                         <Box>
