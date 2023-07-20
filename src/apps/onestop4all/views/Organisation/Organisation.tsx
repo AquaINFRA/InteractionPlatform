@@ -7,8 +7,7 @@ import { RelatedContent } from "../../components/ResourceType/RelatedContent/Rel
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
-import { MetadataSourceIcon, DownloadMetadataIcon } from "../../components/Icons";
-import { SpatialInformation } from "../../components/ResourceType/SpatialInformation/SpatialInformation";
+import { MetadataSourceIcon } from "../../components/Icons";
 import { Contact } from "../../components/ResourceType/Contact/Contact";
 
 export function OrganisationView() {
@@ -38,7 +37,8 @@ export function OrganisationView() {
                 url: "https://www.nfdi4earth.de/"
             }
         ],
-        location: [[[9.976106388256488, 53.567053294230824]]],
+        location: "POINT (9.9930200000000000 53.5507300000000000)",
+        //location: "POLYGON ((5.77 47.22, 6.77 55.1, 16.16 55.1, 15.17 47.22, 5.77 47.22))",
         address: "Bundesstraße 45a, 20146 Hamburg, Germany"
     };
 
