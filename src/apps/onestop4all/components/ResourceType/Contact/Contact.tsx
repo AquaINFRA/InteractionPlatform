@@ -1,5 +1,5 @@
 import { Box, Flex } from "@open-pioneer/chakra-integration";
-import { Map } from "../../Map/Map";
+import { Map } from "../Map/Map";
 import { Misc } from "../Metadata/Misc";
 import { GoToLocationBtnIcon } from "../../../components/Icons";
 import { ActionButton } from "../../../components/ResourceType/ActionButton/ActionButton";

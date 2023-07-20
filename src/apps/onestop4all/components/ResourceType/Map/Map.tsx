@@ -29,18 +29,18 @@ export function Map(props: { geometry: string; height: string }) {
         })
     });
 
-    /*const pointStyle = new Style({
+    const pointStyle = new Style({
         image: new Icon({
-            src: ""
+            src: "/marker.svg"
         })
-    });*/
+    });
 
     switch (wktGeometryType) {
         case "Polygon":
             wktGeometry.setStyle(polygonStyle);
             break;
         case "Point":
-            //wktGeometry.setStyle(pointStyle);
+            wktGeometry.setStyle(pointStyle);
             break;
         default:
         //
