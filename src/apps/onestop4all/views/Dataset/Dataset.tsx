@@ -58,15 +58,7 @@ export function DatasetView() {
                 url: "https://www.nfdi4earth.de/"
             }
         ],
-        bbox: [
-            [
-                [5.77, 47.22],
-                [6.77, 55.1],
-                [16.16, 55.1],
-                [15.17, 47.22],
-                [5.77, 47.22]
-            ]
-        ],
+        location: "POLYGON ((5.77 47.22, 6.77 55.1, 16.16 55.1, 15.17 47.22, 5.77 47.22))",
         referenceSystems: ["EPSG: 4258", "EPSG 4326"]
     };
 
@@ -165,14 +157,14 @@ export function DatasetView() {
                         metadataElements={[
                             {
                                 tag: "Bounding box",
-                                val: metadataResponse["bbox"]
+                                val: metadataResponse["location"]
                             },
                             {
                                 tag: "Reference systems",
                                 val: metadataResponse["referenceSystems"]
                             }
                         ]}
-                        bbox={metadataResponse["bbox"]}
+                        bbox={metadataResponse["location"]}
                     />
                 </Box>
                 <Box w="100%" pt="80px">

@@ -1,10 +1,7 @@
 import { Flex, Box } from "@open-pioneer/chakra-integration";
 import { Map } from "../../Map/Map";
 
-export const SpatialInformation = (props: {
-    metadataElements: object;
-    bbox: Array<Array<Array<number>>>;
-}) => {
+export const SpatialInformation = (props: { metadataElements: object; bbox: string }) => {
     const metadataElements = Object.values(props.metadataElements);
     const bbox = props.bbox;
     return (
@@ -50,7 +47,7 @@ export const SpatialInformation = (props: {
                 )
             )}
             <Box pt="22px">
-                <Map bbox={bbox} />
+                <Map geometry={bbox} />
             </Box>
         </Box>
     );
