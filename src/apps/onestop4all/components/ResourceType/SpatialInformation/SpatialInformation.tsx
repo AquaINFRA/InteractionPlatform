@@ -1,5 +1,6 @@
 import { Flex, Box } from "@open-pioneer/chakra-integration";
 import { Map } from "../../Map/Map";
+import { Misc } from "../Metadata/Misc";
 
 export const SpatialInformation = (props: { metadataElements: object; bbox: string }) => {
     const metadataElements = Object.values(props.metadataElements);
@@ -9,22 +10,7 @@ export const SpatialInformation = (props: { metadataElements: object; bbox: stri
             <p className="metadataSectionHeader">Spatial Extent</p>
             {metadataElements.map((e, i) =>
                 e.tag == "Bounding box" ? (
-                    <Box key={i}>
-                        <div className="seperator"></div>
-                        <div>
-                            <Flex alignItems="center">
-                                <span className="metadataTag">{e.tag}:&nbsp;</span>
-                                {e.val[0].map((elem: Array<number>, i: number) => (
-                                    <div key={i}>
-                                        <span>
-                                            ({elem[0]} , {elem[1]})
-                                            {i < e.val[0].length - 1 ? "," : ""}&nbsp;
-                                        </span>
-                                    </div>
-                                ))}
-                            </Flex>
-                        </div>
-                    </Box>
+                    <Misc key={i} tag={e.tag} val={e.val} />
                 ) : e.tag == "Reference systems" ? (
                     <Box key={i}>
                         <div className="seperator"></div>
@@ -47,7 +33,7 @@ export const SpatialInformation = (props: { metadataElements: object; bbox: stri
                 )
             )}
             <Box pt="22px">
-                <Map geometry={bbox} />
+                <Map geometry={bbox} height="70vh" />
             </Box>
         </Box>
     );

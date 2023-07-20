@@ -10,9 +10,9 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import WKT from "ol/format/WKT";
 
-export function Map(props: { geometry: string }) {
+export function Map(props: { geometry: string; height: string }) {
     const [viewPadding, setViewPadding] = useState<MapPadding>();
-    const { geometry } = props;
+    const { geometry, height } = props;
 
     const wkt = new WKT();
     const wktGeometry = wkt.readFeature(geometry);
@@ -64,7 +64,7 @@ export function Map(props: { geometry: string }) {
     //ADD map.zoomToExtent
 
     return (
-        <Box w="100%" h="70vh" overflow="hidden" position="relative" flex="1">
+        <Box w="100%" h={height} overflow="hidden" position="relative" flex="1">
             <MapContainer mapId={MAP_ID} viewPadding={viewPadding} />
         </Box>
     );

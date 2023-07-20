@@ -8,10 +8,6 @@ export const Contact = (props: { address: any; location: string }) => {
     //for some reason, defining address as an object instead of any results in an error....
     const { address, location } = props;
 
-    const goToLocation = (location: string) => {
-        console.log(location);
-    };
-
     return (
         <Box>
             <p className="metadataSectionHeader">Contact</p>
@@ -22,11 +18,11 @@ export const Contact = (props: { address: any; location: string }) => {
                     icon={<GoToLocationBtnIcon />}
                     variant="outline"
                     fun={() => {
-                        goToLocation(location);
+                        console.log("go");
                     }}
                 />
             </Flex>
-            <Map geometry={location} />
+            <Map geometry={location} height="35vh" />
         </Box>
     );
 };
