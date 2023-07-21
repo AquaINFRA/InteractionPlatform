@@ -1,9 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { SystemStyleObject } from "@open-pioneer/chakra-integration";
-import { useService } from "open-pioneer:react-hooks";
-import { useNavigate } from "react-router-dom";
 
 import { PrimaryColor, PrimaryColor40 } from "../../../Theme";
+import { useSearchState } from "../SearchState";
 
 interface ChipsEntry {
     title: string;
@@ -12,20 +11,30 @@ interface ChipsEntry {
 }
 
 export function Chips() {
-    const searchSrv = useService("onestop4all.SearchService");
-    const navigate = useNavigate();
+    const searchState = useSearchState();
 
     const chips: ChipsEntry[] = [];
 
+    // TODO: remove later searchterm
+    const st = searchState.searchTerm;
+    if (st) {
+        chips.push({
+            title: "SearchTerm",
+            values: [st],
+            deleteCb: () => {
+                searchState.setSearchterm("");
+            }
+        });
+    }
+
     // resourceTypes
-    const resourceTypes = searchSrv.getSelectedResourceTypes();
-    if (resourceTypes.length) {
+    const resourceTypes = searchState.selectedResoureTypes;
+    if (resourceTypes?.length) {
         chips.push({
             title: "Resource Type",
             values: resourceTypes,
             deleteCb: () => {
-                searchSrv.clearResourceTypes();
-                searchSrv.navigateToCurrentSearch(navigate);
+                searchState.setSelectedResourceTypes([]);
             }
         });
     }
@@ -34,14 +43,13 @@ export function Chips() {
     // TODO: implement chip for subject
 
     // spatial coverage
-    const spatialFilter = searchSrv.getSpatialFilter();
+    const spatialFilter = searchState.spatialFilter;
     if (spatialFilter.length) {
         chips.push({
             title: "Spatial Coverage",
             values: spatialFilter.map((e) => `${e}`),
             deleteCb: () => {
-                searchSrv.clearSpatialFilter();
-                searchSrv.navigateToCurrentSearch(navigate);
+                searchState.setSpatialFilter([]);
             }
         });
     }

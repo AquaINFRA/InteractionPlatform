@@ -1,24 +1,34 @@
 import { Box, Button, HStack, IconButton, Input, Select } from "@open-pioneer/chakra-integration";
-import { useIntl, useService } from "open-pioneer:react-hooks";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useIntl } from "open-pioneer:react-hooks";
+import { useContext, useEffect, useState } from "react";
 
 import { BorderColor, PrimaryColor } from "../Theme";
+import { SearchStateContext } from "../views/Search/SearchState";
 import { ResourceType } from "../views/Start/ResourceEntry/ResourceEntry";
 import { DropdownArrowIcon, SearchIcon } from "./Icons";
 
 export function SearchBar() {
-    const searchSrv = useService("onestop4all.SearchService");
-    const [searchTerm, setSearchTerm] = useState(searchSrv.getSearchTerm());
-    const [selectedResource, setSelectResource] = useState("");
-
+    const [searchTerm, setSearchTerm] = useState<string>("");
     const intl = useIntl();
-    const navigate = useNavigate();
+    const [selectedResource, setSelectResource] = useState("");
     const resourceTypes = Object.values(ResourceType);
+    const searchState = useContext(SearchStateContext);
+
+    useEffect(() => {
+        if (searchState !== undefined) {
+            setSearchTerm(searchState.searchTerm);
+        }
+    }, [searchState, searchState?.searchTerm]);
 
     function startSearch(): void {
-        searchSrv.setSearchTerm(searchTerm);
-        searchSrv.navigateToCurrentSearch(navigate);
+        // TODO: second options to navigate on it's own
+        searchState?.setSearchterm(searchTerm);
+    }
+
+    function handleKeyDown(key: string): void {
+        if (key === "Enter") {
+            startSearch();
+        }
     }
 
     return (
@@ -46,6 +56,7 @@ export function SearchBar() {
                     placeholder={intl.formatMessage({ id: "search.search-bar.placeholder" })}
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
+                    onKeyDown={(event) => handleKeyDown(event.key)}
                     borderColor="white"
                 />
                 <Button

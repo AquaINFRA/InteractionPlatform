@@ -1,26 +1,32 @@
 import { Box } from "@open-pioneer/chakra-integration";
-import { useService } from "open-pioneer:react-hooks";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import { SelecteableResourceType } from "../../../../services/SearchService";
 import { ResourceType } from "../../../Start/ResourceEntry/ResourceEntry";
+import { SelectableResourceType, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
 
 export function ResourceTypeFacet() {
-    const searchSrv = useService("onestop4all.SearchService");
-    const navigate = useNavigate();
+    const searchState = useSearchState();
+    const [entries, setEntries] = useState<SelectableResourceType[]>([]);
 
-    const [entries] = useState<SelecteableResourceType[]>(searchSrv.getSelecteableResourceTypes());
+    useEffect(() => {
+        if (searchState.selectableResourceTypes) {
+            setEntries(searchState.selectableResourceTypes);
+        }
+    }, [searchState.selectableResourceTypes]);
 
     function resourceTypeToggled(checked: boolean, resourceType: ResourceType) {
         if (checked) {
-            searchSrv.addResourceType(resourceType);
+            searchState.setSelectedResourceTypes([
+                ...searchState.selectedResoureTypes,
+                resourceType
+            ]);
         } else {
-            searchSrv.removeResourceType(resourceType);
+            searchState.setSelectedResourceTypes(
+                searchState.selectedResoureTypes.filter((e) => e !== resourceType)
+            );
         }
-        searchSrv.navigateToCurrentSearch(navigate);
     }
 
     return (
@@ -32,13 +38,11 @@ export function ResourceTypeFacet() {
                             <FacetCheckbox
                                 label={entry.resourceType}
                                 count={entry.count}
-                                defaultChecked={entry.selected}
+                                isChecked={entry.selected}
                                 onChange={(event) =>
                                     resourceTypeToggled(event.target.checked, entry.resourceType)
                                 }
-                            >
-                                {entry.resourceType} ({entry.count})
-                            </FacetCheckbox>
+                            ></FacetCheckbox>
                         </Box>
                     );
                 })}

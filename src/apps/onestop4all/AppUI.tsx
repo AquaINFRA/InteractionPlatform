@@ -6,12 +6,12 @@ import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { Theme } from "./Theme";
 import { SearchView } from "./views/Search/Search";
+import { SearchState } from "./views/Search/SearchState";
 import { ServiceView } from "./views/Service/Service";
 import { StandardView } from "./views/Standard/Standard";
 import { StartView } from "./views/Start/Start";
 
 const basePath = "/";
-// const basePath = "/";
 
 const router = createBrowserRouter([
     {
@@ -20,7 +20,11 @@ const router = createBrowserRouter([
     },
     {
         path: `${basePath}search`,
-        element: <SearchView />
+        element: (
+            <SearchState>
+                <SearchView />
+            </SearchState>
+        )
     },
     {
         path: `${basePath}standard`,
