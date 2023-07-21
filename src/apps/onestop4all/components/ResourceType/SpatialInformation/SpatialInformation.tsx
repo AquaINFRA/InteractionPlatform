@@ -33,7 +33,7 @@ export const SpatialInformation = (props: { metadataElements: object; bbox: stri
                 )
             )}
             <Box pt="22px">
-                <Map geometry={bbox} height="70vh" />
+                <Map geometry={bbox} height="70vh" triggerPositioning={0} />
             </Box>
         </Box>
     );
