@@ -6,82 +6,69 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
-import { LinkIcon } from "@chakra-ui/icons";
-import { MetadataSourceIcon, OpenCapabilitiesIcon } from "../../components/Icons";
-import { SpatialInformation } from "../../components/ResourceType/SpatialInformation/SpatialInformation";
+import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
+import { MetadataSourceIcon, InfoIcon } from "../../components/Icons";
 
-export function ServiceView() {
+export function RepositoryView() {
     const metadataResponse = {
-        resourceType: "Services",
-        title: "WMS-Dienst des Deutschen Wetterdienst",
-        abstract: "WMS Dienst für meteorologische und klimatologische Daten.",
-        serviceProvider: "Deutscher Wetterdienst",
-        serviceType: "WMS",
-        url: "https://maps.dwd.de/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities",
+        resourceType: "Repositories / Archives",
+        title: "World Data Center for Climate",
+        abstract:
+            "The mission of World Data Center for Climate (WDCC) is to provide central support for the German and European climate research community. The WDCC is member of the ISC's World Data System. Emphasis is on development and implementation of best practice methods for Earth System data management. Data for and from climate research are collected, stored and disseminated. The WDCC is restricted to data products. Cooperations exist with thematically corresponding data centres of, e.g., earth observation, meteorology, oceanography, paleo climate and environmental sciences. The services of WDCC are also available to external users at cost price. A special service for the direct integration of research data in scientific publications has been developed. The editorial process at WDCC ensures the quality of metadata and research data in collaboration with the data producers. A citation code and a digital identifier (DOI) are provided and registered together with citation information at the DOI registration agency DataCite.",
+        dateOfPublication: "04.03.2013",
+        repositoryUrl: "https://wdc-climate.de",
+        license: "other, Creative Commons",
+        subjects: [
+            "Natural Sciences",
+            "Geosciences (including Geography)",
+            "Atmospheric Science",
+            "Oceanography",
+            "Geology and Palaeontology",
+            "Atmospheric Science and Oceanography"
+        ],
         keywords: [
-            "humanGeographicViewer",
-            "inspireidentifiziert",
-            "meteorologisch",
-            "Wetter",
-            "meteorology",
-            "Atmosphärische Bedingungen",
-            "Deutschland"
+            "CERA database",
+            "Structured graphics",
+            "climate simulation",
+            "cryosphere",
+            "data assimilation",
+            "earth science",
+            "earth system sciences"
         ],
         label: "NFDI4Earth Label",
-        lastUpdate: "01.01.2015",
         relatedContentItems: [
             {
-                resourceType: "Repositories / Archives",
-                title: "Environmental Information Data Centre",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Services",
-                title: "Environmental Information Data Centre",
+                resourceType: "Educational resources",
+                title: "Earth System Science Data Analytics: Introduction to Python",
                 url: "https://www.nfdi4earth.de/"
             },
             {
                 resourceType: "Educational resources",
-                title: "Environmental Information Data Centre",
+                title: "How to create publishable netcdf-data",
                 url: "https://www.nfdi4earth.de/"
             },
             {
-                resourceType: "Documents",
-                title: "Environmental Information Data Centre",
+                resourceType: "Educational resources",
+                title: "How to create publishable netcdf-data",
                 url: "https://www.nfdi4earth.de/"
             },
             {
-                resourceType: "Documents",
-                title: "Environmental Information Data Centre",
+                resourceType: "Educational resources",
+                title: "How to create publishable netcdf-data",
                 url: "https://www.nfdi4earth.de/"
             },
             {
-                resourceType: "Documents",
-                title: "Environmental Information Data Centre",
+                resourceType: "Educational resources",
+                title: "How to create publishable netcdf-data",
                 url: "https://www.nfdi4earth.de/"
             }
-        ],
-        location: "POLYGON ((5.77 47.22, 6.77 55.1, 16.16 55.1, 15.17 47.22, 5.77 47.22))",
-        referenceSystems: [
-            "EPSG:3044",
-            "EPSG:3045",
-            "EPSG:3413",
-            "EPSG:3857",
-            "EPSG 4258",
-            "EPSG 4326",
-            "EPSG:4839",
-            "EPSG:25832",
-            "EPSG:25833",
-            "EPSG:31467",
-            "EPSG:31468",
-            "EPSG:900913",
-            "EPSG:1000001"
         ]
     };
 
     const fun = () => {
         console.log("This is a fun");
     };
+
     return (
         <Box>
             <Box position="relative">
@@ -106,22 +93,32 @@ export function ServiceView() {
                             <Metadata
                                 metadataElements={[
                                     {
-                                        tag: "Service provider",
-                                        val: metadataResponse["serviceProvider"]
+                                        tag: "Date of publication",
+                                        val: metadataResponse["dateOfPublication"]
                                     },
                                     {
-                                        tag: "Service type",
-                                        val: metadataResponse["serviceType"]
+                                        tag: "Repository URL",
+                                        val: metadataResponse["repositoryUrl"]
                                     },
-                                    { tag: "URL", val: metadataResponse["url"] },
-                                    { tag: "Keywords", val: metadataResponse["keywords"] },
+                                    {
+                                        tag: "License",
+                                        val: metadataResponse["license"]
+                                    },
+                                    {
+                                        tag: "Subjects",
+                                        val: metadataResponse["subjects"]
+                                    },
+                                    {
+                                        tag: "Keywords",
+                                        val: metadataResponse["keywords"]
+                                    },
                                     {
                                         tag: "Label",
                                         val: metadataResponse["label"]
                                     }
                                 ]}
                                 visibleElements={3}
-                                expandedByDefault={false}
+                                expandedByDefault={true}
                             />
                         </Box>
                         <Box pt="80px">
@@ -132,19 +129,25 @@ export function ServiceView() {
                         <ResultsNavigation result={1} of={100} />
                         <Box className="actionButtonGroup" pt="74px">
                             <ActionButton
-                                label="OPEN CAPABILITIES"
-                                icon={<OpenCapabilitiesIcon />}
+                                label="Visit repository"
+                                icon={<ExternalLinkIcon color="white" />}
                                 variant="solid"
                                 fun={fun}
                             />
                             <ActionButton
-                                label="VISIT METADATA SOURCE"
+                                label="Open user policy"
+                                icon={<InfoIcon />}
+                                variant="outline"
+                                fun={fun}
+                            />
+                            <ActionButton
+                                label="Visit metadata source"
                                 icon={<MetadataSourceIcon color="#05668D" />}
                                 variant="outline"
                                 fun={fun}
                             />
                             <ActionButton
-                                label="COPY PERMALINK"
+                                label="Copy permalink"
                                 icon={<LinkIcon color="#05668D" />}
                                 variant="outline"
                                 fun={fun}
@@ -152,27 +155,8 @@ export function ServiceView() {
                         </Box>
                     </Box>
                 </Flex>
-                <Box pt="80px">
-                    <SpatialInformation
-                        metadataElements={[
-                            {
-                                tag: "Bounding box",
-                                val: metadataResponse["location"]
-                            },
-                            {
-                                tag: "Reference systems",
-                                val: metadataResponse["referenceSystems"]
-                            }
-                        ]}
-                        bbox={metadataResponse["location"]}
-                    />
-                </Box>
                 <Box w="100%" pt="80px">
-                    <Box>
-                        <RelatedContent
-                            relatedContentItems={metadataResponse["relatedContentItems"]}
-                        />
-                    </Box>
+                    <RelatedContent relatedContentItems={metadataResponse["relatedContentItems"]} />
                     <Flex gap="10%" alignItems="center" pt="120px">
                         <Divider className="seperator" w="65%" />
                         <Box w="25%">

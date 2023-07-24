@@ -9,6 +9,7 @@ export enum ResourceType {
     Repos = "Repositories / Archives",
     Articles = "Articles",
     Educational = "Educational resources",
+    Datasets = "Datasets",
     Tools = "Tools/Software",
     Organisations = "Organisations",
     Services = "Services",

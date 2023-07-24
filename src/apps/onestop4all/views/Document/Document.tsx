@@ -6,82 +6,63 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
-import { LinkIcon } from "@chakra-ui/icons";
-import { MetadataSourceIcon, OpenCapabilitiesIcon } from "../../components/Icons";
-import { SpatialInformation } from "../../components/ResourceType/SpatialInformation/SpatialInformation";
+import { CopyIcon, DownloadIcon, LinkIcon } from "@chakra-ui/icons";
+import { MetadataSourceIcon } from "../../components/Icons";
 
-export function ServiceView() {
+export function DocumentView() {
     const metadataResponse = {
-        resourceType: "Services",
-        title: "WMS-Dienst des Deutschen Wetterdienst",
-        abstract: "WMS Dienst für meteorologische und klimatologische Daten.",
-        serviceProvider: "Deutscher Wetterdienst",
-        serviceType: "WMS",
-        url: "https://maps.dwd.de/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities",
-        keywords: [
-            "humanGeographicViewer",
-            "inspireidentifiziert",
-            "meteorologisch",
-            "Wetter",
-            "meteorology",
-            "Atmosphärische Bedingungen",
-            "Deutschland"
+        resourceType: "Documents",
+        title: "NFDI Consortium Earth System Sciences - Proposal 2020 revised",
+        abstract:
+            "DFG Consortia Proposals National Research Data Infrastructure (NFDI) from the NFDIConsortium Earth System Sciences, revised after the acceptance of the proposal. NFDI4Earth addresses digital needs of Earth System Sciences. Here, scientists cooperate ininternational and interdisciplinary networks with the overarching aim to understand the functioning and interactions within the Earth system and address the multiple challenges of global change. NFDI4Earth is a community-driven process providing researchers with FAIR, coherent, and openaccess to all relevant data, to innovative research data management and data science methods. The proposal comprises the NFDI4Earth scope and objectives, the description of the consortium and its governance, the research data management strategy and the 2021-26 work plan.",
+        authors: [
+            {
+                name: "Bernard, Lars",
+                orcid: "0000-0002-3085-7457"
+            },
+            {
+                name: "Braesicke, Peter",
+                orcid: "0000-0002-5588-0290"
+            },
+            {
+                name: "Bertelmann, Roland",
+                orcid: "0000-0002-5588-0290"
+            }
         ],
-        label: "NFDI4Earth Label",
-        lastUpdate: "01.01.2015",
+        dateOfPublication: "22.11.2021",
+        doi: "https://doi.org/10.5281/zenodo.5718944",
+        license: "CC BY 4.0",
+        keywords: [
+            "NFDI",
+            "Research Data management",
+            "FAIR",
+            "Earth System Sciences",
+            "Data Infrastructure",
+            "NFDI4Earth"
+        ],
         relatedContentItems: [
             {
+                resourceType: "Documents",
+                title: "Deutsches Klimarechenzentrum",
+                url: "https://www.nfdi4earth.de/"
+            },
+            {
                 resourceType: "Repositories / Archives",
-                title: "Environmental Information Data Centre",
+                title: "World Data Center for Climate",
                 url: "https://www.nfdi4earth.de/"
             },
             {
                 resourceType: "Services",
-                title: "Environmental Information Data Centre",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Educational resources",
-                title: "Environmental Information Data Centre",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Documents",
-                title: "Environmental Information Data Centre",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Documents",
-                title: "Environmental Information Data Centre",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Documents",
-                title: "Environmental Information Data Centre",
+                title: "World Data Center for Climate",
                 url: "https://www.nfdi4earth.de/"
             }
-        ],
-        location: "POLYGON ((5.77 47.22, 6.77 55.1, 16.16 55.1, 15.17 47.22, 5.77 47.22))",
-        referenceSystems: [
-            "EPSG:3044",
-            "EPSG:3045",
-            "EPSG:3413",
-            "EPSG:3857",
-            "EPSG 4258",
-            "EPSG 4326",
-            "EPSG:4839",
-            "EPSG:25832",
-            "EPSG:25833",
-            "EPSG:31467",
-            "EPSG:31468",
-            "EPSG:900913",
-            "EPSG:1000001"
         ]
     };
 
     const fun = () => {
         console.log("This is a fun");
     };
+
     return (
         <Box>
             <Box position="relative">
@@ -106,21 +87,27 @@ export function ServiceView() {
                             <Metadata
                                 metadataElements={[
                                     {
-                                        tag: "Service provider",
-                                        val: metadataResponse["serviceProvider"]
+                                        tag: "Authors",
+                                        val: metadataResponse["authors"]
                                     },
                                     {
-                                        tag: "Service type",
-                                        val: metadataResponse["serviceType"]
+                                        tag: "Date of publication",
+                                        val: metadataResponse["dateOfPublication"]
                                     },
-                                    { tag: "URL", val: metadataResponse["url"] },
-                                    { tag: "Keywords", val: metadataResponse["keywords"] },
                                     {
-                                        tag: "Label",
-                                        val: metadataResponse["label"]
+                                        tag: "DOI",
+                                        val: metadataResponse["doi"]
+                                    },
+                                    {
+                                        tag: "License",
+                                        val: metadataResponse["license"]
+                                    },
+                                    {
+                                        tag: "Keywords",
+                                        val: metadataResponse["keywords"]
                                     }
                                 ]}
-                                visibleElements={3}
+                                visibleElements={0}
                                 expandedByDefault={false}
                             />
                         </Box>
@@ -132,9 +119,15 @@ export function ServiceView() {
                         <ResultsNavigation result={1} of={100} />
                         <Box className="actionButtonGroup" pt="74px">
                             <ActionButton
-                                label="OPEN CAPABILITIES"
-                                icon={<OpenCapabilitiesIcon />}
+                                label="Copy Citation"
+                                icon={<CopyIcon color="white" />}
                                 variant="solid"
+                                fun={fun}
+                            />
+                            <ActionButton
+                                label="Download metadata"
+                                icon={<DownloadIcon />}
+                                variant="outline"
                                 fun={fun}
                             />
                             <ActionButton
@@ -152,21 +145,6 @@ export function ServiceView() {
                         </Box>
                     </Box>
                 </Flex>
-                <Box pt="80px">
-                    <SpatialInformation
-                        metadataElements={[
-                            {
-                                tag: "Bounding box",
-                                val: metadataResponse["location"]
-                            },
-                            {
-                                tag: "Reference systems",
-                                val: metadataResponse["referenceSystems"]
-                            }
-                        ]}
-                        bbox={metadataResponse["location"]}
-                    />
-                </Box>
                 <Box w="100%" pt="80px">
                     <Box>
                         <RelatedContent

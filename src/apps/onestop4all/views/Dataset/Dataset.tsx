@@ -6,82 +6,66 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
-import { LinkIcon } from "@chakra-ui/icons";
-import { MetadataSourceIcon, OpenCapabilitiesIcon } from "../../components/Icons";
+import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
+import { MetadataSourceIcon, DownloadMetadataIcon } from "../../components/Icons";
 import { SpatialInformation } from "../../components/ResourceType/SpatialInformation/SpatialInformation";
 
-export function ServiceView() {
+export function DatasetView() {
     const metadataResponse = {
-        resourceType: "Services",
-        title: "WMS-Dienst des Deutschen Wetterdienst",
-        abstract: "WMS Dienst für meteorologische und klimatologische Daten.",
-        serviceProvider: "Deutscher Wetterdienst",
-        serviceType: "WMS",
-        url: "https://maps.dwd.de/geoserver/ows?service=wms&version=1.3.0&request=GetCapabilities",
+        resourceType: "Datasets",
+        title: "2m temperature at RBSN stations",
+        alsoKnownAs: "2m Temperatur an RBSN Stationen",
+        abstract:
+            "Messwerte der 2m Temperatur an den DWD Stationen im Regional Basic Synoptic Network der WMO. Erweitert um weitere Stationen der Grundversorgung. 2m temperature measurements at DWD stations in the Regional Basic Synoptic Network of the WMO, plus additional stations from the so called 'Global Dataset' of DWD.",
+        dateOfPublication: "25.02.2016",
+        dataAggregator: "Deutscher Wetterdienst",
+        dataSourceUrl: "https://geoportal.de/Metadata/de.dwd.geoserver.fach.RBSN_T2m",
+        supportedFormat: "XML",
         keywords: [
-            "humanGeographicViewer",
+            "meteorological",
             "inspireidentifiziert",
-            "meteorologisch",
-            "Wetter",
+            "humanGeographicViewer",
+            "Temperatur 2m überGrund",
+            "Temperatur",
             "meteorology",
-            "Atmosphärische Bedingungen",
+            "Meteorologisch-geografische Kennwerte",
             "Deutschland"
         ],
-        label: "NFDI4Earth Label",
-        lastUpdate: "01.01.2015",
         relatedContentItems: [
             {
-                resourceType: "Repositories / Archives",
-                title: "Environmental Information Data Centre",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Services",
-                title: "Environmental Information Data Centre",
+                resourceType: "Educational resources",
+                title: "Earth System Science Data Analytics: Introduction to Python",
                 url: "https://www.nfdi4earth.de/"
             },
             {
                 resourceType: "Educational resources",
-                title: "Environmental Information Data Centre",
+                title: "How to create publishable netcdf-data",
                 url: "https://www.nfdi4earth.de/"
             },
             {
-                resourceType: "Documents",
-                title: "Environmental Information Data Centre",
+                resourceType: "Educational resources",
+                title: "How to create publishable netcdf-data",
                 url: "https://www.nfdi4earth.de/"
             },
             {
-                resourceType: "Documents",
-                title: "Environmental Information Data Centre",
+                resourceType: "Educational resources",
+                title: "How to create publishable netcdf-data",
                 url: "https://www.nfdi4earth.de/"
             },
             {
-                resourceType: "Documents",
-                title: "Environmental Information Data Centre",
+                resourceType: "Educational resources",
+                title: "How to create publishable netcdf-data",
                 url: "https://www.nfdi4earth.de/"
             }
         ],
         location: "POLYGON ((5.77 47.22, 6.77 55.1, 16.16 55.1, 15.17 47.22, 5.77 47.22))",
-        referenceSystems: [
-            "EPSG:3044",
-            "EPSG:3045",
-            "EPSG:3413",
-            "EPSG:3857",
-            "EPSG 4258",
-            "EPSG 4326",
-            "EPSG:4839",
-            "EPSG:25832",
-            "EPSG:25833",
-            "EPSG:31467",
-            "EPSG:31468",
-            "EPSG:900913",
-            "EPSG:1000001"
-        ]
+        referenceSystems: ["EPSG: 4258", "EPSG 4326"]
     };
 
     const fun = () => {
         console.log("This is a fun");
     };
+
     return (
         <Box>
             <Box position="relative">
@@ -106,22 +90,32 @@ export function ServiceView() {
                             <Metadata
                                 metadataElements={[
                                     {
-                                        tag: "Service provider",
-                                        val: metadataResponse["serviceProvider"]
+                                        tag: "Also known as",
+                                        val: metadataResponse["alsoKnownAs"]
                                     },
                                     {
-                                        tag: "Service type",
-                                        val: metadataResponse["serviceType"]
+                                        tag: "Date of publication",
+                                        val: metadataResponse["dateOfPublication"]
                                     },
-                                    { tag: "URL", val: metadataResponse["url"] },
-                                    { tag: "Keywords", val: metadataResponse["keywords"] },
                                     {
-                                        tag: "Label",
-                                        val: metadataResponse["label"]
+                                        tag: "Data aggregator",
+                                        val: metadataResponse["dataAggregator"]
+                                    },
+                                    {
+                                        tag: "Data Source URL",
+                                        val: metadataResponse["dataSourceUrl"]
+                                    },
+                                    {
+                                        tag: "Supported formats",
+                                        val: metadataResponse["supportedFormat"]
+                                    },
+                                    {
+                                        tag: "Keywords",
+                                        val: metadataResponse["keywords"]
                                     }
                                 ]}
                                 visibleElements={3}
-                                expandedByDefault={false}
+                                expandedByDefault={true}
                             />
                         </Box>
                         <Box pt="80px">
@@ -132,19 +126,25 @@ export function ServiceView() {
                         <ResultsNavigation result={1} of={100} />
                         <Box className="actionButtonGroup" pt="74px">
                             <ActionButton
-                                label="OPEN CAPABILITIES"
-                                icon={<OpenCapabilitiesIcon />}
+                                label="Open repository"
+                                icon={<ExternalLinkIcon color="white" />}
                                 variant="solid"
                                 fun={fun}
                             />
                             <ActionButton
-                                label="VISIT METADATA SOURCE"
+                                label="Download metadata"
+                                icon={<DownloadMetadataIcon />}
+                                variant="outline"
+                                fun={fun}
+                            />
+                            <ActionButton
+                                label="Visit metadata source"
                                 icon={<MetadataSourceIcon color="#05668D" />}
                                 variant="outline"
                                 fun={fun}
                             />
                             <ActionButton
-                                label="COPY PERMALINK"
+                                label="Copy permalink"
                                 icon={<LinkIcon color="#05668D" />}
                                 variant="outline"
                                 fun={fun}
@@ -168,11 +168,7 @@ export function ServiceView() {
                     />
                 </Box>
                 <Box w="100%" pt="80px">
-                    <Box>
-                        <RelatedContent
-                            relatedContentItems={metadataResponse["relatedContentItems"]}
-                        />
-                    </Box>
+                    <RelatedContent relatedContentItems={metadataResponse["relatedContentItems"]} />
                     <Flex gap="10%" alignItems="center" pt="120px">
                         <Divider className="seperator" w="65%" />
                         <Box w="25%">

@@ -22,6 +22,7 @@
     font-size: 16px;
     padding-top: 10px;
     padding-bottom: 10px;
+    display: inline-block;
 }
 
 .metadataKeywords {
@@ -31,6 +32,16 @@
 .metadataKeyword {
     border-radius: 50px;
     background: rgba(34, 192, 210, 0.2);
+    padding: 0px 8px;
+    display: inline-block;
+    text-decoration: underline;
+    margin-right: 5px;
+    margin-top: 10px;
+}
+
+.metadataSubject {
+    border-radius: 50px;
+    background: rgba(5, 102, 141, 0.2);
     padding: 0px 8px;
     display: inline-block;
     text-decoration: underline;
@@ -49,4 +60,9 @@
     font-weight: 600;
     letter-spacing: 0.7px;
     text-transform: uppercase;
+}
+
+.orcid {
+    width: 20px;
+    height: 20px;
 }
