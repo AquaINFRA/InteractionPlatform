@@ -5,13 +5,13 @@ import { createSearchParams, useNavigate, useSearchParams } from "react-router-d
 import { SearchResultItem } from "../../services/SearchService";
 import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
 
-enum UrlSearchParameterType {
+export enum UrlSearchParameterType {
     Searchterm = "searchterm",
     ResourceType = "resourcetype",
     SpatialFilter = "spatialfilter"
 }
 
-interface UrlSearchParams {
+export interface UrlSearchParams {
     [UrlSearchParameterType.Searchterm]?: string;
     [UrlSearchParameterType.ResourceType]?: string[];
     [UrlSearchParameterType.SpatialFilter]?: string;

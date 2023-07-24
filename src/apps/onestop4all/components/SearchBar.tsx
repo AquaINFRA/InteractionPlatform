@@ -1,9 +1,14 @@
 import { Box, Button, HStack, IconButton, Input, Select } from "@open-pioneer/chakra-integration";
 import { useIntl } from "open-pioneer:react-hooks";
 import { useContext, useEffect, useState } from "react";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 import { BorderColor, PrimaryColor } from "../Theme";
-import { SearchStateContext } from "../views/Search/SearchState";
+import {
+    SearchStateContext,
+    UrlSearchParameterType,
+    UrlSearchParams
+} from "../views/Search/SearchState";
 import { ResourceType } from "../views/Start/ResourceEntry/ResourceEntry";
 import { DropdownArrowIcon, SearchIcon } from "./Icons";
 
@@ -13,6 +18,7 @@ export function SearchBar() {
     const [selectedResource, setSelectResource] = useState("");
     const resourceTypes = Object.values(ResourceType);
     const searchState = useContext(SearchStateContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (searchState !== undefined) {
@@ -21,8 +27,18 @@ export function SearchBar() {
     }, [searchState, searchState?.searchTerm]);
 
     function startSearch(): void {
-        // TODO: second options to navigate on it's own
-        searchState?.setSearchterm(searchTerm);
+        if (searchState) {
+            searchState.setSearchterm(searchTerm);
+        } else {
+            const params: UrlSearchParams = {};
+            if (searchTerm) {
+                params[UrlSearchParameterType.Searchterm] = searchTerm;
+            }
+            navigate({
+                pathname: "/search",
+                search: `?${createSearchParams({ ...params })}`
+            });
+        }
     }
 
     function handleKeyDown(key: string): void {
