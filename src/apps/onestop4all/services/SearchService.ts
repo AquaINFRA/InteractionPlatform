@@ -13,7 +13,9 @@ export interface SearchResultItem {
 }
 
 export interface SearchRequestParams {
-    searchTerm: string;
+    searchTerm?: string;
+    resourceType?: string[];
+    spatialFilter?: number[];
 }
 
 export class SearchService {

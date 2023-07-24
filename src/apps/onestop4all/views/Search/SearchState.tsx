@@ -99,14 +99,25 @@ export const SearchState = (props: PropsWithChildren) => {
     const [spatialFilter, setSpatialFilter] = useState(sp);
 
     useEffect(() => {
-        console.log("searchParams adjusted");
-        // TODO: try to trigger search on search Params adjusted
+        // sample fetch
+        setIsLoaded(false);
+        searchSrvc
+            .doSearch({
+                searchTerm,
+                resourceType: selectedResoureTypes,
+                spatialFilter
+            })
+            .then((res) => {
+                setIsLoaded(true);
+                setResults();
+            })
+            .catch((error) => {
+                setIsLoaded(true);
+                console.error(error);
+            });
     }, [searchParams]);
 
     useEffect(() => {
-        console.log(
-            `FILTER CHANGED, trigger search with: searchterm '${searchTerm}', resourceTypes '${selectedResoureTypes}`
-        );
         const params: UrlSearchParams = {};
 
         if (searchTerm) {
@@ -126,21 +137,6 @@ export const SearchState = (props: PropsWithChildren) => {
             pathname: "/search",
             search: `?${createSearchParams({ ...params })}`
         });
-
-        // sample fetch
-        setIsLoaded(false);
-        searchSrvc
-            .doSearch({
-                searchTerm
-            })
-            .then((res) => {
-                setIsLoaded(true);
-                setResults();
-            })
-            .catch((error) => {
-                setIsLoaded(true);
-                console.error(error);
-            });
     }, [searchTerm, selectedResoureTypes, spatialFilter]);
 
     function setSelectableResourceTypes() {
