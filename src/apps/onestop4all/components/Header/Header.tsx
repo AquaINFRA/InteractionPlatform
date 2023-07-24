@@ -1,4 +1,5 @@
 import { Box, Hide, HStack } from "@open-pioneer/chakra-integration";
+import { useNavigate } from "react-router-dom";
 
 import { BorderColor } from "../../Theme";
 import { LanguageToggler } from "./LanguageToggler";
@@ -8,6 +9,12 @@ import { MenuButton } from "./MenuButton";
 import { UserSupportLink } from "./UserSupportLink";
 
 export const Header = () => {
+    const navigate = useNavigate();
+
+    const backToStart = () => {
+        navigate("/");
+    };
+
     return (
         <HStack
             gap="20px"
@@ -16,7 +23,7 @@ export const Header = () => {
             borderBottom="1px solid"
             borderBottomColor={BorderColor}
         >
-            <Box>
+            <Box _hover={{ cursor: "pointer" }} onClick={backToStart}>
                 <Logo />
             </Box>
             <Box w="100%"></Box>
