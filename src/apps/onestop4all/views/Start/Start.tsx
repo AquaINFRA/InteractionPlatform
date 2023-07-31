@@ -1,5 +1,7 @@
 import { Box, Container, Flex, Image } from "@open-pioneer/chakra-integration";
+import { ParentSize } from "@visx/responsive";
 
+import NetworkGraph from "../../components/Graph/NetworkGraph";
 import { SearchBar } from "../../components/SearchBar";
 import { HowToEntry } from "./HowTo/HowToEntry";
 import { ParticipateEntry, ParticipateEntryProps } from "./ParticipateEntry/ParticipateEntry";
@@ -166,6 +168,26 @@ export function StartView() {
                             </Box>
                         ))}
                     </Flex>
+                </Container>
+            </Box>
+
+            <Box className="graph">
+                <Container maxW="80%">
+                    <Box className="text-centered-box">
+                        <Box className="text-centered-box-header">
+                            We show how the resources are linked
+                        </Box>
+                        <Box className="text-centered-box-text">
+                            Here you will get a graph-based overview on related resources to start
+                            exploration.
+                        </Box>
+                    </Box>
+                    <Box pt={"16px"}>
+                        {/* <Graph data={[1, 2, 3, 4, 5, 6]}></Graph> */}
+                        <ParentSize>
+                            {(parent) => <NetworkGraph width={parent.width} height={500} />}
+                        </ParentSize>
+                    </Box>
                 </Container>
             </Box>
 

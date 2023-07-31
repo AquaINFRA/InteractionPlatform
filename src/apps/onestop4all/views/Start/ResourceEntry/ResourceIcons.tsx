@@ -3,6 +3,8 @@ import { ResourceType } from "./ResourceEntry";
 export interface ResourceIconProps {
     type: ResourceType;
     size: number;
+    offsetX?: number;
+    offsetY?: number;
     color?: string;
 }
 
@@ -11,12 +13,16 @@ export const ResourceIcon = (props: ResourceIconProps) => {
     if (!color) {
         color = "white";
     }
+    const offsetX = props.offsetX !== undefined ? props.offsetX : 0;
+    const offsetY = props.offsetY !== undefined ? props.offsetY : 0;
     switch (props.type) {
         case ResourceType.Repos:
             return (
                 <svg
                     width={props.size}
                     height={props.size}
+                    x={offsetX}
+                    y={offsetY}
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -41,6 +47,8 @@ export const ResourceIcon = (props: ResourceIconProps) => {
                     fill="none"
                     width={props.size}
                     height={props.size}
+                    x={offsetX}
+                    y={offsetY}
                     viewBox="0 0 48 48"
                     xmlns="http://www.w3.org/2000/svg"
                 >
@@ -58,6 +66,8 @@ export const ResourceIcon = (props: ResourceIconProps) => {
                 <svg
                     width={props.size}
                     height={props.size}
+                    x={offsetX}
+                    y={offsetY}
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -73,6 +83,8 @@ export const ResourceIcon = (props: ResourceIconProps) => {
                 <svg
                     width={props.size}
                     height={props.size}
+                    x={offsetX}
+                    y={offsetY}
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -88,6 +100,8 @@ export const ResourceIcon = (props: ResourceIconProps) => {
                 <svg
                     width={props.size}
                     height={props.size}
+                    x={offsetX}
+                    y={offsetY}
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -104,6 +118,8 @@ export const ResourceIcon = (props: ResourceIconProps) => {
                 <svg
                     width={props.size}
                     height={props.size}
+                    x={offsetX}
+                    y={offsetY}
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -143,6 +159,8 @@ export const ResourceIcon = (props: ResourceIconProps) => {
                 <svg
                     width={props.size}
                     height={props.size}
+                    x={offsetX}
+                    y={offsetY}
                     viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -224,48 +242,38 @@ export const ResourceIcon = (props: ResourceIconProps) => {
         case ResourceType.Datasets:
             return (
                 <svg
-                    width="33"
-                    height="32"
-                    viewBox="0 0 33 32"
+                    width={props.size}
+                    height={props.size}
+                    x={offsetX}
+                    y={offsetY}
+                    viewBox="0 0 48 48"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                 >
-                    <g clipPath="url(#clip0_1540_7008)">
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M0.787109 29C0.787109 28.6318 1.08559 28.3333 1.45378 28.3333H31.4538C31.822 28.3333 32.1204 28.6318 32.1204 29C32.1204 29.3682 31.822 29.6666 31.4538 29.6666H1.45378C1.08559 29.6666 0.787109 29.3682 0.787109 29Z"
-                            fill="#808080"
-                        />
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M3.27526 14.8215C3.58782 14.5089 4.01175 14.3333 4.45378 14.3333H8.45378C8.8958 14.3333 9.31973 14.5089 9.63229 14.8215C9.94485 15.134 10.1204 15.558 10.1204 16V29C10.1204 29.3682 9.82197 29.6666 9.45378 29.6666H3.45378C3.08559 29.6666 2.78711 29.3682 2.78711 29V16C2.78711 15.558 2.9627 15.134 3.27526 14.8215ZM4.45378 15.6666C4.36537 15.6666 4.28059 15.7018 4.21807 15.7643C4.15556 15.8268 4.12044 15.9116 4.12044 16V28.3333H8.78711V16C8.78711 15.9116 8.75199 15.8268 8.68948 15.7643C8.62697 15.7018 8.54218 15.6666 8.45378 15.6666H4.45378Z"
-                            fill="#808080"
-                        />
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M13.2753 2.82147C13.5878 2.50891 14.0117 2.33331 14.4538 2.33331H18.4538C18.8958 2.33331 19.3197 2.50891 19.6323 2.82147C19.9448 3.13403 20.1204 3.55795 20.1204 3.99998V29C20.1204 29.3682 19.822 29.6666 19.4538 29.6666H13.4538C13.0856 29.6666 12.7871 29.3682 12.7871 29V3.99998C12.7871 3.55795 12.9627 3.13403 13.2753 2.82147ZM14.4538 3.66665C14.3654 3.66665 14.2806 3.70177 14.2181 3.76428C14.1556 3.82679 14.1204 3.91157 14.1204 3.99998V28.3333H18.7871V3.99998C18.7871 3.91157 18.752 3.82679 18.6895 3.76428C18.627 3.70177 18.5422 3.66665 18.4538 3.66665H14.4538Z"
-                            fill="#808080"
-                        />
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M23.2753 8.82147C23.5878 8.50891 24.0117 8.33331 24.4538 8.33331H28.4538C28.8958 8.33331 29.3197 8.50891 29.6323 8.82147C29.9448 9.13403 30.1204 9.55795 30.1204 9.99998V29C30.1204 29.3682 29.822 29.6666 29.4538 29.6666H23.4538C23.0856 29.6666 22.7871 29.3682 22.7871 29V9.99998C22.7871 9.55795 22.9627 9.13403 23.2753 8.82147ZM24.4538 9.66665C24.3654 9.66665 24.2806 9.70177 24.2181 9.76428C24.1556 9.82679 24.1204 9.91157 24.1204 9.99998V28.3333H28.7871V9.99998C28.7871 9.91157 28.752 9.82679 28.6895 9.76428C28.627 9.70177 28.5422 9.66665 28.4538 9.66665H24.4538Z"
-                            fill="#808080"
-                        />
-                    </g>
-                    <defs>
-                        <clipPath id="clip0_1540_7008">
-                            <rect
-                                width="32"
-                                height="32"
-                                fill="white"
-                                transform="translate(0.454102)"
-                            />
-                        </clipPath>
-                    </defs>
+                    <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M0.5 43.5C0.5 42.9477 0.947715 42.5 1.5 42.5H46.5C47.0523 42.5 47.5 42.9477 47.5 43.5C47.5 44.0523 47.0523 44.5 46.5 44.5H1.5C0.947715 44.5 0.5 44.0523 0.5 43.5Z"
+                        fill={color}
+                    />
+                    <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M4.23223 22.2322C4.70107 21.7634 5.33696 21.5 6 21.5H12C12.663 21.5 13.2989 21.7634 13.7678 22.2322C14.2366 22.7011 14.5 23.337 14.5 24V43.5C14.5 44.0523 14.0523 44.5 13.5 44.5H4.5C3.94772 44.5 3.5 44.0523 3.5 43.5V24C3.5 23.337 3.76339 22.7011 4.23223 22.2322ZM6 23.5C5.86739 23.5 5.74022 23.5527 5.64645 23.6464C5.55268 23.7402 5.5 23.8674 5.5 24V42.5H12.5V24C12.5 23.8674 12.4473 23.7402 12.3536 23.6464C12.2598 23.5527 12.1326 23.5 12 23.5H6Z"
+                        fill={color}
+                    />
+                    <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M19.2322 4.23223C19.7011 3.76339 20.337 3.5 21 3.5H27C27.663 3.5 28.2989 3.76339 28.7678 4.23223C29.2366 4.70107 29.5 5.33696 29.5 6V43.5C29.5 44.0523 29.0523 44.5 28.5 44.5H19.5C18.9477 44.5 18.5 44.0523 18.5 43.5V6C18.5 5.33696 18.7634 4.70107 19.2322 4.23223ZM21 5.5C20.8674 5.5 20.7402 5.55268 20.6464 5.64645C20.5527 5.74022 20.5 5.86739 20.5 6V42.5H27.5V6C27.5 5.86739 27.4473 5.74022 27.3536 5.64645C27.2598 5.55268 27.1326 5.5 27 5.5H21Z"
+                        fill={color}
+                    />
+                    <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M34.2322 13.2322C34.7011 12.7634 35.337 12.5 36 12.5H42C42.663 12.5 43.2989 12.7634 43.7678 13.2322C44.2366 13.7011 44.5 14.337 44.5 15V43.5C44.5 44.0523 44.0523 44.5 43.5 44.5H34.5C33.9477 44.5 33.5 44.0523 33.5 43.5V15C33.5 14.337 33.7634 13.7011 34.2322 13.2322ZM36 14.5C35.8674 14.5 35.7402 14.5527 35.6464 14.6464C35.5527 14.7402 35.5 14.8674 35.5 15V42.5H42.5V15C42.5 14.8674 42.4473 14.7402 42.3536 14.6464C42.2598 14.5527 42.1326 14.5 42 14.5H36Z"
+                        fill={color}
+                    />
                 </svg>
             );
         default:
