@@ -11,6 +11,12 @@ export default defineBuildConfig({
             provides: ["onestop4all.SearchService"]
         }
     },
+    properties: {
+        solr: {
+            url: "http://localhost:8983/solr",
+            coreSelector: "metadata"
+        }
+    },
     ui: {
         references: [
             "runtime.ApplicationContext",
