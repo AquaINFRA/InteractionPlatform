@@ -5,6 +5,7 @@ import { RepositorySearchHandler } from "./search/result-handler/repository-hand
 import { SearchResultHandler } from "./search/result-handler/search-result-handler";
 import { ServiceOptions } from "@open-pioneer/runtime";
 import { OrganizationSearchHandler } from "./search/result-handler/organization-handler";
+import { ArticleSearchHandler } from "./search/result-handler/article-handler";
 
 export interface SearchResultItem {
     id: string;
@@ -58,7 +59,8 @@ export class SearchService {
 
     private searchResultHandlers: SearchResultHandler[] = [
         new RepositorySearchHandler(),
-        new OrganizationSearchHandler()
+        new OrganizationSearchHandler(),
+        new ArticleSearchHandler()
     ];
 
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
