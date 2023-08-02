@@ -6,6 +6,7 @@ import { SearchResultHandler } from "./search/result-handler/search-result-handl
 import { ServiceOptions } from "@open-pioneer/runtime";
 import { OrganizationSearchHandler } from "./search/result-handler/organization-handler";
 import { ArticleSearchHandler } from "./search/result-handler/article-handler";
+import { mapFromResourceType, mapToResourceType } from "./ResourceTypeUtils";
 
 export interface SearchResultItem {
     id: string;
@@ -36,9 +37,23 @@ interface SolrSearchResponse {
     docs: SolrSearchResultItem[];
 }
 
+interface SolrFacetResponse {
+    facet_fields: {
+        [key: string]: [];
+    };
+}
+
+export interface Facets {
+    resourceType: {
+        resourceType: ResourceType;
+        count: number;
+    }[];
+}
+
 export interface SearchResult {
     count: number;
     results: SearchResultItem[];
+    facets: Facets;
 }
 
 export interface SolrConfig {
@@ -77,24 +92,74 @@ export class SearchService {
             queryParams.set("rows", searchParams.pageSize.toString());
         }
 
+        // add parameter to request facets
+        queryParams.set("facet", "true");
+        // parameter to get facet for resource type
+        queryParams.set("facet.field", "type");
+
+        if (searchParams.resourceType?.length) {
+            const mapping = searchParams.resourceType.map((e) =>
+                mapFromResourceType(e as ResourceType)
+            );
+            queryParams.set("fq", `type:(${mapping.map((e) => `"${e}"`).join(" OR ")})`);
+        }
+
         // TODO: remove proxy later
         const url =
             "http://localhost:8080/" +
             `${this.config.url}/${this.config.coreSelector}/select` +
             `?${queryParams.toString()}`;
         return fetch(url).then((response) =>
-            response.json().then((responseData: { response: SolrSearchResponse }) => {
-                const { response } = responseData;
-                if (response.numFound !== undefined && response.docs !== undefined) {
-                    return {
-                        count: response.numFound,
-                        results: this.createResultEntries(response.docs)
-                    };
-                } else {
-                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
-                }
-            })
+            response
+                .json()
+                .then(
+                    (responseData: {
+                        response: SolrSearchResponse;
+                        facet_counts: SolrFacetResponse;
+                    }) => {
+                        const { response } = responseData;
+                        if (response.numFound !== undefined && response.docs !== undefined) {
+                            return {
+                                count: response.numFound,
+                                results: this.createResultEntries(response.docs),
+                                facets: this.createFacets(responseData.facet_counts)
+                            };
+                        } else {
+                            throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                        }
+                    }
+                )
         );
+    }
+
+    private createFacets(facet_counts: SolrFacetResponse): Facets {
+        const temp = this.createResourceTypeFacet(facet_counts);
+        return {
+            resourceType: temp
+        };
+    }
+
+    private createResourceTypeFacet(facet_counts: SolrFacetResponse) {
+        const resourceTypeFacet = facet_counts.facet_fields["type"];
+        if (resourceTypeFacet) {
+            return this.createFragments(resourceTypeFacet).map((e) => {
+                return {
+                    resourceType: mapToResourceType(e.label),
+                    count: e.count
+                };
+            });
+        }
+        return [];
+    }
+
+    private createFragments(facetResponse: any[]) {
+        type FacetFragment = { label: string; count: number };
+        const entries: FacetFragment[] = [];
+        for (let i = 0; i < facetResponse.length; i += 2) {
+            const [label, count] = facetResponse.slice(i, i + 2);
+            entries.push({ label, count });
+        }
+        return entries;
     }
 
     private createResultEntries(docs: SolrSearchResultItem[]): SearchResultItem[] {

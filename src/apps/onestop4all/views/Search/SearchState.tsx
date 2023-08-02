@@ -105,6 +105,14 @@ export const SearchState = (props: PropsWithChildren) => {
             .then((result) => {
                 setIsLoaded(true);
                 setSearchResults(result);
+                const resourceTypeFacet = result.facets.resourceType.map((e) => {
+                    return {
+                        resourceType: e.resourceType,
+                        count: e.count,
+                        selected: selectedResoureTypes.findIndex((r) => r === e.resourceType) >= 0
+                    } as SelectableResourceType;
+                });
+                setSelecteableResourceTypes(resourceTypeFacet);
             })
             .catch((error) => {
                 setIsLoaded(true);
@@ -122,7 +130,6 @@ export const SearchState = (props: PropsWithChildren) => {
         if (selectedResoureTypes.length > 0) {
             params[UrlSearchParameterType.ResourceType] = selectedResoureTypes;
         }
-        setSelectableResourceTypes();
 
         if (spatialFilter.length > 0) {
             params[UrlSearchParameterType.SpatialFilter] = spatialFilter.join(",");
@@ -133,123 +140,6 @@ export const SearchState = (props: PropsWithChildren) => {
             search: `?${createSearchParams({ ...params })}`
         });
     }, [searchTerm, selectedResoureTypes, spatialFilter]);
-
-    function setSelectableResourceTypes() {
-        setSelecteableResourceTypes([
-            {
-                resourceType: ResourceType.Repos,
-                count: 245,
-                selected: selectedResoureTypes.findIndex((r) => r === ResourceType.Repos) >= 0
-            },
-            {
-                resourceType: ResourceType.Articles,
-                count: 3234,
-                selected: selectedResoureTypes.findIndex((r) => r === ResourceType.Articles) >= 0
-            },
-            {
-                resourceType: ResourceType.Educational,
-                count: 15,
-                selected: selectedResoureTypes.findIndex((r) => r === ResourceType.Educational) >= 0
-            },
-            {
-                resourceType: ResourceType.Tools,
-                count: 9,
-                selected: selectedResoureTypes.findIndex((r) => r === ResourceType.Tools) >= 0
-            },
-            {
-                resourceType: ResourceType.Organisations,
-                count: 12,
-                selected:
-                    selectedResoureTypes.findIndex((r) => r === ResourceType.Organisations) >= 0
-            },
-            {
-                resourceType: ResourceType.Services,
-                count: 2,
-                selected: selectedResoureTypes.findIndex((r) => r === ResourceType.Services) >= 0
-            },
-            {
-                resourceType: ResourceType.Standards,
-                count: 1,
-                selected: selectedResoureTypes.findIndex((r) => r === ResourceType.Standards) >= 0
-            }
-        ]);
-    }
-
-    // function setResults(result: SearchResult) {
-    // setSearchResults({
-    //     count: Math.floor(Math.random() * 1000),
-    //     results: [
-    //         {
-    //             id: 1,
-    //             title: "NFDI Consortium Earth System Sciences - Proposal 2020 revised",
-    //             abstract:
-    //                 "Bernard, Lars; Braesicke, Peter; Bertelmann, Roland; Frickenhaus, Stephan; Gödde,Hildegard; + 13 more",
-    //             date: new Date(2021, 10),
-    //             resourceType: ResourceType.Documents,
-    //             url: ""
-    //         },
-    //         {
-    //             id: 2,
-    //             title: "World Data Center for Climate",
-    //             abstract:
-    //                 "The mission of World Data Center for Climate (WDCC) is to provide central support for the German and European climate research community. The WDCC is member of the ISC's World Data System. Emphasis is on development and implementation of best practice methods for Earth System data management. Data for and from climate research are collected, stored and disseminated. The WDCC is restricted to data products. Cooperations exist with thematically corresponding data centres of, e.g., earth observation, meteorology, oceanography, paleo climate and environmental sciences. The services of WDCC are also available to external users at cost price. A special service for the direct integration of research data in scientific publications has been developed. The editorial process at WDCC ensures the quality of metadata and research data in collaboration with the data producers. A citation code and a digital identifier (DOI) are provided and registered together with citation information at the DOI registration agency DataCite.",
-    //             date: new Date(2018, 11),
-    //             resourceType: ResourceType.Repos,
-    //             url: "repository/"
-    //         },
-    //         {
-    //             id: 3,
-    //             title: "World Data Center for Climate",
-    //             abstract:
-    //                 "The mission of World Data Center for Climate (WDCC) is to provide central support for the German and European climate research community. The WDCC is member of the ISC's World Data System. Emphasis is on development and implementation of best practice methods for Earth System data management. Data for and from climate research are collected, stored and disseminated. The WDCC is restricted to data products. Cooperations exist with thematically corresponding data centres of, e.g., earth observation, meteorology, oceanography, paleo climate and environmental sciences. The services of WDCC are also available to external users at cost price. A special service for the direct integration of research data in scientific publications has been developed. The editorial process at WDCC ensures the quality of metadata and research data in collaboration with the data producers. A citation code and a digital identifier (DOI) are provided and registered together with citation information at the DOI registration agency DataCite.",
-    //             location: "Hamburg",
-    //             resourceType: ResourceType.Organisations,
-    //             url: "organisation/"
-    //         },
-    //         {
-    //             id: 4,
-    //             title: "Author guidelines",
-    //             abstract: "Thomas Rose, Dominik C. Hezel",
-    //             date: new Date(2023, 2),
-    //             resourceType: ResourceType.Articles,
-    //             url: ""
-    //         },
-    //         {
-    //             id: 5,
-    //             title: "Earth System Science Data Analytics: Foundations of Image Processing",
-    //             abstract: "Farzaneh Sadeghi, Carsten Keßler",
-    //             date: new Date(2030, 5),
-    //             resourceType: ResourceType.Educational,
-    //             url: "oer/"
-    //         },
-    //         {
-    //             id: 6,
-    //             title: "IPFS Pinning Service for Open Climate Research Data",
-    //             abstract:
-    //                 "The InterPlanetary File System (IPFS) is a novel decentralized file storage network that allows users to store and share files in a distributed manner, which can make it more resilient if individual infrastructure components fail. It also allows for faster access to content as users can get files directly from other users instead of having to go through a central server. However, one of the challenges of using IPFS is ensuring that the files remain available over time. This is where an IPFS pinning service offers a solution. An IPFS pinning service is a type of service that allows users to store and maintain the availability of their files on the IPFS network. The goal of an IPFS pinning service is to provide a reliable and trusted way for users to ensure that their files remain accessible on the IPFS network. This is accomplished by maintaining a copy of the file on the service's own storage infrastructure, which is then pinned to the IPFS network. This allows users to access the file even if the original source becomes unavailable.       We explored the use of the IPFS for scientific data with a focus on climate data. We set up an IPFS node running on a cloud instance at the German Climate Computing Center where selected scientists can pin their data and make them accessible to the public via the IPFS infrastructure. IPFS is a good choice for climate data, because the open network architecture strengthens open science efforts and enables FAIR data processing workflows. Data within the IPFS is freely accessible to scientists regardless of their location and offers fast access rates to large files. In addition, data within the IPFS is immutable, which ensures that the content of a content identifier does not change over time. Due to the recent development of the IPFS, the project outcomes are novel data science developments for the earth system science and are potentially relevant building blocks to be included in the earth system science community.",
-    //             date: new Date(2022, 1),
-    //             resourceType: ResourceType.Tools,
-    //             url: "tools_software/"
-    //         },
-    //         {
-    //             id: 7,
-    //             title: "WMS-Dienst des Deutschen Wetterdienst",
-    //             abstract:
-    //                 "Über diesen Dienst werden die statistischen Daten der Stadt Osnabrück bereitgestellt.",
-    //             resourceType: ResourceType.Services,
-    //             url: "service/"
-    //         },
-    //         {
-    //             id: 8,
-    //             title: "OGC Web Map Service",
-    //             abstract: "Open Geospatial Consortium",
-    //             date: new Date(2014, 6),
-    //             resourceType: ResourceType.Standards,
-    //             url: "standard/"
-    //         }
-    //     ]
-    // });
-    // }
 
     const state: ISearchState = {
         searchTerm,
