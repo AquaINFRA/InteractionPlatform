@@ -25,7 +25,7 @@ export interface SelectableResourceType {
 
 export interface ISearchState {
     searchTerm: string;
-    setSearchterm(searchTerm: string): void;
+    setSearchTerm(searchTerm: string): void;
     selectedResoureTypes: string[];
     setSelectedResourceTypes(types: string[]): void;
     selectableResourceTypes: SelectableResourceType[];
@@ -66,7 +66,7 @@ export const SearchState = (props: PropsWithChildren) => {
     );
 
     // init selectable resourceTypes
-    const [selecteableResourceTypes, setSelecteableResourceTypes] = useState<
+    const [selectableResourceTypes, setSelecteableResourceTypes] = useState<
         SelectableResourceType[]
     >([]);
 
@@ -143,18 +143,12 @@ export const SearchState = (props: PropsWithChildren) => {
 
     const state: ISearchState = {
         searchTerm,
-        setSearchterm: function (searchTerm: string) {
-            setSearchTerm(searchTerm);
-        },
+        setSearchTerm,
         selectedResoureTypes,
-        setSelectedResourceTypes: function (types: string[]): void {
-            setSelectedResourceTypes(types);
-        },
-        selectableResourceTypes: selecteableResourceTypes,
+        setSelectedResourceTypes,
+        selectableResourceTypes,
         spatialFilter,
-        setSpatialFilter: function (sf: number[]): void {
-            setSpatialFilter(sf);
-        },
+        setSpatialFilter,
         searchResults,
         isLoaded
     };

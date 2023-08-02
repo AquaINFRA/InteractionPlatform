@@ -21,9 +21,7 @@ export function Chips() {
         chips.push({
             title: "SearchTerm",
             values: [st],
-            deleteCb: () => {
-                searchState.setSearchterm("");
-            }
+            deleteCb: () => searchState.setSearchTerm("")
         });
     }
 
@@ -33,9 +31,7 @@ export function Chips() {
         chips.push({
             title: "Resource Type",
             values: resourceTypes,
-            deleteCb: () => {
-                searchState.setSelectedResourceTypes([]);
-            }
+            deleteCb: () => searchState.setSelectedResourceTypes([])
         });
     }
 
@@ -48,9 +44,7 @@ export function Chips() {
         chips.push({
             title: "Spatial Coverage",
             values: spatialFilter.map((e) => `${e}`),
-            deleteCb: () => {
-                searchState.setSpatialFilter([]);
-            }
+            deleteCb: () => searchState.setSpatialFilter([])
         });
     }
 

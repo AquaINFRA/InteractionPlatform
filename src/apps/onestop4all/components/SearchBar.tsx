@@ -28,7 +28,7 @@ export function SearchBar() {
 
     function startSearch(): void {
         if (searchState) {
-            searchState.setSearchterm(searchTerm);
+            searchState.setSearchTerm(searchTerm);
         } else {
             const params: UrlSearchParams = {};
             if (searchTerm) {
