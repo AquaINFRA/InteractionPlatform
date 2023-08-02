@@ -80,13 +80,17 @@ export class SearchService {
 
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
         console.log("Search with following parameters: " + JSON.stringify(searchParams));
-        // TODO: use search term
         // TODO: use pagesize
         const queryParams: URLSearchParams = new URLSearchParams();
 
         queryParams.set("ident", "true");
         queryParams.set("q.op", "OR");
-        queryParams.set("q", "*:*");
+        if (searchParams.searchTerm) {
+            queryParams.set("q", searchParams.searchTerm);
+            queryParams.set("df", "collector");
+        } else {
+            queryParams.set("q", "*:*");
+        }
 
         if (searchParams.pageSize !== undefined) {
             queryParams.set("rows", searchParams.pageSize.toString());
