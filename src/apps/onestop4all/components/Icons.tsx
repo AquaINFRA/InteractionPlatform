@@ -554,7 +554,7 @@ export const OrganisationsIcon = () => (
 
 export const ResultsNavigationLeftLeft = () => (
     <svg width="17" height="26" viewBox="0 0 17 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g opacity="0.3">
+        <g>
             <path
                 d="M15.2246 23.5L3.67461 13L15.2246 2.5"
                 stroke="#05668D"
@@ -569,7 +569,6 @@ export const ResultsNavigationLeftLeft = () => (
 export const ResultsNavigationLeft = () => (
     <svg width="17" height="24" viewBox="0 0 17 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
-            opacity="0.3"
             d="M14.7754 22.5L3.22539 12L14.7754 1.5"
             stroke="#05668D"
             strokeWidth="3"

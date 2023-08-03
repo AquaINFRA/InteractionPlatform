@@ -8,13 +8,17 @@ import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
 export enum UrlSearchParameterType {
     Searchterm = "searchterm",
     ResourceType = "resourcetype",
-    SpatialFilter = "spatialfilter"
+    SpatialFilter = "spatialfilter",
+    PageSize = "pageSize",
+    PageStart = "pageStart"
 }
 
 export interface UrlSearchParams {
     [UrlSearchParameterType.Searchterm]?: string;
     [UrlSearchParameterType.ResourceType]?: string[];
     [UrlSearchParameterType.SpatialFilter]?: string;
+    [UrlSearchParameterType.PageSize]?: string;
+    [UrlSearchParameterType.PageStart]?: string;
 }
 
 export interface SelectableResourceType {
@@ -31,6 +35,10 @@ export interface ISearchState {
     selectableResourceTypes: SelectableResourceType[];
     spatialFilter: number[];
     setSpatialFilter(sf: number[]): void;
+    pageSize: number;
+    setPageSize(pageSize: number): void;
+    pageStart: number;
+    setPageStart(pageSize: number): void;
     searchResults: SearchResult | undefined;
     isLoaded: boolean;
 }
@@ -65,6 +73,14 @@ export const SearchState = (props: PropsWithChildren) => {
         searchParams.get(UrlSearchParameterType.Searchterm) || ""
     );
 
+    // init page size
+    const pSize = parseInt(searchParams.get(UrlSearchParameterType.PageSize) || "10");
+    const [pageSize, setPageSize] = useState<number>(pSize);
+
+    // init page start
+    const pStart = parseInt(searchParams.get(UrlSearchParameterType.PageStart) || "0");
+    const [pageStart, setPageStart] = useState<number>(pStart);
+
     // init selectable resourceTypes
     const [selectableResourceTypes, setSelecteableResourceTypes] = useState<
         SelectableResourceType[]
@@ -94,13 +110,14 @@ export const SearchState = (props: PropsWithChildren) => {
     const [spatialFilter, setSpatialFilter] = useState(sp);
 
     useEffect(() => {
-        // sample fetch
         setIsLoaded(false);
         searchSrvc
             .doSearch({
                 searchTerm,
                 resourceType: selectedResoureTypes,
-                spatialFilter
+                spatialFilter,
+                pageSize,
+                pageStart
             })
             .then((result) => {
                 setIsLoaded(true);
@@ -135,11 +152,19 @@ export const SearchState = (props: PropsWithChildren) => {
             params[UrlSearchParameterType.SpatialFilter] = spatialFilter.join(",");
         }
 
+        if (pageSize && pageSize !== 10) {
+            params[UrlSearchParameterType.PageSize] = `${pageSize}`;
+        }
+
+        if (pageStart && pageStart !== 0) {
+            params[UrlSearchParameterType.PageStart] = `${pageStart}`;
+        }
+
         navigate({
             pathname: "/search",
             search: `?${createSearchParams({ ...params })}`
         });
-    }, [searchTerm, selectedResoureTypes, spatialFilter]);
+    }, [searchTerm, selectedResoureTypes, spatialFilter, pageSize, pageStart]);
 
     const state: ISearchState = {
         searchTerm,
@@ -149,6 +174,10 @@ export const SearchState = (props: PropsWithChildren) => {
         selectableResourceTypes,
         spatialFilter,
         setSpatialFilter,
+        pageSize,
+        setPageSize,
+        pageStart,
+        setPageStart,
         searchResults,
         isLoaded
     };

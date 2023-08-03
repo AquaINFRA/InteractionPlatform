@@ -12,6 +12,7 @@ import { SpatialCoverageFacet } from "./Facets/SpatialCoverageFacet/SpatialCover
 import { SubjectFacet } from "./Facets/SubjectFacet/SubjectFacet";
 import { TemporalCoverageFacet } from "./Facets/TemporalCoverageFacet/TemporalCoverageFacet";
 import { ResultCountSelector } from "./ResultCountSelector/ResultCountSelector";
+import { ResultPaging } from "./ResultPaging/ResultPaging";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { useSearchState } from "./SearchState";
 import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
@@ -98,7 +99,7 @@ export function SearchView() {
                             </Box>
                             <Box className="seperator"></Box>
                             <Box hideFrom="custombreak">
-                                <ResultsNavigation result={1} of={100} />
+                                <ResultPaging></ResultPaging>
                             </Box>
                         </Box>
                     ) : (
@@ -109,7 +110,7 @@ export function SearchView() {
 
                     <Flex flex="0 0 30%" hideBelow="custombreak" flexDirection="column">
                         <Box>
-                            <ResultsNavigation result={1} of={100} />
+                            <ResultPaging></ResultPaging>
                         </Box>
                         <Box padding={"64px 0px 32px"} ref={menu}>
                             <ResourceTypeFacet></ResourceTypeFacet>
@@ -125,7 +126,7 @@ export function SearchView() {
                         </Box>
                         <Spacer></Spacer>
                         <Box>
-                            <ResultsNavigation result={1} of={100} />
+                            <ResultPaging></ResultPaging>
                         </Box>
                     </Flex>
                 </Flex>

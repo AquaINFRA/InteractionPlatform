@@ -1,46 +1,81 @@
-import { Flex, Divider, Box } from "@open-pioneer/chakra-integration";
+import { Box, Flex, SystemStyleObject } from "@open-pioneer/chakra-integration";
+
 import {
-    ResultsNavigationLeftLeft,
     ResultsNavigationLeft,
-    ResultsNavigationRightRight,
-    ResultsNavigationRight
+    ResultsNavigationLeftLeft,
+    ResultsNavigationRight,
+    ResultsNavigationRightRight
 } from "../Icons";
 
-export const ResultsNavigation = (props: { result: number; of: number }) => {
-    const { result, of } = props;
+export interface ResultsNavigationProps {
+    result: number;
+    of: number;
+    label?: string;
+    stepBack?: () => void;
+    stepToStart?: () => void;
+    stepFoward?: () => void;
+    stepToEnd?: () => void;
+}
+
+export const ResultsNavigation = (props: ResultsNavigationProps) => {
+    const { result, of, label = "result", stepBack, stepFoward, stepToEnd, stepToStart } = props;
+
+    const canStepBack = result > 1;
+    const canStepForward = result < of;
+
+    const navigationHoverStyle: SystemStyleObject = {
+        cursor: "pointer"
+    };
+
     return (
         <Flex alignItems="center">
-            <Box>
-                <a href="/search?">
-                    <ResultsNavigationLeftLeft />
-                </a>
+            <Box
+                _hover={canStepBack ? navigationHoverStyle : {}}
+                onClick={() => {
+                    canStepBack && stepToStart && stepToStart();
+                }}
+                opacity={canStepBack ? "1" : "0.3"}
+            >
+                <ResultsNavigationLeftLeft />
             </Box>
 
-            <Box>
-                <a href="/search?">
-                    <ResultsNavigationLeft />
-                </a>
+            <Box
+                _hover={canStepBack ? navigationHoverStyle : {}}
+                onClick={() => {
+                    canStepBack && stepBack && stepBack();
+                }}
+                opacity={canStepBack ? "1" : "0.3"}
+            >
+                <ResultsNavigationLeft />
             </Box>
 
-            <Divider className="resultsNavigationLine" />
+            <Box className="resultsNavigationLine seperator" mr="16px" />
 
             <Box className="resultsNavigationText">
-                Result <span className="resultHit">{result}</span> of{" "}
+                {label} <span className="resultHit">{result}</span> of{" "}
                 <span className="resultHit">{of}</span>
             </Box>
 
-            <Divider className="resultsNavigationLine" />
+            <Box className="resultsNavigationLine seperator" ml="16px" />
 
-            <Box>
-                <a href="/search?">
-                    <ResultsNavigationRight />
-                </a>
+            <Box
+                _hover={canStepForward ? navigationHoverStyle : {}}
+                onClick={() => {
+                    canStepForward && stepFoward && stepFoward();
+                }}
+                opacity={canStepForward ? "1" : "0.3"}
+            >
+                <ResultsNavigationRight />
             </Box>
 
-            <Box>
-                <a href="/search?">
-                    <ResultsNavigationRightRight />
-                </a>
+            <Box
+                _hover={canStepForward ? navigationHoverStyle : {}}
+                onClick={() => {
+                    canStepForward && stepToEnd && stepToEnd();
+                }}
+                opacity={canStepForward ? "1" : "0.3"}
+            >
+                <ResultsNavigationRightRight />
             </Box>
         </Flex>
     );

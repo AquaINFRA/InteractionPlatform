@@ -7,14 +7,18 @@ import {
     MenuItem,
     MenuList
 } from "@open-pioneer/chakra-integration";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { DropdownArrowIcon } from "../../../components/Icons";
 import { PrimaryColor } from "../../../Theme";
+import { useSearchState } from "../SearchState";
 
 export function ResultCountSelector() {
     const [currentPageSize, setCurrentPageSize] = useState(10);
+    const searchState = useSearchState();
     const pageOptions = [10, 50, 100, 200, 500];
+
+    useEffect(() => setCurrentPageSize(searchState.pageSize), [searchState.pageSize]);
 
     return (
         <Box fontSize="12px">
@@ -33,7 +37,7 @@ export function ResultCountSelector() {
                 </MenuButton>
                 <MenuList>
                     {pageOptions.map((e, i) => (
-                        <MenuItem key={i} onClick={() => setCurrentPageSize(e)}>
+                        <MenuItem key={i} onClick={() => searchState.setPageSize(e)}>
                             {e} Results
                         </MenuItem>
                     ))}

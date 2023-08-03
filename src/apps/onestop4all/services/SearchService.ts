@@ -22,7 +22,7 @@ export interface SearchRequestParams {
     searchTerm?: string;
     resourceType?: string[];
     pageSize?: number;
-    pageNumber?: number;
+    pageStart?: number;
     spatialFilter?: number[];
 }
 
@@ -94,6 +94,12 @@ export class SearchService {
 
         if (searchParams.pageSize !== undefined) {
             queryParams.set("rows", searchParams.pageSize.toString());
+            if (searchParams.pageStart !== undefined) {
+                queryParams.set(
+                    "start",
+                    (searchParams.pageStart * searchParams.pageSize).toString()
+                );
+            }
         }
 
         // add parameter to request facets
