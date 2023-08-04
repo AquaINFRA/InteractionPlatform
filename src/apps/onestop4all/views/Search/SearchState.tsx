@@ -103,7 +103,7 @@ export const SearchState = (props: PropsWithChildren) => {
     const coordString = searchParams.get(UrlSearchParameterType.SpatialFilter);
     if (coordString) {
         const coords = coordString.split(",").map((c) => Number.parseFloat(c));
-        if (coords.length === 2 || coords.length === 4) {
+        if (coords.length === 4) {
             sp = coords;
         }
     }
@@ -114,7 +114,7 @@ export const SearchState = (props: PropsWithChildren) => {
         searchSrvc
             .doSearch({
                 searchTerm,
-                resourceType: selectedResoureTypes,
+                resourceTypes: selectedResoureTypes,
                 spatialFilter,
                 pageSize,
                 pageStart
@@ -148,7 +148,7 @@ export const SearchState = (props: PropsWithChildren) => {
             params[UrlSearchParameterType.ResourceType] = selectedResoureTypes;
         }
 
-        if (spatialFilter.length > 0) {
+        if (spatialFilter.length === 4) {
             params[UrlSearchParameterType.SpatialFilter] = spatialFilter.join(",");
         }
 
