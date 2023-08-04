@@ -168,14 +168,26 @@ export const SearchState = (props: PropsWithChildren) => {
 
     const state: ISearchState = {
         searchTerm,
-        setSearchTerm,
+        setSearchTerm: (value) => {
+            setSearchTerm(value);
+            setPageStart(0);
+        },
         selectedResoureTypes,
-        setSelectedResourceTypes,
+        setSelectedResourceTypes: (values) => {
+            setSelectedResourceTypes(values);
+            setPageStart(0);
+        },
         selectableResourceTypes,
         spatialFilter,
-        setSpatialFilter,
+        setSpatialFilter: (value) => {
+            setSpatialFilter(value);
+            setPageStart(0);
+        },
         pageSize,
-        setPageSize,
+        setPageSize: (value) => {
+            setPageSize(value);
+            setPageStart(0);
+        },
         pageStart,
         setPageStart,
         searchResults,
