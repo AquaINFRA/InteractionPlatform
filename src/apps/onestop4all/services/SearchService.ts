@@ -174,9 +174,8 @@ export class SearchService {
     }
 
     private createFacets(facet_counts: SolrFacetResponse): Facets {
-        const temp = this.createResourceTypeFacet(facet_counts);
         return {
-            resourceType: temp
+            resourceType: this.createResourceTypeFacet(facet_counts)
         };
     }
 
@@ -193,12 +192,14 @@ export class SearchService {
         return [];
     }
 
-    private createFragments(facetResponse: any[]) {
+    private createFragments(facetResponse: Array<string | number>) {
         type FacetFragment = { label: string; count: number };
         const entries: FacetFragment[] = [];
         for (let i = 0; i < facetResponse.length; i += 2) {
             const [label, count] = facetResponse.slice(i, i + 2);
-            entries.push({ label, count });
+            if (typeof label === "string" && typeof count === "number") {
+                entries.push({ label, count });
+            }
         }
         return entries;
     }

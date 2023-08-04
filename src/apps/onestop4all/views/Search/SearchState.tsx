@@ -135,6 +135,7 @@ export const SearchState = (props: PropsWithChildren) => {
                 setIsLoaded(true);
                 console.error(error);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParams]);
 
     useEffect(() => {
@@ -164,6 +165,7 @@ export const SearchState = (props: PropsWithChildren) => {
             pathname: "/search",
             search: `?${createSearchParams({ ...params })}`
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchTerm, selectedResoureTypes, spatialFilter, pageSize, pageStart]);
 
     const state: ISearchState = {
