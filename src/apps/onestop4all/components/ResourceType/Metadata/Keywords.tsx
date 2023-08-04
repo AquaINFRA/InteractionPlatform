@@ -6,7 +6,9 @@ export const Keywords = (props: { keywords: Array<string>; tag: string }) => {
     return (
         <Box className="metadataKeywords">
             <div className="seperator"></div>
-            <span className="metadataTag">Keywords:&nbsp;</span>
+            <span className="metadataTag">
+                {tag == "keyword" ? "Keywords" : tag == "subject" ? "Subjects" : ""}:&nbsp;
+            </span>
             {keywords.map((elem: string, j: number) => (
                 <a
                     href={"/search?keyword=" + elem}

@@ -7,7 +7,7 @@
 }
 
 .actionButton {
-    display: flex;
+    //display: flex;
     padding: 14px 0px;
     justify-content: center;
     align-items: center;
@@ -35,4 +35,8 @@
     line-height: 22px; /* 183.333% */
     letter-spacing: 0.24px;
     text-transform: uppercase;
+}
+
+.actionButtonLink {
+    display: contents;
 }

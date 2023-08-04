@@ -1,4 +1,10 @@
-import { Box, Container, Image, Flex, Divider } from "@open-pioneer/chakra-integration";
+import { Box, Container, Image, Flex, Divider, Button } from "@open-pioneer/chakra-integration";
+import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
+import { useParams, Link } from "react-router-dom";
+import { useService } from "open-pioneer:react-hooks";
+import { useEffect, useState } from "react";
+import { useToast } from "@open-pioneer/chakra-integration";
+
 import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
@@ -6,10 +12,30 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
-import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
 import { MetadataSourceIcon, InfoIcon } from "../../components/Icons";
 
+export interface RepositoryMetadataResponse {
+    homepage: string;
+    title: string;
+    publisher: string;
+    theme: string;
+    keyword?: string;
+    description: string;
+}
+
 export function RepositoryView() {
+    const id = useParams().id as string;
+    const searchSrvc = useService("onestop4all.SearchService");
+    const [metadata, setMetadata] = useState<RepositoryMetadataResponse>();
+    const toast = useToast();
+
+    useEffect(() => {
+        searchSrvc.getMetadata(id).then((result) => {
+            setMetadata(result.results[0]);
+        });
+    }, [id]);
+
+    console.log(metadata);
     const metadataResponse = {
         resourceType: "Repositories / Archives",
         title: "World Data Center for Climate",
@@ -66,7 +92,30 @@ export function RepositoryView() {
     };
 
     const fun = () => {
-        console.log("This is a fun");
+        console.log(metadata);
+    };
+
+    const copyToClipBoard = () => {
+        if (metadata != undefined) {
+            navigator.clipboard.writeText(metadata.homepage);
+            //TO DO: There is sth. wrong with the tooltip!
+            //TO DO: Create reusable function/component out of it
+            return toast({
+                title: "Copied to clipboard",
+                status: "success",
+                duration: 2000,
+                position: "bottom-right",
+                isClosable: true
+            });
+        } else {
+            return toast({
+                title: "Could not copy to clipboard",
+                status: "error",
+                duration: 2000,
+                position: "bottom-right",
+                isClosable: true
+            });
+        }
     };
 
     return (
@@ -80,92 +129,99 @@ export function RepositoryView() {
                     <SearchBar></SearchBar>
                 </Container>
             </Box>
-
-            <Container maxW="80%">
-                <Box height="80px" />
-                <Flex gap="10%">
-                    <Box w="65%">
-                        <ResourceTypeHeader resType={metadataResponse["resourceType"]} />
-                        <Box className="title" pt="15px">
-                            {metadataResponse["title"]}
+            {metadata != undefined ? (
+                <Container maxW="80%">
+                    <Box height="80px" />
+                    <Flex gap="10%">
+                        <Box w="65%">
+                            <ResourceTypeHeader resType="Repositories / Archives" />
+                            <Box className="title" pt="15px">
+                                {metadata.title}
+                            </Box>
+                            <Box pt="36px">
+                                <Metadata
+                                    metadataElements={[
+                                        {
+                                            tag: "Publisher",
+                                            val: metadata.publisher
+                                        },
+                                        {
+                                            tag: "Repository URL",
+                                            val: metadata.homepage
+                                        },
+                                        {
+                                            tag: "Subjects",
+                                            val: metadata.theme
+                                        },
+                                        {
+                                            tag: "Keywords",
+                                            val: metadata.keyword
+                                        },
+                                        {
+                                            tag: "Label",
+                                            val: "NFDI4Earth Label"
+                                        }
+                                    ]}
+                                    visibleElements={2}
+                                    expandedByDefault={false}
+                                />
+                            </Box>
+                            <Box pt="80px">
+                                <Abstract abstractText={metadata.description} />
+                            </Box>
                         </Box>
-                        <Box pt="36px">
-                            <Metadata
-                                metadataElements={[
-                                    {
-                                        tag: "Date of publication",
-                                        val: metadataResponse["dateOfPublication"]
-                                    },
-                                    {
-                                        tag: "Repository URL",
-                                        val: metadataResponse["repositoryUrl"]
-                                    },
-                                    {
-                                        tag: "License",
-                                        val: metadataResponse["license"]
-                                    },
-                                    {
-                                        tag: "Subjects",
-                                        val: metadataResponse["subjects"]
-                                    },
-                                    {
-                                        tag: "Keywords",
-                                        val: metadataResponse["keywords"]
-                                    },
-                                    {
-                                        tag: "Label",
-                                        val: metadataResponse["label"]
-                                    }
-                                ]}
-                                visibleElements={3}
-                                expandedByDefault={true}
-                            />
-                        </Box>
-                        <Box pt="80px">
-                            <Abstract abstractText={metadataResponse["abstract"]} />
-                        </Box>
-                    </Box>
-                    <Box w="25%">
-                        <ResultsNavigation result={1} of={100} />
-                        <Box className="actionButtonGroup" pt="74px">
-                            <ActionButton
-                                label="Visit repository"
-                                icon={<ExternalLinkIcon color="white" />}
-                                variant="solid"
-                                fun={fun}
-                            />
-                            <ActionButton
-                                label="Open user policy"
-                                icon={<InfoIcon />}
-                                variant="outline"
-                                fun={fun}
-                            />
-                            <ActionButton
-                                label="Visit metadata source"
-                                icon={<MetadataSourceIcon color="#05668D" />}
-                                variant="outline"
-                                fun={fun}
-                            />
-                            <ActionButton
-                                label="Copy permalink"
-                                icon={<LinkIcon color="#05668D" />}
-                                variant="outline"
-                                fun={fun}
-                            />
-                        </Box>
-                    </Box>
-                </Flex>
-                <Box w="100%" pt="80px">
-                    <RelatedContent relatedContentItems={metadataResponse["relatedContentItems"]} />
-                    <Flex gap="10%" alignItems="center" pt="120px">
-                        <Divider className="seperator" w="65%" />
                         <Box w="25%">
                             <ResultsNavigation result={1} of={100} />
+                            <Box className="actionButtonGroup" pt="74px">
+                                <Link
+                                    to={metadata.homepage[0] as string}
+                                    className="actionButtonLink"
+                                    target="_blank"
+                                >
+                                    <ActionButton
+                                        label="Visit repository"
+                                        icon={<ExternalLinkIcon color="white" />}
+                                        variant="solid"
+                                        fun={fun}
+                                    />
+                                </Link>
+                                <ActionButton
+                                    label="Open user policy"
+                                    icon={<InfoIcon />}
+                                    variant="outline"
+                                    fun={fun}
+                                />
+                                <ActionButton
+                                    label="Visit metadata source"
+                                    icon={<MetadataSourceIcon color="#05668D" />}
+                                    variant="outline"
+                                    fun={fun}
+                                />
+                                <ActionButton
+                                    label="Copy permalink"
+                                    icon={<LinkIcon color="#05668D" />}
+                                    variant="outline"
+                                    fun={copyToClipBoard}
+                                />
+                            </Box>
                         </Box>
                     </Flex>
-                </Box>
-                <Box pt="135px" />
-            </Container>
+                    <Box w="100%" pt="80px">
+                        <RelatedContent
+                            relatedContentItems={metadataResponse["relatedContentItems"]}
+                        />
+                        <Flex gap="10%" alignItems="center" pt="120px">
+                            <Divider className="seperator" w="65%" />
+                            <Box w="25%">
+                                <ResultsNavigation result={1} of={100} />
+                            </Box>
+                        </Flex>
+                    </Box>
+                    <Box pt="135px" />
+                </Container>
+            ) : (
+                <></>
+            )}
         </Box>
     );
 }
