@@ -37,35 +37,35 @@ const router = createBrowserRouter([
                 )
             },
             {
-                path: `standard`,
+                path: `standard/:id`,
                 element: <StandardView />
             },
             {
-                path: `service`,
+                path: `service/:id`,
                 element: <ServiceView />
             },
             {
-                path: `tools_software`,
+                path: `tools_software/:id`,
                 element: <ToolsSoftwareView />
             },
             {
-                path: `oer`,
+                path: `oer/:id`,
                 element: <OerView />
             },
             {
-                path: `repository`,
+                path: `repository/:id`,
                 element: <RepositoryView />
             },
             {
-                path: `dataset`,
+                path: `dataset/:id`,
                 element: <DatasetView />
             },
             {
-                path: `organisation`,
+                path: `organisation/:id`,
                 element: <OrganisationView />
             },
             {
-                path: `document`,
+                path: `document/:id`,
                 element: <DocumentView />
             },
             {
