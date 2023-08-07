@@ -22,6 +22,7 @@ export interface RepositoryMetadataResponse {
     theme: string;
     keyword: string;
     contactPoint_email: string;
+    contactPoint_url: string;
     publisher: string;
     altLabel: string;
     catalogAccessType: string;
@@ -173,8 +174,12 @@ export function RepositoryView() {
                                             val: metadata.publisher
                                         },
                                         {
-                                            tag: "Contact",
+                                            tag: "Contact email",
                                             val: metadata.contactPoint_email
+                                        },
+                                        {
+                                            tag: "Contact URL",
+                                            val: metadata.contactPoint_url
                                         },
                                         {
                                             tag: "Alternative label",
@@ -217,7 +222,7 @@ export function RepositoryView() {
                                             val: metadata.type
                                         }
                                     ]}
-                                    visibleElements={6}
+                                    visibleElements={7}
                                     expandedByDefault={false}
                                 />
                             </Box>
