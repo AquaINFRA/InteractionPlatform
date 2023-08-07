@@ -7,12 +7,12 @@ export const Keywords = (props: { keywords: Array<string>; tag: string }) => {
         <Box className="metadataKeywords">
             <div className="seperator"></div>
             <span className="metadataTag">
-                {tag == "keyword" ? "Keywords" : tag == "subject" ? "Subjects" : ""}:&nbsp;
+                {tag == "keyword" ? "Keywords" : tag == "theme" ? "Themes" : ""}:&nbsp;
             </span>
             {keywords.map((elem: string, j: number) => (
                 <a
                     href={"/search?keyword=" + elem}
-                    className={tag == "keyword" ? "metadataKeyword" : "metadataSubject"}
+                    className={tag == "keyword" ? "metadataKeyword" : "metadataTheme"}
                     key={j}
                 >
                     {elem}

@@ -143,7 +143,7 @@ export class SearchService {
     }
 
     getMetadata(resourceId: string) {
-        console.log("Get metadata for the following resource ID " + { resourceId });
+        console.log("Get metadata for the following resource ID " + resourceId);
         const queryParams: URLSearchParams = new URLSearchParams();
 
         queryParams.set("ident", "true");
@@ -157,7 +157,6 @@ export class SearchService {
             "http://localhost:8080/" +
             `${this.config.url}/${this.config.coreSelector}/select` +
             `?${queryParams.toString()}`;
-        console.log(url);
         return fetch(url).then((response) =>
             response.json().then((responseData: { response: any }) => {
                 const { response } = responseData;

@@ -20,8 +20,8 @@ export const MetadataContent = (props: {
                         <Keywords key={i} keywords={e.val} tag="keyword" />
                     ) : e.tag == "Authors" || e.tag == "Resource providers" ? (
                         <Authors key={i} authors={e.val} />
-                    ) : e.tag == "Subjects" ? (
-                        <Keywords key={i} keywords={e.val} tag="subject" />
+                    ) : e.tag == "Theme" ? (
+                        <Keywords key={i} keywords={e.val} tag="theme" />
                     ) : (
                         <Misc key={i} tag={e.tag} val={e.val} />
                     )

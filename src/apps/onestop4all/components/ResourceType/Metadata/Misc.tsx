@@ -1,6 +1,6 @@
-import { Box, Flex } from "@open-pioneer/chakra-integration";
+import { Box } from "@open-pioneer/chakra-integration";
 
-export const Misc = (props: { tag: string; val: string }) => {
+export const Misc = (props: { tag: string; val: Array<string> }) => {
     const { tag, val } = props;
 
     function isUrl(url: string) {
@@ -8,23 +8,38 @@ export const Misc = (props: { tag: string; val: string }) => {
         return urlRegex.test(url);
     }
 
+    const MetadataUrl = (props: { item: string }) => {
+        const item = props.item;
+        return (
+            <a href={item} className="metadataLink">
+                {item}
+            </a>
+        );
+    };
+
     return (
-        <Box>
+        <Box className="metadataKeywords">
             <div className="seperator"></div>
-            <div>
-                <Flex>
-                    <span className="metadataTag">{tag}:&nbsp;</span>
-                    <span className="metadataValue">
-                        {!isUrl(val) ? (
-                            val
+            <span className="metadataTag">{tag}:&nbsp;</span>
+            {typeof val == "object" ? (
+                val.map((elem: string, i: number) => (
+                    <span className="metadataValue" key={i}>
+                        {!isUrl(elem) ? (
+                            elem + (i < val.length - 1 ? ";" : "")
                         ) : (
-                            <a href={val} className="metadataLink">
-                                {val}
-                            </a>
+                            <span>
+                                <MetadataUrl item={elem} />
+                                {i < val.length - 1 ? "; " : ""}
+                            </span>
                         )}
+                        &nbsp;
                     </span>
-                </Flex>
-            </div>
+                ))
+            ) : (
+                <span className="metadataValue">
+                    {!isUrl(val) ? val : <MetadataUrl item={val} />}
+                </span>
+            )}
         </Box>
     );
 };

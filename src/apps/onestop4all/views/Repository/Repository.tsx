@@ -15,12 +15,23 @@ import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNav
 import { MetadataSourceIcon, InfoIcon } from "../../components/Icons";
 
 export interface RepositoryMetadataResponse {
-    homepage: string;
     title: string;
-    publisher: string;
-    theme: string;
-    keyword?: string;
     description: string;
+    type: string;
+    homepage: string;
+    theme: string;
+    keyword: string;
+    contactPoint_email: string;
+    publisher: string;
+    altLabel: string;
+    catalogAccessType: string;
+    dataAccessType: string;
+    dataLicense: string;
+    dataUploadRestriction: string;
+    dataUploadType: string;
+    language: string;
+    publisher_alt: string;
+    supportsMetadataStandard: string;
 }
 
 export function RepositoryView() {
@@ -142,15 +153,11 @@ export function RepositoryView() {
                                 <Metadata
                                     metadataElements={[
                                         {
-                                            tag: "Publisher",
-                                            val: metadata.publisher
-                                        },
-                                        {
-                                            tag: "Repository URL",
+                                            tag: "URL",
                                             val: metadata.homepage
                                         },
                                         {
-                                            tag: "Subjects",
+                                            tag: "Theme",
                                             val: metadata.theme
                                         },
                                         {
@@ -160,9 +167,57 @@ export function RepositoryView() {
                                         {
                                             tag: "Label",
                                             val: "NFDI4Earth Label"
+                                        },
+                                        {
+                                            tag: "Publisher",
+                                            val: metadata.publisher
+                                        },
+                                        {
+                                            tag: "Contact",
+                                            val: metadata.contactPoint_email
+                                        },
+                                        {
+                                            tag: "Alternative label",
+                                            val: metadata.altLabel
+                                        },
+                                        {
+                                            tag: "Catalog access type",
+                                            val: metadata.catalogAccessType
+                                        },
+                                        {
+                                            tag: "Data access type",
+                                            val: metadata.dataAccessType
+                                        },
+                                        {
+                                            tag: "Data license",
+                                            val: metadata.dataLicense
+                                        },
+                                        {
+                                            tag: "Data upload restriction",
+                                            val: metadata.dataUploadRestriction
+                                        },
+                                        {
+                                            tag: "Data upload type",
+                                            val: metadata.dataUploadType
+                                        },
+                                        {
+                                            tag: "Language",
+                                            val: metadata.language
+                                        },
+                                        {
+                                            tag: "Alternative publisher",
+                                            val: metadata.publisher_alt
+                                        },
+                                        {
+                                            tag: "Supports metadata standard",
+                                            val: metadata.supportsMetadataStandard
+                                        },
+                                        {
+                                            tag: "Type",
+                                            val: metadata.type
                                         }
                                     ]}
-                                    visibleElements={2}
+                                    visibleElements={6}
                                     expandedByDefault={false}
                                 />
                             </Box>
@@ -185,18 +240,18 @@ export function RepositoryView() {
                                         fun={fun}
                                     />
                                 </Link>
-                                <ActionButton
-                                    label="Open user policy"
-                                    icon={<InfoIcon />}
-                                    variant="outline"
-                                    fun={fun}
-                                />
-                                <ActionButton
-                                    label="Visit metadata source"
-                                    icon={<MetadataSourceIcon color="#05668D" />}
-                                    variant="outline"
-                                    fun={fun}
-                                />
+                                <Link
+                                    to={metadata.dataLicense[0] as string}
+                                    className="actionButtonLink"
+                                    target="_blank"
+                                >
+                                    <ActionButton
+                                        label="Open user policy"
+                                        icon={<InfoIcon />}
+                                        variant="outline"
+                                        fun={fun}
+                                    />
+                                </Link>
                                 <ActionButton
                                     label="Copy permalink"
                                     icon={<LinkIcon color="#05668D" />}
