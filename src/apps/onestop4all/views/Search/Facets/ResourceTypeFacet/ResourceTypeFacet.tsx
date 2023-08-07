@@ -12,7 +12,13 @@ export function ResourceTypeFacet() {
 
     useEffect(() => {
         if (searchState.selectableResourceTypes) {
-            setEntries(searchState.selectableResourceTypes);
+            setEntries(
+                searchState.selectableResourceTypes.sort((a, b) =>
+                    a.resourceType
+                        .toLocaleUpperCase()
+                        .localeCompare(b.resourceType.toLocaleUpperCase())
+                )
+            );
         }
     }, [searchState.selectableResourceTypes]);
 

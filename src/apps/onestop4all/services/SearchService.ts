@@ -20,7 +20,7 @@ export interface SearchResultItem {
 
 export interface SearchRequestParams {
     searchTerm?: string;
-    resourceType?: string[];
+    resourceTypes?: string[];
     pageSize?: number;
     pageStart?: number;
     spatialFilter?: number[];
@@ -80,39 +80,18 @@ export class SearchService {
 
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
         console.log("Search with following parameters: " + JSON.stringify(searchParams));
-        // TODO: use pagesize
-        const queryParams: URLSearchParams = new URLSearchParams();
 
-        queryParams.set("ident", "true");
-        queryParams.set("q.op", "OR");
-        if (searchParams.searchTerm) {
-            queryParams.set("q", searchParams.searchTerm);
-            queryParams.set("df", "collector");
-        } else {
-            queryParams.set("q", "*:*");
-        }
+        const queryParams = this.createQueryParams();
 
-        if (searchParams.pageSize !== undefined) {
-            queryParams.set("rows", searchParams.pageSize.toString());
-            if (searchParams.pageStart !== undefined) {
-                queryParams.set(
-                    "start",
-                    (searchParams.pageStart * searchParams.pageSize).toString()
-                );
-            }
-        }
+        this.addSearchterm(searchParams.searchTerm, queryParams);
 
-        // add parameter to request facets
-        queryParams.set("facet", "true");
-        // parameter to get facet for resource type
-        queryParams.set("facet.field", "type");
+        this.addPaging(searchParams.pageSize, searchParams.pageStart, queryParams);
 
-        if (searchParams.resourceType?.length) {
-            const mapping = searchParams.resourceType.map((e) =>
-                mapFromResourceType(e as ResourceType)
-            );
-            queryParams.set("fq", `type:(${mapping.map((e) => `"${e}"`).join(" OR ")})`);
-        }
+        this.addFacet(queryParams);
+
+        this.addResourceTypes(searchParams.resourceTypes, queryParams);
+
+        this.addSpatialFilter(searchParams.spatialFilter, queryParams);
 
         // TODO: remove proxy later
         const url =
@@ -144,10 +123,8 @@ export class SearchService {
 
     getMetadata(resourceId: string) {
         console.log("Get metadata for the following resource ID " + resourceId);
-        const queryParams: URLSearchParams = new URLSearchParams();
+        const queryParams = this.createQueryParams();
 
-        queryParams.set("ident", "true");
-        queryParams.set("q.op", "OR");
         if (resourceId) {
             queryParams.set("q", resourceId);
             queryParams.set("df", "id");
@@ -172,10 +149,62 @@ export class SearchService {
         );
     }
 
+    private addSpatialFilter(spatialFilter: number[] | undefined, queryParams: URLSearchParams) {
+        if (spatialFilter && spatialFilter.length > 0) {
+            if (spatialFilter.length === 4) {
+                const [minLon, minLat, maxLon, maxLat] = spatialFilter;
+                queryParams.set("fq", `geometry:[${minLat},${minLon} TO ${maxLat},${maxLon}]`);
+            }
+        }
+    }
+
+    private addResourceTypes(resourceTypes: string[] | undefined, queryParams: URLSearchParams) {
+        if (resourceTypes?.length) {
+            const mapping = resourceTypes.map((e) => mapFromResourceType(e as ResourceType));
+            queryParams.set("fq", `type:(${mapping.map((e) => `"${e}"`).join(" OR ")})`);
+        }
+    }
+
+    private addFacet(queryParams: URLSearchParams) {
+        // add parameter to request facets
+        queryParams.set("facet", "true");
+        // parameter to get facet for resource type
+        queryParams.set("facet.field", "type");
+    }
+
+    private addPaging(
+        pageSize: number | undefined,
+        pageStart: number | undefined,
+        queryParams: URLSearchParams
+    ) {
+        if (pageSize !== undefined) {
+            queryParams.set("rows", pageSize.toString());
+            if (pageStart !== undefined) {
+                queryParams.set("start", (pageStart * pageSize).toString());
+            }
+        }
+    }
+
+    private addSearchterm(searchTerm: string | undefined, queryParams: URLSearchParams) {
+        if (searchTerm) {
+            queryParams.set("q", searchTerm);
+            queryParams.set("df", "collector");
+        } else {
+            queryParams.set("q", "*:*");
+        }
+        queryParams.set("fl", "*, [child author]");
+    }
+
+    private createQueryParams(): URLSearchParams {
+        const queryParams: URLSearchParams = new URLSearchParams();
+        queryParams.set("ident", "true");
+        queryParams.set("q.op", "OR");
+        return queryParams;
+    }
+
     private createFacets(facet_counts: SolrFacetResponse): Facets {
-        const temp = this.createResourceTypeFacet(facet_counts);
         return {
-            resourceType: temp
+            resourceType: this.createResourceTypeFacet(facet_counts)
         };
     }
 
@@ -192,12 +221,14 @@ export class SearchService {
         return [];
     }
 
-    private createFragments(facetResponse: any[]) {
+    private createFragments(facetResponse: Array<string | number>) {
         type FacetFragment = { label: string; count: number };
         const entries: FacetFragment[] = [];
         for (let i = 0; i < facetResponse.length; i += 2) {
             const [label, count] = facetResponse.slice(i, i + 2);
-            entries.push({ label, count });
+            if (typeof label === "string" && typeof count === "number") {
+                entries.push({ label, count });
+            }
         }
         return entries;
     }
@@ -208,13 +239,11 @@ export class SearchService {
             if (match) {
                 return match.handle(item);
             } else {
-                debugger;
                 throw new Error(
                     "Unknown search item, please implement a handler: " + JSON.stringify(item)
                 );
             }
         });
-        return [];
     }
 }
 

@@ -14,6 +14,15 @@ const mapping = [
     {
         type: ResourceType.Repos,
         identifier: "http://nfdi4earth.de/ontology#Repository"
+    },
+    {
+        type: ResourceType.Tools,
+        identifier: "http://schema.org/SoftwareSourceCode"
+    },
+    {
+        //TO DO: change identifier if needed.
+        type: ResourceType.Person_nested,
+        identifier: "person_nested"
     }
 ];
 

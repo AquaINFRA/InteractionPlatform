@@ -3,6 +3,8 @@ import { defineStyleConfig, extendTheme } from "@open-pioneer/chakra-integration
 export const PrimaryColor = "#05668D";
 export const PrimaryColor40 = "#05668D40";
 
+export const Active_Control = "#22C0D2";
+
 export const BorderColor = "#CCCCCC";
 
 export const Theme = extendTheme({
