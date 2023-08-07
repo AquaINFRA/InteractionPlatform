@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, Flex } from "@open-pioneer/chakra-integration";
 import { Map } from "../Map/Map";
 import { Misc } from "../Metadata/Misc";
@@ -7,6 +8,7 @@ import { ActionButton } from "../../../components/ResourceType/ActionButton/Acti
 export const Contact = (props: { address: any; location: string }) => {
     //for some reason, defining address as an object instead of any results in an error....
     const { address, location } = props;
+    const [triggerPositioning, setTriggerPositioning] = useState(0);
 
     return (
         <Box>
@@ -18,11 +20,11 @@ export const Contact = (props: { address: any; location: string }) => {
                     icon={<GoToLocationBtnIcon />}
                     variant="outline"
                     fun={() => {
-                        console.log("go");
+                        setTriggerPositioning((trigger) => trigger + 1);
                     }}
                 />
             </Flex>
-            <Map geometry={location} height="35vh" />
+            <Map geometry={location} height="35vh" triggerPositioning={triggerPositioning} />
         </Box>
     );
 };
