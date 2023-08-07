@@ -12,12 +12,22 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 //import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
-import { MetadataSourceIcon } from "../../components/Icons";
-//import { Contact } from "../../components/ResourceType/Contact/Contact";
+import { Contact } from "../../components/ResourceType/Contact/Contact";
 
 export interface OrganisationMetadataResponse {
     name: string;
+    name_alt: string;
+    type: string;
     homepage: string;
+    uri: string;
+    id: string;
+    rorId: string;
+    geometry: string;
+    sameAs: string;
+    altLabel: string;
+    countryName: string;
+    locality: string;
+    subOrganizationOf: string;
 }
 
 export function OrganisationView() {
@@ -32,10 +42,31 @@ export function OrganisationView() {
         });
     }, [id]);
 
-    console.log(metadata);
-
     const fun = () => {
         console.log("This is a fun");
+    };
+
+    const copyToClipBoard = (link: string) => {
+        if (link != undefined) {
+            navigator.clipboard.writeText(link);
+            //TO DO: There is sth. wrong with the tooltip!
+            //TO DO: Create reusable function/component out of it
+            return toast({
+                title: "Copied to clipboard",
+                status: "success",
+                duration: 2000,
+                position: "bottom-right",
+                isClosable: true
+            });
+        } else {
+            return toast({
+                title: "Could not copy to clipboard",
+                status: "error",
+                duration: 2000,
+                position: "bottom-right",
+                isClosable: true
+            });
+        }
     };
 
     return (
@@ -55,58 +86,93 @@ export function OrganisationView() {
                     <Flex gap="10%">
                         <Box w="65%">
                             <ResourceTypeHeader resType="Organisations" />
-                            <Box className="title" pt="15px">
-                                {metadata.name}
-                            </Box>
+                            {metadata.name ? (
+                                <Box className="title" pt="15px">
+                                    {metadata.name}
+                                </Box>
+                            ) : (
+                                ""
+                            )}
                             <Box pt="36px">
                                 <Metadata
                                     metadataElements={[
                                         {
-                                            tag: "Organisation URL",
+                                            tag: "URL",
                                             val: metadata.homepage
+                                        },
+                                        {
+                                            tag: "ROR ID",
+                                            val: "https://ror.org/" + metadata.rorId
+                                        },
+                                        {
+                                            tag: "Alternative name",
+                                            val: metadata.name_alt
+                                        },
+                                        {
+                                            tag: "Type",
+                                            val: metadata.type
+                                        },
+                                        {
+                                            tag: "Geometry",
+                                            val: metadata.geometry
+                                        },
+                                        {
+                                            tag: "Same as",
+                                            val: metadata.sameAs
+                                        },
+                                        {
+                                            tag: "Alternative label",
+                                            val: metadata.altLabel
+                                        },
+                                        {
+                                            tag: "Country name",
+                                            val: metadata.countryName
+                                        },
+                                        {
+                                            tag: "Locality",
+                                            val: metadata.locality
                                         }
                                     ]}
-                                    visibleElements={1}
-                                    expandedByDefault={true}
+                                    visibleElements={2}
+                                    expandedByDefault={false}
                                 />
-                            </Box>
-                            <Box pt="80px">
-                                <Abstract abstractText={"add text"} />
                             </Box>
                         </Box>
                         <Box w="25%">
                             <ResultsNavigation result={1} of={100} />
                             <Box className="actionButtonGroup" pt="74px">
+                                <Link
+                                    to={metadata.homepage[0] as string}
+                                    className="actionButtonLink"
+                                    target="_blank"
+                                >
+                                    <ActionButton
+                                        label="Visit repository"
+                                        icon={<ExternalLinkIcon color="white" />}
+                                        variant="solid"
+                                        fun={fun}
+                                    />
+                                </Link>
                                 <ActionButton
-                                    label="Visit organisation"
-                                    icon={<ExternalLinkIcon color="white" />}
-                                    variant="solid"
-                                    fun={fun}
-                                />
-                                <ActionButton
-                                    label="Visit metadata source"
-                                    icon={<MetadataSourceIcon color="#05668D" />}
-                                    variant="outline"
-                                    fun={fun}
-                                />
-                                <ActionButton
-                                    label="Copy permalink"
+                                    label="Copy URL"
                                     icon={<LinkIcon color="#05668D" />}
                                     variant="outline"
-                                    fun={fun}
+                                    fun={() => copyToClipBoard(metadata.homepage)}
                                 />
                             </Box>
                         </Box>
                     </Flex>
-                    <Box pt="80px">
-                        {/*<Contact
-                            address={{
-                                tag: "Address",
-                                val: metadataResponse["address"]
-                            }}
-                            location={metadataResponse["location"]}
-                        />*/}
-                    </Box>
+                    {metadata.geometry ? (
+                        <Box pt="80px">
+                            <Contact
+                                address={{
+                                    tag: "Address",
+                                    val: metadata.geometry
+                                }}
+                                location={metadata.geometry}
+                            />
+                        </Box>
+                    ) : null}
                     <Box w="100%" pt="80px">
                         {/*<RelatedContent relatedContentItems={metadataResponse["relatedContentItems"]} />*/}
                         <Flex gap="10%" alignItems="center" pt="120px">

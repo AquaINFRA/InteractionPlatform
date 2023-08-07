@@ -11,7 +11,7 @@ export const Misc = (props: { tag: string; val: Array<string> }) => {
     const MetadataUrl = (props: { item: string }) => {
         const item = props.item;
         return (
-            <a href={item} className="metadataLink">
+            <a href={item} className="metadataLink" rel="noreferrer" target="_blank">
                 {item}
             </a>
         );

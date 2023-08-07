@@ -12,7 +12,7 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
-import { MetadataSourceIcon, InfoIcon } from "../../components/Icons";
+import { InfoIcon } from "../../components/Icons";
 
 export interface RepositoryMetadataResponse {
     title: string;
@@ -33,6 +33,8 @@ export interface RepositoryMetadataResponse {
     language: string;
     publisher_alt: string;
     supportsMetadataStandard: string;
+    uri: string;
+    id: string;
 }
 
 export function RepositoryView() {
@@ -47,7 +49,6 @@ export function RepositoryView() {
         });
     }, [id]);
 
-    console.log(metadata);
     const metadataResponse = {
         resourceType: "Repositories / Archives",
         title: "World Data Center for Climate",
@@ -107,9 +108,9 @@ export function RepositoryView() {
         console.log(metadata);
     };
 
-    const copyToClipBoard = () => {
-        if (metadata != undefined) {
-            navigator.clipboard.writeText(metadata.homepage);
+    const copyToClipBoard = (link: string) => {
+        if (link != undefined) {
+            navigator.clipboard.writeText(link);
             //TO DO: There is sth. wrong with the tooltip!
             //TO DO: Create reusable function/component out of it
             return toast({
@@ -258,10 +259,10 @@ export function RepositoryView() {
                                     />
                                 </Link>
                                 <ActionButton
-                                    label="Copy permalink"
+                                    label="Copy URL"
                                     icon={<LinkIcon color="#05668D" />}
                                     variant="outline"
-                                    fun={copyToClipBoard}
+                                    fun={() => copyToClipBoard(metadata.homepage)}
                                 />
                             </Box>
                         </Box>
