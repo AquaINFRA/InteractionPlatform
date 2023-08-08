@@ -8,7 +8,7 @@ import { useToast } from "@open-pioneer/chakra-integration";
 import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
-import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
+//import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 //import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
@@ -42,15 +42,11 @@ export function OrganisationView() {
         });
     }, [id]);
 
-    const fun = () => {
-        console.log("This is a fun");
-    };
-
     const copyToClipBoard = (link: string) => {
         if (link != undefined) {
             navigator.clipboard.writeText(link);
-            //TO DO: There is sth. wrong with the tooltip!
-            //TO DO: Create reusable function/component out of it
+            //TO DO-1: There is sth. wrong with the tooltip!
+            //TO DO-2: Create reusable function/component out of it
             return toast({
                 title: "Copied to clipboard",
                 status: "success",
@@ -68,6 +64,8 @@ export function OrganisationView() {
             });
         }
     };
+
+    console.log(metadata);
 
     return (
         <Box>
@@ -102,7 +100,9 @@ export function OrganisationView() {
                                         },
                                         {
                                             tag: "ROR ID",
-                                            val: "https://ror.org/" + metadata.rorId
+                                            val: metadata.rorId
+                                                ? "https://ror.org/" + metadata.rorId
+                                                : undefined
                                         },
                                         {
                                             tag: "Alternative name",
@@ -131,6 +131,10 @@ export function OrganisationView() {
                                         {
                                             tag: "Locality",
                                             val: metadata.locality
+                                        },
+                                        {
+                                            tag: "Suborganisation of",
+                                            val: metadata.subOrganizationOf
                                         }
                                     ]}
                                     visibleElements={2}
@@ -138,35 +142,37 @@ export function OrganisationView() {
                                 />
                             </Box>
                         </Box>
-                        <Box w="25%">
-                            <ResultsNavigation result={1} of={100} />
-                            <Box className="actionButtonGroup" pt="74px">
-                                <Link
-                                    to={metadata.homepage[0] as string}
-                                    className="actionButtonLink"
-                                    target="_blank"
-                                >
+                        {metadata.homepage ? (
+                            <Box w="25%">
+                                <ResultsNavigation result={1} of={100} />
+                                <Box className="actionButtonGroup" pt="74px">
+                                    <Link
+                                        to={metadata.homepage[0] as string}
+                                        className="actionButtonLink"
+                                        target="_blank"
+                                    >
+                                        <ActionButton
+                                            label="Visit repository"
+                                            icon={<ExternalLinkIcon color="white" />}
+                                            variant="solid"
+                                            fun={{}}
+                                        />
+                                    </Link>
                                     <ActionButton
-                                        label="Visit repository"
-                                        icon={<ExternalLinkIcon color="white" />}
-                                        variant="solid"
-                                        fun={fun}
+                                        label="Copy URL"
+                                        icon={<LinkIcon color="#05668D" />}
+                                        variant="outline"
+                                        fun={() => copyToClipBoard(metadata.homepage)}
                                     />
-                                </Link>
-                                <ActionButton
-                                    label="Copy URL"
-                                    icon={<LinkIcon color="#05668D" />}
-                                    variant="outline"
-                                    fun={() => copyToClipBoard(metadata.homepage)}
-                                />
+                                </Box>
                             </Box>
-                        </Box>
+                        ) : null}
                     </Flex>
                     {metadata.geometry ? (
                         <Box pt="80px">
                             <Contact
                                 address={{
-                                    tag: "Address",
+                                    tag: "Location",
                                     val: metadata.geometry
                                 }}
                                 location={metadata.geometry}

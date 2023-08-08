@@ -1,4 +1,4 @@
-import { Box, Container, Image, Flex, Divider, Button } from "@open-pioneer/chakra-integration";
+import { Box, Container, Image, Flex, Divider } from "@open-pioneer/chakra-integration";
 import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
 import { useParams, Link } from "react-router-dom";
 import { useService } from "open-pioneer:react-hooks";
@@ -9,7 +9,7 @@ import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
-import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
+//import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { InfoIcon } from "../../components/Icons";
@@ -49,65 +49,6 @@ export function RepositoryView() {
         });
     }, [id]);
 
-    const metadataResponse = {
-        resourceType: "Repositories / Archives",
-        title: "World Data Center for Climate",
-        abstract:
-            "The mission of World Data Center for Climate (WDCC) is to provide central support for the German and European climate research community. The WDCC is member of the ISC's World Data System. Emphasis is on development and implementation of best practice methods for Earth System data management. Data for and from climate research are collected, stored and disseminated. The WDCC is restricted to data products. Cooperations exist with thematically corresponding data centres of, e.g., earth observation, meteorology, oceanography, paleo climate and environmental sciences. The services of WDCC are also available to external users at cost price. A special service for the direct integration of research data in scientific publications has been developed. The editorial process at WDCC ensures the quality of metadata and research data in collaboration with the data producers. A citation code and a digital identifier (DOI) are provided and registered together with citation information at the DOI registration agency DataCite.",
-        dateOfPublication: "04.03.2013",
-        repositoryUrl: "https://wdc-climate.de",
-        license: "other, Creative Commons",
-        subjects: [
-            "Natural Sciences",
-            "Geosciences (including Geography)",
-            "Atmospheric Science",
-            "Oceanography",
-            "Geology and Palaeontology",
-            "Atmospheric Science and Oceanography"
-        ],
-        keywords: [
-            "CERA database",
-            "Structured graphics",
-            "climate simulation",
-            "cryosphere",
-            "data assimilation",
-            "earth science",
-            "earth system sciences"
-        ],
-        label: "NFDI4Earth Label",
-        relatedContentItems: [
-            {
-                resourceType: "Educational resources",
-                title: "Earth System Science Data Analytics: Introduction to Python",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Educational resources",
-                title: "How to create publishable netcdf-data",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Educational resources",
-                title: "How to create publishable netcdf-data",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Educational resources",
-                title: "How to create publishable netcdf-data",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Educational resources",
-                title: "How to create publishable netcdf-data",
-                url: "https://www.nfdi4earth.de/"
-            }
-        ]
-    };
-
-    const fun = () => {
-        console.log(metadata);
-    };
-
     const copyToClipBoard = (link: string) => {
         if (link != undefined) {
             navigator.clipboard.writeText(link);
@@ -131,6 +72,8 @@ export function RepositoryView() {
         }
     };
 
+    console.log(metadata);
+
     return (
         <Box>
             <Box position="relative">
@@ -148,9 +91,11 @@ export function RepositoryView() {
                     <Flex gap="10%">
                         <Box w="65%">
                             <ResourceTypeHeader resType="Repositories / Archives" />
-                            <Box className="title" pt="15px">
-                                {metadata.title}
-                            </Box>
+                            {metadata.title ? (
+                                <Box className="title" pt="15px">
+                                    {metadata.title}
+                                </Box>
+                            ) : null}
                             <Box pt="36px">
                                 <Metadata
                                     metadataElements={[
@@ -227,50 +172,56 @@ export function RepositoryView() {
                                     expandedByDefault={false}
                                 />
                             </Box>
-                            <Box pt="80px">
-                                <Abstract abstractText={metadata.description} />
-                            </Box>
+                            {metadata.description ? (
+                                <Box pt="80px">
+                                    <Abstract abstractText={metadata.description} />
+                                </Box>
+                            ) : null}
                         </Box>
                         <Box w="25%">
                             <ResultsNavigation result={1} of={100} />
-                            <Box className="actionButtonGroup" pt="74px">
-                                <Link
-                                    to={metadata.homepage[0] as string}
-                                    className="actionButtonLink"
-                                    target="_blank"
-                                >
+                            {metadata.homepage || metadata.dataLicense ? (
+                                <Box className="actionButtonGroup" pt="74px">
+                                    {metadata.homepage ? (
+                                        <Link
+                                            to={metadata.homepage[0] as string}
+                                            className="actionButtonLink"
+                                            target="_blank"
+                                        >
+                                            <ActionButton
+                                                label="Visit repository"
+                                                icon={<ExternalLinkIcon color="white" />}
+                                                variant="solid"
+                                                fun={{}}
+                                            />
+                                        </Link>
+                                    ) : null}
+                                    {metadata.dataLicense ? (
+                                        <Link
+                                            to={metadata.dataLicense[0] as string}
+                                            className="actionButtonLink"
+                                            target="_blank"
+                                        >
+                                            <ActionButton
+                                                label="Open user policy"
+                                                icon={<InfoIcon />}
+                                                variant="outline"
+                                                fun={{}}
+                                            />
+                                        </Link>
+                                    ) : null}
                                     <ActionButton
-                                        label="Visit repository"
-                                        icon={<ExternalLinkIcon color="white" />}
-                                        variant="solid"
-                                        fun={fun}
-                                    />
-                                </Link>
-                                <Link
-                                    to={metadata.dataLicense[0] as string}
-                                    className="actionButtonLink"
-                                    target="_blank"
-                                >
-                                    <ActionButton
-                                        label="Open user policy"
-                                        icon={<InfoIcon />}
+                                        label="Copy URL"
+                                        icon={<LinkIcon color="#05668D" />}
                                         variant="outline"
-                                        fun={fun}
+                                        fun={() => copyToClipBoard(metadata.homepage)}
                                     />
-                                </Link>
-                                <ActionButton
-                                    label="Copy URL"
-                                    icon={<LinkIcon color="#05668D" />}
-                                    variant="outline"
-                                    fun={() => copyToClipBoard(metadata.homepage)}
-                                />
-                            </Box>
+                                </Box>
+                            ) : null}
                         </Box>
                     </Flex>
                     <Box w="100%" pt="80px">
-                        <RelatedContent
-                            relatedContentItems={metadataResponse["relatedContentItems"]}
-                        />
+                        {/*<RelatedContent relatedContentItems={metadataResponse["relatedContentItems"]} />*/}
                         <Flex gap="10%" alignItems="center" pt="120px">
                             <Divider className="seperator" w="65%" />
                             <Box w="25%">
