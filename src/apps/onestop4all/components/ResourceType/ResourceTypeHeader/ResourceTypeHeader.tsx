@@ -45,7 +45,7 @@ export function ResourceTypeHeader(props: { resType: string }) {
                     <StandardIcon />
                 ) : resType == ResourceType.Educational ? (
                     <EducationalResourceIcon />
-                ) : resType == ResourceType.Documents ? (
+                ) : resType == ResourceType.Documents || resType == ResourceType.Articles ? (
                     <DocumentsIcon />
                 ) : resType == ResourceType.Organisations ? (
                     <OrganisationsIcon />

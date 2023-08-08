@@ -16,6 +16,7 @@ import { ServiceView } from "./views/Service/Service";
 import { StandardView } from "./views/Standard/Standard";
 import { StartView } from "./views/Start/Start";
 import { ToolsSoftwareView } from "./views/ToolsSoftware/ToolsSoftware";
+import { ArticleView } from "./views/Article/Article";
 
 const basePath = "/";
 
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
             {
                 path: `document/:id`,
                 element: <DocumentView />
+            },
+            {
+                path: `article/:id`,
+                element: <ArticleView />
             },
             {
                 path: "*",
