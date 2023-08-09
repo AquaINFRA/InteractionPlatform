@@ -14,6 +14,14 @@ const mapping = [
     {
         type: ResourceType.Repos,
         identifier: "http://nfdi4earth.de/ontology#Repository"
+    },
+    {
+        type: ResourceType.Standards,
+        identifier: "http://nfdi4earth.de/ontology#MetadataStandard"
+    },
+    {
+        type: ResourceType.Tools,
+        identifier: "http://schema.org/SoftwareSourceCode"
     }
 ];
 

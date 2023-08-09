@@ -3,9 +3,9 @@ import { mapFromResourceType } from "../../ResourceTypeUtils";
 import { SearchResultItem, SolrSearchResultItem } from "../../SearchService";
 import { SearchResultHandler } from "./search-result-handler";
 
-export class RepositorySearchHandler extends SearchResultHandler {
+export class StandardSearchHandler extends SearchResultHandler {
     public canHandle(item: SolrSearchResultItem): boolean {
-        return item.type === mapFromResourceType(ResourceType.Repos);
+        return item.type === mapFromResourceType(ResourceType.Standards);
     }
 
     public handle(item: SolrSearchResultItem): SearchResultItem {
@@ -13,7 +13,7 @@ export class RepositorySearchHandler extends SearchResultHandler {
             id: item.id,
             title: item.title,
             abstract: item.description,
-            resourceType: ResourceType.Repos,
+            resourceType: ResourceType.Standards,
             url: ""
         };
     }

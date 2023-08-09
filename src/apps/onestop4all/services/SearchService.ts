@@ -7,6 +7,8 @@ import { ServiceOptions } from "@open-pioneer/runtime";
 import { OrganizationSearchHandler } from "./search/result-handler/organization-handler";
 import { ArticleSearchHandler } from "./search/result-handler/article-handler";
 import { mapFromResourceType, mapToResourceType } from "./ResourceTypeUtils";
+import { StandardSearchHandler } from "./search/result-handler/standard-handler";
+import { SoftwareSearchHandler } from "./search/result-handler/software-handler";
 
 export interface SearchResultItem {
     id: string;
@@ -75,7 +77,9 @@ export class SearchService {
     private searchResultHandlers: SearchResultHandler[] = [
         new RepositorySearchHandler(),
         new OrganizationSearchHandler(),
-        new ArticleSearchHandler()
+        new ArticleSearchHandler(),
+        new StandardSearchHandler(),
+        new SoftwareSearchHandler()
     ];
 
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {

@@ -1,10 +1,11 @@
 import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
+import { mapFromResourceType } from "../../ResourceTypeUtils";
 import { SearchResultItem, SolrSearchResultItem } from "../../SearchService";
 import { SearchResultHandler } from "./search-result-handler";
 
 export class OrganizationSearchHandler extends SearchResultHandler {
     public canHandle(item: SolrSearchResultItem): boolean {
-        return item.type === "http://xmlns.com/foaf/0.1/Organization";
+        return item.type === mapFromResourceType(ResourceType.Organisations);
     }
 
     public handle(item: SolrSearchResultItem): SearchResultItem {
