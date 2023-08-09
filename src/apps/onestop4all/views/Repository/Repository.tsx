@@ -212,12 +212,14 @@ export function RepositoryView() {
                                             />
                                         </Link>
                                     ) : null}
-                                    <ActionButton
-                                        label="Copy URL"
-                                        icon={<LinkIcon color="#05668D" />}
-                                        variant="outline"
-                                        fun={() => copyToClipBoard(metadata.homepage)}
-                                    />
+                                    {metadata.homepage ? (
+                                        <ActionButton
+                                            label="Copy URL"
+                                            icon={<LinkIcon color="#05668D" />}
+                                            variant="outline"
+                                            fun={() => copyToClipBoard(metadata.homepage)}
+                                        />
+                                    ) : null}
                                 </Box>
                             ) : null}
                             {/*{metadata.api ? (*/}
