@@ -9,10 +9,9 @@ import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
-import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
+//import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
-import { MetadataSourceIcon, GoToOpenIssuesIcon } from "../../components/Icons";
 
 export interface RepositoryMetadataResponse {
     name: string;
@@ -62,44 +61,6 @@ export function ToolsSoftwareView() {
 
     console.log(metadata);
 
-    const metadataResponse = {
-        resourceType: "Tools/Software",
-        title: "IPFS Pinning Service for Open Climate Research Data",
-        abstract:
-            "The InterPlanetary File System (IPFS) is a novel decentralized file storage network that allows users to store and share files in a distributed manner, which can make it more resilient if individual infrastructure components fail. It also allows for faster access to content as users can get files directly from other users instead of having to go through a central server. However, one of the challenges of using IPFS is ensuring that the files remain available over time. This is where an IPFS pinning service offers a solution. An IPFS pinning service is a type of service that allows users to store and maintain the availability of their files on the IPFS network. The goal of an IPFS pinning service is to provide a reliable and trusted way for users to ensure that their files remain accessible on the IPFS network. This is accomplished by maintaining a copy of the file on the service's own storage infrastructure, which is then pinned to the IPFS network. This allows users to access the file even if the original source becomes unavailable. We explored the use of the IPFS for scientific data with a focus on climate data. We set up an IPFS node running on a cloud instance at the German Climate Computing Center where selected scientists can pin their data and make them accessible to the public via the IPFS infrastructure. IPFS is a good choice for climate data, because the open network architecture strengthens open science efforts and enables FAIR data processing workflows. Data within the IPFS is freely accessible to scientists regardless of their location and offers fast access rates to large files. In addition, data within the IPFS is immutable, which ensures that the content of a content identifier does not change over time. Due to the recent development of the IPFS, the project outcomes are novel data science developments for the earth system science and are potentially relevant building blocks to be included in the earth system science community.",
-        authors: [
-            {
-                name: "Kulüke, Marco",
-                orcid: null
-            },
-            {
-                name: "Kindermann, Stephan",
-                orcid: "0000-0001-9335-1093"
-            },
-            {
-                name: "Kölling, Tobias",
-                orcid: null
-            }
-        ],
-        dateOfPublication: "02.02.2023",
-        doi: "https://doi.org/10.5281/zenodo.7646356",
-        url: "https://git.rwth-aachen.de/nfdi4earth/pilotsincubatorlab/incubator/ipfs-pinning-service",
-        license: "CC BY 4.0",
-        keywords: ["IPFS", "Pinning Service", "FAIR", "Open Science", "Climate"],
-        relatedContentItems: [
-            {
-                resourceType: "Organisations",
-                title: "Deutsches Klimarechenzentrum",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Repositories / Archives",
-                title: "World Data Center for Climate",
-                url: "https://www.nfdi4earth.de/"
-            }
-        ]
-    };
-
     return (
         <Box>
             <Box position="relative">
@@ -116,50 +77,52 @@ export function ToolsSoftwareView() {
                     <Box height="80px" />
                     <Flex gap="10%">
                         <Box w="65%">
-                            <ResourceTypeHeader resType={metadataResponse["resourceType"]} />
-                            <Box className="title" pt="15px">
-                                {metadataResponse["title"]}
-                            </Box>
+                            <ResourceTypeHeader resType="Tools/Software" />
+                            {metadata.name ? (
+                                <Box className="title" pt="15px">
+                                    {metadata.name}
+                                </Box>
+                            ) : (
+                                ""
+                            )}
                             <Box pt="36px">
                                 <Metadata
                                     metadataElements={[
                                         {
-                                            tag: "Authors",
-                                            val: metadataResponse["authors"]
-                                        },
-                                        {
-                                            tag: "Date of publication",
-                                            val: metadataResponse["dateOfPublication"]
-                                        },
-                                        { tag: "DOI", val: metadataResponse["doi"] },
-                                        {
-                                            tag: "URL",
-                                            val: metadataResponse["url"]
+                                            tag: "Keywords",
+                                            val: metadata.keyword
                                         },
                                         {
                                             tag: "License",
-                                            val: metadataResponse["license"]
-                                        },
-                                        { tag: "Keywords", val: metadataResponse["keywords"] }
+                                            val: metadata.license
+                                        }
                                     ]}
-                                    visibleElements={4}
-                                    expandedByDefault={true}
+                                    visibleElements={2}
+                                    expandedByDefault={false}
                                 />
                             </Box>
-                            <Box pt="80px">
-                                <Abstract abstractText={metadataResponse["abstract"]} />
-                            </Box>
+                            {metadata.description ? (
+                                <Box pt="80px">
+                                    <Abstract abstractText={metadata.description} />
+                                </Box>
+                            ) : null}
                         </Box>
                         <Box w="25%">
                             <ResultsNavigation result={1} of={100} />
                             {metadata.codeRepository ? (
                                 <Box className="actionButtonGroup" pt="74px">
-                                    <ActionButton
-                                        label="VISIT PROJECT PAGE"
-                                        icon={<ExternalLinkIcon color="white" />}
-                                        variant="solid"
-                                        fun={() => void 0}
-                                    />
+                                    <Link
+                                        to={metadata.codeRepository[0] as string}
+                                        className="actionButtonLink"
+                                        target="_blank"
+                                    >
+                                        <ActionButton
+                                            label="VISIT PROJECT PAGE"
+                                            icon={<ExternalLinkIcon color="white" />}
+                                            variant="solid"
+                                            fun={() => void 0}
+                                        />
+                                    </Link>
                                     <ActionButton
                                         label="Copy URL"
                                         icon={<LinkIcon color="#05668D" />}
@@ -172,9 +135,7 @@ export function ToolsSoftwareView() {
                     </Flex>
                     <Box w="100%" pt="80px">
                         <Box>
-                            <RelatedContent
-                                relatedContentItems={metadataResponse["relatedContentItems"]}
-                            />
+                            {/*<RelatedContent relatedContentItems={metadataResponse["relatedContentItems"]} />*/}
                         </Box>
                         <Flex gap="10%" alignItems="center" pt="120px">
                             <Divider className="seperator" w="65%" />
