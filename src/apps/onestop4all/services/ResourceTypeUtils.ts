@@ -16,13 +16,12 @@ const mapping = [
         identifier: "http://nfdi4earth.de/ontology#Repository"
     },
     {
-        type: ResourceType.Tools,
-        identifier: "http://schema.org/SoftwareSourceCode"
+        type: ResourceType.Standards,
+        identifier: "http://nfdi4earth.de/ontology#MetadataStandard"
     },
     {
-        //TO DO: change identifier if needed.
-        type: ResourceType.Person_nested,
-        identifier: "person_nested"
+        type: ResourceType.Tools,
+        identifier: "http://schema.org/SoftwareSourceCode"
     }
 ];
 

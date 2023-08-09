@@ -6,8 +6,9 @@ import { SearchResultHandler } from "./search/result-handler/search-result-handl
 import { ServiceOptions } from "@open-pioneer/runtime";
 import { OrganizationSearchHandler } from "./search/result-handler/organization-handler";
 import { ArticleSearchHandler } from "./search/result-handler/article-handler";
-import { SoftwareSearchHandler } from "./search/result-handler/software-handler";
 import { mapFromResourceType, mapToResourceType } from "./ResourceTypeUtils";
+import { StandardSearchHandler } from "./search/result-handler/standard-handler";
+import { SoftwareSearchHandler } from "./search/result-handler/software-handler";
 
 export interface SearchResultItem {
     id: string;
@@ -65,6 +66,8 @@ export interface SolrConfig {
 export class SearchService {
     private config: SolrConfig;
 
+    private resourceTypeFacetBlacklist: string[] = ["person_nested"];
+
     constructor(opts: ServiceOptions) {
         if (opts.properties.solr) {
             this.config = opts.properties.solr as SolrConfig;
@@ -77,6 +80,7 @@ export class SearchService {
         new RepositorySearchHandler(),
         new OrganizationSearchHandler(),
         new ArticleSearchHandler(),
+        new StandardSearchHandler(),
         new SoftwareSearchHandler()
     ];
 
@@ -229,7 +233,10 @@ export class SearchService {
         for (let i = 0; i < facetResponse.length; i += 2) {
             const [label, count] = facetResponse.slice(i, i + 2);
             if (typeof label === "string" && typeof count === "number") {
-                entries.push({ label, count });
+                const idx = this.resourceTypeFacetBlacklist.findIndex((e) => e === label);
+                if (idx === -1) {
+                    entries.push({ label, count });
+                }
             }
         }
         return entries;
