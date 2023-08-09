@@ -9,6 +9,7 @@ import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
+import { Api } from "../../components/ResourceType/Api_Identifier/Api";
 //import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
@@ -35,6 +36,7 @@ export interface RepositoryMetadataResponse {
     supportsMetadataStandard: string;
     uri: string;
     id: string;
+    api: Array<object>;
 }
 
 export function RepositoryView() {
@@ -218,6 +220,11 @@ export function RepositoryView() {
                                     />
                                 </Box>
                             ) : null}
+                            {/*{metadata.api ? (*/}
+                            <Box pt="33px">
+                                <Api api={metadata.api} />
+                            </Box>
+                            {/*) : null}*/}
                         </Box>
                     </Flex>
                     <Box w="100%" pt="80px">

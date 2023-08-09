@@ -9,6 +9,7 @@ import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 //import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
+import { Identifier } from "../../components/ResourceType/Api_Identifier/Identifier";
 //import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
@@ -28,6 +29,7 @@ export interface OrganisationMetadataResponse {
     countryName: string;
     locality: string;
     subOrganizationOf: string;
+    identifier: Array<object>;
 }
 
 export function OrganisationView() {
@@ -142,9 +144,9 @@ export function OrganisationView() {
                                 />
                             </Box>
                         </Box>
-                        {metadata.homepage ? (
-                            <Box w="25%">
-                                <ResultsNavigation result={1} of={100} />
+                        <Box w="25%">
+                            <ResultsNavigation result={1} of={100} />
+                            {metadata.homepage ? (
                                 <Box className="actionButtonGroup" pt="74px">
                                     <Link
                                         to={metadata.homepage[0] as string}
@@ -165,8 +167,13 @@ export function OrganisationView() {
                                         fun={() => copyToClipBoard(metadata.homepage)}
                                     />
                                 </Box>
+                            ) : null}
+                            {/*{metadata.api ? (*/}
+                            <Box pt="33px">
+                                <Identifier identifier={metadata.identifier} />
                             </Box>
-                        ) : null}
+                            {/*) : null}*/}
+                        </Box>
                     </Flex>
                     {metadata.geometry ? (
                         <Box pt="80px">
