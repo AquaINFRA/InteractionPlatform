@@ -1,19 +1,16 @@
 import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
-import { mapFromResourceType } from "../../ResourceTypeUtils";
 import { SearchResultItem, SolrSearchResultItem } from "../../SearchService";
 import { SearchResultHandler } from "./search-result-handler";
 
 export class SoftwareSearchHandler extends SearchResultHandler {
-    public canHandle(item: SolrSearchResultItem): boolean {
-        return item.type === mapFromResourceType(ResourceType.Tools);
-    }
+    protected resourceType = ResourceType.Tools;
 
     public handle(item: SolrSearchResultItem): SearchResultItem {
         return {
             id: item.id,
             title: item.name,
             abstract: item.description,
-            resourceType: ResourceType.Tools,
+            resourceType: this.resourceType,
             url: ""
         };
     }
