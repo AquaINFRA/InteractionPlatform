@@ -12,6 +12,8 @@ import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 //import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 //import { MetadataSourceIcon, GoToOpenIssuesIcon } from "../../components/Icons";
+import ReactMarkdown from "react-markdown";
+import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 
 export interface ArticleMetadataResponse {
     name: string;
@@ -109,6 +111,11 @@ export function ArticleView() {
                                     visibleElements={2}
                                     expandedByDefault={false}
                                 />
+                            </Box>
+                            <Box pt="80px">
+                                <ReactMarkdown components={ChakraUIRenderer()}>
+                                    {metadata.articleBody[0] ? metadata.articleBody[0] : ""}
+                                </ReactMarkdown>
                             </Box>
                         </Box>
                         <Box w="25%">
