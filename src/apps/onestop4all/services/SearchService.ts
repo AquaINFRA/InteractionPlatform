@@ -66,6 +66,8 @@ export interface SolrConfig {
 export class SearchService {
     private config: SolrConfig;
 
+    private resourceTypeFacetBlacklist: string[] = ["person_nested"];
+
     constructor(opts: ServiceOptions) {
         if (opts.properties.solr) {
             this.config = opts.properties.solr as SolrConfig;
@@ -202,7 +204,10 @@ export class SearchService {
         for (let i = 0; i < facetResponse.length; i += 2) {
             const [label, count] = facetResponse.slice(i, i + 2);
             if (typeof label === "string" && typeof count === "number") {
-                entries.push({ label, count });
+                const idx = this.resourceTypeFacetBlacklist.findIndex((e) => e === label);
+                if (idx === -1) {
+                    entries.push({ label, count });
+                }
             }
         }
         return entries;
