@@ -194,7 +194,7 @@ export function RepositoryView() {
                                                 label="Visit repository"
                                                 icon={<ExternalLinkIcon color="white" />}
                                                 variant="solid"
-                                                fun={{}}
+                                                fun={() => void 0}
                                             />
                                         </Link>
                                     ) : null}
@@ -208,7 +208,7 @@ export function RepositoryView() {
                                                 label="Open user policy"
                                                 icon={<InfoIcon />}
                                                 variant="outline"
-                                                fun={{}}
+                                                fun={() => void 0}
                                             />
                                         </Link>
                                     ) : null}

@@ -157,7 +157,7 @@ export function OrganisationView() {
                                             label="Visit repository"
                                             icon={<ExternalLinkIcon color="white" />}
                                             variant="solid"
-                                            fun={{}}
+                                            fun={() => void 0}
                                         />
                                     </Link>
                                     <ActionButton

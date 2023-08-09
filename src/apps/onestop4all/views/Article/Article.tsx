@@ -130,20 +130,20 @@ export function ArticleView() {
                                         label="VISIT PROJECT PAGE"
                                         icon={<ExternalLinkIcon color="white" />}
                                         variant="solid"
-                                        fun={{}}
+                                        fun={() => void 0}
                                     />
                                 </Link>
                                 <ActionButton
                                     label="GO TO OPEN ISSUES"
                                     icon={<GoToOpenIssuesIcon />}
                                     variant="outline"
-                                    fun={{}}
+                                    fun={() => void 0}
                                 />
                                 <ActionButton
                                     label="VISIT METADATA SOURCE"
                                     icon={<MetadataSourceIcon color="#05668D" />}
                                     variant="outline"
-                                    fun={{}}
+                                    fun={() => void 0}
                                 />
                                 <ActionButton
                                     label="COPY URL"

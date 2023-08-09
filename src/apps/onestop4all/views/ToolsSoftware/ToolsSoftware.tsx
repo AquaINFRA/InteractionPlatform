@@ -158,7 +158,7 @@ export function ToolsSoftwareView() {
                                         label="VISIT PROJECT PAGE"
                                         icon={<ExternalLinkIcon color="white" />}
                                         variant="solid"
-                                        fun={{}}
+                                        fun={() => void 0}
                                     />
                                     <ActionButton
                                         label="Copy URL"
