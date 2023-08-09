@@ -1,115 +1,125 @@
-import { Box, usePrevious } from "@open-pioneer/chakra-integration";
 import { Group } from "@visx/group";
 import { Graph } from "@visx/network";
-import { DefaultNode, Link, LinkProvidedProps, NodeProvidedProps } from "@visx/network/lib/types";
-import { Simulation } from "d3";
-import {
-    forceCenter,
-    forceLink,
-    forceManyBody,
-    forceSimulation,
-    SimulationLinkDatum
-} from "d3-force";
-import { useEffect, useReducer, useRef } from "react";
+import { LinkProvidedProps } from "@visx/network/lib/types";
 
-import { PrimaryColor } from "../../Theme";
 import { ResourceType } from "../../views/Start/ResourceEntry/ResourceEntry";
-import { ResourceIcon } from "../../views/Start/ResourceEntry/ResourceIcons";
+import { Node } from "./Node";
 
-interface NetworkGraphProps {
+export interface NetworkGraphProps {
     width: number;
     height: number;
 }
 
-interface NetworkNode {
+export interface CustomNode {
     id: string;
     label: string;
     type: ResourceType;
-    x?: number;
-    y?: number;
+    abstract: string;
+    x: number;
+    y: number;
     fx?: number;
     fy?: number;
 }
 
-interface NetworkLink {
-    source: NetworkNode;
-    target: NetworkNode;
+interface CustomLink {
+    source: CustomNode;
+    target: CustomNode;
 }
 
-const nodes: NetworkNode[] = [
+const nodes: CustomNode[] = [
     {
         id: "1",
         label: "inputfield",
         type: ResourceType.Articles,
-        fx: 450,
-        fy: 50
+        abstract:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+        x: 450,
+        y: 50
     },
     {
         id: "3",
         label: "World Settlement Footprint (WSF)",
         type: ResourceType.Tools,
-        fx: 200,
-        fy: 200
+        abstract:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+        x: 200,
+        y: 200
     },
     {
         id: "2",
         label: "Monitor der Siedlungs- und Freiraumentwicklung",
         type: ResourceType.Repos,
-        fx: 700,
-        fy: 200
+        abstract:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+        x: 700,
+        y: 200
     },
     {
         id: "4",
         label: "World Settlement Footprint (WSF) 2019 - Sentinel-1/2 – Global",
+        abstract:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
         type: ResourceType.Datasets,
-        fx: 500,
-        fy: 200
+        x: 500,
+        y: 200
     },
     {
         id: "5",
         label: "IÖR Monitor WMS",
+        abstract:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
         type: ResourceType.Services,
-        fx: 900,
-        fy: 350
+        x: 900,
+        y: 350
     },
     {
         id: "6",
         label: "World Settlement Footprint (WSF) 2015 v2 - Landsat-8/Sentinel-1 – Global",
+        abstract:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
         type: ResourceType.Datasets,
-        fx: 300,
-        fy: 350
+        x: 300,
+        y: 350
     },
     {
         id: "7",
         label: "EOC Catalogue",
+        abstract:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
         type: ResourceType.Services,
-        fx: 500,
-        fy: 350
+        x: 500,
+        y: 350
     },
     {
         id: "8",
         label: "BKG-MIS",
+        abstract:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
         type: ResourceType.Services,
-        fx: 400,
-        fy: 450
+        x: 400,
+        y: 450
     },
     {
         id: "9",
         label: "OGC Catalogue Service",
+        abstract:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
         type: ResourceType.Standards,
-        fx: 600,
-        fy: 450
+        x: 600,
+        y: 450
     },
     {
         id: "10",
         label: "OGC Web Map Service",
+        abstract:
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
         type: ResourceType.Standards,
-        fx: 1000,
-        fy: 400
+        x: 1000,
+        y: 400
     }
 ];
 
-const links: NetworkLink[] = [
+const links: CustomLink[] = [
     { source: nodes[0]!, target: nodes[1]! },
     { source: nodes[0]!, target: nodes[2]! },
     { source: nodes[0]!, target: nodes[3]! },
@@ -122,7 +132,7 @@ const links: NetworkLink[] = [
     { source: nodes[7]!, target: nodes[8]! }
 ];
 
-const LinkNode = (props: LinkProvidedProps<Link<DefaultNode>>) => {
+const Link = (props: LinkProvidedProps<CustomLink>) => {
     const { link } = props;
     const dx = link.target.x - link.source.x;
     const dy = link.target.y - link.source.y;
@@ -143,84 +153,54 @@ const LinkNode = (props: LinkProvidedProps<Link<DefaultNode>>) => {
     );
 };
 
-const NetworkNode = (props: NodeProvidedProps<NetworkNode>) => {
-    const labelRectHeight = 100;
-    const labelRectWidth = 120;
-    const { node } = props;
-    return (
-        <Group>
-            <circle r={24} fill={PrimaryColor} />
-            <ResourceIcon type={node.type} size={28} offsetX={-14} offsetY={-14} />
-            <foreignObject x="25" y="-25" width={labelRectWidth} height={labelRectHeight}>
-                <Box color={PrimaryColor} overflow={"hidden"} fontSize="14px">
-                    {node.label}
-                </Box>
-            </foreignObject>
-        </Group>
-    );
-};
-
 export const NetworkGraph = ({ width, height }: NetworkGraphProps) => {
-    // const forceStrength = 100;
-    // forceSimulation(data.nodes)
-    //     .force(
-    //         "link",
-    //         forceLink(data.links).id((d: any) => d.id)
-    //     )
-    //     .force("charge", forceManyBody().strength(-forceStrength))
-    //     .force("center", forceCenter(width / 2, height / 2))
-    //     .force(
-    //         "collision",
-    //         forceCollide<GraphNode>().radius((d) => 70)
-    //     )
-    //     // .stop()
-    //     .tick(1);
+    // const [, forceUpdate] = useReducer((x) => x + 1, 0);
+    // const forceRef = useRef<Simulation<CustomNode, undefined>>();
+    // const previousWidth = usePrevious(width);
+    // const previousHeight = usePrevious(height);
 
-    const [, forceUpdate] = useReducer((x) => x + 1, 0);
-    const forceRef = useRef<Simulation<NetworkNode, undefined>>();
-    const previousWidth = usePrevious(width);
-    const previousHeight = usePrevious(height);
+    // useEffect(() => {
+    //     forceRef.current = forceSimulation(nodes)
+    //         .force(
+    //             "link",
+    //             forceLink<CustomNode, SimulationLinkDatum<CustomNode>>()
+    //                 .id((d) => d.id)
+    //                 .links(links)
+    //         )
+    //         .force("charge", forceManyBody().strength(-500))
+    //         .force("center", forceCenter(width / 2, height / 2));
 
-    useEffect(() => {
-        forceRef.current = forceSimulation(nodes)
-            .force(
-                "link",
-                forceLink<NetworkNode, SimulationLinkDatum<NetworkNode>>()
-                    .id((d) => d.id)
-                    .links(links)
-            )
-            .force("charge", forceManyBody().strength(-500))
-            .force("center", forceCenter(width / 2, height / 2));
+    //     // This is going to cause _many_ re-renders as data becomes more complex.
+    //     // Be very careful with logic that goes into this component.
+    //     // We could potentially wait until the "end" even is emitted
+    //     // and then update the graph if we don't want to do this.
+    //     // https://github.com/d3/d3-force#simulation_on
+    //     forceRef.current.on("tick", () => forceUpdate());
+    //     // TODO: Update the dependencies once nodes/edges are passed in via props.
+    // }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
-        // This is going to cause _many_ re-renders as data becomes more complex.
-        // Be very careful with logic that goes into this component.
-        // We could potentially wait until the "end" even is emitted
-        // and then update the graph if we don't want to do this.
-        // https://github.com/d3/d3-force#simulation_on
-        forceRef.current.on("tick", () => forceUpdate());
-        // TODO: Update the dependencies once nodes/edges are passed in via props.
-    }, []); //eslint-disable-line react-hooks/exhaustive-deps
+    // useEffect(() => {
+    //     if (forceRef.current && (previousWidth !== width || previousHeight !== height)) {
+    //         // console.log("center zoom");
+    //         // TODO: Recenter the diagram when width/height changes.
+    //         // Will most likely have to look into storing the `zoom`
+    //         // in a ref so we can call `zoom.center()`.
+    //     }
+    // }, [width, height, previousWidth, previousHeight]);
 
-    useEffect(() => {
-        if (forceRef.current && (previousWidth !== width || previousHeight !== height)) {
-            // console.log("center zoom");
-            // TODO: Recenter the diagram when width/height changes.
-            // Will most likely have to look into storing the `zoom`
-            // in a ref so we can call `zoom.center()`.
-        }
-    }, [width, height, previousWidth, previousHeight]);
+    // if (!width || !height || !forceRef.current) return null;
 
-    if (!width || !height || !forceRef.current) return null;
-
-    return (
+    return width < 10 ? null : (
         <>
             <svg width={width} height={height}>
-                {/* <rect width={width} height={height} fill="#000000" /> */}
+                <filter id="blurMe">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
+                </filter>
                 <Group>
-                    <Graph
-                        graph={{ nodes, links: links as Link<DefaultNode>[] }}
-                        nodeComponent={NetworkNode}
-                        linkComponent={LinkNode}
+                    <Graph<CustomLink, CustomNode>
+                        graph={{ nodes, links }}
+                        nodeComponent={Node}
+                        linkComponent={Link}
                     />
                 </Group>
             </svg>
