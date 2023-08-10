@@ -1,0 +1,21 @@
+.tocHeader {
+    color: #000;
+    //font-family: Open Sans;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.9px;
+    text-transform: uppercase;
+}
+
+.tocTitle {
+    color: var(--primary-primary-light, #2b9eab);
+    //font-family: Open Sans;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px; /* 125% */
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}

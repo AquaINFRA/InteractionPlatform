@@ -1,4 +1,4 @@
-import { Box, Container, Image, Flex, Divider } from "@open-pioneer/chakra-integration";
+import { Box, Container, Image, Flex, Divider, position } from "@open-pioneer/chakra-integration";
 //import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
 import { useService } from "open-pioneer:react-hooks";
@@ -9,6 +9,7 @@ import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 
 import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
+import { TOC } from "../../components/ResourceType/TOC/TOC";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 //import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 //import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
@@ -156,6 +157,7 @@ export function ArticleView() {
                                     fun={() => copyToClipBoard(metadata.homepage)}
                                 />
                                 </Box>*/}
+                            {metadata.articleBody[0] ? <TOC md={metadata.articleBody[0]} /> : null}
                         </Box>
                     </Flex>
                     <Box w="100%" pt="80px">
