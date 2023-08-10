@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 //import { useToast } from "@open-pioneer/chakra-integration";
+import ReactMarkdown from "react-markdown";
+import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 
 import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
@@ -12,8 +14,7 @@ import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 //import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 //import { MetadataSourceIcon, GoToOpenIssuesIcon } from "../../components/Icons";
-import ReactMarkdown from "react-markdown";
-import ChakraUIRenderer from "chakra-ui-markdown-renderer";
+import { Support } from "../../components/ResourceType/Support/Support";
 
 export interface ArticleMetadataResponse {
     name: string;
@@ -116,6 +117,9 @@ export function ArticleView() {
                                 <ReactMarkdown components={ChakraUIRenderer()}>
                                     {metadata.articleBody[0] ? metadata.articleBody[0] : ""}
                                 </ReactMarkdown>
+                            </Box>
+                            <Box pt="80px">
+                                <Support />
                             </Box>
                         </Box>
                         <Box w="25%">
