@@ -1,8 +1,5 @@
-# Open Pioneer Starter
-
-![Build status](https://github.com/open-pioneer/starter/actions/workflows/test-and-build.yml/badge.svg) ![Dependency audit](https://github.com/open-pioneer/starter/actions/workflows/audit-dependencies.yml/badge.svg)
-
-[Samples](https://open-pioneer.github.io/demo/starter/) | [API Documentation](https://open-pioneer.github.io/demo/starter/docs/) | [User manual](https://github.com/open-pioneer/starter/tree/main/docs)
+# OneStop4All
+The OneStop4All is the primary visual and user-friendly [NFDI4Earth](https://www.nfdi4earth.de/) access point. It offers a coherent view on and points to all relevant Earth System Sciences (ESS) RDM resources provided by NFDI4Earth members and the ESS community, such as data repositories, software tools, information on Research Data Management (RDM), education and training materials. Learn more about our [Mission](https://nfdi4earth.de/about-us) and the [Resources](https://nfdi4earth.de/2facilitate/onestop4all).
 
 ## Quick start
 
@@ -10,23 +7,30 @@ Ensure that you have [Node](https://nodejs.org/en/) (Version 16 or later) and [p
 
 Then execute the following commands to get started:
 
+Step 1: Install CORS-anywhere. 
+This is only needed at the beginning for local development and testing until CORS is enabled in Solr.
 ```bash
-$ git clone https://github.com/open-pioneer/starter.git # Clone the repository
-$ cd starter
-$ pnpm install                                          # Install dependencies
-$ pnpm run dev                                          # Launch development server
+$ git clone https://github.com/Rob--W/cors-anywhere.git
+$ cd cors-anywhere
+$ nppm i 
+$ npm run dev
 ```
 
-Vite will print the project's local address (usually <http://localhost:5173/>).
-Point your browser at it and start programming!
+Step 2: Install backend.
+```bash
+$ git clone https://git.rwth-aachen.de/nfdi4earth/onestop4all/onestop4all-harvester.git
+```
+Then, start Docker Desktop (In case you're using Windows) and open the folder in Visual Studio Code, press F1 and "Rebuild and reopen in Container".
+Next, open the file "harvest.py", press F5 and "Debug the currently active Python file". These steps will build the indices based on the data from the Knowledge Hub.
 
-Additional in-depth information can be found in the [Documentation](./docs/README.md).
-
-## See also
-
--   [Core packages](https://github.com/open-pioneer/core-packages): Contains the runtime package and other central packages.
--   [OpenLayers base packages](https://github.com/open-pioneer/openlayers-base-packages): Contains packages using OpenLayers to render a map.
--   [Build tools](https://github.com/open-pioneer/build-tools): Contains our build tooling such as the Vite plugin.
+Step 3: Install web app.
+```bash
+$ git clone https://git.rwth-aachen.de/nfdi4earth/onestop4all/onestop4all-implementation.git
+$ cd onestop4all-implementation
+$ pnpm install
+$ pnpm run dev
+```
+The app should now be available under [http://localhost:5173/](http://localhost:5173/).
 
 ## License
 
