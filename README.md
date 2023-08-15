@@ -28,9 +28,9 @@ Step 3: Install web app. Finally, you need to switch to the branch "develop", wh
 ```bash
 $ git clone https://git.rwth-aachen.de/nfdi4earth/onestop4all/onestop4all-implementation.git
 $ cd onestop4all-implementation
+$ git checkout develop
 $ pnpm install
 $ pnpm run dev
-$ git checkout develop
 ```
 The app should now be available under [http://localhost:5173/](http://localhost:5173/).
 
