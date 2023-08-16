@@ -16,11 +16,15 @@ $ npm i
 $ node server.js
 ```
 
-Step 2: Install backend. First, you need to create a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#clone-repository-using-personal-access-token). Then, you can clone the repository using the following command.
-
+Step 2: Install backend. First, you need to create a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#clone-repository-using-personal-access-token). Then, you can clone the repository using the following command.  
 ```bash
 $ git clone https://<username>@git.rwth-aachen.de/nfdi4earth/onestop4all/onestop4all-harvester.git
 ```
+The stable branch is `main` and current developments can be seen in `feature/new_harvesters`. Updates in the main branch require the following steps:
+2_1 `docker volume ls` to find the exact name of the volume.
+2_2 `docker volume rm <onestop4all-harvester_devcontainer_data>` to remove the volume. If the volume is in use by a container, run `docker stop <CONTAINER ID>` and `docker rm <CONTAINER ID>`. Then, again `docker volume rm <onestop4all-harvester_devcontainer_data>`.
+2_3 `git pull`
+
 Then, start Docker Desktop (In case you're using Windows) and open the folder "onestop4all-harvester" in Visual Studio Code, press F1 and "Rebuild and reopen in Container".
 Next, open the file "harvest.py", press F5 and "Debug the currently active Python file". These steps will build the indices based on the data from the Knowledge Hub. Currently, building indicses takes around 10 seconds.
 
