@@ -9,7 +9,7 @@ import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
-//import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
+import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 
@@ -22,6 +22,7 @@ export interface RepositoryMetadataResponse {
     license: string;
     uri: string;
     id: string;
+    relatedContent: Array<object>;
 }
 
 export function ToolsSoftwareView() {
@@ -58,6 +59,34 @@ export function ToolsSoftwareView() {
             });
         }
     };
+
+    //TEST DATA FOR RELATED CONTENT SECTION
+    /*metadata
+        ? (metadata.relatedContent = [
+            {
+                title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
+                resourceType: "Services",
+                id: "1234"
+            },
+            {
+                title: "This is a related standard (url missing)",
+                resourceType: "Standards"
+            },
+            {
+                title: "This is a related organisation (resource type missing)",
+                id: "1234"
+            },
+            {
+                resourceType: "Tools/Software",
+                id: "1234"
+            },
+            {
+                title: "This is a related lesson",
+                resourceType: "Educational resources",
+                id: "1234"
+            }
+        ])
+        : null;*/
 
     console.log(metadata);
 
@@ -134,6 +163,9 @@ export function ToolsSoftwareView() {
                         </Box>
                     </Flex>
                     <Box w="100%" pt="80px">
+                        {metadata.relatedContent ? (
+                            <RelatedContent relatedContentItems={metadata.relatedContent} />
+                        ) : null}
                         <Box>
                             {/*<RelatedContent relatedContentItems={metadataResponse["relatedContentItems"]} />*/}
                         </Box>

@@ -18,12 +18,14 @@ export const RelatedContent = (props: { relatedContentItems: object }) => {
             </Flex>
             <Box className="relatedContentEntries">
                 <Flex gap="30px">
-                    {relatedContentItemsList.slice(0, 4).map((e, i) => (
-                        <Flex key={i}>
-                            <Divider className="relatedContentLine" orientation="vertical" />
-                            <RelatedContentEntry {...e} />
-                        </Flex>
-                    ))}
+                    {relatedContentItemsList.slice(0, 4).map((e, i) =>
+                        e.title || e.resourceType || e.url ? (
+                            <Flex key={i}>
+                                <Divider className="relatedContentLine" orientation="vertical" />
+                                <RelatedContentEntry {...e} />
+                            </Flex>
+                        ) : null
+                    )}
                 </Flex>
             </Box>
         </Box>

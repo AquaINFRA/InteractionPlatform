@@ -5,10 +5,10 @@ import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
 export interface RelatedContentEntryProps {
     title: string;
     resourceType: ResourceType;
-    url: string;
+    id: string;
 }
 
-export const RelatedContentEntry = ({ title, resourceType, url }: RelatedContentEntryProps) => {
+export const RelatedContentEntry = ({ title, resourceType, id }: RelatedContentEntryProps) => {
     const getResType = (resType: string) => {
         switch (resType) {
             case "Repositories / Archives":
@@ -32,22 +32,38 @@ export const RelatedContentEntry = ({ title, resourceType, url }: RelatedContent
 
     return (
         <Box className="relatedContentEntry">
-            <Flex className="relatedContentResource-entry" alignItems="center">
-                <Box className="relatedContentOverlap">
-                    <div className="relatedContentCircle-group"></div>
-                    <div className="relatedContentIcon-base"></div>
-                    <div className="relatedContentIcon">
-                        <ResourceIcon type={resourceType} size={20} />
-                    </div>
-                </Box>
-                <Box className="relatedContentResourceType">{resourceType}</Box>
-            </Flex>
-            <Box className="relatedContentTitle">{title}</Box>
-            <Button className="relatedContentButton">
-                <a href={url} className="relatedContentButtonLabel">
-                    Visit {getResType(resourceType)}
-                </a>
-            </Button>
+            {resourceType ? (
+                <Flex className="relatedContentResource-entry" alignItems="center">
+                    <Box className="relatedContentOverlap">
+                        <div className="relatedContentCircle-group"></div>
+                        <div className="relatedContentIcon-base"></div>
+                        <div className="relatedContentIcon">
+                            <ResourceIcon type={resourceType} size={20} />
+                        </div>
+                    </Box>
+                    <Box className="relatedContentResourceType">{resourceType}</Box>
+                </Flex>
+            ) : null}
+            <Box className="relatedContentTitle">
+                {title ? (
+                    <a href={id} rel="noreferrer" target="_blank">
+                        {title.substring(0, 99)}
+                        {title.length > 100 ? "..." : ""}
+                    </a>
+                ) : null}
+            </Box>
+            {id ? (
+                <Button className="relatedContentButton">
+                    <a
+                        href={id}
+                        className="relatedContentButtonLabel"
+                        rel="noreferrer"
+                        target="_blank"
+                    >
+                        Visit {getResType(resourceType)}
+                    </a>
+                </Button>
+            ) : null}
         </Box>
     );
 };

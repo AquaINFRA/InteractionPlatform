@@ -10,7 +10,7 @@ import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHe
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { Api } from "../../components/ResourceType/Api_Identifier/Api";
-//import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
+import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { InfoIcon } from "../../components/Icons";
@@ -37,6 +37,7 @@ export interface RepositoryMetadataResponse {
     uri: string;
     id: string;
     api: Array<object>;
+    relatedContent: Array<object>;
 }
 
 export function RepositoryView() {
@@ -73,6 +74,25 @@ export function RepositoryView() {
             });
         }
     };
+
+    //TEST DATA FOR RELATED CONTENT SECTION
+    /*metadata
+        ? (metadata.relatedContent = [
+            {
+                title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
+                resourceType: "Services",
+                id: "1234"
+            },
+            { title: "This is a related standard (url missing)", resourceType: "Standards" },
+            { title: "This is a related organisation (resource type missing)", id: "1234" },
+            { resourceType: "Tools/Software", id: "1234" },
+            {
+                title: "This is a related lesson",
+                resourceType: "Educational resources",
+                id: "1234"
+            }
+        ])
+        : null;*/
 
     console.log(metadata);
 
@@ -230,7 +250,9 @@ export function RepositoryView() {
                         </Box>
                     </Flex>
                     <Box w="100%" pt="80px">
-                        {/*<RelatedContent relatedContentItems={metadataResponse["relatedContentItems"]} />*/}
+                        {metadata.relatedContent ? (
+                            <RelatedContent relatedContentItems={metadata.relatedContent} />
+                        ) : null}
                         <Flex gap="10%" alignItems="center" pt="120px">
                             <Divider className="seperator" w="65%" />
                             <Box w="25%">
