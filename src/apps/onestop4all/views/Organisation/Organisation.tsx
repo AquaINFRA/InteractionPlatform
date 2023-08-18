@@ -30,6 +30,7 @@ export interface OrganisationMetadataResponse {
     subOrganizationOf: string;
     identifier: Array<object>;
     relatedContent: Array<object>;
+    otherIdentifiers: object;
 }
 
 export function OrganisationView() {
@@ -66,24 +67,45 @@ export function OrganisationView() {
             });
         }
     };
-    //TEST DATA FOR RELATED CONTENT SECTION
-    /*metadata
-        ? (metadata.relatedContent = [
-            {
-                title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
-                resourceType: "Services",
-                id: "1234"
-            },
-            { title: "This is a related standard (url missing)", resourceType: "Standards" },
-            { title: "This is a related organisation (resource type missing)", id: "1234" },
-            { resourceType: "Tools/Software", id: "1234" },
-            {
-                title: "This is a related lesson",
-                resourceType: "Educational resources",
-                id: "1234"
-            }
-        ])
-        : null;*/
+    //TEST DATA FOR RELATED CONTENT SECTION + OTHER IDENTIFIER
+    /*const relatedContent = [
+        {
+            title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
+            resourceType: "Services",
+            id: "1234"
+        },
+        {
+            title: "This is a related standard (url missing)",
+            resourceType: "Standards"
+        },
+        {
+            title: "This is a related organisation (resource type missing)",
+            id: "1234"
+        },
+        {
+            resourceType: "Tools/Software",
+            id: "1234"
+        },
+        {
+            title: "This is a related lesson",
+            resourceType: "Educational resources",
+            id: "1234"
+        }
+    ];
+
+    const otherIdentifiers = [
+        {
+            isni: "0000000403741955",
+            crossref: "100018730",
+            wikidata: "Q1205784"
+        }
+    ];
+
+    metadata
+        ? ((metadata.relatedContent = relatedContent),
+          (metadata.otherIdentifiers = otherIdentifiers))
+        : null;
+    */
 
     console.log(metadata);
 
@@ -186,11 +208,11 @@ export function OrganisationView() {
                                     />
                                 </Box>
                             ) : null}
-                            {/*{metadata.api ? (*/}
-                            <Box pt="33px">
-                                <Identifier identifier={metadata.identifier} />
-                            </Box>
-                            {/*) : null}*/}
+                            {metadata.otherIdentifiers ? (
+                                <Box pt="33px">
+                                    <Identifier identifiers={metadata.otherIdentifiers} />
+                                </Box>
+                            ) : null}
                         </Box>
                     </Flex>
                     {metadata.geometry ? (
