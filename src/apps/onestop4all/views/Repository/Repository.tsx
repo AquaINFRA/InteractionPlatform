@@ -8,6 +8,7 @@ import { useToast } from "@open-pioneer/chakra-integration";
 import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
+import { LastUpdate } from "../../components/ResourceType/Metadata/LastUpdate";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { Api } from "../../components/ResourceType/Api_Identifier/Api";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
@@ -38,6 +39,7 @@ export interface RepositoryMetadataResponse {
     id: string;
     api: Array<object>;
     relatedContent: Array<object>;
+    modified: string;
 }
 
 export function RepositoryView() {
@@ -76,23 +78,32 @@ export function RepositoryView() {
     };
 
     //TEST DATA FOR RELATED CONTENT SECTION
-    /*metadata
-        ? (metadata.relatedContent = [
-            {
-                title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
-                resourceType: "Services",
-                id: "1234"
-            },
-            { title: "This is a related standard (url missing)", resourceType: "Standards" },
-            { title: "This is a related organisation (resource type missing)", id: "1234" },
-            { resourceType: "Tools/Software", id: "1234" },
-            {
-                title: "This is a related lesson",
-                resourceType: "Educational resources",
-                id: "1234"
-            }
-        ])
-        : null;*/
+    const relatedContent = [
+        {
+            title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
+            resourceType: "Service",
+            id: "1234"
+        },
+        {
+            title: "This is a related standard (url missing)",
+            resourceType: "Standard"
+        },
+        {
+            title: "This is a related organisation (resource type missing)",
+            id: "1234"
+        },
+        {
+            resourceType: "Tool/Software",
+            id: "1234"
+        },
+        {
+            title: "This is a related lesson",
+            resourceType: "Educational resource",
+            id: "1234"
+        }
+    ];
+
+    metadata ? (metadata.relatedContent = relatedContent) : null;
 
     console.log(metadata);
 
@@ -240,6 +251,11 @@ export function RepositoryView() {
                                             fun={() => copyToClipBoard(metadata.homepage)}
                                         />
                                     ) : null}
+                                </Box>
+                            ) : null}
+                            {metadata.modified ? (
+                                <Box pt="33">
+                                    <LastUpdate date={metadata.modified} />
                                 </Box>
                             ) : null}
                             {/*{metadata.api ? (*/}

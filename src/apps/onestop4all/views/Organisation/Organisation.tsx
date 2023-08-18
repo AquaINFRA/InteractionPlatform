@@ -71,24 +71,24 @@ export function OrganisationView() {
     /*const relatedContent = [
         {
             title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
-            resourceType: "Services",
+            resourceType: "Service",
             id: "1234"
         },
         {
             title: "This is a related standard (url missing)",
-            resourceType: "Standards"
+            resourceType: "Standard"
         },
         {
             title: "This is a related organisation (resource type missing)",
             id: "1234"
         },
         {
-            resourceType: "Tools/Software",
+            resourceType: "Tool/Software",
             id: "1234"
         },
         {
             title: "This is a related lesson",
-            resourceType: "Educational resources",
+            resourceType: "Educational resource",
             id: "1234"
         }
     ];
