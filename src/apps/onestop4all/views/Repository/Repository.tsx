@@ -40,6 +40,8 @@ export interface RepositoryMetadataResponse {
     api: Array<object>;
     relatedContent: Array<object>;
     modified: string;
+    distribution_accessURL: Array<string>;
+    distribution_conformsTo: Array<string>;
 }
 
 export function RepositoryView() {
@@ -258,11 +260,14 @@ export function RepositoryView() {
                                     <LastUpdate date={metadata.modified} />
                                 </Box>
                             ) : null}
-                            {/*{metadata.api ? (*/}
-                            <Box pt="33px">
-                                <Api api={metadata.api} />
-                            </Box>
-                            {/*) : null}*/}
+                            {metadata.distribution_conformsTo && metadata.distribution_accessURL ? (
+                                <Box pt="33px">
+                                    <Api
+                                        apis={metadata.distribution_conformsTo}
+                                        urls={metadata.distribution_accessURL}
+                                    />
+                                </Box>
+                            ) : null}
                         </Box>
                     </Flex>
                     <Box w="100%" pt="80px">

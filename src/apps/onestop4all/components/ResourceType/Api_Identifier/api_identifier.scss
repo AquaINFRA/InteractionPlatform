@@ -8,7 +8,7 @@
     text-transform: uppercase;
 }
 
-.api_identifierKey {
+.api_key {
     color: var(--grey-dark-grey, #666);
     //font-family: Open Sans;
     font-size: 14px;
@@ -18,7 +18,16 @@
     text-transform: capitalize;
 }
 
-.api_identifierVal {
+.api_val {
+    color: var(--grey-dark-grey, #666);
+    //font-family: Open Sans;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+}
+
+.api_url {
     color: var(--text-link-color, #05668d);
     //font-family: Open Sans;
     font-size: 14px;
@@ -26,8 +35,4 @@
     font-weight: 400;
     line-height: 20px; /* 142.857% */
     text-decoration-line: underline;
-}
-
-.identifier {
-    margin-bottom: 10px;
 }
