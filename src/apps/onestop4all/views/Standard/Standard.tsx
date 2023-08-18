@@ -101,7 +101,7 @@ export function StandardView() {
                 <Box height="80px" />
                 <Flex gap="10%">
                     <Box w="65%">
-                        <ResourceTypeHeader resType={metadataResponse["resourceType"]} />
+                        <ResourceTypeHeader resType="Standard" />
                         <Box className="title" pt="15px">
                             {metadataResponse["title"]}
                         </Box>

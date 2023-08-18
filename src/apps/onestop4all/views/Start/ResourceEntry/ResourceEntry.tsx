@@ -6,16 +6,15 @@ export interface ResourceEntryProps {
 }
 
 export enum ResourceType {
-    Repos = "Repositories / Archives",
-    Articles = "Articles",
-    Educational = "Educational resources",
-    Datasets = "Datasets",
-    Tools = "Tools/Software",
-    Organisations = "Organisations",
-    Services = "Services",
-    Standards = "Standards",
-    Documents = "Documents",
-    Person_nested = "person_nested"
+    Repos = "Repository / Archive",
+    Articles = "Article",
+    Educational = "Educational resource",
+    Datasets = "Dataset",
+    Tools = "Tool/Software",
+    Organisations = "Organisation",
+    Services = "Service",
+    Standards = "Standard",
+    Documents = "Document"
 }
 
 export const ResourceEntry = ({ resultCount, resourceType }: ResourceEntryProps) => {

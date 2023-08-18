@@ -100,7 +100,7 @@ export function ArticleView() {
                     <Box height="80px" />
                     <Flex gap="10%">
                         <Box w="65%">
-                            <ResourceTypeHeader resType="Articles" />
+                            <ResourceTypeHeader resType="Article" />
                             {metadata.name ? (
                                 <Box className="title" pt="15px">
                                     {metadata.name}

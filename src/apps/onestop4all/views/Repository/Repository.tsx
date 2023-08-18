@@ -112,7 +112,7 @@ export function RepositoryView() {
                     <Box height="80px" />
                     <Flex gap="10%">
                         <Box w="65%">
-                            <ResourceTypeHeader resType="Repositories / Archives" />
+                            <ResourceTypeHeader resType="Repository / Archive" />
                             {metadata.title ? (
                                 <Box className="title" pt="15px">
                                     {metadata.title}

@@ -106,7 +106,7 @@ export function ToolsSoftwareView() {
                     <Box height="80px" />
                     <Flex gap="10%">
                         <Box w="65%">
-                            <ResourceTypeHeader resType="Tools/Software" />
+                            <ResourceTypeHeader resType="Tool/Software" />
                             {metadata.name ? (
                                 <Box className="title" pt="15px">
                                     {metadata.name}
