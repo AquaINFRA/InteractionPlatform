@@ -64,6 +64,7 @@ export function SearchBar() {
                     flex={{ base: "0 0 100px", custombreak: "0 0 250px" }}
                     value={selectedResource}
                     onChange={(event) => setSelectResource(event.target.value)}
+                    _hover={{ cursor: "pointer" }}
                 >
                     {createResourceTypeSelectOptions()}
                 </Select>
