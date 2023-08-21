@@ -11,7 +11,7 @@ export const Keywords = (props: { keywords: Array<string>; tag: string }) => {
             </span>
             {keywords.map((elem: string, j: number) => (
                 <a
-                    href={"/search?keyword=" + elem}
+                    href={"/search?searchterm=" + elem}
                     className={tag == "keyword" ? "metadataKeyword" : "metadataTheme"}
                     key={j}
                 >
