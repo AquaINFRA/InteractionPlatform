@@ -81,6 +81,12 @@ export default defineConfig(({ mode }) => {
         // https://vitest.dev/config/
         test: {
             globals: true
+        },
+
+        server: {
+            proxy: {
+                "/solr": "http://localhost:8983"
+            }
         }
 
         // disable hot reloading
