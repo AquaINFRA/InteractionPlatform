@@ -13,7 +13,7 @@ export default defineBuildConfig({
     },
     properties: {
         solr: {
-            url: "http://localhost:8983/solr",
+            url: "/solr",
             coreSelector: "metadata"
         }
     },
