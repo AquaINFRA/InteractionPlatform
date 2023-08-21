@@ -135,10 +135,9 @@ export class SearchService {
             queryParams.set("df", "id");
         }
         // TODO: remove proxy later
-        const url =
-            "http://localhost:8080/" +
-            `${this.config.url}/${this.config.coreSelector}/select` +
-            `?${queryParams.toString()}`;
+        const url = `${this.config.url}/${
+            this.config.coreSelector
+        }/select?${queryParams.toString()}`;
         return fetch(url).then((response) =>
             response.json().then((responseData: { response: any }) => {
                 const { response } = responseData;
