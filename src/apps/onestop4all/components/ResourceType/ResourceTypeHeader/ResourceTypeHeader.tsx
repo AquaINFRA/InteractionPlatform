@@ -1,4 +1,5 @@
 import { Box, Flex, Divider } from "@open-pioneer/chakra-integration";
+import { useNavigate } from "react-router-dom";
 import {
     StandardIcon,
     EducationalResourceIcon,
@@ -14,20 +15,28 @@ import { ResourceIcon } from "../../../views/Start/ResourceEntry/ResourceIcons";
 
 export function ResourceTypeHeader(props: { resType: string }) {
     const { resType } = props;
+    const navigate = useNavigate();
 
     return (
         <Flex alignItems="center" display="flex" gap="12px">
-            <Box>
-                <a href="/search?">
-                    <BackIcon />
-                </a>
+            <Box
+                onClick={() => {
+                    navigate(-1);
+                }}
+                _hover={{ cursor: "pointer" }}
+            >
+                <BackIcon />
             </Box>
 
-            <Box className="resTypeHeaderBackBtn">
-                <a href="/search">
-                    <span className="to">Back&nbsp;</span>
-                    to result list
-                </a>
+            <Box
+                className="resTypeHeaderBackBtn"
+                onClick={() => {
+                    navigate(-1);
+                }}
+                _hover={{ cursor: "pointer" }}
+            >
+                <span className="to">Back&nbsp;</span>
+                to result list
             </Box>
 
             <Divider className="resTypeHeaderLine" />
