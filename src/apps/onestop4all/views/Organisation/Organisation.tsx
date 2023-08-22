@@ -171,7 +171,7 @@ export function OrganisationView() {
                                         {
                                             tag: metadata.nfdi4EarthContactPerson_name
                                                 ? "nfdi"
-                                                : undefined,
+                                                : undefined, //if undefined, this metadata element is skipped in metadata component
                                             val: [
                                                 {
                                                     name: metadata.nfdi4EarthContactPerson_name,
