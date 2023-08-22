@@ -31,6 +31,12 @@ export interface OrganisationMetadataResponse {
     identifier: Array<object>;
     relatedContent: Array<object>;
     otherIdentifiers: object;
+    nfdi4EarthContactPerson_name: string;
+    nfdi4EarthContactPerson_orcidId: string;
+    //nfdi4EarthContactPerson_uri: string; probably not needed
+    nfdi4EarthContactPerson_email: string;
+    //nfdi4EarthContactPerson_id: string; probably not needed
+    //nfdi4EarthContactPerson_affiliation: string;
 }
 
 export function OrganisationView() {
@@ -68,7 +74,7 @@ export function OrganisationView() {
         }
     };
     //TEST DATA FOR RELATED CONTENT SECTION + OTHER IDENTIFIER
-    /*const relatedContent = [
+    const relatedContent = [
         {
             title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
             resourceType: "Service",
@@ -93,19 +99,7 @@ export function OrganisationView() {
         }
     ];
 
-    const otherIdentifiers = [
-        {
-            isni: "0000000403741955",
-            crossref: "100018730",
-            wikidata: "Q1205784"
-        }
-    ];
-
-    metadata
-        ? ((metadata.relatedContent = relatedContent),
-          (metadata.otherIdentifiers = otherIdentifiers))
-        : null;
-    */
+    metadata ? (metadata.relatedContent = relatedContent) : null;
 
     console.log(metadata);
 
@@ -173,6 +167,19 @@ export function OrganisationView() {
                                         {
                                             tag: "Locality",
                                             val: metadata.locality
+                                        },
+                                        {
+                                            tag: metadata.nfdi4EarthContactPerson_name
+                                                ? "nfdi"
+                                                : undefined,
+                                            val: [
+                                                {
+                                                    name: metadata.nfdi4EarthContactPerson_name,
+                                                    email: metadata.nfdi4EarthContactPerson_email,
+                                                    //affiliation: metadata.nfdi4EarthContactPerson_affiliation,
+                                                    orcid: metadata.nfdi4EarthContactPerson_orcidId
+                                                }
+                                            ]
                                         },
                                         {
                                             tag: "Suborganisation of",

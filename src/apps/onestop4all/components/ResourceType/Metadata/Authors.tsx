@@ -14,7 +14,11 @@ export const Authors = (props: { authors: Array<object> }) => {
                     <Flex className="metadataValue" key={j}>
                         {elem.orcid ? (
                             <>
-                                <a href={"https://orcid.org/" + elem.orcid}>
+                                <a
+                                    href={"https://orcid.org/" + elem.orcid}
+                                    rel="noreferrer"
+                                    target="_blank"
+                                >
                                     <Image className="orcid" alt="Bg icon" src="/orcid.png" />
                                 </a>
                                 &nbsp;
