@@ -23,6 +23,7 @@ export interface RepositoryMetadataResponse {
     uri: string;
     id: string;
     relatedContent: Array<object>;
+    programmingLanguage: Array<string>;
 }
 
 export function ToolsSoftwareView() {
@@ -59,34 +60,33 @@ export function ToolsSoftwareView() {
             });
         }
     };
+    //TEST DATA FOR RELATED CONTENT SECTION + OTHER IDENTIFIER
+    const relatedContent = [
+        {
+            title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
+            resourceType: "Service",
+            id: "1234"
+        },
+        {
+            title: "This is a related standard (url missing)",
+            resourceType: "Standard"
+        },
+        {
+            title: "This is a related organisation (resource type missing)",
+            id: "1234"
+        },
+        {
+            resourceType: "Tool/Software",
+            id: "1234"
+        },
+        {
+            title: "This is a related lesson",
+            resourceType: "Educational resource",
+            id: "1234"
+        }
+    ];
 
-    //TEST DATA FOR RELATED CONTENT SECTION
-    /*metadata
-        ? (metadata.relatedContent = [
-            {
-                title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
-                resourceType: "Services",
-                id: "1234"
-            },
-            {
-                title: "This is a related standard (url missing)",
-                resourceType: "Standards"
-            },
-            {
-                title: "This is a related organisation (resource type missing)",
-                id: "1234"
-            },
-            {
-                resourceType: "Tools/Software",
-                id: "1234"
-            },
-            {
-                title: "This is a related lesson",
-                resourceType: "Educational resources",
-                id: "1234"
-            }
-        ])
-        : null;*/
+    metadata ? (metadata.relatedContent = relatedContent) : null;
 
     console.log(metadata);
 
@@ -118,12 +118,20 @@ export function ToolsSoftwareView() {
                                 <Metadata
                                     metadataElements={[
                                         {
+                                            tag: "Type",
+                                            val: metadata.type
+                                        },
+                                        {
                                             tag: "Keywords",
                                             val: metadata.keyword
                                         },
                                         {
                                             tag: "License",
                                             val: metadata.license
+                                        },
+                                        {
+                                            tag: "Programming language",
+                                            val: metadata.programmingLanguage
                                         }
                                     ]}
                                     visibleElements={2}
