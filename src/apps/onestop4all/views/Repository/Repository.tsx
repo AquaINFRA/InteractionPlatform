@@ -1,9 +1,8 @@
-import { Box, Container, Image, Flex, Divider } from "@open-pioneer/chakra-integration";
+import { Box, Container, Image, Flex, Divider, useToast } from "@open-pioneer/chakra-integration";
 import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
 import { useParams, Link } from "react-router-dom";
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
-import { useToast } from "@open-pioneer/chakra-integration";
 
 import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
