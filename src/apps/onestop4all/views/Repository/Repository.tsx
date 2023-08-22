@@ -38,7 +38,7 @@ export interface RepositoryMetadataResponse {
     id: string;
     api: Array<object>;
     relatedContent: Array<object>;
-    modified: string;
+    dateModified: string;
     distribution_accessURL: Array<string>;
     distribution_conformsTo: Array<string>;
 }
@@ -254,9 +254,9 @@ export function RepositoryView() {
                                     ) : null}
                                 </Box>
                             ) : null}
-                            {metadata.modified ? (
+                            {metadata.dateModified ? (
                                 <Box pt="33">
-                                    <LastUpdate date={metadata.modified} />
+                                    <LastUpdate date={metadata.dateModified} />
                                 </Box>
                             ) : null}
                             {metadata.distribution_conformsTo && metadata.distribution_accessURL ? (

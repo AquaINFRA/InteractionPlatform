@@ -5,7 +5,7 @@ export const LastUpdate = (props: { date: string }) => {
 
     return (
         <Box>
-            <span className="lastUpdateKey">Last metadata update: </span>
+            <span className="lastUpdateKey">Update: </span>
             <span className="lastUpdateValue">{date}</span>
         </Box>
     );
