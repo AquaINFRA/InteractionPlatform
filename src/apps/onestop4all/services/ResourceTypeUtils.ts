@@ -22,6 +22,10 @@ const mapping = [
     {
         type: ResourceType.Tools,
         identifier: "http://schema.org/SoftwareSourceCode"
+    },
+    {
+        type: ResourceType.Documents,
+        identifier: "http://nfdi4earth.de/ontology#Document"
     }
 ];
 
