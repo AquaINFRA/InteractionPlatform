@@ -1,4 +1,9 @@
-import { Box, Container, Image, Flex, Divider } from "@open-pioneer/chakra-integration";
+import { Box, Container, Image, Flex, Divider, useToast } from "@open-pioneer/chakra-integration";
+import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
+import { useParams, Link } from "react-router-dom";
+import { useService } from "open-pioneer:react-hooks";
+import { useEffect, useState } from "react";
+
 import { SearchBar } from "../../components/SearchBar";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
@@ -6,84 +11,84 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
-import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
 import { PdfIcon, MetadataSourceIcon } from "../../components/Icons";
 
+export interface RepositoryMetadataResponse {
+    title: string;
+    description: string;
+    type: string;
+    website: string;
+    id: string;
+    parentStandard: string;
+    relatedContent: Array<object>;
+    theme: Array<string>;
+    uri: string;
+}
+
 export function StandardView() {
-    const metadataResponse = {
-        resourceType: "Standards",
-        title: "OGC Web Map Service",
-        abstract:
-            "The Web Feature Service (WFS) represents a change in the way geographic information is created, modified and exchanged on the Internet. Rather than sharing geographic information at the file level using File Transfer Protocol (FTP), for example, the WFS offers direct fine-grained access to geographic information at the feature and feature property level. This International Standard specifies discovery operations, query operations, locking operations, transaction operations and operations to manage stored, parameterized query expressions. Discovery operations allow the service to be interrogated to determine its capabilities and to retrieve the application schema that defines the feature types that the service offers. Query operations allow features or values of feature properties to be retrieved from the underlying data store based upon constraints, defined by the client, on feature properties. Locking operations allow exclusive access to features for the purpose of modifying or deleting features. Transaction operations allow features to be created, changed, replaced and deleted from the underlying data store. Stored query operations allow clients to create, drop, list and described parameterized query expressions that are stored by the server and can be repeatedly invoked using different parameter values. This International Standard defines eleven operations: GetCapabilities (discovery operation) DescribeFeatureType (discovery operation) GetPropertyValue (query operation) GetFeature (query operation) GetFeatureWithLock (query & locking operation) LockFeature (locking operation) - Transaction (transaction operation) CreateStoredQuery (stored query operation) DropStoredQuery (stored query operation) ListStoredQueries (stored query operation) DescribeStoredQueries (stored query operation) In the taxonomy of services defined in ISO 19119, the WFS is primarily a feature access service but also includes elements of a feature type service, a coordinate conversion/transformation service and geographic format conversion service.",
-        standardsOrganization: "Open Geospatial Consortium",
-        dateOfPublication: "10.07.2014",
-        version: "2.0.2",
-        externalIdentifier: "http://www.opengis.net/doc/IS/wfs/2.0.2",
-        keywords: [
-            "ogcdoc",
-            "OGC document",
-            "web feature service",
-            "wfs",
-            "property",
-            "geographic information",
-            "resource",
-            "geography markup language",
-            "GML",
-            "Transaction",
-            "GetFeature",
-            "GetCapabilities",
-            "stored query",
-            "XML",
-            "KVP",
-            "encoding",
-            "Schema",
-            "HTTP",
-            "GET",
-            "POST",
-            "SOAP",
-            "request",
-            "response",
-            "capabilities document",
-            "filter encoding",
-            "contraint"
-        ],
-        relatedContentItems: [
-            {
-                resourceType: "Repositories / Archives",
-                title: "Environmental Information Data Centre",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Services",
-                title: "Environmental Information Data Centre",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Educational resources",
-                title: "Environmental Information Data Centre",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Documents",
-                title: "Environmental Information Data Centre",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Documents",
-                title: "Environmental Information Data Centre",
-                url: "https://www.nfdi4earth.de/"
-            },
-            {
-                resourceType: "Documents",
-                title: "Environmental Information Data Centre",
-                url: "https://www.nfdi4earth.de/"
-            }
-        ]
+    const id = useParams().id as string;
+    const searchSrvc = useService("onestop4all.SearchService");
+    const [metadata, setMetadata] = useState<RepositoryMetadataResponse>();
+    const toast = useToast();
+
+    useEffect(() => {
+        searchSrvc.getMetadata(id).then((result) => {
+            setMetadata(result.results[0]);
+        });
+    }, [id]);
+
+    const copyToClipBoard = (link: string) => {
+        if (link != undefined) {
+            navigator.clipboard.writeText(link);
+            //TO DO: There is sth. wrong with the tooltip!
+            //TO DO: Create reusable function/component out of it
+            return toast({
+                title: "Copied to clipboard",
+                status: "success",
+                duration: 2000,
+                position: "bottom-right",
+                isClosable: true
+            });
+        } else {
+            return toast({
+                title: "Could not copy to clipboard",
+                status: "error",
+                duration: 2000,
+                position: "bottom-right",
+                isClosable: true
+            });
+        }
     };
 
-    const fun = () => {
-        console.log("This is a fun");
-    };
+    //TEST DATA FOR RELATED CONTENT SECTION
+    const relatedContent = [
+        {
+            title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
+            resourceType: "Service",
+            id: "1234"
+        },
+        {
+            title: "This is a related standard (url missing)",
+            resourceType: "Standard"
+        },
+        {
+            title: "This is a related organisation (resource type missing)",
+            id: "1234"
+        },
+        {
+            resourceType: "Tool/Software",
+            id: "1234"
+        },
+        {
+            title: "This is a related lesson",
+            resourceType: "Educational resource",
+            id: "1234"
+        }
+    ];
+
+    metadata ? (metadata.relatedContent = relatedContent) : null;
+
+    console.log(metadata);
 
     return (
         <Box>
@@ -97,85 +102,87 @@ export function StandardView() {
                 </Container>
             </Box>
 
-            <Container maxW="80%">
-                <Box height="80px" />
-                <Flex gap="10%">
-                    <Box w="65%">
-                        <ResourceTypeHeader resType="Standard" />
-                        <Box className="title" pt="15px">
-                            {metadataResponse["title"]}
+            {metadata != undefined ? (
+                <Container maxW="80%">
+                    <Box height="80px" />
+                    <Flex gap="10%">
+                        <Box w="65%">
+                            <ResourceTypeHeader resType="Standard" />
+                            {metadata.title ? (
+                                <Box className="title" pt="15px">
+                                    {metadata.title}
+                                </Box>
+                            ) : null}
+                            <Box pt="36px">
+                                <Metadata
+                                    metadataElements={[
+                                        {
+                                            tag: "Parent standard",
+                                            val: metadata.parentStandard
+                                        },
+                                        {
+                                            tag: "Theme",
+                                            val: metadata.theme
+                                        },
+                                        {
+                                            tag: "Type",
+                                            val: metadata.type
+                                        }
+                                    ]}
+                                    visibleElements={3}
+                                    expandedByDefault={false}
+                                />
+                            </Box>
+                            {metadata.description ? (
+                                <Box pt="80px">
+                                    <Abstract abstractText={metadata.description} />
+                                </Box>
+                            ) : null}
                         </Box>
-                        <Box pt="36px">
-                            <Metadata
-                                metadataElements={[
-                                    {
-                                        tag: "Standards organization",
-                                        val: metadataResponse["standardsOrganization"]
-                                    },
-                                    {
-                                        tag: "Date of publication",
-                                        val: metadataResponse["dateOfPublication"]
-                                    },
-                                    { tag: "Version", val: metadataResponse["version"] },
-                                    {
-                                        tag: "External identifier",
-                                        val: metadataResponse["externalIdentifier"]
-                                    },
-                                    { tag: "Keywords", val: metadataResponse["keywords"] }
-                                ]}
-                                visibleElements={4}
-                                expandedByDefault={true}
-                            />
-                        </Box>
-                        <Box pt="80px">
-                            <Abstract abstractText={metadataResponse["abstract"]} />
-                        </Box>
-                    </Box>
-                    <Box w="25%">
-                        <ResultsNavigation result={1} of={100} />
-                        <Box className="actionButtonGroup" pt="74px">
-                            <ActionButton
-                                label="VISIT STANDARD WEBSITE"
-                                icon={<ExternalLinkIcon color="white" />}
-                                variant="solid"
-                                fun={fun}
-                            />
-                            <ActionButton
-                                label="DOWNLOAD AS PDF"
-                                icon={<PdfIcon color="white" />}
-                                variant="solid"
-                                fun={fun}
-                            />
-                            <ActionButton
-                                label="VISIT METADATA SOURCE"
-                                icon={<MetadataSourceIcon color="#05668D" />}
-                                variant="outline"
-                                fun={fun}
-                            />
-                            <ActionButton
-                                label="COPY PERMALINK"
-                                icon={<LinkIcon color="#05668D" />}
-                                variant="outline"
-                                fun={fun}
-                            />
-                        </Box>
-                    </Box>
-                </Flex>
-                <Box w="100%" pt="80px">
-                    <Box>
-                        <RelatedContent
-                            relatedContentItems={metadataResponse["relatedContentItems"]}
-                        />
-                    </Box>
-                    <Flex gap="10%" alignItems="center" pt="120px">
-                        <Divider className="seperator" w="65%" />
                         <Box w="25%">
                             <ResultsNavigation result={1} of={100} />
+                            <Box className="actionButtonGroup" pt="74px">
+                                {metadata.website ? (
+                                    <Link
+                                        to={metadata.website[0] as string}
+                                        className="actionButtonLink"
+                                        target="_blank"
+                                    >
+                                        <ActionButton
+                                            label="Visit repository"
+                                            icon={<ExternalLinkIcon color="white" />}
+                                            variant="solid"
+                                            fun={() => void 0}
+                                        />
+                                    </Link>
+                                ) : null}
+                                {metadata.website ? (
+                                    <ActionButton
+                                        label="Copy URL"
+                                        icon={<LinkIcon color="#05668D" />}
+                                        variant="outline"
+                                        fun={() => copyToClipBoard(metadata.website)}
+                                    />
+                                ) : null}
+                            </Box>
                         </Box>
                     </Flex>
-                </Box>
-                <Box pt="135px" />
-            </Container>
+                    <Box w="100%" pt="80px">
+                        {metadata.relatedContent ? (
+                            <RelatedContent relatedContentItems={metadata.relatedContent} />
+                        ) : null}
+                        <Flex gap="10%" alignItems="center" pt="120px">
+                            <Divider className="seperator" w="65%" />
+                            <Box w="25%">
+                                <ResultsNavigation result={1} of={100} />
+                            </Box>
+                        </Flex>
+                    </Box>
+                    <Box pt="135px" />
+                </Container>
+            ) : (
+                <></>
+            )}
         </Box>
     );
 }
