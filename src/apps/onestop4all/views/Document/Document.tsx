@@ -5,9 +5,9 @@ import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
-import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { CopyIcon, DownloadIcon, LinkIcon } from "@chakra-ui/icons";
 import { MetadataSourceIcon } from "../../components/Icons";
+import { ResourceResultPaging } from "../../components/ResourceResultPaging/ResourceResultPaging";
 
 export function DocumentView() {
     const metadataResponse = {
@@ -116,7 +116,7 @@ export function DocumentView() {
                         </Box>
                     </Box>
                     <Box w="25%">
-                        <ResultsNavigation result={1} of={100} />
+                        <ResourceResultPaging />
                         <Box className="actionButtonGroup" pt="74px">
                             <ActionButton
                                 label="Copy Citation"
@@ -154,7 +154,7 @@ export function DocumentView() {
                     <Flex gap="10%" alignItems="center" pt="120px">
                         <Divider className="seperator" w="65%" />
                         <Box w="25%">
-                            <ResultsNavigation result={1} of={100} />
+                            <ResourceResultPaging />
                         </Box>
                     </Flex>
                 </Box>

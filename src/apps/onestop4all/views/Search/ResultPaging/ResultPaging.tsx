@@ -12,7 +12,7 @@ export function ResultPaging() {
     useEffect(() => {
         if (searchState.searchResults) {
             setPage(searchState.pageStart + 1);
-            const pages = Math.round(searchState.searchResults.count / searchState.pageSize);
+            const pages = Math.ceil(searchState.searchResults.count / searchState.pageSize);
             setPageCount(pages);
         }
     }, [searchState.pageSize, searchState.pageStart, searchState.searchResults]);

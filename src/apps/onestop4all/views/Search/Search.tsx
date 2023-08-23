@@ -1,8 +1,8 @@
 import { Box, Button, Container, Flex, Spacer } from "@open-pioneer/chakra-integration";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 
 import { FilterIcon } from "../../components/Icons";
-import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { SearchBar } from "../../components/SearchBar";
 import { BorderColor, PrimaryColor } from "../../Theme";
 import { Chips } from "./Chips/Chips";
@@ -14,11 +14,52 @@ import { TemporalCoverageFacet } from "./Facets/TemporalCoverageFacet/TemporalCo
 import { ResultCountSelector } from "./ResultCountSelector/ResultCountSelector";
 import { ResultPaging } from "./ResultPaging/ResultPaging";
 import { SearchResult } from "./SearchResult/SearchResult";
-import { useSearchState } from "./SearchState";
+import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "./SearchState";
 import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
 
 export function SearchView() {
     const searchState = useSearchState();
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => searchState.search(), [searchParams]);
+
+    useEffect(() => {
+        const params: UrlSearchParams = {};
+
+        if (searchState.searchTerm) {
+            params[UrlSearchParameterType.Searchterm] = searchState.searchTerm;
+        }
+
+        if (searchState.selectedResoureTypes.length > 0) {
+            params[UrlSearchParameterType.ResourceType] = searchState.selectedResoureTypes;
+        }
+
+        if (searchState.spatialFilter.length === 4) {
+            params[UrlSearchParameterType.SpatialFilter] = searchState.spatialFilter.join(",");
+        }
+
+        if (searchState.pageSize && searchState.pageSize !== 10) {
+            params[UrlSearchParameterType.PageSize] = `${searchState.pageSize}`;
+        }
+
+        if (searchState.pageStart && searchState.pageStart !== 0) {
+            params[UrlSearchParameterType.PageStart] = `${searchState.pageStart}`;
+        }
+
+        navigate({
+            pathname: "/search",
+            search: `?${createSearchParams({ ...params })}`
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        searchState.searchTerm,
+        searchState.selectedResoureTypes,
+        searchState.spatialFilter,
+        searchState.pageSize,
+        searchState.pageStart
+    ]);
 
     const [openMenu, setOpenMenu] = useState(false);
 
@@ -51,7 +92,7 @@ export function SearchView() {
                                     {searchState.searchResults?.count} Results for your search
                                 </Box>
                                 <Box hideFrom="custombreak" padding="10px 0px">
-                                    <ResultsNavigation result={1} of={100} />
+                                    <ResultPaging />
                                 </Box>
                                 <Spacer></Spacer>
                                 <Flex
@@ -99,7 +140,7 @@ export function SearchView() {
                             </Box>
                             <Box className="seperator"></Box>
                             <Box hideFrom="custombreak">
-                                <ResultPaging></ResultPaging>
+                                <ResultPaging />
                             </Box>
                         </Box>
                     ) : (
@@ -110,7 +151,7 @@ export function SearchView() {
 
                     <Flex flex="0 0 30%" hideBelow="custombreak" flexDirection="column">
                         <Box>
-                            <ResultPaging></ResultPaging>
+                            <ResultPaging />
                         </Box>
                         <Box padding={"64px 0px 32px"} ref={menu}>
                             <ResourceTypeFacet></ResourceTypeFacet>
@@ -126,7 +167,7 @@ export function SearchView() {
                         </Box>
                         <Spacer></Spacer>
                         <Box>
-                            <ResultPaging></ResultPaging>
+                            <ResultPaging />
                         </Box>
                     </Flex>
                 </Flex>

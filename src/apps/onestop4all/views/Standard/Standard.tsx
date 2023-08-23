@@ -10,8 +10,8 @@ import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
-import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { PdfIcon, MetadataSourceIcon } from "../../components/Icons";
+import { ResourceResultPaging } from "../../components/ResourceResultPaging/ResourceResultPaging";
 
 export interface RepositoryMetadataResponse {
     title: string;
@@ -140,7 +140,7 @@ export function StandardView() {
                             ) : null}
                         </Box>
                         <Box w="25%">
-                            <ResultsNavigation result={1} of={100} />
+                            <ResourceResultPaging />
                             <Box className="actionButtonGroup" pt="74px">
                                 {metadata.website ? (
                                     <Link
@@ -174,7 +174,7 @@ export function StandardView() {
                         <Flex gap="10%" alignItems="center" pt="120px">
                             <Divider className="seperator" w="65%" />
                             <Box w="25%">
-                                <ResultsNavigation result={1} of={100} />
+                                <ResourceResultPaging />
                             </Box>
                         </Flex>
                     </Box>

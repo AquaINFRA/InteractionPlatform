@@ -12,8 +12,8 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { Api } from "../../components/ResourceType/Api_Identifier/Api";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
-import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { InfoIcon } from "../../components/Icons";
+import { ResourceResultPaging } from "../../components/ResourceResultPaging/ResourceResultPaging";
 
 export interface RepositoryMetadataResponse {
     title: string;
@@ -213,7 +213,7 @@ export function RepositoryView() {
                             ) : null}
                         </Box>
                         <Box w="25%">
-                            <ResultsNavigation result={1} of={100} />
+                            <ResourceResultPaging />
                             {metadata.homepage || metadata.dataLicense ? (
                                 <Box className="actionButtonGroup" pt="74px">
                                     {metadata.homepage ? (
@@ -276,7 +276,7 @@ export function RepositoryView() {
                         <Flex gap="10%" alignItems="center" pt="120px">
                             <Divider className="seperator" w="65%" />
                             <Box w="25%">
-                                <ResultsNavigation result={1} of={100} />
+                                <ResourceResultPaging />
                             </Box>
                         </Flex>
                     </Box>

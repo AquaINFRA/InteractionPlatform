@@ -1,6 +1,6 @@
 import { useService } from "open-pioneer:react-hooks";
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
-import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { SearchResult } from "../../services/SearchService";
 import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
@@ -41,6 +41,7 @@ export interface ISearchState {
     setPageStart(pageSize: number): void;
     searchResults: SearchResult | undefined;
     isLoaded: boolean;
+    search(): void;
 }
 
 export const SearchStateContext = createContext<ISearchState | undefined>(undefined);
@@ -62,7 +63,6 @@ export const useSearchState = () => {
 export const SearchState = (props: PropsWithChildren) => {
     const searchSrvc = useService("onestop4all.SearchService");
     const [searchParams] = useSearchParams();
-    const navigate = useNavigate();
 
     // init search results and loading state
     const [searchResults, setSearchResults] = useState<SearchResult>();
@@ -109,7 +109,7 @@ export const SearchState = (props: PropsWithChildren) => {
     }
     const [spatialFilter, setSpatialFilter] = useState(sp);
 
-    useEffect(() => {
+    function search() {
         setIsLoaded(false);
         searchSrvc
             .doSearch({
@@ -135,38 +135,7 @@ export const SearchState = (props: PropsWithChildren) => {
                 setIsLoaded(true);
                 console.error(error);
             });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchParams]);
-
-    useEffect(() => {
-        const params: UrlSearchParams = {};
-
-        if (searchTerm) {
-            params[UrlSearchParameterType.Searchterm] = searchTerm;
-        }
-
-        if (selectedResoureTypes.length > 0) {
-            params[UrlSearchParameterType.ResourceType] = selectedResoureTypes;
-        }
-
-        if (spatialFilter.length === 4) {
-            params[UrlSearchParameterType.SpatialFilter] = spatialFilter.join(",");
-        }
-
-        if (pageSize && pageSize !== 10) {
-            params[UrlSearchParameterType.PageSize] = `${pageSize}`;
-        }
-
-        if (pageStart && pageStart !== 0) {
-            params[UrlSearchParameterType.PageStart] = `${pageStart}`;
-        }
-
-        navigate({
-            pathname: "/search",
-            search: `?${createSearchParams({ ...params })}`
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchTerm, selectedResoureTypes, spatialFilter, pageSize, pageStart]);
+    }
 
     const state: ISearchState = {
         searchTerm,
@@ -193,7 +162,8 @@ export const SearchState = (props: PropsWithChildren) => {
         pageStart,
         setPageStart,
         searchResults,
-        isLoaded
+        isLoaded,
+        search
     };
 
     return (

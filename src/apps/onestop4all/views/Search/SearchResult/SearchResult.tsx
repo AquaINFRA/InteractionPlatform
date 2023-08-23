@@ -1,11 +1,11 @@
 import { Box, Flex, SystemStyleObject } from "@open-pioneer/chakra-integration";
 import { DateTime } from "luxon";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 import { SearchResultItem } from "../../../services/SearchService";
 import { BorderColor, PrimaryColor } from "../../../Theme";
-import { ResourceType } from "../../Start/ResourceEntry/ResourceEntry";
 import { ResourceIcon } from "../../Start/ResourceEntry/ResourceIcons";
+import { navigateToResource } from "../helper";
 
 export interface SearchResultProps {
     item: SearchResultItem;
@@ -21,35 +21,7 @@ export function SearchResult(props: SearchResultProps) {
     };
 
     function navigateTo(): void {
-        switch (item.resourceType) {
-            case ResourceType.Repos:
-                navigate(`/repository/${item.id}`);
-                break;
-            case ResourceType.Datasets:
-                navigate(`/dataset/${item.id}`);
-                break;
-            case ResourceType.Organisations:
-                navigate(`/organisation/${item.id}`);
-                break;
-            case ResourceType.Documents:
-                navigate(`/document/${item.id}`);
-                break;
-            case ResourceType.Services:
-                navigate(`/service/${item.id}`);
-                break;
-            case ResourceType.Tools:
-                navigate(`/tools_software/${item.id}`);
-                break;
-            case ResourceType.Standards:
-                navigate(`/standard/${item.id}`);
-                break;
-            case ResourceType.Articles:
-                navigate(`/article/${item.id}`);
-                break;
-            case ResourceType.Educational:
-            default:
-                throw new Error(`Unknown navigation for ${item.resourceType}`);
-        }
+        navigateToResource(item, navigate);
     }
 
     return (

@@ -5,6 +5,7 @@ import { BaseMenu } from "./components/BaseMenu/BaseMenu";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { Theme } from "./Theme";
+import { ArticleView } from "./views/Article/Article";
 import { DatasetView } from "./views/Dataset/Dataset";
 import { DocumentView } from "./views/Document/Document";
 import { OerView } from "./views/OpenEducationalResource/Oer";
@@ -16,7 +17,6 @@ import { ServiceView } from "./views/Service/Service";
 import { StandardView } from "./views/Standard/Standard";
 import { StartView } from "./views/Start/Start";
 import { ToolsSoftwareView } from "./views/ToolsSoftware/ToolsSoftware";
-import { ArticleView } from "./views/Article/Article";
 
 const basePath = "/";
 
@@ -31,11 +31,7 @@ const router = createBrowserRouter([
             },
             {
                 path: `search`,
-                element: (
-                    <SearchState>
-                        <SearchView />
-                    </SearchState>
-                )
+                element: <SearchView />
             },
             {
                 path: `standard/:id`,
@@ -98,7 +94,9 @@ function Layout() {
                 </Flex>
 
                 <Box as="main" w="100%" pt="152px">
-                    <Outlet />
+                    <SearchState>
+                        <Outlet />
+                    </SearchState>
                 </Box>
 
                 <Box as="footer" w="100%">

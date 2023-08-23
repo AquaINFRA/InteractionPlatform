@@ -1,38 +1,36 @@
-import { Box, Flex, Divider } from "@open-pioneer/chakra-integration";
+import { Box, Divider, Flex } from "@open-pioneer/chakra-integration";
 import { useNavigate } from "react-router-dom";
-import {
-    StandardIcon,
-    EducationalResourceIcon,
-    BackIcon,
-    RepositoriesIcon,
-    ServicesIcon,
-    ToolSoftwareIcon,
-    DocumentsIcon,
-    OrganisationsIcon
-} from "../../Icons";
+
 import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
 import { ResourceIcon } from "../../../views/Start/ResourceEntry/ResourceIcons";
+import {
+    BackIcon,
+    DocumentsIcon,
+    EducationalResourceIcon,
+    OrganisationsIcon,
+    RepositoriesIcon,
+    ServicesIcon,
+    StandardIcon,
+    ToolSoftwareIcon
+} from "../../Icons";
 
 export function ResourceTypeHeader(props: { resType: string }) {
     const { resType } = props;
     const navigate = useNavigate();
 
+    function backToSearch() {
+        navigate({ pathname: "/search" });
+    }
+
     return (
         <Flex alignItems="center" display="flex" gap="12px">
-            <Box
-                onClick={() => {
-                    navigate(-1);
-                }}
-                _hover={{ cursor: "pointer" }}
-            >
+            <Box onClick={backToSearch} _hover={{ cursor: "pointer" }}>
                 <BackIcon />
             </Box>
 
             <Box
                 className="resTypeHeaderBackBtn"
-                onClick={() => {
-                    navigate(-1);
-                }}
+                onClick={backToSearch}
                 _hover={{ cursor: "pointer" }}
             >
                 <span className="to">Back&nbsp;</span>

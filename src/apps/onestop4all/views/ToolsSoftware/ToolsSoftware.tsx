@@ -11,7 +11,7 @@ import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
-import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
+import { ResourceResultPaging } from "../../components/ResourceResultPaging/ResourceResultPaging";
 
 export interface RepositoryMetadataResponse {
     name: string;
@@ -145,7 +145,7 @@ export function ToolsSoftwareView() {
                             ) : null}
                         </Box>
                         <Box w="25%">
-                            <ResultsNavigation result={1} of={100} />
+                            <ResourceResultPaging />
                             {metadata.codeRepository ? (
                                 <Box className="actionButtonGroup" pt="74px">
                                     <Link
@@ -180,7 +180,7 @@ export function ToolsSoftwareView() {
                         <Flex gap="10%" alignItems="center" pt="120px">
                             <Divider className="seperator" w="65%" />
                             <Box w="25%">
-                                <ResultsNavigation result={1} of={100} />
+                                <ResourceResultPaging />
                             </Box>
                         </Flex>
                     </Box>

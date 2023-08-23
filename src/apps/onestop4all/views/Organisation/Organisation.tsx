@@ -11,8 +11,8 @@ import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Identifier } from "../../components/ResourceType/Api_Identifier/Identifier";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
-import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { Contact } from "../../components/ResourceType/Contact/Contact";
+import { ResourceResultPaging } from "../../components/ResourceResultPaging/ResourceResultPaging";
 
 export interface OrganisationMetadataResponse {
     name: string;
@@ -192,7 +192,7 @@ export function OrganisationView() {
                             </Box>
                         </Box>
                         <Box w="25%">
-                            <ResultsNavigation result={1} of={100} />
+                            <ResourceResultPaging />
                             {metadata.homepage ? (
                                 <Box className="actionButtonGroup" pt="74px">
                                     <Link
@@ -240,7 +240,7 @@ export function OrganisationView() {
                         <Flex gap="10%" alignItems="center" pt="120px">
                             <Divider className="seperator" w="65%" />
                             <Box w="25%">
-                                <ResultsNavigation result={1} of={100} />
+                                <ResourceResultPaging />
                             </Box>
                         </Flex>
                     </Box>

@@ -13,9 +13,9 @@ import { TOC } from "../../components/ResourceType/TOC/TOC";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 //import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
-import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 //import { MetadataSourceIcon, GoToOpenIssuesIcon } from "../../components/Icons";
 import { Support } from "../../components/ResourceType/Support/Support";
+import { ResourceResultPaging } from "../../components/ResourceResultPaging/ResourceResultPaging";
 
 export interface ArticleMetadataResponse {
     name: string;
@@ -144,7 +144,7 @@ export function ArticleView() {
                             </Box>
                         </Box>
                         <Box w="25%">
-                            <ResultsNavigation result={1} of={100} />
+                            <ResourceResultPaging />
                             {/*THERE IS CURRENTLY NO URL <Box className="actionButtonGroup" pt="74px">
                                 <Link
                                     to={metadata.homepage[0] as string}
@@ -187,7 +187,7 @@ export function ArticleView() {
                         <Flex gap="10%" alignItems="center" pt="120px">
                             <Divider className="seperator" w="65%" />
                             <Box w="25%">
-                                <ResultsNavigation result={1} of={100} />
+                                <ResourceResultPaging />
                             </Box>
                         </Flex>
                     </Box>

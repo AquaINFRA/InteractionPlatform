@@ -1,7 +1,7 @@
 import { Box, Button, HStack, IconButton, Input, Select } from "@open-pioneer/chakra-integration";
 import { useIntl } from "open-pioneer:react-hooks";
 import { useContext, useEffect, useState } from "react";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 
 import { BorderColor, PrimaryColor } from "../Theme";
 import {
@@ -19,6 +19,7 @@ export function SearchBar() {
     const resourceTypes = Object.values(ResourceType);
     const searchState = useContext(SearchStateContext);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         if (searchState !== undefined) {
@@ -27,9 +28,7 @@ export function SearchBar() {
     }, [searchState, searchState?.searchTerm]);
 
     function startSearch(): void {
-        if (searchState) {
-            searchState.setSearchTerm(searchTerm);
-        } else {
+        if (!location.pathname.endsWith("search")) {
             const params: UrlSearchParams = {};
             if (searchTerm) {
                 params[UrlSearchParameterType.Searchterm] = searchTerm;
@@ -38,6 +37,8 @@ export function SearchBar() {
                 pathname: "/search",
                 search: `?${createSearchParams({ ...params })}`
             });
+        } else if (searchState) {
+            searchState.setSearchTerm(searchTerm);
         }
     }
 
