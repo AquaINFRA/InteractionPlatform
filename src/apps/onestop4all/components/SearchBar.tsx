@@ -1,13 +1,13 @@
 import { Box, Button, HStack, IconButton, Input, Select } from "@open-pioneer/chakra-integration";
 import { useIntl } from "open-pioneer:react-hooks";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 
 import { BorderColor, PrimaryColor } from "../Theme";
 import {
-    SearchStateContext,
     UrlSearchParameterType,
-    UrlSearchParams
+    UrlSearchParams,
+    useSearchState
 } from "../views/Search/SearchState";
 import { ResourceType } from "../views/Start/ResourceEntry/ResourceEntry";
 import { DropdownArrowIcon, SearchIcon } from "./Icons";
@@ -17,17 +17,14 @@ export function SearchBar() {
     const intl = useIntl();
     const [selectedResource, setSelectResource] = useState("");
     const resourceTypes = Object.values(ResourceType);
-    const searchState = useContext(SearchStateContext);
+    const searchState = useSearchState();
     const navigate = useNavigate();
     const location = useLocation();
 
-    useEffect(() => {
-        if (searchState !== undefined) {
-            setSearchTerm(searchState.searchTerm);
-        }
-    }, [searchState, searchState?.searchTerm]);
+    useEffect(() => setSearchTerm(searchState.searchTerm), [searchState.searchTerm]);
 
     function startSearch(): void {
+        searchState.setSearchTerm(searchTerm);
         if (!location.pathname.endsWith("search")) {
             const params: UrlSearchParams = {};
             if (searchTerm) {
@@ -37,8 +34,6 @@ export function SearchBar() {
                 pathname: "/search",
                 search: `?${createSearchParams({ ...params })}`
             });
-        } else if (searchState) {
-            searchState.setSearchTerm(searchTerm);
         }
     }
 
