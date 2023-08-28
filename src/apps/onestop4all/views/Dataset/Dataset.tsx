@@ -1,14 +1,11 @@
-import { Box, Container, Image, Flex, Divider } from "@open-pioneer/chakra-integration";
-import { SearchBar } from "../../components/SearchBar";
-import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
-import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
-import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
-import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
-import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
-import { MetadataSourceIcon, DownloadMetadataIcon } from "../../components/Icons";
+import { Box, Flex } from "@open-pioneer/chakra-integration";
+
+import { DownloadMetadataIcon, MetadataSourceIcon } from "../../components/Icons";
+import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
+import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
+import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { SpatialInformation } from "../../components/ResourceType/SpatialInformation/SpatialInformation";
-import { ResourceResultPaging } from "../../components/ResourceResultPaging/ResourceResultPaging";
 
 export function DatasetView() {
     const metadataResponse = {
@@ -68,116 +65,91 @@ export function DatasetView() {
 
     return (
         <Box>
-            <Box position="relative">
-                <Image src="/image2.png" width="100%" />
-            </Box>
-
-            <Box position="absolute" width="100%" marginTop="-70px">
-                <Container maxW="80%">
-                    <SearchBar></SearchBar>
-                </Container>
-            </Box>
-
-            <Container maxW="80%">
-                <Box height="80px" />
-                <Flex gap="10%">
-                    <Box w="65%">
-                        <ResourceTypeHeader resType="Dataset" />
-                        <Box className="title" pt="15px">
-                            {metadataResponse["title"]}
-                        </Box>
-                        <Box pt="36px">
-                            <Metadata
-                                metadataElements={[
-                                    {
-                                        tag: "Also known as",
-                                        val: metadataResponse["alsoKnownAs"]
-                                    },
-                                    {
-                                        tag: "Date of publication",
-                                        val: metadataResponse["dateOfPublication"]
-                                    },
-                                    {
-                                        tag: "Data aggregator",
-                                        val: metadataResponse["dataAggregator"]
-                                    },
-                                    {
-                                        tag: "Data Source URL",
-                                        val: metadataResponse["dataSourceUrl"]
-                                    },
-                                    {
-                                        tag: "Supported formats",
-                                        val: metadataResponse["supportedFormat"]
-                                    },
-                                    {
-                                        tag: "Keywords",
-                                        val: metadataResponse["keywords"]
-                                    }
-                                ]}
-                                visibleElements={3}
-                                expandedByDefault={true}
-                            />
-                        </Box>
-                        <Box pt="80px">
-                            <Abstract abstractText={metadataResponse["abstract"]} />
-                        </Box>
+            <Flex gap="10%">
+                <Box w="65%">
+                    <Box className="title" pt="15px">
+                        {metadataResponse["title"]}
                     </Box>
-                    <Box w="25%">
-                        <ResourceResultPaging />
-                        <Box className="actionButtonGroup" pt="74px">
-                            <ActionButton
-                                label="Open repository"
-                                icon={<ExternalLinkIcon color="white" />}
-                                variant="solid"
-                                fun={fun}
-                            />
-                            <ActionButton
-                                label="Download metadata"
-                                icon={<DownloadMetadataIcon />}
-                                variant="outline"
-                                fun={fun}
-                            />
-                            <ActionButton
-                                label="Visit metadata source"
-                                icon={<MetadataSourceIcon color="#05668D" />}
-                                variant="outline"
-                                fun={fun}
-                            />
-                            <ActionButton
-                                label="Copy permalink"
-                                icon={<LinkIcon color="#05668D" />}
-                                variant="outline"
-                                fun={fun}
-                            />
-                        </Box>
+                    <Box pt="36px">
+                        <Metadata
+                            metadataElements={[
+                                {
+                                    tag: "Also known as",
+                                    val: metadataResponse["alsoKnownAs"]
+                                },
+                                {
+                                    tag: "Date of publication",
+                                    val: metadataResponse["dateOfPublication"]
+                                },
+                                {
+                                    tag: "Data aggregator",
+                                    val: metadataResponse["dataAggregator"]
+                                },
+                                {
+                                    tag: "Data Source URL",
+                                    val: metadataResponse["dataSourceUrl"]
+                                },
+                                {
+                                    tag: "Supported formats",
+                                    val: metadataResponse["supportedFormat"]
+                                },
+                                {
+                                    tag: "Keywords",
+                                    val: metadataResponse["keywords"]
+                                }
+                            ]}
+                            visibleElements={3}
+                            expandedByDefault={true}
+                        />
                     </Box>
-                </Flex>
-                <Box pt="80px">
-                    <SpatialInformation
-                        metadataElements={[
-                            {
-                                tag: "Bounding box",
-                                val: metadataResponse["location"]
-                            },
-                            {
-                                tag: "Reference systems",
-                                val: metadataResponse["referenceSystems"]
-                            }
-                        ]}
-                        bbox={metadataResponse["location"]}
-                    />
+                    <Box pt="80px">
+                        <Abstract abstractText={metadataResponse["abstract"]} />
+                    </Box>
                 </Box>
-                <Box w="100%" pt="80px">
-                    <RelatedContent relatedContentItems={metadataResponse["relatedContentItems"]} />
-                    <Flex gap="10%" alignItems="center" pt="120px">
-                        <Divider className="seperator" w="65%" />
-                        <Box w="25%">
-                            <ResourceResultPaging />
-                        </Box>
-                    </Flex>
+                <Box w="25%">
+                    <Box className="actionButtonGroup" pt="74px">
+                        <ActionButton
+                            label="Open repository"
+                            icon={<ExternalLinkIcon color="white" />}
+                            variant="solid"
+                            fun={fun}
+                        />
+                        <ActionButton
+                            label="Download metadata"
+                            icon={<DownloadMetadataIcon />}
+                            variant="outline"
+                            fun={fun}
+                        />
+                        <ActionButton
+                            label="Visit metadata source"
+                            icon={<MetadataSourceIcon color="#05668D" />}
+                            variant="outline"
+                            fun={fun}
+                        />
+                        <ActionButton
+                            label="Copy permalink"
+                            icon={<LinkIcon color="#05668D" />}
+                            variant="outline"
+                            fun={fun}
+                        />
+                    </Box>
                 </Box>
-                <Box pt="135px" />
-            </Container>
+            </Flex>
+            <Box pt="80px">
+                <SpatialInformation
+                    metadataElements={[
+                        {
+                            tag: "Bounding box",
+                            val: metadataResponse["location"]
+                        },
+                        {
+                            tag: "Reference systems",
+                            val: metadataResponse["referenceSystems"]
+                        }
+                    ]}
+                    bbox={metadataResponse["location"]}
+                />
+            </Box>
         </Box>
     );
 }

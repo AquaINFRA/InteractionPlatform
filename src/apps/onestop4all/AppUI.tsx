@@ -5,18 +5,10 @@ import { BaseMenu } from "./components/BaseMenu/BaseMenu";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { Theme } from "./Theme";
-import { ArticleView } from "./views/Article/Article";
-import { DatasetView } from "./views/Dataset/Dataset";
-import { DocumentView } from "./views/Document/Document";
-import { OerView } from "./views/OpenEducationalResource/Oer";
-import { OrganisationView } from "./views/Organisation/Organisation";
-import { RepositoryView } from "./views/Repository/Repository";
+import { Result } from "./views/Result/Result";
 import { SearchView } from "./views/Search/Search";
 import { SearchState } from "./views/Search/SearchState";
-import { ServiceView } from "./views/Service/Service";
-import { StandardView } from "./views/Standard/Standard";
 import { StartView } from "./views/Start/Start";
-import { ToolsSoftwareView } from "./views/ToolsSoftware/ToolsSoftware";
 
 const basePath = "/";
 
@@ -34,40 +26,8 @@ const router = createBrowserRouter([
                 element: <SearchView />
             },
             {
-                path: `standard/:id`,
-                element: <StandardView />
-            },
-            {
-                path: `service/:id`,
-                element: <ServiceView />
-            },
-            {
-                path: `tools_software/:id`,
-                element: <ToolsSoftwareView />
-            },
-            {
-                path: `oer/:id`,
-                element: <OerView />
-            },
-            {
-                path: `repository/:id`,
-                element: <RepositoryView />
-            },
-            {
-                path: `dataset/:id`,
-                element: <DatasetView />
-            },
-            {
-                path: `organisation/:id`,
-                element: <OrganisationView />
-            },
-            {
-                path: `document/:id`,
-                element: <DocumentView />
-            },
-            {
-                path: `article/:id`,
-                element: <ArticleView />
+                path: `result/:id`,
+                element: <Result />
             },
             {
                 path: "*",

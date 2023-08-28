@@ -3,6 +3,7 @@ import { NavigateFunction } from "react-router-dom";
 import { SearchResultItem } from "../../services/SearchService";
 import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
 
+// TODO: remove later
 export function navigateToResource(item: SearchResultItem, navigate: NavigateFunction) {
     switch (item.resourceType) {
         case ResourceType.Repos:

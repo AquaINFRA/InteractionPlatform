@@ -1,11 +1,10 @@
 import { Box, Flex, SystemStyleObject } from "@open-pioneer/chakra-integration";
 import { DateTime } from "luxon";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { SearchResultItem } from "../../../services/SearchService";
 import { BorderColor, PrimaryColor } from "../../../Theme";
 import { ResourceIcon } from "../../Start/ResourceEntry/ResourceIcons";
-import { navigateToResource } from "../helper";
 
 export interface SearchResultProps {
     item: SearchResultItem;
@@ -21,7 +20,7 @@ export function SearchResult(props: SearchResultProps) {
     };
 
     function navigateTo(): void {
-        navigateToResource(item, navigate);
+        navigate(`/result/${item.id}`);
     }
 
     return (

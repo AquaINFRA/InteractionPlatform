@@ -1,4 +1,4 @@
-import { Box, Divider, Flex } from "@open-pioneer/chakra-integration";
+import { Box, Divider, Flex, Skeleton } from "@open-pioneer/chakra-integration";
 import { useNavigate } from "react-router-dom";
 
 import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
@@ -14,8 +14,8 @@ import {
     ToolSoftwareIcon
 } from "../../Icons";
 
-export function ResourceTypeHeader(props: { resType: string }) {
-    const { resType } = props;
+export function ResourceTypeHeader(props: { resType: ResourceType | undefined; loading: boolean }) {
+    const { resType, loading = false } = props;
     const navigate = useNavigate();
 
     function backToSearch() {
@@ -23,7 +23,7 @@ export function ResourceTypeHeader(props: { resType: string }) {
     }
 
     return (
-        <Flex alignItems="center" display="flex" gap="12px">
+        <Flex alignItems="center" display="flex" gap="12px" height="32px">
             <Box onClick={backToSearch} _hover={{ cursor: "pointer" }}>
                 <BackIcon />
             </Box>
@@ -39,8 +39,19 @@ export function ResourceTypeHeader(props: { resType: string }) {
 
             <Divider className="resTypeHeaderLine" />
 
-            <Box className="resTypeHeader">{resType}</Box>
+            {loading ? (
+                <Skeleton className="resTypeHeader">Loading...</Skeleton>
+            ) : (
+                <>
+                    <Box className="resTypeHeader">{resType}</Box>
+                    {getIcon()}
+                </>
+            )}
+        </Flex>
+    );
 
+    function getIcon() {
+        return (
             <Box>
                 {resType == ResourceType.Repos ? (
                     <RepositoriesIcon />
@@ -64,6 +75,6 @@ export function ResourceTypeHeader(props: { resType: string }) {
                     <></>
                 )}
             </Box>
-        </Flex>
-    );
+        );
+    }
 }

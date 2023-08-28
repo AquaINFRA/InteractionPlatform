@@ -1,17 +1,10 @@
-import { Box, Container, Image, Flex, Divider } from "@open-pioneer/chakra-integration";
-import { SearchBar } from "../../components/SearchBar";
-import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
-import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
-import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
-import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
-import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
-import {
-    MetadataSourceIcon,
-    GoToOpenIssuesIcon,
-    SeeOtherCoursesIcon
-} from "../../components/Icons";
-import { ResourceResultPaging } from "../../components/ResourceResultPaging/ResourceResultPaging";
+import { Box, Flex } from "@open-pioneer/chakra-integration";
+
+import { MetadataSourceIcon, SeeOtherCoursesIcon } from "../../components/Icons";
+import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
+import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
+import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 
 export function OerView() {
     const metadataResponse = {
@@ -52,93 +45,68 @@ export function OerView() {
 
     return (
         <Box>
-            <Box position="relative">
-                <Image src="/image2.png" width="100%" />
-            </Box>
-
-            <Box position="absolute" width="100%" marginTop="-70px">
-                <Container maxW="80%">
-                    <SearchBar></SearchBar>
-                </Container>
-            </Box>
-
-            <Container maxW="80%">
-                <Box height="80px" />
-                <Flex gap="10%">
-                    <Box w="65%">
-                        <ResourceTypeHeader resType="Educational Resource" />
-                        <Box className="title" pt="15px">
-                            {metadataResponse["title"]}
-                        </Box>
-                        <Box pt="36px">
-                            <Metadata
-                                metadataElements={[
-                                    {
-                                        tag: "Resource providers",
-                                        val: metadataResponse["resourceProviders"]
-                                    },
-                                    {
-                                        tag: "Language",
-                                        val: metadataResponse["language"]
-                                    },
-                                    {
-                                        tag: "Date of publication",
-                                        val: metadataResponse["dateOfPublication"]
-                                    },
-                                    {
-                                        tag: "Keywords",
-                                        val: metadataResponse["keywords"]
-                                    }
-                                ]}
-                                visibleElements={3}
-                                expandedByDefault={true}
-                            />
-                        </Box>
-                        <Box pt="80px">
-                            <Abstract abstractText={metadataResponse["abstract"]} />
-                        </Box>
+            <Flex gap="10%">
+                <Box w="65%">
+                    <Box className="title" pt="15px">
+                        {metadataResponse["title"]}
                     </Box>
-                    <Box w="25%">
-                        <ResourceResultPaging />
-                        <Box className="actionButtonGroup" pt="74px">
-                            <ActionButton
-                                label="Start learning"
-                                icon={<ExternalLinkIcon color="white" />}
-                                variant="solid"
-                                fun={fun}
-                            />
-                            <ActionButton
-                                label="See other courses"
-                                icon={<SeeOtherCoursesIcon />}
-                                variant="outline"
-                                fun={fun}
-                            />
-                            <ActionButton
-                                label="Visit metadata source"
-                                icon={<MetadataSourceIcon color="#05668D" />}
-                                variant="outline"
-                                fun={fun}
-                            />
-                            <ActionButton
-                                label="Copy permalink"
-                                icon={<LinkIcon color="#05668D" />}
-                                variant="outline"
-                                fun={fun}
-                            />
-                        </Box>
+                    <Box pt="36px">
+                        <Metadata
+                            metadataElements={[
+                                {
+                                    tag: "Resource providers",
+                                    val: metadataResponse["resourceProviders"]
+                                },
+                                {
+                                    tag: "Language",
+                                    val: metadataResponse["language"]
+                                },
+                                {
+                                    tag: "Date of publication",
+                                    val: metadataResponse["dateOfPublication"]
+                                },
+                                {
+                                    tag: "Keywords",
+                                    val: metadataResponse["keywords"]
+                                }
+                            ]}
+                            visibleElements={3}
+                            expandedByDefault={true}
+                        />
                     </Box>
-                </Flex>
-                <Box w="100%" pt="80px">
-                    <RelatedContent relatedContentItems={metadataResponse["relatedContentItems"]} />
-                    <Flex gap="10%" alignItems="center" pt="120px">
-                        <Divider className="seperator" w="65%" />
-                        <Box w="25%">
-                            <ResourceResultPaging />
-                        </Box>
-                    </Flex>
+                    <Box pt="80px">
+                        <Abstract abstractText={metadataResponse["abstract"]} />
+                    </Box>
                 </Box>
-                <Box pt="135px" />
-            </Container>
+                <Box w="25%">
+                    <Box className="actionButtonGroup" pt="74px">
+                        <ActionButton
+                            label="Start learning"
+                            icon={<ExternalLinkIcon color="white" />}
+                            variant="solid"
+                            fun={fun}
+                        />
+                        <ActionButton
+                            label="See other courses"
+                            icon={<SeeOtherCoursesIcon />}
+                            variant="outline"
+                            fun={fun}
+                        />
+                        <ActionButton
+                            label="Visit metadata source"
+                            icon={<MetadataSourceIcon color="#05668D" />}
+                            variant="outline"
+                            fun={fun}
+                        />
+                        <ActionButton
+                            label="Copy permalink"
+                            icon={<LinkIcon color="#05668D" />}
+                            variant="outline"
+                            fun={fun}
+                        />
+                    </Box>
+                </Box>
+            </Flex>
         </Box>
     );
 }
