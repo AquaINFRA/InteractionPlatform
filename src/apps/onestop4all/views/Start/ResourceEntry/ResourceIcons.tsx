@@ -112,7 +112,7 @@ export const ResourceIcon = (props: ResourceIconProps) => {
                     />
                 </svg>
             );
-        case ResourceType.Documents:
+        case ResourceType.LHB_Articles:
         case ResourceType.Articles:
             return (
                 <svg

@@ -15,8 +15,8 @@ export function navigateToResource(item: SearchResultItem, navigate: NavigateFun
         case ResourceType.Organisations:
             navigate(`/organisation/${item.id}`);
             break;
-        case ResourceType.Documents:
-            navigate(`/document/${item.id}`);
+        case ResourceType.LHB_Articles:
+            navigate(`/lhb_article/${item.id}`);
             break;
         case ResourceType.Services:
             navigate(`/service/${item.id}`);

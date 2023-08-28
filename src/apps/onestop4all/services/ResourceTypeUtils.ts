@@ -24,8 +24,8 @@ const mapping = [
         identifier: "http://schema.org/SoftwareSourceCode"
     },
     {
-        type: ResourceType.Documents,
-        identifier: "http://nfdi4earth.de/ontology#Document"
+        type: ResourceType.LHB_Articles,
+        identifier: "http://nfdi4earth.de/ontology#LHBArticle"
     }
 ];
 

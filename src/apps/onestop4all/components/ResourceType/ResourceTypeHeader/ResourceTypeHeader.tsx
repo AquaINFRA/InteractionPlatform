@@ -63,14 +63,12 @@ export function ResourceTypeHeader(props: { resType: ResourceType | undefined; l
                     <StandardIcon />
                 ) : resType == ResourceType.Educational ? (
                     <EducationalResourceIcon />
-                ) : resType == ResourceType.Documents || resType == ResourceType.Articles ? (
+                ) : resType == ResourceType.LHB_Articles || resType == ResourceType.Articles ? (
                     <DocumentsIcon />
                 ) : resType == ResourceType.Organisations ? (
                     <OrganisationsIcon />
                 ) : resType == ResourceType.Datasets ? (
                     <ResourceIcon type={resType} size={32} /> //To do: make that consistent
-                ) : resType == ResourceType.Documents ? (
-                    <DocumentsIcon />
                 ) : (
                     <></>
                 )}

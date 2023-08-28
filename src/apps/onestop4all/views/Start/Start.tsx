@@ -30,7 +30,7 @@ export function StartView() {
             resultCount: 325
         },
         {
-            resourceType: ResourceType.Documents,
+            resourceType: ResourceType.LHB_Articles,
             resultCount: 52364
         },
         {

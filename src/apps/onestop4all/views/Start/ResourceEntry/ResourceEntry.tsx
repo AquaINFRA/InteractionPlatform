@@ -14,7 +14,7 @@ export enum ResourceType {
     Organisations = "Organisation",
     Services = "Service",
     Standards = "Standard",
-    Documents = "Document"
+    LHB_Articles = "Living Handbook Article"
 }
 
 export const ResourceEntry = ({ resultCount, resourceType }: ResourceEntryProps) => {

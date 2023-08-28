@@ -68,7 +68,7 @@ export function Result() {
                 const item = searchResult as OrganisationMetadataResponse;
                 return <OrganisationView item={item} />;
             }
-            case ResourceType.Documents: {
+            case ResourceType.LHB_Articles: {
                 return <DocumentView />;
             }
             case ResourceType.Services:
