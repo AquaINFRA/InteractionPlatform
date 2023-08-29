@@ -19,6 +19,8 @@ export interface ArticleMetadataResponse extends SolrSearchResultItem {
     keyword: string;
     language: string;
     relatedContent: Array<object>;
+    sourceSystem_homepage: string;
+    sourceSystem_title: string;
 }
 
 export interface ArticleViewProps {
@@ -83,6 +85,17 @@ export function ArticleView(props: ArticleViewProps) {
                                 {
                                     tag: "Type",
                                     val: metadata.type
+                                },
+                                {
+                                    tag: "Source",
+                                    val:
+                                        metadata.sourceSystem_title &&
+                                        metadata.sourceSystem_homepage
+                                            ? [
+                                                  metadata.sourceSystem_title,
+                                                  metadata.sourceSystem_homepage
+                                              ]
+                                            : undefined
                                 }
                             ]}
                             visibleElements={2}
@@ -91,7 +104,11 @@ export function ArticleView(props: ArticleViewProps) {
                     </Box>
                     <Box pt="80px">
                         <ReactMarkdown components={ChakraUIRenderer()}>
-                            {metadata.articleBody[0] ? metadata.articleBody[0] : ""}
+                            {metadata.articleBody
+                                ? metadata.articleBody[0]
+                                    ? metadata.articleBody[0]
+                                    : ""
+                                : ""}
                         </ReactMarkdown>
                     </Box>
                     <Box pt="80px">
@@ -131,7 +148,11 @@ export function ArticleView(props: ArticleViewProps) {
                                     fun={() => copyToClipBoard(metadata.homepage)}
                                 />
                                 </Box>*/}
-                    {metadata.articleBody[0] ? <TOC md={metadata.articleBody[0]} /> : null}
+                    {metadata.articleBody ? (
+                        metadata.articleBody[0] ? (
+                            <TOC md={metadata.articleBody[0]} />
+                        ) : null
+                    ) : null}
                 </Box>
             </Flex>
         </Box>

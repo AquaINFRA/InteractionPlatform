@@ -34,6 +34,8 @@ export interface RepositoryMetadataResponse extends SolrSearchResultItem {
     dateModified: string;
     distribution_accessURL: Array<string>;
     distribution_conformsTo: Array<string>;
+    sourceSystem_homepage: string;
+    sourceSystem_title: string;
 }
 
 export interface RepositoryViewProps {
@@ -146,6 +148,17 @@ export function RepositoryView(props: RepositoryViewProps) {
                                 {
                                     tag: "Type",
                                     val: metadata.type
+                                },
+                                {
+                                    tag: "Source",
+                                    val:
+                                        metadata.sourceSystem_title &&
+                                        metadata.sourceSystem_homepage
+                                            ? [
+                                                  metadata.sourceSystem_title,
+                                                  metadata.sourceSystem_homepage
+                                              ]
+                                            : undefined
                                 }
                             ]}
                             visibleElements={7}

@@ -29,6 +29,8 @@ export interface OrganisationMetadataResponse extends SolrSearchResultItem {
     nfdi4EarthContactPerson_email: string;
     //nfdi4EarthContactPerson_id: string; probably not needed
     //nfdi4EarthContactPerson_affiliation: string;
+    sourceSystem_homepage: string;
+    sourceSystem_title: string;
 }
 
 export interface OrganisationViewProps {
@@ -128,6 +130,17 @@ export function OrganisationView(props: OrganisationViewProps) {
                                 {
                                     tag: "Suborganisation of",
                                     val: metadata.subOrganizationOf
+                                },
+                                {
+                                    tag: "Source",
+                                    val:
+                                        metadata.sourceSystem_title &&
+                                        metadata.sourceSystem_homepage
+                                            ? [
+                                                  metadata.sourceSystem_title,
+                                                  metadata.sourceSystem_homepage
+                                              ]
+                                            : undefined
                                 }
                             ]}
                             visibleElements={2}

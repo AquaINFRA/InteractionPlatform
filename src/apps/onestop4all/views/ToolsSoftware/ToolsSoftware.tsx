@@ -16,6 +16,8 @@ export interface ToolsSoftwareMetadataResponse extends SolrSearchResultItem {
     uri: string;
     relatedContent: Array<object>;
     programmingLanguage: Array<string>;
+    sourceSystem_homepage: string;
+    sourceSystem_title: string;
 }
 
 export interface ToolsSoftwareViewProps {
@@ -78,6 +80,17 @@ export function ToolsSoftwareView(props: ToolsSoftwareViewProps) {
                                 {
                                     tag: "Programming language",
                                     val: metadata.programmingLanguage
+                                },
+                                {
+                                    tag: "Source",
+                                    val:
+                                        metadata.sourceSystem_title &&
+                                        metadata.sourceSystem_homepage
+                                            ? [
+                                                  metadata.sourceSystem_title,
+                                                  metadata.sourceSystem_homepage
+                                              ]
+                                            : undefined
                                 }
                             ]}
                             visibleElements={2}

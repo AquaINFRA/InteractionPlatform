@@ -37,7 +37,7 @@ export function Result() {
             // TODO: remove timeout
             setTimeout(() => {
                 if (result.results[0]) {
-                    //TEST DATA FOR RELATED CONTENT SECTION. REMOVE LATER.
+                    //TEST DATA FOR RELATED CONTENT SECTION AND SOURCE INFORMATION. REMOVE LATER.
                     const relatedContent = [
                         {
                             title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
@@ -63,7 +63,13 @@ export function Result() {
                         }
                     ];
                     result.results[0].relatedContent = relatedContent;
-
+                    result.results[0].sourceSystem_homepage
+                        ? null
+                        : (result.results[0].sourceSystem_homepage = ["https://www.test.de"]);
+                    result.results[0].sourceSystem_title
+                        ? null
+                        : (result.results[0].sourceSystem_title = ["Test"]);
+                    // TESTDATA END
                     setSearchResult(result.results[0]);
                     setResourceType(mapToResourceType(result.results[0].type));
                     setLoading(false);

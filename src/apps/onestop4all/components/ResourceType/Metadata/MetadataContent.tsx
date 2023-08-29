@@ -2,6 +2,7 @@ import { Box } from "@open-pioneer/chakra-integration";
 import { Keywords } from "./Keywords";
 import { Authors } from "./Authors";
 import { NfdiContact } from "./NfdiContact";
+import { Source } from "./Source";
 import { Misc } from "./Misc";
 
 export const MetadataContent = (props: {
@@ -26,6 +27,8 @@ export const MetadataContent = (props: {
                             <Keywords key={i} keywords={e.val} tag="theme" />
                         ) : e.tag == "nfdi" ? (
                             <NfdiContact key={i} contact={e.val} />
+                        ) : e.tag == "Source" ? (
+                            <Source key={i} source={e.val} />
                         ) : (
                             <Misc key={i} tag={e.tag} val={e.val} />
                         )
