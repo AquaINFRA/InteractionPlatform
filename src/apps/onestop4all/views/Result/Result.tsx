@@ -8,8 +8,7 @@ import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNav
 import { SearchBar } from "../../components/SearchBar";
 import { mapToResourceType } from "../../services/ResourceTypeUtils";
 import { SolrSearchResultItem } from "../../services/SearchService";
-import { ArticleMetadataResponse, ArticleView } from "../Article/Article";
-import { DocumentView } from "../Document/Document";
+import { LHB_ArticleMetadataResponse, LHB_ArticleView } from "../LHB_Article/LHB_Article";
 import { OrganisationMetadataResponse, OrganisationView } from "../Organisation/Organisation";
 import { RepositoryMetadataResponse, RepositoryView } from "../Repository/Repository";
 import { useSearchState } from "../Search/SearchState";
@@ -104,7 +103,8 @@ export function Result() {
                 return <OrganisationView item={item} />;
             }
             case ResourceType.LHB_Articles: {
-                return <DocumentView />;
+                const item = searchResult as LHB_ArticleMetadataResponse;
+                return <LHB_ArticleView item={item} />;
             }
             case ResourceType.Services:
                 // TODO: needs to be implemented
@@ -117,10 +117,11 @@ export function Result() {
                 const item = searchResult as StandardMetadataResponse;
                 return <StandardView item={item} />;
             }
-            case ResourceType.Articles: {
+            //Needs to be implemented
+            /*case ResourceType.Articles: {
                 const item = searchResult as ArticleMetadataResponse;
                 return <ArticleView item={item} />;
-            }
+            }*/
             case ResourceType.Educational:
             default:
                 throw new Error(`Unknown resourceType: '${resourceType}'`);
@@ -230,11 +231,11 @@ export function Result() {
                 ) : (
                     <>
                         <Box>{getResourceView()}</Box>
-                        <Box pt="80px">
-                            {searchResult?.relatedContent ? (
+                        {searchResult?.relatedContent ? (
+                            <Box pt="80px">
                                 <RelatedContent relatedContentItems={searchResult.relatedContent} />
-                            ) : null}
-                        </Box>
+                            </Box>
+                        ) : null}
                     </>
                 )}
                 <Flex gap="10%" alignItems="center" pt="120px">

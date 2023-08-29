@@ -2,6 +2,7 @@ import { Box, Flex } from "@open-pioneer/chakra-integration";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import ReactMarkdown from "react-markdown";
 
+import { LastUpdate } from "../../components/ResourceType/Metadata/LastUpdate";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Support } from "../../components/ResourceType/Support/Support";
 import { TOC } from "../../components/ResourceType/TOC/TOC";
@@ -11,7 +12,7 @@ import { SolrSearchResultItem } from "../../services/SearchService";
 //import { useToast } from "@open-pioneer/chakra-integration";
 //import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 //import { MetadataSourceIcon, GoToOpenIssuesIcon } from "../../components/Icons";
-export interface ArticleMetadataResponse extends SolrSearchResultItem {
+export interface LHB_ArticleMetadataResponse extends SolrSearchResultItem {
     name: string;
     description: string;
     author: string;
@@ -21,13 +22,17 @@ export interface ArticleMetadataResponse extends SolrSearchResultItem {
     relatedContent: Array<object>;
     sourceSystem_homepage: string;
     sourceSystem_title: string;
+    targetGroup: string;
+    isPartOf: string;
+    additionalType: string;
+    about: string;
 }
 
 export interface ArticleViewProps {
-    item: ArticleMetadataResponse;
+    item: LHB_ArticleMetadataResponse;
 }
 
-export function ArticleView(props: ArticleViewProps) {
+export function LHB_ArticleView(props: ArticleViewProps) {
     const metadata = props.item;
     //const toast = useToast();
 
@@ -96,6 +101,22 @@ export function ArticleView(props: ArticleViewProps) {
                                                   metadata.sourceSystem_homepage
                                               ]
                                             : undefined
+                                },
+                                {
+                                    tag: "About",
+                                    val: metadata.about
+                                },
+                                {
+                                    tag: "Target group",
+                                    val: metadata.targetGroup
+                                },
+                                {
+                                    tag: "Is part of",
+                                    val: metadata.isPartOf
+                                },
+                                {
+                                    tag: "Additional type",
+                                    val: metadata.additionalType
                                 }
                             ]}
                             visibleElements={2}
@@ -148,6 +169,11 @@ export function ArticleView(props: ArticleViewProps) {
                                     fun={() => copyToClipBoard(metadata.homepage)}
                                 />
                                 </Box>*/}
+                    {metadata.dateModified ? (
+                        <Box pt="33">
+                            <LastUpdate date={metadata.dateModified} />
+                        </Box>
+                    ) : null}
                     {metadata.articleBody ? (
                         metadata.articleBody[0] ? (
                             <TOC md={metadata.articleBody[0]} />
