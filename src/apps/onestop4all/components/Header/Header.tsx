@@ -30,9 +30,9 @@ export const Header = () => {
             <Hide below="custombreak">
                 <UserSupportLink></UserSupportLink>
             </Hide>
-            <Hide below="custombreak">
+            {/*<Hide below="custombreak">
                 <Login></Login>
-            </Hide>
+            </Hide>*/}
             <LanguageToggler></LanguageToggler>
             <MenuButton></MenuButton>
         </HStack>
