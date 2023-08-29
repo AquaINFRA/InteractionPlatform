@@ -67,36 +67,6 @@ export function RepositoryView(props: RepositoryViewProps) {
         }
     };
 
-    //TEST DATA FOR RELATED CONTENT SECTION
-    const relatedContent = [
-        {
-            title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
-            resourceType: "Service",
-            id: "1234"
-        },
-        {
-            title: "This is a related standard (url missing)",
-            resourceType: "Standard"
-        },
-        {
-            title: "This is a related organisation (resource type missing)",
-            id: "1234"
-        },
-        {
-            resourceType: "Tool/Software",
-            id: "1234"
-        },
-        {
-            title: "This is a related lesson",
-            resourceType: "Educational resource",
-            id: "1234"
-        }
-    ];
-
-    metadata ? (metadata.relatedContent = relatedContent) : null;
-
-    console.log(metadata);
-
     return (
         <Box>
             <Flex gap="10%">

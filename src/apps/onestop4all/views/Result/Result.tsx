@@ -16,6 +16,7 @@ import { useSearchState } from "../Search/SearchState";
 import { StandardMetadataResponse, StandardView } from "../Standard/Standard";
 import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
 import { ToolsSoftwareMetadataResponse, ToolsSoftwareView } from "../ToolsSoftware/ToolsSoftware";
+import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 
 export function Result() {
     const resultId = useParams().id as string;
@@ -36,9 +37,37 @@ export function Result() {
             // TODO: remove timeout
             setTimeout(() => {
                 if (result.results[0]) {
+                    //TEST DATA FOR RELATED CONTENT SECTION. REMOVE LATER.
+                    const relatedContent = [
+                        {
+                            title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
+                            resourceType: "Service",
+                            id: "1234"
+                        },
+                        {
+                            title: "This is a related standard (url missing)",
+                            resourceType: "Standard"
+                        },
+                        {
+                            title: "This is a related organisation (resource type missing)",
+                            id: "1234"
+                        },
+                        {
+                            resourceType: "Tool/Software",
+                            id: "1234"
+                        },
+                        {
+                            title: "This is a related lesson",
+                            resourceType: "Educational resource",
+                            id: "1234"
+                        }
+                    ];
+                    result.results[0].relatedContent = relatedContent;
+
                     setSearchResult(result.results[0]);
                     setResourceType(mapToResourceType(result.results[0].type));
                     setLoading(false);
+                    console.log(result.results[0]);
                 } else {
                     // TODO: error handling
                 }
@@ -195,6 +224,11 @@ export function Result() {
                 ) : (
                     <>
                         <Box>{getResourceView()}</Box>
+                        <Box pt="80px">
+                            {searchResult?.relatedContent ? (
+                                <RelatedContent relatedContentItems={searchResult.relatedContent} />
+                            ) : null}
+                        </Box>
                     </>
                 )}
                 <Flex gap="10%" alignItems="center" pt="120px">
