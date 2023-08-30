@@ -10,6 +10,7 @@ import { LHB_ArticleSearchHandler } from "./search/result-handler/lhb_article-ha
 import { mapFromResourceType, mapToResourceType } from "./ResourceTypeUtils";
 import { StandardSearchHandler } from "./search/result-handler/standard-handler";
 import { SoftwareSearchHandler } from "./search/result-handler/software-handler";
+import { Learning_ResourceHandler } from "./search/result-handler/learning_resource-handler";
 
 export interface SearchResultItem {
     id: string;
@@ -83,7 +84,8 @@ export class SearchService {
         new ArticleSearchHandler(),
         new StandardSearchHandler(),
         new SoftwareSearchHandler(),
-        new LHB_ArticleSearchHandler()
+        new LHB_ArticleSearchHandler(),
+        new Learning_ResourceHandler()
     ];
 
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
