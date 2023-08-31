@@ -91,7 +91,7 @@ export function Result() {
             setResultCount(searchState.searchResults.count);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [resultId]);
 
     function getResourceView(): import("react").ReactNode {
         switch (resourceType) {
