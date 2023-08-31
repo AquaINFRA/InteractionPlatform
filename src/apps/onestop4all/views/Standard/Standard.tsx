@@ -6,15 +6,22 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { SolrSearchResultItem } from "../../services/SearchService";
+import { PdfIcon, MetadataSourceIcon } from "../../components/Icons";
 
 export interface StandardMetadataResponse extends SolrSearchResultItem {
     title: string;
     description: string;
     website: string;
+    theme: Array<string>;
     parentStandard: string;
     relatedContent: Array<object>;
-    theme: Array<string>;
     uri: string;
+    childStandard: string;
+    document: string;
+    id: string;
+    sourceSystem_homepage: string;
+    sourceSystem_title: string;
+    xsd: string;
 }
 
 export interface StandardViewProps {
@@ -71,6 +78,18 @@ export function StandardView(props: StandardViewProps) {
                                 {
                                     tag: "Type",
                                     val: metadata.type
+                                },
+                                {
+                                    tag: "URI",
+                                    val: metadata.uri
+                                },
+                                {
+                                    tag: "Child standard",
+                                    val: metadata.childStandard
+                                },
+                                {
+                                    tag: "XSD",
+                                    val: metadata.xsd
                                 }
                             ]}
                             visibleElements={3}
@@ -92,9 +111,37 @@ export function StandardView(props: StandardViewProps) {
                                 target="_blank"
                             >
                                 <ActionButton
-                                    label="Visit repository"
+                                    label="Visit website"
                                     icon={<ExternalLinkIcon color="white" />}
                                     variant="solid"
+                                    fun={() => void 0}
+                                />
+                            </Link>
+                        ) : null}
+                        {metadata.document ? (
+                            <Link
+                                to={metadata.document[0] as string}
+                                className="actionButtonLink"
+                                target="_blank"
+                            >
+                                <ActionButton
+                                    label="Download as PDF"
+                                    icon={<PdfIcon color="white" />}
+                                    variant="solid"
+                                    fun={() => void 0}
+                                />
+                            </Link>
+                        ) : null}
+                        {metadata.sourceSystem_homepage ? (
+                            <Link
+                                to={metadata.sourceSystem_homepage[0] as string}
+                                className="actionButtonLink"
+                                target="_blank"
+                            >
+                                <ActionButton
+                                    label="Visit metadata source"
+                                    icon={<MetadataSourceIcon color="white" />}
+                                    variant="outline"
                                     fun={() => void 0}
                                 />
                             </Link>

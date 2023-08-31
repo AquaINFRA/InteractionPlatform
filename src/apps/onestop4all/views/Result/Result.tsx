@@ -106,9 +106,6 @@ export function Result() {
                 const item = searchResult as LHB_ArticleMetadataResponse;
                 return <LHB_ArticleView item={item} />;
             }
-            case ResourceType.Services:
-                // TODO: needs to be implemented
-                return <Box>Service</Box>;
             case ResourceType.Tools: {
                 const item = searchResult as ToolsSoftwareMetadataResponse;
                 return <ToolsSoftwareView item={item} />;
