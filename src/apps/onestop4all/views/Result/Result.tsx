@@ -11,6 +11,10 @@ import { SolrSearchResultItem } from "../../services/SearchService";
 import { LHB_ArticleMetadataResponse, LHB_ArticleView } from "../LHB_Article/LHB_Article";
 import { OrganisationMetadataResponse, OrganisationView } from "../Organisation/Organisation";
 import { RepositoryMetadataResponse, RepositoryView } from "../Repository/Repository";
+import {
+    LearningResourceMetadataResponse,
+    LearningResourceView
+} from "../LearningResource/LearningResource";
 import { useSearchState } from "../Search/SearchState";
 import { StandardMetadataResponse, StandardView } from "../Standard/Standard";
 import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
@@ -114,12 +118,15 @@ export function Result() {
                 const item = searchResult as StandardMetadataResponse;
                 return <StandardView item={item} />;
             }
+            case ResourceType.Learning_Resource: {
+                const item = searchResult as LearningResourceMetadataResponse;
+                return <LearningResourceView item={item} />;
+            }
             //Needs to be implemented
             /*case ResourceType.Articles: {
                 const item = searchResult as ArticleMetadataResponse;
                 return <ArticleView item={item} />;
             }*/
-            case ResourceType.Educational:
             default:
                 throw new Error(`Unknown resourceType: '${resourceType}'`);
         }

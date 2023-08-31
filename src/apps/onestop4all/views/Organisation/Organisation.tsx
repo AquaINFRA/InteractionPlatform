@@ -7,6 +7,7 @@ import { Identifier } from "../../components/ResourceType/Api_Identifier/Identif
 import { Contact } from "../../components/ResourceType/Contact/Contact";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { SolrSearchResultItem } from "../../services/SearchService";
+import { MetadataSourceIcon } from "../../components/Icons";
 
 export interface OrganisationMetadataResponse extends SolrSearchResultItem {
     name: string;
@@ -117,30 +118,8 @@ export function OrganisationView(props: OrganisationViewProps) {
                                     val: metadata.locality
                                 },
                                 {
-                                    tag: metadata.nfdi4EarthContactPerson_name ? "nfdi" : undefined, //if undefined, this metadata element is skipped in metadata component
-                                    val: [
-                                        {
-                                            name: metadata.nfdi4EarthContactPerson_name,
-                                            email: metadata.nfdi4EarthContactPerson_email,
-                                            //affiliation: metadata.nfdi4EarthContactPerson_affiliation,
-                                            orcid: metadata.nfdi4EarthContactPerson_orcidId
-                                        }
-                                    ]
-                                },
-                                {
                                     tag: "Suborganisation of",
                                     val: metadata.subOrganizationOf
-                                },
-                                {
-                                    tag: "Source",
-                                    val:
-                                        metadata.sourceSystem_title &&
-                                        metadata.sourceSystem_homepage
-                                            ? [
-                                                  metadata.sourceSystem_title,
-                                                  metadata.sourceSystem_homepage
-                                              ]
-                                            : undefined
                                 }
                             ]}
                             visibleElements={2}
@@ -149,26 +128,44 @@ export function OrganisationView(props: OrganisationViewProps) {
                     </Box>
                 </Box>
                 <Box w="25%">
-                    {metadata.homepage ? (
+                    {metadata.homepage || metadata.sourceSystem_homepage ? (
                         <Box className="actionButtonGroup" pt="74px">
-                            <Link
-                                to={metadata.homepage[0] as string}
-                                className="actionButtonLink"
-                                target="_blank"
-                            >
-                                <ActionButton
-                                    label="Visit repository"
-                                    icon={<ExternalLinkIcon color="white" />}
-                                    variant="solid"
-                                    fun={() => void 0}
-                                />
-                            </Link>
-                            <ActionButton
-                                label="Copy URL"
-                                icon={<LinkIcon color="#05668D" />}
-                                variant="outline"
-                                fun={() => copyToClipBoard(metadata.homepage)}
-                            />
+                            {metadata.homepage ? (
+                                <>
+                                    <Link
+                                        to={metadata.homepage[0] as string}
+                                        className="actionButtonLink"
+                                        target="_blank"
+                                    >
+                                        <ActionButton
+                                            label="Visit website"
+                                            icon={<ExternalLinkIcon color="white" />}
+                                            variant="solid"
+                                            fun={() => void 0}
+                                        />
+                                    </Link>
+                                    <ActionButton
+                                        label="Copy URL"
+                                        icon={<LinkIcon color="#05668D" />}
+                                        variant="outline"
+                                        fun={() => copyToClipBoard(metadata.homepage)}
+                                    />
+                                </>
+                            ) : null}
+                            {metadata.sourceSystem_homepage ? (
+                                <Link
+                                    to={metadata.sourceSystem_homepage[0] as string}
+                                    className="actionButtonLink"
+                                    target="_blank"
+                                >
+                                    <ActionButton
+                                        label="Visit metadata source"
+                                        icon={<MetadataSourceIcon color="white" />}
+                                        variant="outline"
+                                        fun={() => void 0}
+                                    />
+                                </Link>
+                            ) : null}
                         </Box>
                     ) : null}
                     {metadata.otherIdentifiers ? (

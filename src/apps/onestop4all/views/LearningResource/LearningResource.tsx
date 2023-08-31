@@ -1,18 +1,10 @@
 import { Box, Flex } from "@open-pioneer/chakra-integration";
-import ChakraUIRenderer from "chakra-ui-markdown-renderer";
-import ReactMarkdown from "react-markdown";
-import { useRef } from "react";
-import { Link } from "react-router-dom";
 
-import { LastUpdate } from "../../components/ResourceType/Metadata/LastUpdate";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Support } from "../../components/ResourceType/Support/Support";
-import { TOC } from "../../components/ResourceType/TOC/TOC";
 import { SolrSearchResultItem } from "../../services/SearchService";
-import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
-import { MetadataSourceIcon } from "../../components/Icons";
 
-export interface LHB_ArticleMetadataResponse extends SolrSearchResultItem {
+export interface LearningResourceMetadataResponse extends SolrSearchResultItem {
     name: string;
     description: string;
     author: string;
@@ -28,13 +20,12 @@ export interface LHB_ArticleMetadataResponse extends SolrSearchResultItem {
     about: string;
 }
 
-export interface ArticleViewProps {
-    item: LHB_ArticleMetadataResponse;
+export interface LearningResourceViewProps {
+    item: LearningResourceMetadataResponse;
 }
 
-export function LHB_ArticleView(props: ArticleViewProps) {
+export function LearningResourceView(props: LearningResourceViewProps) {
     const metadata = props.item;
-    const elementRef = useRef(null);
 
     return (
         <Box>
@@ -89,48 +80,9 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                             expandedByDefault={false}
                         />
                     </Box>
-                    <Box pt="80px" ref={elementRef}>
-                        <ReactMarkdown components={ChakraUIRenderer()}>
-                            {metadata.articleBody
-                                ? metadata.articleBody[0]
-                                    ? metadata.articleBody[0]
-                                    : ""
-                                : ""}
-                        </ReactMarkdown>
-                    </Box>
                     <Box pt="80px">
                         <Support />
                     </Box>
-                </Box>
-                <Box w="25%">
-                    {metadata.sourceSystem_homepage ? (
-                        <Box className="actionButtonGroup" pt="74px">
-                            {metadata.sourceSystem_homepage ? (
-                                <Link
-                                    to={metadata.sourceSystem_homepage[0] as string}
-                                    className="actionButtonLink"
-                                    target="_blank"
-                                >
-                                    <ActionButton
-                                        label="Visit metadata source"
-                                        icon={<MetadataSourceIcon color="white" />}
-                                        variant="outline"
-                                        fun={() => void 0}
-                                    />
-                                </Link>
-                            ) : null}
-                        </Box>
-                    ) : null}
-                    {metadata.dateModified ? (
-                        <Box pt="33">
-                            <LastUpdate date={metadata.dateModified} />
-                        </Box>
-                    ) : null}
-                    {metadata.articleBody ? (
-                        metadata.articleBody[0] ? (
-                            <TOC elementRef={elementRef} />
-                        ) : null
-                    ) : null}
                 </Box>
             </Flex>
         </Box>

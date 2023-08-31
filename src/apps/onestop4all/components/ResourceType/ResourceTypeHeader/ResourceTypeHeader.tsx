@@ -6,7 +6,7 @@ import { ResourceIcon } from "../../../views/Start/ResourceEntry/ResourceIcons";
 import {
     BackIcon,
     DocumentsIcon,
-    EducationalResourceIcon,
+    LearningResourceIcon,
     OrganisationsIcon,
     RepositoriesIcon,
     ServicesIcon,
@@ -61,8 +61,8 @@ export function ResourceTypeHeader(props: { resType: ResourceType | undefined; l
                     <ToolSoftwareIcon />
                 ) : resType == ResourceType.Standards ? (
                     <StandardIcon />
-                ) : resType == ResourceType.Educational ? (
-                    <EducationalResourceIcon />
+                ) : resType == ResourceType.Learning_Resource ? (
+                    <LearningResourceIcon />
                 ) : resType == ResourceType.LHB_Articles || resType == ResourceType.Articles ? (
                     <DocumentsIcon />
                 ) : resType == ResourceType.Organisations ? (

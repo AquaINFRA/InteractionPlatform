@@ -26,7 +26,7 @@ export function StartView() {
             resultCount: 54
         },
         {
-            resourceType: ResourceType.Educational,
+            resourceType: ResourceType.Learning_Resource,
             resultCount: 325
         },
         {

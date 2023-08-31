@@ -9,6 +9,7 @@ import { Api } from "../../components/ResourceType/Api_Identifier/Api";
 import { LastUpdate } from "../../components/ResourceType/Metadata/LastUpdate";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { SolrSearchResultItem } from "../../services/SearchService";
+import { MetadataSourceIcon } from "../../components/Icons";
 
 export interface RepositoryMetadataResponse extends SolrSearchResultItem {
     title: string;
@@ -148,17 +149,6 @@ export function RepositoryView(props: RepositoryViewProps) {
                                 {
                                     tag: "Type",
                                     val: metadata.type
-                                },
-                                {
-                                    tag: "Source",
-                                    val:
-                                        metadata.sourceSystem_title &&
-                                        metadata.sourceSystem_homepage
-                                            ? [
-                                                  metadata.sourceSystem_title,
-                                                  metadata.sourceSystem_homepage
-                                              ]
-                                            : undefined
                                 }
                             ]}
                             visibleElements={7}
@@ -197,6 +187,20 @@ export function RepositoryView(props: RepositoryViewProps) {
                                     <ActionButton
                                         label="Open user policy"
                                         icon={<InfoIcon />}
+                                        variant="outline"
+                                        fun={() => void 0}
+                                    />
+                                </Link>
+                            ) : null}
+                            {metadata.sourceSystem_homepage ? (
+                                <Link
+                                    to={metadata.sourceSystem_homepage[0] as string}
+                                    className="actionButtonLink"
+                                    target="_blank"
+                                >
+                                    <ActionButton
+                                        label="Visit metadata source"
+                                        icon={<MetadataSourceIcon color="white" />}
                                         variant="outline"
                                         fun={() => void 0}
                                     />

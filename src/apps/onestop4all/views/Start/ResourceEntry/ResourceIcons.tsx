@@ -95,7 +95,7 @@ export const ResourceIcon = (props: ResourceIconProps) => {
                     />
                 </svg>
             );
-        case ResourceType.Educational:
+        case ResourceType.Learning_Resource:
             return (
                 <svg
                     width={props.size}

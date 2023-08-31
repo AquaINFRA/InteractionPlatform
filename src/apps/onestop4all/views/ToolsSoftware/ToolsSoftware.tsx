@@ -6,6 +6,7 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { SolrSearchResultItem } from "../../services/SearchService";
+import { MetadataSourceIcon } from "../../components/Icons";
 
 export interface ToolsSoftwareMetadataResponse extends SolrSearchResultItem {
     name: string;
@@ -80,17 +81,6 @@ export function ToolsSoftwareView(props: ToolsSoftwareViewProps) {
                                 {
                                     tag: "Programming language",
                                     val: metadata.programmingLanguage
-                                },
-                                {
-                                    tag: "Source",
-                                    val:
-                                        metadata.sourceSystem_title &&
-                                        metadata.sourceSystem_homepage
-                                            ? [
-                                                  metadata.sourceSystem_title,
-                                                  metadata.sourceSystem_homepage
-                                              ]
-                                            : undefined
                                 }
                             ]}
                             visibleElements={2}
@@ -104,26 +94,44 @@ export function ToolsSoftwareView(props: ToolsSoftwareViewProps) {
                     ) : null}
                 </Box>
                 <Box w="25%">
-                    {metadata.codeRepository ? (
+                    {metadata.codeRepository || metadata.sourceSystem_homepage ? (
                         <Box className="actionButtonGroup" pt="74px">
-                            <Link
-                                to={metadata.codeRepository[0] as string}
-                                className="actionButtonLink"
-                                target="_blank"
-                            >
-                                <ActionButton
-                                    label="VISIT PROJECT PAGE"
-                                    icon={<ExternalLinkIcon color="white" />}
-                                    variant="solid"
-                                    fun={() => void 0}
-                                />
-                            </Link>
-                            <ActionButton
-                                label="Copy URL"
-                                icon={<LinkIcon color="#05668D" />}
-                                variant="outline"
-                                fun={() => copyToClipBoard(metadata.codeRepository)}
-                            />
+                            {metadata.codeRepository ? (
+                                <>
+                                    <Link
+                                        to={metadata.codeRepository[0] as string}
+                                        className="actionButtonLink"
+                                        target="_blank"
+                                    >
+                                        <ActionButton
+                                            label="VISIT PROJECT PAGE"
+                                            icon={<ExternalLinkIcon color="white" />}
+                                            variant="solid"
+                                            fun={() => void 0}
+                                        />
+                                    </Link>
+                                    <ActionButton
+                                        label="Copy URL"
+                                        icon={<LinkIcon color="#05668D" />}
+                                        variant="outline"
+                                        fun={() => copyToClipBoard(metadata.codeRepository)}
+                                    />
+                                </>
+                            ) : null}
+                            {metadata.sourceSystem_homepage ? (
+                                <Link
+                                    to={metadata.sourceSystem_homepage[0] as string}
+                                    className="actionButtonLink"
+                                    target="_blank"
+                                >
+                                    <ActionButton
+                                        label="Visit metadata source"
+                                        icon={<MetadataSourceIcon color="white" />}
+                                        variant="outline"
+                                        fun={() => void 0}
+                                    />
+                                </Link>
+                            ) : null}
                         </Box>
                     ) : null}
                 </Box>

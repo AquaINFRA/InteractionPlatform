@@ -30,7 +30,6 @@ export function navigateToResource(item: SearchResultItem, navigate: NavigateFun
         case ResourceType.Articles:
             navigate(`/article/${item.id}`);
             break;
-        case ResourceType.Educational:
         default:
             throw new Error(`Unknown navigation for ${item.resourceType}`);
     }
