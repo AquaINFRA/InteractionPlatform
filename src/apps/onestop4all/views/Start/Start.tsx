@@ -5,39 +5,9 @@ import NetworkGraph from "../../components/Graph/NetworkGraph";
 import { SearchBar } from "../../components/SearchBar";
 import { HowToEntry } from "./HowTo/HowToEntry";
 import { ParticipateEntry, ParticipateEntryProps } from "./ParticipateEntry/ParticipateEntry";
-import { ResourceEntry, ResourceEntryProps, ResourceType } from "./ResourceEntry/ResourceEntry";
+import { ResourceEntries } from "./ResourceEntries/ResourceEntries";
 
 export function StartView() {
-    const resources: ResourceEntryProps[] = [
-        {
-            resourceType: ResourceType.Repos,
-            resultCount: 958
-        },
-        {
-            resourceType: ResourceType.Services,
-            resultCount: 86
-        },
-        {
-            resourceType: ResourceType.Tools,
-            resultCount: 75
-        },
-        {
-            resourceType: ResourceType.Standards,
-            resultCount: 54
-        },
-        {
-            resourceType: ResourceType.Learning_Resource,
-            resultCount: 325
-        },
-        {
-            resourceType: ResourceType.LHB_Articles,
-            resultCount: 52364
-        },
-        {
-            resourceType: ResourceType.Organisations,
-            resultCount: 216
-        }
-    ];
     const getInvolvedEntries: ParticipateEntryProps[] = [
         {
             imageUrl: "image1.png",
@@ -161,13 +131,9 @@ export function StartView() {
                         </Box>
                     </Box>
 
-                    <Flex className="entries" justifyContent="space-between" pt="32px">
-                        {resources.map((e, i) => (
-                            <Box key={i}>
-                                <ResourceEntry {...e}></ResourceEntry>
-                            </Box>
-                        ))}
-                    </Flex>
+                    <Box pt="32px">
+                        <ResourceEntries></ResourceEntries>
+                    </Box>
                 </Container>
             </Box>
 
