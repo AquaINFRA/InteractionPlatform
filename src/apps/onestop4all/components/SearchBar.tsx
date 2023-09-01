@@ -16,7 +16,7 @@ export function SearchBar() {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const intl = useIntl();
     const [selectedResource, setSelectResource] = useState("");
-    const resourceTypes = Object.values(ResourceType);
+    const resourceTypes = Object.values(ResourceType).sort((a, b) => a.localeCompare(b));
     const searchState = useSearchState();
     const navigate = useNavigate();
     const location = useLocation();
@@ -25,10 +25,14 @@ export function SearchBar() {
 
     function startSearch(): void {
         searchState.setSearchTerm(searchTerm);
+        if (selectedResource) {
+            searchState.setSelectedResourceTypes([selectedResource]);
+        }
         if (!location.pathname.endsWith("search")) {
             const params: UrlSearchParams = {};
-            if (searchTerm) {
-                params[UrlSearchParameterType.Searchterm] = searchTerm;
+            params[UrlSearchParameterType.Searchterm] = searchTerm;
+            if (!selectedResource) {
+                searchState.setSelectedResourceTypes([]);
             }
             navigate({
                 pathname: "/search",
