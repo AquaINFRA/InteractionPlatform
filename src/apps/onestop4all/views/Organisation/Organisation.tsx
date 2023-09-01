@@ -29,7 +29,7 @@ export interface OrganisationMetadataResponse extends SolrSearchResultItem {
     //nfdi4EarthContactPerson_uri: string; probably not needed
     nfdi4EarthContactPerson_email: string;
     //nfdi4EarthContactPerson_id: string; probably not needed
-    //nfdi4EarthContactPerson_affiliation: string;
+    nfdi4EarthContactPerson_affiliation: string;
     sourceSystem_homepage: string;
     sourceSystem_title: string;
 }
@@ -41,6 +41,17 @@ export interface OrganisationViewProps {
 export function OrganisationView(props: OrganisationViewProps) {
     const metadata = props.item;
     const toast = useToast();
+
+    const name = metadata.nfdi4EarthContactPerson_name;
+    const email = metadata.nfdi4EarthContactPerson_email;
+    const orcid = metadata.nfdi4EarthContactPerson_orcidId;
+    const affiliation = metadata.nfdi4EarthContactPerson_affiliation;
+    const nfdiContact = {
+        name: name ? name : undefined,
+        orcid: orcid ? orcid : undefined,
+        email: email ? email : undefined,
+        affiliation: affiliation ? affiliation : undefined
+    };
 
     const copyToClipBoard = (link: string) => {
         if (link != undefined) {
@@ -120,6 +131,16 @@ export function OrganisationView(props: OrganisationViewProps) {
                                 {
                                     tag: "Suborganisation of",
                                     val: metadata.subOrganizationOf
+                                },
+                                {
+                                    tag: "nfdi",
+                                    val:
+                                        nfdiContact.name ||
+                                        nfdiContact.email ||
+                                        nfdiContact.orcid ||
+                                        nfdiContact.affiliation
+                                            ? nfdiContact
+                                            : undefined
                                 }
                             ]}
                             visibleElements={2}

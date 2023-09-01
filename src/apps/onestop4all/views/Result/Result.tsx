@@ -66,12 +66,6 @@ export function Result() {
                         }
                     ];
                     result.results[0].relatedContent = relatedContent;
-                    result.results[0].sourceSystem_homepage
-                        ? null
-                        : (result.results[0].sourceSystem_homepage = ["https://www.test.de"]);
-                    result.results[0].sourceSystem_title
-                        ? null
-                        : (result.results[0].sourceSystem_title = ["Test"]);
                     // TESTDATA END
                     setSearchResult(result.results[0]);
                     setResourceType(mapToResourceType(result.results[0].type));

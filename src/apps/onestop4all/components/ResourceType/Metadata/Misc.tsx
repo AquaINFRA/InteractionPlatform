@@ -1,32 +1,8 @@
 import { Box } from "@open-pioneer/chakra-integration";
+import { isUrl, isEmail, MetadataUrl } from "./PersonalInfo";
 
 export const Misc = (props: { tag: string; val: Array<string> }) => {
     const { tag, val } = props;
-
-    //To do: Create reusable function, used at several locations
-    function isUrl(url: string) {
-        const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-        return urlRegex.test(url);
-    }
-
-    function isEmail(address: string) {
-        const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-        return emailRegex.test(address);
-    }
-
-    const MetadataUrl = (props: { item: string; type: string }) => {
-        const { item, type } = props;
-        return (
-            <a
-                href={type == "mail" ? "mailto: " : "" + item}
-                className="metadataLink"
-                rel="noreferrer"
-                target="_blank"
-            >
-                {item}
-            </a>
-        );
-    };
 
     return (
         <Box className="metadataKeywords">
