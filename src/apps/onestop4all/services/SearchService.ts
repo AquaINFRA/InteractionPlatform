@@ -142,17 +142,13 @@ export class SearchService {
     getMetadata(resourceId: string) {
         console.log("Get metadata for the following resource ID " + resourceId);
         const queryParams = this.createQueryParams();
-
         if (resourceId) {
-            queryParams.set("q", resourceId);
-            queryParams.set("df", "id");
+            queryParams.set("ids", resourceId);
+            this.addChildQueryParams(queryParams);
         }
-        // TODO: remove proxy later
-        const url = `${this.config.url}/${
-            this.config.coreSelector
-        }/select?${queryParams.toString()}`;
+        const url = `${this.config.url}/${this.config.coreSelector}/get?${queryParams.toString()}`;
         return fetch(url).then((response) =>
-            response.json().then((responseData: { response: any }) => {
+            response.json().then((responseData: { response: SolrSearchResponse }) => {
                 const { response } = responseData;
                 if (response.numFound !== undefined && response.docs !== undefined) {
                     return {
@@ -222,6 +218,10 @@ export class SearchService {
         } else {
             queryParams.set("q", "*:*");
         }
+        this.addChildQueryParams(queryParams);
+    }
+
+    private addChildQueryParams(queryParams: URLSearchParams) {
         queryParams.set("fl", "*, [child author]");
     }
 
