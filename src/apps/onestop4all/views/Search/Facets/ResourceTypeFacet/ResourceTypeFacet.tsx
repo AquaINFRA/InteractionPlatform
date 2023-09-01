@@ -25,12 +25,12 @@ export function ResourceTypeFacet() {
     function resourceTypeToggled(checked: boolean, resourceType: ResourceType) {
         if (checked) {
             searchState.setSelectedResourceTypes([
-                ...searchState.selectedResoureTypes,
+                ...searchState.selectedResourceTypes,
                 resourceType
             ]);
         } else {
             searchState.setSelectedResourceTypes(
-                searchState.selectedResoureTypes.filter((e) => e !== resourceType)
+                searchState.selectedResourceTypes.filter((e) => e !== resourceType)
             );
         }
     }

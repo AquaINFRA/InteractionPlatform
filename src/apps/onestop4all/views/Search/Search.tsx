@@ -32,8 +32,12 @@ export function SearchView() {
             params[UrlSearchParameterType.Searchterm] = searchState.searchTerm;
         }
 
-        if (searchState.selectedResoureTypes.length > 0) {
-            params[UrlSearchParameterType.ResourceType] = searchState.selectedResoureTypes;
+        if (searchState.selectedResourceTypes.length > 0) {
+            params[UrlSearchParameterType.ResourceType] = searchState.selectedResourceTypes;
+        }
+
+        if (searchState.selectedSubjects.length > 0) {
+            params[UrlSearchParameterType.Subjects] = searchState.selectedSubjects;
         }
 
         if (searchState.spatialFilter.length === 4) {
@@ -55,7 +59,8 @@ export function SearchView() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         searchState.searchTerm,
-        searchState.selectedResoureTypes,
+        searchState.selectedResourceTypes,
+        searchState.selectedSubjects,
         searchState.spatialFilter,
         searchState.pageSize,
         searchState.pageStart

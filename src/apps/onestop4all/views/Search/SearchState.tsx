@@ -8,6 +8,7 @@ import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
 export enum UrlSearchParameterType {
     Searchterm = "searchterm",
     ResourceType = "resourcetype",
+    Subjects = "subjects",
     SpatialFilter = "spatialfilter",
     PageSize = "pageSize",
     PageStart = "pageStart"
@@ -16,6 +17,7 @@ export enum UrlSearchParameterType {
 export interface UrlSearchParams {
     [UrlSearchParameterType.Searchterm]?: string;
     [UrlSearchParameterType.ResourceType]?: string[];
+    [UrlSearchParameterType.Subjects]?: string[];
     [UrlSearchParameterType.SpatialFilter]?: string;
     [UrlSearchParameterType.PageSize]?: string;
     [UrlSearchParameterType.PageStart]?: string;
@@ -27,12 +29,21 @@ export interface SelectableResourceType {
     selected: boolean;
 }
 
+export interface SelectableSubjects {
+    label: string;
+    count: number;
+    selected: boolean;
+}
+
 export interface ISearchState {
     searchTerm: string;
     setSearchTerm(searchTerm: string): void;
-    selectedResoureTypes: string[];
+    selectedResourceTypes: string[];
     setSelectedResourceTypes(types: string[]): void;
     selectableResourceTypes: SelectableResourceType[];
+    selectedSubjects: string[];
+    setSelectedSubjects(subjects: string[]): void;
+    selectableSubjects: SelectableSubjects[];
     spatialFilter: number[];
     setSpatialFilter(sf: number[]): void;
     pageSize: number;
@@ -90,13 +101,20 @@ export const SearchState = (props: PropsWithChildren) => {
     const sRt: string[] = [];
     const urlRt = searchParams.getAll(UrlSearchParameterType.ResourceType);
     if (urlRt?.length) {
-        urlRt.forEach((e) => {
-            if (e) {
-                sRt.push(e);
-            }
-        });
+        urlRt.forEach((e) => e && sRt.push(e));
     }
-    const [selectedResoureTypes, setSelectedResourceTypes] = useState<string[]>(sRt);
+    const [selectedResourceTypes, setSelectedResourceTypes] = useState<string[]>(sRt);
+
+    // init selectable subjects
+    const [selectableSubjects, setSelecteableSubjects] = useState<SelectableSubjects[]>([]);
+
+    // init selected subjects
+    const subjects: string[] = [];
+    const urlSubs = searchParams.getAll(UrlSearchParameterType.Subjects);
+    if (urlSubs?.length) {
+        urlSubs.forEach((e) => e && subjects.push(e));
+    }
+    const [selectedSubjects, setSelectedSubjects] = useState<string[]>(subjects);
 
     // init spatial filter
     let sp: number[] = [];
@@ -114,7 +132,8 @@ export const SearchState = (props: PropsWithChildren) => {
         searchSrvc
             .doSearch({
                 searchTerm,
-                resourceTypes: selectedResoureTypes,
+                resourceTypes: selectedResourceTypes,
+                subjects: selectedSubjects,
                 spatialFilter,
                 pageSize,
                 pageStart
@@ -126,10 +145,19 @@ export const SearchState = (props: PropsWithChildren) => {
                     return {
                         resourceType: e.resourceType,
                         count: e.count,
-                        selected: selectedResoureTypes.findIndex((r) => r === e.resourceType) >= 0
+                        selected: selectedResourceTypes.findIndex((r) => r === e.resourceType) >= 0
                     } as SelectableResourceType;
                 });
                 setSelecteableResourceTypes(resourceTypeFacet);
+                const subjects = result.facets.subjects.map(
+                    (e) =>
+                        ({
+                            label: e.label,
+                            count: e.count,
+                            selected: selectedSubjects.findIndex((s) => s === e.label) >= 0
+                        } as SelectableSubjects)
+                );
+                setSelecteableSubjects(subjects);
             })
             .catch((error) => {
                 setIsLoaded(true);
@@ -143,7 +171,7 @@ export const SearchState = (props: PropsWithChildren) => {
             setSearchTerm(value);
             setPageStart(0);
         },
-        selectedResoureTypes,
+        selectedResourceTypes,
         setSelectedResourceTypes: (values) => {
             setSelectedResourceTypes(values);
             setPageStart(0);
@@ -163,7 +191,10 @@ export const SearchState = (props: PropsWithChildren) => {
         setPageStart,
         searchResults,
         isLoaded,
-        search
+        search,
+        selectedSubjects,
+        setSelectedSubjects,
+        selectableSubjects
     };
 
     return (

@@ -25,6 +25,7 @@ export interface SearchResultItem {
 export interface SearchRequestParams {
     searchTerm?: string;
     resourceTypes?: string[];
+    subjects?: string[];
     pageSize?: number;
     pageStart?: number;
     spatialFilter?: number[];
@@ -48,6 +49,10 @@ interface SolrFacetResponse {
 }
 
 export interface Facets {
+    subjects: {
+        label: string;
+        count: number;
+    }[];
     resourceType: {
         resourceType: ResourceType;
         count: number;
@@ -64,6 +69,9 @@ export interface SolrConfig {
     url: string;
     coreSelector: string;
 }
+
+const SOLR_SUBJECT_FACET_FIELD = "theme_str";
+const SOLR_RESOURCE_TYPE_FACET_FIELD = "type";
 
 export class SearchService {
     private config: SolrConfig;
@@ -101,9 +109,10 @@ export class SearchService {
 
         this.addResourceTypes(searchParams.resourceTypes, queryParams);
 
+        this.addSubjects(searchParams.subjects, queryParams);
+
         this.addSpatialFilter(searchParams.spatialFilter, queryParams);
 
-        // TODO: remove proxy later
         const url = `${this.config.url}/${
             this.config.coreSelector
         }/select?${queryParams.toString()}`;
@@ -169,7 +178,19 @@ export class SearchService {
     private addResourceTypes(resourceTypes: string[] | undefined, queryParams: URLSearchParams) {
         if (resourceTypes?.length) {
             const mapping = resourceTypes.map((e) => mapFromResourceType(e as ResourceType));
-            queryParams.set("fq", `type:(${mapping.map((e) => `"${e}"`).join(" OR ")})`);
+            queryParams.set(
+                "fq",
+                `${SOLR_RESOURCE_TYPE_FACET_FIELD}:(${mapping.map((e) => `"${e}"`).join(" OR ")})`
+            );
+        }
+    }
+
+    private addSubjects(subjects: string[] | undefined, queryParams: URLSearchParams) {
+        if (subjects?.length) {
+            queryParams.set(
+                "fq",
+                `${SOLR_SUBJECT_FACET_FIELD}:(${subjects.map((e) => `"${e}"`).join(" OR ")})`
+            );
         }
     }
 
@@ -177,7 +198,8 @@ export class SearchService {
         // add parameter to request facets
         queryParams.set("facet", "true");
         // parameter to get facet for resource type
-        queryParams.set("facet.field", "type");
+        queryParams.set("facet.field", SOLR_RESOURCE_TYPE_FACET_FIELD);
+        queryParams.append("facet.field", SOLR_SUBJECT_FACET_FIELD);
     }
 
     private addPaging(
@@ -212,19 +234,25 @@ export class SearchService {
 
     private createFacets(facet_counts: SolrFacetResponse): Facets {
         return {
+            subjects: this.createSubjectFacets(facet_counts),
             resourceType: this.createResourceTypeFacet(facet_counts)
         };
+    }
+
+    private createSubjectFacets(
+        facet_counts: SolrFacetResponse
+    ): { label: string; count: number }[] {
+        const themeFacets = facet_counts.facet_fields[SOLR_SUBJECT_FACET_FIELD];
+        return themeFacets ? this.createFragments(themeFacets) : [];
     }
 
     private createResourceTypeFacet(facet_counts: SolrFacetResponse) {
         const resourceTypeFacet = facet_counts.facet_fields["type"];
         if (resourceTypeFacet) {
-            return this.createFragments(resourceTypeFacet).map((e) => {
-                return {
-                    resourceType: mapToResourceType(e.label),
-                    count: e.count
-                };
-            });
+            return this.createFragments(resourceTypeFacet).map((e) => ({
+                resourceType: mapToResourceType(e.label),
+                count: e.count
+            }));
         }
         return [];
     }

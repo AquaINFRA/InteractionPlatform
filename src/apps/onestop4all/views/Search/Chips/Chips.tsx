@@ -26,8 +26,8 @@ export function Chips() {
     }
 
     // resourceTypes
-    const resourceTypes = searchState.selectedResoureTypes;
-    if (resourceTypes?.length) {
+    const resourceTypes = searchState.selectedResourceTypes;
+    if (resourceTypes.length) {
         chips.push({
             title: "Resource Type",
             values: resourceTypes,
@@ -36,14 +36,21 @@ export function Chips() {
     }
 
     // subject
-    // TODO: implement chip for subject
+    const subjects = searchState.selectedSubjects;
+    if (subjects.length) {
+        chips.push({
+            title: "Subject",
+            values: subjects,
+            deleteCb: () => searchState.setSelectedSubjects([])
+        });
+    }
 
     // spatial coverage
     const spatialFilter = searchState.spatialFilter;
     if (spatialFilter.length) {
         chips.push({
             title: "Spatial Coverage",
-            values: spatialFilter.map((e) => `${e}`),
+            values: spatialFilter.map((e) => `${e.toFixed(4)}`),
             deleteCb: () => searchState.setSpatialFilter([])
         });
     }

@@ -3,23 +3,23 @@ import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { SearchBar } from "../../components/SearchBar";
 import { mapToResourceType } from "../../services/ResourceTypeUtils";
 import { SolrSearchResultItem } from "../../services/SearchService";
-import { LHB_ArticleMetadataResponse, LHB_ArticleView } from "../LHB_Article/LHB_Article";
-import { OrganisationMetadataResponse, OrganisationView } from "../Organisation/Organisation";
-import { RepositoryMetadataResponse, RepositoryView } from "../Repository/Repository";
 import {
     LearningResourceMetadataResponse,
     LearningResourceView
 } from "../LearningResource/LearningResource";
+import { LHB_ArticleMetadataResponse, LHB_ArticleView } from "../LHB_Article/LHB_Article";
+import { OrganisationMetadataResponse, OrganisationView } from "../Organisation/Organisation";
+import { RepositoryMetadataResponse, RepositoryView } from "../Repository/Repository";
 import { useSearchState } from "../Search/SearchState";
 import { StandardMetadataResponse, StandardView } from "../Standard/Standard";
 import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
 import { ToolsSoftwareMetadataResponse, ToolsSoftwareView } from "../ToolsSoftware/ToolsSoftware";
-import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 
 export function Result() {
     const resultId = useParams().id as string;
@@ -161,7 +161,8 @@ export function Result() {
             .doSearch({
                 pageSize: 1,
                 pageStart: result - 1,
-                resourceTypes: searchState.selectedResoureTypes,
+                resourceTypes: searchState.selectedResourceTypes,
+                subjects: searchState.selectedSubjects,
                 searchTerm: searchState.searchTerm,
                 spatialFilter: searchState.spatialFilter
             })
