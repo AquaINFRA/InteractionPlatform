@@ -31,7 +31,7 @@ export function SubjectFacet() {
 
     return (
         <Box>
-            <FacetBase title="Subject" expanded>
+            <FacetBase title="Subject" expanded={false}>
                 {entries.map((entry, i) => {
                     return (
                         <Box key={i} padding="4px 0px">

@@ -1,6 +1,31 @@
-import { Box, Flex, Image } from "@open-pioneer/chakra-integration";
+import { Box, Flex } from "@open-pioneer/chakra-integration";
+import { PersonalInfo } from "./PersonalInfo";
 
-export const Authors = (props: { authors: Array<object> }) => {
+export interface Author {
+    name: string;
+    orcidId: string;
+    affiliation: string;
+    email: string;
+    numAuthors?: number;
+    rank?: number;
+}
+
+const AuthorEntry = (props: Author) => {
+    const { name, orcidId, rank, numAuthors, email, affiliation } = props;
+    return (
+        <Flex className="metadataValue">
+            <PersonalInfo name={name} orcid={orcidId} email={email} affiliation={affiliation} />
+            {rank != undefined && numAuthors != undefined
+                ? rank < numAuthors - 1
+                    ? ";"
+                    : ""
+                : null}
+            &nbsp;
+        </Flex>
+    );
+};
+
+export const Authors = (props: { authors: Author }) => {
     const authors = props.authors;
 
     return (
@@ -8,26 +33,32 @@ export const Authors = (props: { authors: Array<object> }) => {
             <div className="seperator"></div>
             <Flex>
                 <span className="metadataTag">
-                    {authors.length == 1 ? "Author:" : "Authors:"}&nbsp;
+                    {Array.isArray(authors) ? "Authors:" : "Author:"}&nbsp;
                 </span>
-                {authors.map((elem: any, j: number) => (
-                    <Flex className="metadataValue" key={j}>
-                        {elem.orcid ? (
-                            <>
-                                <a
-                                    href={"https://orcid.org/" + elem.orcid}
-                                    rel="noreferrer"
-                                    target="_blank"
-                                >
-                                    <Image className="orcid" alt="Bg icon" src="/orcid.png" />
-                                </a>
-                                &nbsp;
-                            </>
-                        ) : null}
-                        {elem.name}
-                        {j < authors.length - 1 ? ";" : ""}&nbsp;
-                    </Flex>
-                ))}
+                {Array.isArray(authors) ? (
+                    authors.map((elem: Author, j: number) => (
+                        <>
+                            <AuthorEntry
+                                key={j}
+                                name={elem.name}
+                                orcidId={elem.orcidId}
+                                affiliation={elem.affiliation}
+                                email={elem.email}
+                                numAuthors={authors.length}
+                                rank={j}
+                            />
+                        </>
+                    ))
+                ) : (
+                    <>
+                        <AuthorEntry
+                            name={authors.name}
+                            orcidId={authors.orcidId}
+                            affiliation={authors.affiliation}
+                            email={authors.email}
+                        />
+                    </>
+                )}
             </Flex>
         </Box>
     );

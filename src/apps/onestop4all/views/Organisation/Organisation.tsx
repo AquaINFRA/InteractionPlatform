@@ -1,5 +1,5 @@
-import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
-import { Box, Flex, useToast } from "@open-pioneer/chakra-integration";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { Box, Flex } from "@open-pioneer/chakra-integration";
 import { Link } from "react-router-dom";
 
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
@@ -8,6 +8,7 @@ import { Contact } from "../../components/ResourceType/Contact/Contact";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { SolrSearchResultItem } from "../../services/SearchService";
 import { MetadataSourceIcon } from "../../components/Icons";
+import { CopyToClipboardButton } from "../../components/ResourceType/ActionButton/CopyToClipboardButton";
 
 export interface OrganisationMetadataResponse extends SolrSearchResultItem {
     name: string;
@@ -29,7 +30,7 @@ export interface OrganisationMetadataResponse extends SolrSearchResultItem {
     //nfdi4EarthContactPerson_uri: string; probably not needed
     nfdi4EarthContactPerson_email: string;
     //nfdi4EarthContactPerson_id: string; probably not needed
-    //nfdi4EarthContactPerson_affiliation: string;
+    nfdi4EarthContactPerson_affiliation: string;
     sourceSystem_homepage: string;
     sourceSystem_title: string;
 }
@@ -40,29 +41,16 @@ export interface OrganisationViewProps {
 
 export function OrganisationView(props: OrganisationViewProps) {
     const metadata = props.item;
-    const toast = useToast();
 
-    const copyToClipBoard = (link: string) => {
-        if (link != undefined) {
-            navigator.clipboard.writeText(link);
-            //TO DO-1: There is sth. wrong with the tooltip!
-            //TO DO-2: Create reusable function/component out of it
-            return toast({
-                title: "Copied to clipboard",
-                status: "success",
-                duration: 2000,
-                position: "bottom-right",
-                isClosable: true
-            });
-        } else {
-            return toast({
-                title: "Could not copy to clipboard",
-                status: "error",
-                duration: 2000,
-                position: "bottom-right",
-                isClosable: true
-            });
-        }
+    const name = metadata.nfdi4EarthContactPerson_name;
+    const email = metadata.nfdi4EarthContactPerson_email;
+    const orcid = metadata.nfdi4EarthContactPerson_orcidId;
+    const affiliation = metadata.nfdi4EarthContactPerson_affiliation;
+    const nfdiContact = {
+        name: name ? name : undefined,
+        orcid: orcid ? orcid : undefined,
+        email: email ? email : undefined,
+        affiliation: affiliation ? affiliation : undefined
     };
 
     return (
@@ -120,6 +108,16 @@ export function OrganisationView(props: OrganisationViewProps) {
                                 {
                                     tag: "Suborganisation of",
                                     val: metadata.subOrganizationOf
+                                },
+                                {
+                                    tag: "nfdi",
+                                    val:
+                                        nfdiContact.name ||
+                                        nfdiContact.email ||
+                                        nfdiContact.orcid ||
+                                        nfdiContact.affiliation
+                                            ? nfdiContact
+                                            : undefined
                                 }
                             ]}
                             visibleElements={2}
@@ -144,11 +142,9 @@ export function OrganisationView(props: OrganisationViewProps) {
                                             fun={() => void 0}
                                         />
                                     </Link>
-                                    <ActionButton
+                                    <CopyToClipboardButton
+                                        data={metadata.homepage}
                                         label="Copy URL"
-                                        icon={<LinkIcon color="#05668D" />}
-                                        variant="outline"
-                                        fun={() => copyToClipBoard(metadata.homepage)}
                                     />
                                 </>
                             ) : null}

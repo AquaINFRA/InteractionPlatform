@@ -3,6 +3,18 @@ import { Box } from "@open-pioneer/chakra-integration";
 export const Keywords = (props: { keywords: Array<string>; tag: string }) => {
     const { keywords, tag } = props;
 
+    const createQuery = (tag: string, elem: string) => {
+        if (tag == "keyword") {
+            return "/search?searchterm=" + elem;
+        } else {
+            if (tag == "theme") {
+                return "/search?subjects=" + elem;
+            } else {
+                return "/";
+            }
+        }
+    };
+
     return (
         <Box className="metadataKeywords">
             <div className="seperator"></div>
@@ -11,7 +23,7 @@ export const Keywords = (props: { keywords: Array<string>; tag: string }) => {
             </span>
             {keywords.map((elem: string, j: number) => (
                 <a
-                    href={"/search?searchterm=" + elem}
+                    href={createQuery(tag, elem)}
                     className={tag == "keyword" ? "metadataKeyword" : "metadataTheme"}
                     key={j}
                 >

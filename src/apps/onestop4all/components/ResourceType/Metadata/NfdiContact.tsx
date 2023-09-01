@@ -1,17 +1,8 @@
-import { Box, Flex, Image } from "@open-pioneer/chakra-integration";
+import { Box, Flex } from "@open-pioneer/chakra-integration";
+import { PersonalInfo } from "./PersonalInfo";
 
 export const NfdiContact = (props: { contact: any }) => {
-    const contact = props.contact[0];
-    const contact_info =
-        (contact.name ? contact.name : "") +
-        " " +
-        //(contact.affiliation ? contact.affiliation : "") + " " +
-        (contact.email ? (contact.name ? "(" + contact.email + ")" : contact.mail) : "");
-
-    function isUrl(url: string) {
-        const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-        return urlRegex.test(url);
-    }
+    const contact = props.contact;
 
     return (
         <Box className="metadataKeywords">
@@ -19,18 +10,12 @@ export const NfdiContact = (props: { contact: any }) => {
             <Flex>
                 <span className="metadataTag">NFDI4Earth contact:&nbsp;</span>
                 <Flex className="metadataValue">
-                    {contact_info}&nbsp;
-                    <a
-                        href={
-                            isUrl(contact.orcid)
-                                ? contact.orcid
-                                : "https://orcid.org/" + contact.orcid
-                        }
-                        rel="noreferrer"
-                        target="_blank"
-                    >
-                        <Image className="orcid" alt="Bg icon" src="/orcid.png" />
-                    </a>
+                    <PersonalInfo
+                        name={contact.name}
+                        email={contact.email}
+                        orcid={contact.orcid}
+                        affiliation={contact.affiliation}
+                    />
                 </Flex>
             </Flex>
         </Box>
