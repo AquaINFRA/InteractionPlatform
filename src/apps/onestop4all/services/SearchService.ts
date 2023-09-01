@@ -17,7 +17,7 @@ export interface SearchResultItem {
     title: string;
     resourceType: ResourceType;
     date?: Date;
-    location?: string;
+    locality?: string;
     abstract: string;
     url: string;
 }

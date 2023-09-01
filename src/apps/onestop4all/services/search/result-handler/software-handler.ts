@@ -7,7 +7,7 @@ export class SoftwareSearchHandler extends SearchResultHandler {
 
     public handle(item: SolrSearchResultItem): SearchResultItem {
         return {
-            id: item.id,
+            ...item,
             title: item.name,
             abstract: item.description,
             resourceType: this.resourceType,

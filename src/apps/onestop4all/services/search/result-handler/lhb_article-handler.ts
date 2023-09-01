@@ -6,12 +6,17 @@ export class LHB_ArticleSearchHandler extends SearchResultHandler {
     protected resourceType = ResourceType.LHB_Articles;
 
     public handle(item: SolrSearchResultItem): SearchResultItem {
+        let date;
+        if (item.datePublished) {
+            date = new Date(item.datePublished);
+        }
         return {
-            id: item.id,
+            ...item,
             title: item.name,
             abstract: item.description,
             resourceType: this.resourceType,
-            url: ""
+            url: "",
+            date
         };
     }
 }

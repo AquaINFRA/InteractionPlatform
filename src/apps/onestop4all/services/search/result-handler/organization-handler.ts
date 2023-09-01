@@ -7,7 +7,7 @@ export class OrganizationSearchHandler extends SearchResultHandler {
 
     public handle(item: SolrSearchResultItem): SearchResultItem {
         return {
-            id: item.id,
+            ...item,
             title: item.name,
             abstract: "",
             resourceType: this.resourceType,

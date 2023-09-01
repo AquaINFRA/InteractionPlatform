@@ -6,12 +6,17 @@ export class Learning_ResourceHandler extends SearchResultHandler {
     protected resourceType = ResourceType.Learning_Resource;
 
     public handle(item: SolrSearchResultItem): SearchResultItem {
+        let date;
+        if (item.datePublished) {
+            date = new Date(item.datePublished);
+        }
         return {
-            id: item.id,
+            ...item,
             title: item.name,
             abstract: item.description,
             resourceType: this.resourceType,
-            url: ""
+            url: "",
+            date
         };
     }
 }

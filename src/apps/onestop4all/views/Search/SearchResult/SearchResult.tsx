@@ -72,10 +72,10 @@ export function SearchResult(props: SearchResultProps) {
     }
 
     function locationSection() {
-        return props.item.location ? (
+        return props.item.locality ? (
             <>
                 <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
-                <Box className="date">{props.item.location}</Box>
+                <Box className="date">{props.item.locality}</Box>
             </>
         ) : null;
     }
