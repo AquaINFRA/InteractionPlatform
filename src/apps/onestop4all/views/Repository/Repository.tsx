@@ -1,5 +1,5 @@
-import { ExternalLinkIcon, LinkIcon } from "@chakra-ui/icons";
-import { Box, Flex, useToast } from "@open-pioneer/chakra-integration";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { Box, Flex } from "@open-pioneer/chakra-integration";
 import { Link } from "react-router-dom";
 
 import { InfoIcon } from "../../components/Icons";
@@ -10,6 +10,7 @@ import { LastUpdate } from "../../components/ResourceType/Metadata/LastUpdate";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { SolrSearchResultItem } from "../../services/SearchService";
 import { MetadataSourceIcon } from "../../components/Icons";
+import { CopyToClipboardButton } from "../../components/ResourceType/ActionButton/CopyToClipboardButton";
 
 export interface RepositoryMetadataResponse extends SolrSearchResultItem {
     title: string;
@@ -45,30 +46,6 @@ export interface RepositoryViewProps {
 
 export function RepositoryView(props: RepositoryViewProps) {
     const metadata = props.item;
-    const toast = useToast();
-
-    const copyToClipBoard = (link: string) => {
-        if (link != undefined) {
-            navigator.clipboard.writeText(link);
-            //TO DO: There is sth. wrong with the tooltip!
-            //TO DO: Create reusable function/component out of it
-            return toast({
-                title: "Copied to clipboard",
-                status: "success",
-                duration: 2000,
-                position: "bottom-right",
-                isClosable: true
-            });
-        } else {
-            return toast({
-                title: "Could not copy to clipboard",
-                status: "error",
-                duration: 2000,
-                position: "bottom-right",
-                isClosable: true
-            });
-        }
-    };
 
     return (
         <Box>
@@ -207,12 +184,7 @@ export function RepositoryView(props: RepositoryViewProps) {
                                 </Link>
                             ) : null}
                             {metadata.homepage ? (
-                                <ActionButton
-                                    label="Copy URL"
-                                    icon={<LinkIcon color="#05668D" />}
-                                    variant="outline"
-                                    fun={() => copyToClipBoard(metadata.homepage)}
-                                />
+                                <CopyToClipboardButton data={metadata.homepage} label="Copy URL" />
                             ) : null}
                         </Box>
                     ) : null}
