@@ -59,12 +59,23 @@ export function SearchResult(props: SearchResultProps) {
     );
 
     function dateSection() {
-        if (props.item.date) {
+        if (props.item.publishDate) {
             return (
                 <>
                     <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
                     <Box className="date">
-                        {DateTime.fromJSDate(props.item.date).toFormat("MMMM yyyy")}
+                        Published:{" "}
+                        {DateTime.fromJSDate(props.item.publishDate).toFormat("MMMM yyyy")}
+                    </Box>
+                </>
+            );
+        }
+        if (props.item.updateDate) {
+            return (
+                <>
+                    <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
+                    <Box className="date">
+                        Updated: {DateTime.fromJSDate(props.item.updateDate).toFormat("MMMM yyyy")}
                     </Box>
                 </>
             );

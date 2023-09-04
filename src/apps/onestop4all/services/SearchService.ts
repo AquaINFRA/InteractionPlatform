@@ -16,7 +16,8 @@ export interface SearchResultItem {
     id: string;
     title: string;
     resourceType: ResourceType;
-    date?: Date;
+    publishDate?: Date;
+    updateDate?: Date;
     locality?: string;
     abstract: string;
     url: string;
