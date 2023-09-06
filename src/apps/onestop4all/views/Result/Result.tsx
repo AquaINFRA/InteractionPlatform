@@ -37,44 +37,41 @@ export function Result() {
     useEffect(() => {
         setLoading(true);
         searchSrvc.getMetadata(resultId).then((result) => {
-            // TODO: remove timeout
-            setTimeout(() => {
-                if (result.results[0]) {
-                    //TEST DATA FOR RELATED CONTENT SECTION AND SOURCE INFORMATION. REMOVE LATER.
-                    const relatedContent = [
-                        {
-                            title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
-                            resourceType: "Service",
-                            id: "1234"
-                        },
-                        {
-                            title: "This is a related standard (url missing)",
-                            resourceType: "Standard"
-                        },
-                        {
-                            title: "This is a related organisation (resource type missing)",
-                            id: "1234"
-                        },
-                        {
-                            resourceType: "Tool/Software",
-                            id: "1234"
-                        },
-                        {
-                            title: "This is a related lesson",
-                            resourceType: "Educational resource",
-                            id: "1234"
-                        }
-                    ];
-                    result.results[0].relatedContent = relatedContent;
-                    // TESTDATA END
-                    setSearchResult(result.results[0]);
-                    setResourceType(mapToResourceType(result.results[0].type));
-                    setLoading(false);
-                    console.log(result.results[0]);
-                } else {
-                    // TODO: error handling
-                }
-            }, 1000);
+            if (result.results[0]) {
+                //TEST DATA FOR RELATED CONTENT SECTION AND SOURCE INFORMATION. REMOVE LATER.
+                const relatedContent = [
+                    {
+                        title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
+                        resourceType: "Service",
+                        id: "1234"
+                    },
+                    {
+                        title: "This is a related standard (url missing)",
+                        resourceType: "Standard"
+                    },
+                    {
+                        title: "This is a related organisation (resource type missing)",
+                        id: "1234"
+                    },
+                    {
+                        resourceType: "Tool/Software",
+                        id: "1234"
+                    },
+                    {
+                        title: "This is a related lesson",
+                        resourceType: "Educational resource",
+                        id: "1234"
+                    }
+                ];
+                result.results[0].relatedContent = relatedContent;
+                // TESTDATA END
+                setSearchResult(result.results[0]);
+                setResourceType(mapToResourceType(result.results[0].type));
+                setLoading(false);
+                console.log(result.results[0]);
+            } else {
+                // TODO: error handling
+            }
         });
     }, [resultId, searchSrvc]);
 
@@ -116,11 +113,12 @@ export function Result() {
                 const item = searchResult as LearningResourceMetadataResponse;
                 return <LearningResourceView item={item} />;
             }
-            //Needs to be implemented
-            /*case ResourceType.Articles: {
-                const item = searchResult as ArticleMetadataResponse;
-                return <ArticleView item={item} />;
-            }*/
+            case ResourceType.Articles: {
+                // TODO: Needs to be implemented
+                // const item = searchResult as ArticleMetadataResponse;
+                // return <ArticleView item={item} />;
+                return <Box>Article still needs to be implemented</Box>;
+            }
             default:
                 throw new Error(`Unknown resourceType: '${resourceType}'`);
         }
