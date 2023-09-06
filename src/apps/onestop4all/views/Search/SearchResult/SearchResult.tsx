@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { SearchResultItem } from "../../../services/SearchService";
 import { BorderColor, PrimaryColor } from "../../../Theme";
 import { ResourceIcon } from "../../Start/ResourceEntry/ResourceIcons";
+import { useSearchState } from "../SearchState";
 
 export interface SearchResultProps {
     item: SearchResultItem;
@@ -14,13 +15,18 @@ export function SearchResult(props: SearchResultProps) {
     const { item } = props;
     const navigate = useNavigate();
 
+    const searchState = useSearchState();
+
     const hoverStyle: SystemStyleObject = {
         cursor: "pointer",
         backgroundColor: "var(--primary-primary-transparent-background)"
     };
 
     function navigateTo(): void {
-        navigate(`/result/${item.id}`);
+        // calculate result page
+        const idx = searchState.searchResults?.results.findIndex((r) => r.id === item.id) || 0;
+        const resultPage = idx + 1 + searchState.pageSize * searchState.pageStart;
+        navigate(`/result/${item.id}`, { state: { resultPage } });
         window.scrollTo(0, 0);
     }
 

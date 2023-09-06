@@ -35,6 +35,14 @@ export function Result() {
     const searchState = useSearchState();
 
     useEffect(() => {
+        if (history.state && history.state.usr && history.state.usr.resultPage) {
+            // console.log(`Current page is ${history.state.usr.resultPage}`);
+            setResult(history.state.usr.resultPage);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [history.state.usr]);
+
+    useEffect(() => {
         setLoading(true);
         searchSrvc.getMetadata(resultId).then((result) => {
             if (result.results[0]) {
@@ -68,7 +76,6 @@ export function Result() {
                 setSearchResult(result.results[0]);
                 setResourceType(mapToResourceType(result.results[0].type));
                 setLoading(false);
-                console.log(result.results[0]);
             } else {
                 // TODO: error handling
             }
@@ -77,12 +84,10 @@ export function Result() {
 
     useEffect(() => {
         if (searchState.searchResults) {
-            const idx = searchState.searchResults.results.findIndex((r) => r.id === resultId);
-            setResult(idx + 1 + searchState.pageSize * searchState.pageStart);
             setResultCount(searchState.searchResults.count);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [resultId]);
+    }, []);
 
     function getResourceView(): import("react").ReactNode {
         switch (resourceType) {
@@ -160,7 +165,7 @@ export function Result() {
             })
             .then((res) => {
                 if (res.results[0]) {
-                    navigate(`/result/${res.results[0].id}`);
+                    navigate(`/result/${res.results[0].id}`, { state: { resultPage: result } });
                     setResult(result);
                 }
             });
