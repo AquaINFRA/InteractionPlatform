@@ -21,6 +21,7 @@ export function SearchResult(props: SearchResultProps) {
 
     function navigateTo(): void {
         navigate(`/result/${item.id}`);
+        window.scrollTo(0, 0);
     }
 
     return (
