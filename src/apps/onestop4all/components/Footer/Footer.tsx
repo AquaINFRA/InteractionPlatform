@@ -1,6 +1,11 @@
 import { Box, Container, Flex } from "@open-pioneer/chakra-integration";
+import { useState } from "react";
+
+import { SupportForm } from "../SupportForm/SupportForm";
 
 export const Footer = () => {
+    const [openSupportForm, setOpenSupportForm] = useState(false);
+
     return (
         <>
             <Container maxW={{ base: "100%", custombreak: "80%" }} paddingBottom="4px">
@@ -59,7 +64,13 @@ export const Footer = () => {
                             <Box display="flex" gap="8px">
                                 <span className="section-entry">FAQ</span>
                                 <span>|</span>
-                                <span className="section-entry">User Support</span>
+                                <Box
+                                    className="section-entry"
+                                    onClick={() => setOpenSupportForm(true)}
+                                    _hover={{ cursor: "pointer" }}
+                                >
+                                    User Support
+                                </Box>
                             </Box>
                         </Box>
                         <Box
@@ -140,6 +151,11 @@ export const Footer = () => {
                     </Box>
                 </Container>
             </div>
+
+            <SupportForm
+                openForm={openSupportForm}
+                menuClosed={() => setOpenSupportForm(false)}
+            ></SupportForm>
         </>
     );
 };
