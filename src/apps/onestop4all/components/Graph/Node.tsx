@@ -1,13 +1,13 @@
 import { Group } from "@visx/group";
 import { NodeProvidedProps } from "@visx/network/lib/types";
 import { Text, useText } from "@visx/text";
-import { CSSProperties, ReactNode, useState } from "react";
+import { select } from "d3";
+import { CSSProperties, MouseEvent, ReactNode, useState } from "react";
 import useMeasure from "react-use-measure";
 
 import { PrimaryColor } from "../../Theme";
 import { ResourceIcon } from "../../views/Start/ResourceEntry/ResourceIcons";
 import { CustomNode } from "./NetworkGraph";
-import { select } from "d3";
 
 export const Node = ({ node }: NodeProvidedProps<CustomNode>) => {
     const [titleRef, titleBounds] = useMeasure();
@@ -74,8 +74,10 @@ export const Node = ({ node }: NodeProvidedProps<CustomNode>) => {
         Math.min(maxWidth, Math.max(titleMeasuredWidth, resourceTypeMeasuredWidth))
     );
 
-    function handleMouseEnter(bla: any) {
-        select(bla.currentTarget.parentNode.parentNode).raise();
+    function handleMouseEnter(event: MouseEvent<SVGElement>) {
+        if (event.currentTarget.parentNode?.parentNode) {
+            select(event.currentTarget.parentNode.parentNode as SVGElement).raise();
+        }
         setHighlighted(true);
     }
 

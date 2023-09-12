@@ -120,6 +120,7 @@ const nodes: CustomNode[] = [
 ];
 
 const links: CustomLink[] = [
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
     { source: nodes[0]!, target: nodes[1]! },
     { source: nodes[0]!, target: nodes[2]! },
     { source: nodes[0]!, target: nodes[3]! },
