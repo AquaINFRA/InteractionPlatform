@@ -13,11 +13,11 @@ export interface ResourceEntryProps {
 export enum ResourceType {
     Repos = "Repository / Archive",
     Articles = "Article",
-    Educational = "Educational resource",
-    Datasets = "Dataset",
+    // Educational = "Educational resource",
+    // Datasets = "Dataset",
     Tools = "Tool/Software",
     Organisations = "Organisation",
-    Services = "Service",
+    // Services = "Service",
     Standards = "Standard",
     LHB_Articles = "Living Handbook Article",
     Learning_Resource = "Learning resource"
