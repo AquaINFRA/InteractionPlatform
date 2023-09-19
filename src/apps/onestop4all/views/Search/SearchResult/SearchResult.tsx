@@ -77,7 +77,7 @@ export function SearchResult(props: SearchResultProps) {
                 </>
             );
         }
-        if (props.item.updateDate) {
+        /*if (props.item.updateDate) {
             return (
                 <>
                     <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
@@ -86,7 +86,7 @@ export function SearchResult(props: SearchResultProps) {
                     </Box>
                 </>
             );
-        }
+        }*/
     }
 
     function locationSection() {
