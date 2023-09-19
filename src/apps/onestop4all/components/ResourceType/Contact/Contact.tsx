@@ -12,9 +12,9 @@ export const Contact = (props: { address: any; location: string }) => {
 
     return (
         <Box>
-            <p className="metadataSectionHeader">Contact</p>
+            <p className="metadataSectionHeader">{address.tag}</p>
             <Flex gap="8px" pt="10px">
-                <Misc tag={address.tag} val={address.val} />
+                <Misc val={address.val} />
                 <ActionButton
                     label="Go to location"
                     icon={<GoToLocationBtnIcon />}

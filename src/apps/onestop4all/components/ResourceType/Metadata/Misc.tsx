@@ -1,13 +1,13 @@
 import { Box } from "@open-pioneer/chakra-integration";
 import { isUrl, isEmail, MetadataUrl } from "./PersonalInfo";
 
-export const Misc = (props: { tag: string; val: Array<string> }) => {
+export const Misc = (props: { tag?: string; val: Array<string> }) => {
     const { tag, val } = props;
 
     return (
         <Box className="metadataKeywords">
             <div className="seperator"></div>
-            <span className="metadataTag">{tag}:&nbsp;</span>
+            {tag ? <span className="metadataTag">{tag}:&nbsp;</span> : null}
             {typeof val == "object" ? (
                 val.map((elem: string, i: number) => (
                     <span className="metadataValue" key={i}>
