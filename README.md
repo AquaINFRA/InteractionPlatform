@@ -36,6 +36,12 @@ $ pnpm run dev
 
 The app should now be available under [http://localhost:5173/](http://localhost:5173/).
 
+### With docker (currently under development)
+
+```bash
+docker build -t "onestop4all-ui:latest" .
+docker run --rm -p 80:80 onestop4all-ui:latest
+```
 ## License
 
 [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
