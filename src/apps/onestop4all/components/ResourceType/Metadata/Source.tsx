@@ -1,4 +1,4 @@
-import { Box, Flex, Image } from "@open-pioneer/chakra-integration";
+import { Box, Flex } from "@open-pioneer/chakra-integration";
 
 export const Source = (props: { source: Array<string> }) => {
     const sourceTitle = props.source[0];

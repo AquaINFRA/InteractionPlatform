@@ -20,6 +20,7 @@ import { useSearchState } from "../Search/SearchState";
 import { StandardMetadataResponse, StandardView } from "../Standard/Standard";
 import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
 import { ToolsSoftwareMetadataResponse, ToolsSoftwareView } from "../ToolsSoftware/ToolsSoftware";
+import { ArticleMetadataResponse, ArticleView } from "../Article/Article";
 
 export function Result() {
     const resultId = useParams().id as string;
@@ -119,10 +120,8 @@ export function Result() {
                 return <LearningResourceView item={item} />;
             }
             case ResourceType.Articles: {
-                // TODO: Needs to be implemented
-                // const item = searchResult as ArticleMetadataResponse;
-                // return <ArticleView item={item} />;
-                return <Box>Article still needs to be implemented</Box>;
+                const item = searchResult as ArticleMetadataResponse;
+                return <ArticleView item={item} />;
             }
             default:
                 throw new Error(`Unknown resourceType: '${resourceType}'`);
