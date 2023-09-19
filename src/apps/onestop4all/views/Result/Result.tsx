@@ -76,6 +76,7 @@ export function Result() {
                 // TESTDATA END
                 setSearchResult(result.results[0]);
                 setResourceType(mapToResourceType(result.results[0].type));
+                console.log(result.results[0]);
                 setLoading(false);
             } else {
                 // TODO: error handling

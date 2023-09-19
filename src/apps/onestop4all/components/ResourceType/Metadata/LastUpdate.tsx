@@ -1,11 +1,11 @@
 import { Box } from "@open-pioneer/chakra-integration";
 
 export const LastUpdate = (props: { date: string }) => {
-    const date = props.date;
+    const date = new Date(props.date).toLocaleDateString();
 
     return (
         <Box>
-            <span className="lastUpdateKey">Update: </span>
+            <span className="lastUpdateKey"> Last update: </span>
             <span className="lastUpdateValue">{date}</span>
         </Box>
     );
