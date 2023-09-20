@@ -38,6 +38,7 @@ export interface RepositoryMetadataResponse extends SolrSearchResultItem {
     distribution_conformsTo: Array<string>;
     sourceSystem_homepage: string;
     sourceSystem_title: string;
+    assignsIdentifierScheme: string;
 }
 
 export interface RepositoryViewProps {
@@ -76,12 +77,16 @@ export function RepositoryView(props: RepositoryViewProps) {
                                     val: "NFDI4Earth Label"
                                 },
                                 {
+                                    tag: "Contact email",
+                                    val: metadata.contactPoint_email
+                                },
+                                {
                                     tag: "Publisher",
                                     val: metadata.publisher
                                 },
                                 {
-                                    tag: "Contact email",
-                                    val: metadata.contactPoint_email
+                                    tag: "Alternative publisher",
+                                    val: metadata.publisher_alt
                                 },
                                 {
                                     tag: "Contact URL",
@@ -116,16 +121,16 @@ export function RepositoryView(props: RepositoryViewProps) {
                                     val: metadata.language
                                 },
                                 {
-                                    tag: "Alternative publisher",
-                                    val: metadata.publisher_alt
-                                },
-                                {
                                     tag: "Supports metadata standard",
                                     val: metadata.supportsMetadataStandard
                                 },
                                 {
                                     tag: "Type",
                                     val: metadata.type
+                                },
+                                {
+                                    tag: "Assigns identifier scheme",
+                                    val: metadata.assignsIdentifierScheme
                                 }
                             ]}
                             visibleElements={7}
