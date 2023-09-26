@@ -1,0 +1,6 @@
+{
+    "solr": {
+        "url": "/solr",
+        "coreSelector": "metadata"
+    }
+}

@@ -12,10 +12,7 @@ export default defineBuildConfig({
         }
     },
     properties: {
-        solr: {
-            url: "/solr",
-            coreSelector: "metadata"
-        }
+        solr: {}
     },
     ui: {
         references: [

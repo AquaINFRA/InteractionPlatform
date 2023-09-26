@@ -1,0 +1,6 @@
+{
+    "solr": {
+        "url": "__SOLR_URL__",
+        "coreSelector": "__SOLR_CORE_SELECTOR__"
+    }
+}

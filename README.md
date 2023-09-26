@@ -40,7 +40,7 @@ The app should now be available under [http://localhost:5173/](http://localhost:
 
 ```bash
 docker build -t "onestop4all-ui:latest" .
-docker run --rm -p 80:80 onestop4all-ui:latest
+docker run --rm -p 80:80 -e SOLR_URL="http://localhost:8080/http://localhost:8983/solr"  onestop4all-ui:latest
 ```
 ## License
 
