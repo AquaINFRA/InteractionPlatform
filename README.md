@@ -1,7 +1,19 @@
 # OneStop4All
 The OneStop4All is the primary visual and user-friendly [NFDI4Earth](https://www.nfdi4earth.de/) access point. It offers a coherent view on and points to all relevant Earth System Sciences (ESS) RDM resources provided by NFDI4Earth members and the ESS community, such as data repositories, software tools, information on Research Data Management (RDM), education and training materials. Learn more about our [Mission](https://nfdi4earth.de/about-us) and the [Resources](https://nfdi4earth.de/2facilitate/onestop4all).
 
-## Quick start
+You can install the OneStop4All using Docker or by installing the backend and frontend separately.
+
+## Very quick start
+
+```bash
+$ git clone https://git.rwth-aachen.de/nfdi4earth/onestop4all/onestop4all-implementation.git
+$ cd onestop4all-implementation
+$ git checkout develop
+$ docker compose build --no-cache //Only needed if there any changes in the source Code
+$ docker compose up
+```
+
+## Not so quick start
 
 Ensure that you have [Node](https://nodejs.org/en/) (Version 16 or later) and [pnpm](https://pnpm.io/) (Version 8.x) installed.
 
