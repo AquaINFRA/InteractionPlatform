@@ -41,6 +41,8 @@ services:
       retries: 10
     ports:
       - 8983:8983
+    volumes:
+      - index_data:/var/solr
     networks:
       - index_network
 volumes:
