@@ -2,14 +2,12 @@ import { Box, Divider, Flex, Skeleton } from "@open-pioneer/chakra-integration";
 import { useNavigate } from "react-router-dom";
 
 import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
-import { ResourceIcon } from "../../../views/Start/ResourceEntry/ResourceIcons";
 import {
     BackIcon,
     DocumentsIcon,
     LearningResourceIcon,
     OrganisationsIcon,
     RepositoriesIcon,
-    ServicesIcon,
     StandardIcon,
     ToolSoftwareIcon
 } from "../../Icons";
@@ -44,35 +42,33 @@ export function ResourceTypeHeader(props: { resType: ResourceType | undefined; l
             ) : (
                 <>
                     <Box className="resTypeHeader">{resType}</Box>
-                    {getIcon()}
+                    <Box>{getIcon()}</Box>
                 </>
             )}
         </Flex>
     );
 
     function getIcon() {
-        return (
-            <Box>
-                {resType == ResourceType.Repos ? (
-                    <RepositoriesIcon />
-                ) : resType == ResourceType.Services ? (
-                    <ServicesIcon />
-                ) : resType == ResourceType.Tools ? (
-                    <ToolSoftwareIcon />
-                ) : resType == ResourceType.Standards ? (
-                    <StandardIcon />
-                ) : resType == ResourceType.Learning_Resource ? (
-                    <LearningResourceIcon />
-                ) : resType == ResourceType.LHB_Articles || resType == ResourceType.Articles ? (
-                    <DocumentsIcon />
-                ) : resType == ResourceType.Organisations ? (
-                    <OrganisationsIcon />
-                ) : resType == ResourceType.Datasets ? (
-                    <ResourceIcon type={resType} size={32} /> //To do: make that consistent
-                ) : (
-                    <></>
-                )}
-            </Box>
-        );
+        switch (resType) {
+            case ResourceType.Repos:
+                return <RepositoriesIcon />;
+            case ResourceType.Tools:
+                return <ToolSoftwareIcon />;
+            case ResourceType.Standards:
+                return <StandardIcon />;
+            case ResourceType.Learning_Resource:
+                return <LearningResourceIcon />;
+            case ResourceType.LHB_Articles:
+            case ResourceType.Articles:
+                return <DocumentsIcon />;
+            case ResourceType.Organisations:
+                return <OrganisationsIcon />;
+            // case ResourceType.Services:
+            //     return <ServicesIcon />;
+            // case ResourceType.Datasets:
+            //     return <ResourceIcon type={resType} size={32} />
+            default:
+                return <></>;
+        }
     }
 }

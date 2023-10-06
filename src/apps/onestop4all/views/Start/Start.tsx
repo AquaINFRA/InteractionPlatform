@@ -118,7 +118,7 @@ export function StartView() {
             </Container>
 
             <Box className="resources">
-                <Container maxW="80%">
+                <Container maxW={{ base: "100%", custombreak: "80%" }}>
                     <Box className="text-centered-box">
                         <Box className="text-centered-box-header">
                             We provide a harmonized view on linked ESS resources
@@ -131,14 +131,14 @@ export function StartView() {
                         </Box>
                     </Box>
 
-                    <Box pt="32px">
+                    <Box pt="32px" overflow="auto">
                         <ResourceEntries></ResourceEntries>
                     </Box>
                 </Container>
             </Box>
 
-            <Box className="graph">
-                <Container maxW="80%">
+            <Container maxW={{ base: "100%", custombreak: "80%" }}>
+                <Box className="graph">
                     <Box className="text-centered-box">
                         <Box className="text-centered-box-header">
                             We show how the resources are linked
@@ -154,11 +154,11 @@ export function StartView() {
                             {(parent) => <NetworkGraph width={parent.width} height={500} />}
                         </ParentSize>
                     </Box>
-                </Container>
-            </Box>
+                </Box>
+            </Container>
 
-            <Box className="get-involved">
-                <Container maxW="80%">
+            <Container maxW={{ base: "100%", custombreak: "80%" }}>
+                <Box className="get-involved">
                     <Box className="text-centered-box">
                         <Box className="text-centered-box-header">
                             We welcome your participation
@@ -170,15 +170,20 @@ export function StartView() {
                         </Box>
                     </Box>
 
-                    <Flex className="entries" justifyContent="space-between" pt="32px">
+                    <Flex
+                        className="entries"
+                        justifyContent="space-between"
+                        pt="32px"
+                        overflow="auto"
+                    >
                         {getInvolvedEntries.map((e, i) => (
                             <Box key={i}>
                                 <ParticipateEntry {...e}></ParticipateEntry>
                             </Box>
                         ))}
                     </Flex>
-                </Container>
-            </Box>
+                </Box>
+            </Container>
         </Box>
     );
 }

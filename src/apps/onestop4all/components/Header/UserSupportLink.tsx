@@ -6,16 +6,22 @@ import { PrimaryColor } from "../../Theme";
 import { UserSupportIcon } from "../Icons";
 import { SupportForm } from "../SupportForm/SupportForm";
 
-export function UserSupportLink() {
+export interface UserSupportLinkProps {
+    hideIcon?: boolean;
+}
+
+export function UserSupportLink({ hideIcon = false }: UserSupportLinkProps) {
     const intl = useIntl();
     const [openSupportForm, setOpenSupportForm] = useState(false);
 
     return (
         <>
             <HStack onClick={() => setOpenSupportForm(true)} _hover={{ cursor: "pointer" }}>
-                <Icon boxSize={6} color={PrimaryColor}>
-                    <UserSupportIcon />
-                </Icon>
+                {!hideIcon && (
+                    <Icon boxSize={6} color={PrimaryColor}>
+                        <UserSupportIcon />
+                    </Icon>
+                )}
                 <Link whiteSpace="nowrap">{intl.formatMessage({ id: "header.user-support" })}</Link>
             </HStack>
             <SupportForm

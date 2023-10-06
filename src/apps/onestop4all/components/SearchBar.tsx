@@ -23,6 +23,17 @@ export function SearchBar() {
 
     useEffect(() => setSearchTerm(searchState.searchTerm), [searchState.searchTerm]);
 
+    useEffect(() => {
+        if (
+            searchState.selectedResourceTypes.length === 1 &&
+            searchState.selectedResourceTypes[0]
+        ) {
+            setSelectResource(searchState.selectedResourceTypes[0]);
+        } else {
+            setSelectResource("");
+        }
+    }, [searchState.selectedResourceTypes]);
+
     function startSearch(): void {
         searchState.setSearchTerm(searchTerm);
         if (selectedResource) {

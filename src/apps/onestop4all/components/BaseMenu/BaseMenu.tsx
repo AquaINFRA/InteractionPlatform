@@ -11,7 +11,7 @@ import {
     useDisclosure
 } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 
 import { LanguageToggler } from "../Header/LanguageToggler";
 import { Login } from "../Header/Login";
@@ -28,7 +28,7 @@ export function BaseMenu() {
         return () => openMenuListener.destroy();
     });
 
-    function createBlock(header: string, links: string[]): import("react").ReactNode {
+    function createBlock(header: string, children: ReactNode): ReactNode {
         return (
             <Box
                 className="block"
@@ -41,11 +41,7 @@ export function BaseMenu() {
                 >
                     {header}
                 </Box>
-                <div className="block-content">
-                    {links.map((link, i) => (
-                        <Link key={i}>{link}</Link>
-                    ))}
-                </div>
+                <div className="block-content">{children}</div>
             </Box>
         );
     }
@@ -82,11 +78,29 @@ export function BaseMenu() {
                     </Box>
                 </Hide>
                 <div className="seperator"></div>
-                {createBlock("Get connected", ["About us", "Partners", "Contact"])}
+                {createBlock(
+                    "Get connected",
+                    <>
+                        <Link>About us</Link>
+                        <Link>Partners</Link>
+                        <Link>Contact</Link>
+                    </>
+                )}
                 <div className="seperator"></div>
-                {createBlock("Support", ["User Support"])}
+                {createBlock(
+                    "Support",
+                    <>
+                        <UserSupportLink hideIcon={true} />
+                    </>
+                )}
                 <div className="seperator"></div>
-                {createBlock("Legal information", ["Legal information", "Privacy"])}
+                {createBlock(
+                    "Legal information",
+                    <>
+                        <Link>Legal information</Link>
+                        <Link>Privacy</Link>
+                    </>
+                )}
                 <div className="seperator"></div>
             </DrawerContent>
         </Drawer>

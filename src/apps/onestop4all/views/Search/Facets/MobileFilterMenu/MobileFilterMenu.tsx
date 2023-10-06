@@ -43,6 +43,7 @@ export function MobileFilterMenu(props: MobileFilterMenuProps & ClassAttributes<
             placement="right"
             onClose={() => closeMenu()}
             size={{ base: "customMenu", custombreak: "md" }}
+            blockScrollOnMount={false}
         >
             <DrawerOverlay bg={"var(--chakra-colors-blackAlpha-200)"} />
             <DrawerContent className="navigation-menu">
@@ -56,7 +57,7 @@ export function MobileFilterMenu(props: MobileFilterMenuProps & ClassAttributes<
                         onClick={() => closeMenu()}
                     />
                 </HStack>
-                <Box padding="0px 16px">
+                <Box padding="0px 16px" overflow="auto">
                     <Box padding={"64px 0px 32px"}>
                         <ResourceTypeFacet></ResourceTypeFacet>
                     </Box>
@@ -64,7 +65,7 @@ export function MobileFilterMenu(props: MobileFilterMenuProps & ClassAttributes<
                         <SubjectFacet></SubjectFacet>
                     </Box>
                     <Box padding={"32px 0px"}>
-                        <SpatialCoverageFacet></SpatialCoverageFacet>
+                        <SpatialCoverageFacet mapId="spatial-filter-mobile-map"></SpatialCoverageFacet>
                     </Box>
                     <Box padding={"32px 0px"}>
                         <TemporalCoverageFacet></TemporalCoverageFacet>

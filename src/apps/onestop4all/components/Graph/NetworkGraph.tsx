@@ -59,7 +59,7 @@ const nodes: CustomNode[] = [
         label: "World Settlement Footprint (WSF) 2019 - Sentinel-1/2 – Global",
         abstract:
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-        type: ResourceType.Datasets,
+        type: ResourceType.LHB_Articles,
         x: 500,
         y: 200
     },
@@ -68,7 +68,7 @@ const nodes: CustomNode[] = [
         label: "IÖR Monitor WMS",
         abstract:
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-        type: ResourceType.Services,
+        type: ResourceType.Learning_Resource,
         x: 900,
         y: 350
     },
@@ -77,7 +77,7 @@ const nodes: CustomNode[] = [
         label: "World Settlement Footprint (WSF) 2015 v2 - Landsat-8/Sentinel-1 – Global",
         abstract:
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-        type: ResourceType.Datasets,
+        type: ResourceType.Repos,
         x: 300,
         y: 350
     },
@@ -86,7 +86,7 @@ const nodes: CustomNode[] = [
         label: "EOC Catalogue",
         abstract:
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-        type: ResourceType.Services,
+        type: ResourceType.Standards,
         x: 500,
         y: 350
     },
@@ -95,7 +95,7 @@ const nodes: CustomNode[] = [
         label: "BKG-MIS",
         abstract:
             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-        type: ResourceType.Services,
+        type: ResourceType.Tools,
         x: 400,
         y: 450
     },

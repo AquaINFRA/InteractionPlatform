@@ -97,9 +97,9 @@ export function Result() {
                 const item = searchResult as RepositoryMetadataResponse;
                 return <RepositoryView item={item} />;
             }
-            case ResourceType.Datasets:
-                // TODO: needs to be implemented
-                return <Box>Dataset</Box>;
+            // case ResourceType.Datasets:
+            //     // TODO: needs to be implemented
+            //     return <Box>Dataset</Box>;
             case ResourceType.Organisations: {
                 const item = searchResult as OrganisationMetadataResponse;
                 return <OrganisationView item={item} />;

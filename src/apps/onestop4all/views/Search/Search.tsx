@@ -96,7 +96,7 @@ export function SearchView() {
                                 <Box className="results-count">
                                     {searchState.searchResults?.count} Results for your search
                                 </Box>
-                                <Box hideFrom="custombreak" padding="10px 0px">
+                                <Box hideFrom="custombreak" padding="20px 0px">
                                     <ResultPaging />
                                 </Box>
                                 <Spacer></Spacer>
@@ -127,7 +127,6 @@ export function SearchView() {
                                     </Box>
                                 </Flex>
                             </Flex>
-                            <Box className="seperator" hideFrom="custombreak"></Box>
                             <Box hideBelow="custombreak" padding={{ base: "40px 0px" }}>
                                 <Chips></Chips>
                             </Box>
@@ -144,7 +143,7 @@ export function SearchView() {
                                 })}
                             </Box>
                             <Box className="seperator"></Box>
-                            <Box hideFrom="custombreak">
+                            <Box hideFrom="custombreak" padding="40px 0px">
                                 <ResultPaging />
                             </Box>
                         </Box>
@@ -165,7 +164,7 @@ export function SearchView() {
                             <SubjectFacet></SubjectFacet>
                         </Box>
                         <Box padding={"32px 0px"}>
-                            <SpatialCoverageFacet></SpatialCoverageFacet>
+                            <SpatialCoverageFacet mapId="spatial-filter-map"></SpatialCoverageFacet>
                         </Box>
                         <Box padding={"32px 0px"}>
                             <TemporalCoverageFacet></TemporalCoverageFacet>

@@ -13,10 +13,13 @@ import { Active_Control, PrimaryColor } from "../../../../Theme";
 import { useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 
+export interface SpatialCoverageFacetProps {
+    mapId: string;
+}
+
 const usedEPSGCode = "EPSG:4326";
-export function SpatialCoverageFacet() {
-    const MAP_ID = "spatial-coverage-map";
-    const { map } = useMap(MAP_ID);
+export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
+    const { map } = useMap(mapId);
 
     const searchState = useSearchState();
 
@@ -112,17 +115,7 @@ export function SpatialCoverageFacet() {
                         onClick={() => selectBbox()}
                         icon={<RectangleSelectIcon />}
                     />
-                    {/* <IconButton
-                        aria-label="point select"
-                        size="xs"
-                        position="absolute"
-                        zIndex="1000"
-                        right="10px"
-                        bottom="10px"
-                        onClick={() => selectPoint()}
-                        icon={<PointSelectIcon />}
-                    /> */}
-                    <MapContainer mapId={MAP_ID} />
+                    <MapContainer mapId={mapId} />
                 </Box>
                 <Button width="100%" onClick={() => setSearchArea()}>
                     set search area
