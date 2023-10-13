@@ -128,8 +128,8 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                     ) : null}
                     {metadata.articleBody ? (
                         metadata.articleBody[0] ? (
-                            <TOC elementRef={elementRef} />
-                        ) : null
+                            <></>
+                        ) : null /*<TOC elementRef={elementRef} />*/
                     ) : null}
                 </Box>
             </Flex>
