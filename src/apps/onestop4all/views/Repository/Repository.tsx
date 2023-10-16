@@ -23,10 +23,13 @@ export interface RepositoryMetadataResponse extends SolrSearchResultItem {
     publisher: string;
     altLabel: string;
     catalogAccessType: string;
+    catalogLicense: string;
+    catalogAccessRestriction: string;
     dataAccessType: string;
     dataLicense: string;
     dataUploadRestriction: string;
     dataUploadType: string;
+    dataAccessRestriction: string;
     language: string;
     publisher_alt: string;
     supportsMetadataStandard: string;
@@ -36,8 +39,7 @@ export interface RepositoryMetadataResponse extends SolrSearchResultItem {
     dateModified: string;
     distribution_accessURL: Array<string>;
     distribution_conformsTo: Array<string>;
-    sourceSystem_homepage: string;
-    sourceSystem_title: string;
+    sourceSystem_id: string;
     assignsIdentifierScheme: string;
 }
 
@@ -81,6 +83,10 @@ export function RepositoryView(props: RepositoryViewProps) {
                                     val: metadata.contactPoint_email
                                 },
                                 {
+                                    tag: "Contact URL",
+                                    val: metadata.contactPoint_url
+                                },
+                                {
                                     tag: "Publisher",
                                     val: metadata.publisher
                                 },
@@ -89,16 +95,20 @@ export function RepositoryView(props: RepositoryViewProps) {
                                     val: metadata.publisher_alt
                                 },
                                 {
-                                    tag: "Contact URL",
-                                    val: metadata.contactPoint_url
-                                },
-                                {
                                     tag: "Alternative label",
                                     val: metadata.altLabel
                                 },
                                 {
                                     tag: "Catalog access type",
                                     val: metadata.catalogAccessType
+                                },
+                                {
+                                    tag: "Catalog license",
+                                    val: metadata.catalogLicense
+                                },
+                                {
+                                    tag: "Catalog access restriction",
+                                    val: metadata.catalogAccessRestriction
                                 },
                                 {
                                     tag: "Data access type",
@@ -111,6 +121,10 @@ export function RepositoryView(props: RepositoryViewProps) {
                                 {
                                     tag: "Data upload restriction",
                                     val: metadata.dataUploadRestriction
+                                },
+                                {
+                                    tag: "Data access restriction",
+                                    val: metadata.dataAccessRestriction
                                 },
                                 {
                                     tag: "Data upload type",
@@ -134,7 +148,7 @@ export function RepositoryView(props: RepositoryViewProps) {
                                 }
                             ]}
                             visibleElements={7}
-                            expandedByDefault={false}
+                            expandedByDefault={true}
                         />
                     </Box>
                     {metadata.description ? (
@@ -174,9 +188,9 @@ export function RepositoryView(props: RepositoryViewProps) {
                                     />
                                 </Link>
                             ) : null}
-                            {metadata.sourceSystem_homepage ? (
+                            {metadata.sourceSystem_id ? (
                                 <Link
-                                    to={metadata.sourceSystem_homepage[0] as string}
+                                    to={metadata.sourceSystem_id as string}
                                     className="actionButtonLink"
                                     target="_blank"
                                 >

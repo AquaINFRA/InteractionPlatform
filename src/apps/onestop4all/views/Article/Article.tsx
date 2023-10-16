@@ -17,7 +17,6 @@ export interface ArticleMetadataResponse extends SolrSearchResultItem {
     language: string;
     relatedContent: Array<object>;
     sourceSystem_id: string;
-    sourceSystem_title: string;
     datePublished: string;
     license: string;
     additionalType: string;
