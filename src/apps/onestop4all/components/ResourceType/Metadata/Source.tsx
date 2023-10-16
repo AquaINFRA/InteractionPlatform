@@ -5,7 +5,7 @@ export const Source = (props: { source: Array<string> }) => {
     const sourceHomepage = props.source[1];
 
     return (
-        <Box className="metadataKeywords">
+        <Box className="metadataSection">
             <div className="seperator"></div>
             <Flex>
                 <span className="metadataTag">Source:&nbsp;</span>

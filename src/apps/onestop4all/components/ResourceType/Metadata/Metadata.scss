@@ -24,7 +24,7 @@
     display: inline-block;
 }
 
-.metadataKeywords {
+.metadataSection {
     margin-bottom: 10px;
 }
 
@@ -34,6 +34,16 @@
     padding: 0px 8px;
     display: inline-block;
     text-decoration: underline;
+    margin-right: 5px;
+    margin-top: 10px;
+}
+
+.metadataAuthors {
+    margin-bottom: 10px;
+}
+
+.metadataAuthor {
+    display: inline-block;
     margin-right: 5px;
     margin-top: 10px;
 }

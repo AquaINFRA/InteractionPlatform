@@ -20,11 +20,11 @@ export const MetadataContent = (props: {
                 .map((e, i) =>
                     e.val && e.tag ? (
                         e.tag == "Keywords" ? (
-                            <Keywords key={i} keywords={e.val} tag="keyword" />
+                            <Keywords key={i} list={e.val} tag="keyword" />
                         ) : e.tag == "Author" || e.tag == "Resource providers" ? (
                             <Authors key={i} authors={e.val} />
                         ) : e.tag == "Theme" ? (
-                            <Keywords key={i} keywords={e.val} tag="theme" />
+                            <Keywords key={i} list={e.val} tag="theme" />
                         ) : e.tag == "nfdi" ? (
                             <NfdiContact key={i} contact={e.val} />
                         ) : e.tag == "Source" ? (

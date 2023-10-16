@@ -5,9 +5,13 @@ export const Misc = (props: { tag?: string; val: Array<string> }) => {
     const { tag, val } = props;
 
     return (
-        <Box className="metadataKeywords">
+        <Box className="metadataSection">
             <div className="seperator"></div>
-            {tag ? <span className="metadataTag">{tag}:&nbsp;</span> : null}
+            {tag ? (
+                <span className="metadataTag">
+                    {Array.isArray(val) && val.length > 1 ? tag + "s" : tag}:&nbsp;
+                </span>
+            ) : null}
             {typeof val == "object" ? (
                 val.map((elem: string, i: number) => (
                     <span className="metadataValue" key={i}>

@@ -16,7 +16,7 @@ export interface ArticleMetadataResponse extends SolrSearchResultItem {
     keyword: string;
     language: string;
     relatedContent: Array<object>;
-    sourceSystem_homepage: string;
+    sourceSystem_id: string;
     sourceSystem_title: string;
     datePublished: string;
     license: string;
@@ -29,6 +29,7 @@ export interface ArticleViewProps {
 
 export function ArticleView(props: ArticleViewProps) {
     const metadata = props.item;
+    const doiBaseUrl = "https://www.doi.org/";
 
     return (
         <Box>
@@ -60,7 +61,7 @@ export function ArticleView(props: ArticleViewProps) {
                                 },
                                 {
                                     tag: "Published",
-                                    val: metadata.datePublished
+                                    val: new Date(metadata.datePublished).toLocaleDateString()
                                 },
                                 {
                                     tag: "License",
@@ -72,7 +73,7 @@ export function ArticleView(props: ArticleViewProps) {
                                 }
                             ]}
                             visibleElements={2}
-                            expandedByDefault={false}
+                            expandedByDefault={true}
                         />
                     </Box>
                     {metadata.description ? (
@@ -82,11 +83,11 @@ export function ArticleView(props: ArticleViewProps) {
                     ) : null}
                 </Box>
                 <Box w="25%">
-                    {metadata.sourceSystem_homepage ? (
+                    {metadata.sourceSystem_id ? (
                         <Box className="actionButtonGroup" pt="74px">
-                            {metadata.sourceSystem_homepage ? (
+                            {metadata.sourceSystem_id ? (
                                 <Link
-                                    to={metadata.sourceSystem_homepage[0] as string}
+                                    to={(doiBaseUrl + metadata.sourceSystem_id) as string}
                                     className="actionButtonLink"
                                     target="_blank"
                                 >

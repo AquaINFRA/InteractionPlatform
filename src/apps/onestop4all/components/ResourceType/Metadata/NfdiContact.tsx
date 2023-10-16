@@ -5,7 +5,7 @@ export const NfdiContact = (props: { contact: any }) => {
     const contact = props.contact;
 
     return (
-        <Box className="metadataKeywords">
+        <Box className="metadataSection">
             <div className="seperator"></div>
             <Flex>
                 <span className="metadataTag">NFDI4Earth contact:&nbsp;</span>
