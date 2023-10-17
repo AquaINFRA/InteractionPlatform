@@ -19,6 +19,7 @@ export interface ArticleMetadataResponse extends SolrSearchResultItem {
     sourceSystem_id: string;
     datePublished: string;
     license: string;
+    type: string;
     additionalType: string;
 }
 
@@ -43,31 +44,41 @@ export function ArticleView(props: ArticleViewProps) {
                         <Metadata
                             metadataElements={[
                                 {
-                                    tag: "Author",
+                                    element: "author",
+                                    tag: metadata.author?.length > 1 ? "Authors" : "Author",
                                     val: metadata.author
                                 },
                                 {
-                                    tag: "Keywords",
+                                    element: "keyword",
+                                    tag: metadata.keyword?.length > 1 ? "Keywords" : "Keyword",
                                     val: metadata.keyword
                                 },
                                 {
-                                    tag: "Language",
+                                    element: "language",
+                                    tag: metadata.language?.length > 1 ? "Languages" : "Language",
                                     val: metadata.language
                                 },
                                 {
+                                    element: "type",
                                     tag: "Type",
                                     val: metadata.type
                                 },
                                 {
+                                    element: "datePublished",
                                     tag: "Published",
                                     val: new Date(metadata.datePublished).toLocaleDateString()
                                 },
                                 {
-                                    tag: "License",
+                                    element: "license",
+                                    tag: metadata.license?.length > 1 ? "Licenses" : "License",
                                     val: metadata.license
                                 },
                                 {
-                                    tag: "Additional type",
+                                    element: "additionalType",
+                                    tag:
+                                        metadata.additionalType?.length > 1
+                                            ? "Additional types"
+                                            : "Additional type",
                                     val: metadata.additionalType
                                 }
                             ]}

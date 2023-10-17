@@ -1,14 +1,15 @@
 import { Box, Flex } from "@open-pioneer/chakra-integration";
 import { PersonalInfo } from "./PersonalInfo";
 
-export const NfdiContact = (props: { contact: any }) => {
+export const NfdiContact = (props: { contact: any; tag: string }) => {
     const contact = props.contact;
+    const tag = props.tag;
 
     return (
         <Box className="metadataSection">
             <div className="seperator"></div>
             <Flex>
-                <span className="metadataTag">NFDI4Earth contact:&nbsp;</span>
+                <span className="metadataTag">{tag}:&nbsp;</span>
                 <Flex className="metadataValue">
                     <PersonalInfo
                         name={contact.name}

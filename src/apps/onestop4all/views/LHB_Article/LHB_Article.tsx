@@ -20,10 +20,10 @@ export interface LHB_ArticleMetadataResponse extends SolrSearchResultItem {
     keyword: string;
     language: string;
     relatedContent: Array<object>;
-    sourceSystem_homepage: string;
-    sourceSystem_title: string;
+    sourceSystem_id: string;
     targetGroup: string;
     isPartOf: string;
+    hasPart: string;
     additionalType: string;
     about: string;
 }
@@ -49,44 +49,64 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                         <Metadata
                             metadataElements={[
                                 {
-                                    tag: "Author",
+                                    element: "author",
+                                    tag: metadata.author?.length > 1 ? "Authors" : "Author",
                                     val: metadata.author
                                 },
                                 {
+                                    element: "description",
                                     tag: "Description",
                                     val: metadata.description
                                 },
                                 {
-                                    tag: "Keywords",
+                                    element: "keyword",
+                                    tag: metadata.keyword?.length > 1 ? "Keywords" : "Keyword",
                                     val: metadata.keyword
                                 },
                                 {
-                                    tag: "Language",
+                                    element: "language",
+                                    tag: metadata.language?.length > 1 ? "Languages" : "Language",
                                     val: metadata.language
                                 },
                                 {
+                                    element: "type",
                                     tag: "Type",
                                     val: metadata.type
                                 },
                                 {
+                                    element: "about",
                                     tag: "About",
                                     val: metadata.about
                                 },
                                 {
-                                    tag: "Target group",
+                                    element: "targetGroup",
+                                    tag:
+                                        metadata.targetGroup?.length > 1
+                                            ? "Target groups"
+                                            : "Target group",
                                     val: metadata.targetGroup
                                 },
                                 {
+                                    element: "partOf",
                                     tag: "Is part of",
                                     val: metadata.isPartOf
                                 },
                                 {
-                                    tag: "Additional type",
+                                    element: "hasPart",
+                                    tag: metadata.hasPart?.length > 1 ? "Has parts" : "Has part",
+                                    val: metadata.hasPart
+                                },
+                                {
+                                    element: "additionalType",
+                                    tag:
+                                        metadata.additionalType?.length > 1
+                                            ? "Additional types"
+                                            : "Additional type",
                                     val: metadata.additionalType
                                 }
                             ]}
                             visibleElements={2}
-                            expandedByDefault={false}
+                            expandedByDefault={true}
                         />
                     </Box>
                     <Box pt="80px" ref={elementRef}>
@@ -103,11 +123,14 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                     </Box>
                 </Box>
                 <Box w="25%">
-                    {metadata.sourceSystem_homepage ? (
+                    {metadata.sourceSystem_id ? (
                         <Box className="actionButtonGroup" pt="74px">
-                            {metadata.sourceSystem_homepage ? (
+                            {metadata.sourceSystem_id ? (
                                 <Link
-                                    to={metadata.sourceSystem_homepage[0] as string}
+                                    to={
+                                        ("https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/blob/main/" +
+                                            metadata.sourceSystem_id) as string
+                                    }
                                     className="actionButtonLink"
                                     target="_blank"
                                 >

@@ -63,87 +63,150 @@ export function RepositoryView(props: RepositoryViewProps) {
                         <Metadata
                             metadataElements={[
                                 {
-                                    tag: "URL",
+                                    element: "url",
+                                    tag: metadata.homepage?.length > 1 ? "URLs" : "URL",
                                     val: metadata.homepage
                                 },
                                 {
-                                    tag: "Theme",
+                                    element: "theme",
+                                    tag: metadata.theme?.length > 1 ? "Themes" : "Theme",
                                     val: metadata.theme
                                 },
                                 {
-                                    tag: "Keywords",
+                                    element: "keyword",
+                                    tag: metadata.keyword?.length > 1 ? "Keywords" : "Keyword",
                                     val: metadata.keyword
                                 },
                                 {
+                                    element: "label",
                                     tag: "Label",
                                     val: "NFDI4Earth Label"
                                 },
                                 {
-                                    tag: "Contact email",
+                                    element: "contactMail",
+                                    tag:
+                                        metadata.contactPoint_email?.length > 1
+                                            ? "Contact emails"
+                                            : "Contact email",
                                     val: metadata.contactPoint_email
                                 },
                                 {
-                                    tag: "Contact URL",
+                                    element: "contactUrl",
+                                    tag:
+                                        metadata.contactPoint_url?.length > 1
+                                            ? "Contact URLs"
+                                            : "Contact URL",
                                     val: metadata.contactPoint_url
                                 },
                                 {
-                                    tag: "Publisher",
+                                    element: "publisher",
+                                    tag: metadata.publisher?.length ? "Publishers" : "Publisher",
                                     val: metadata.publisher
                                 },
                                 {
-                                    tag: "Alternative publisher",
+                                    element: "publisherAlt",
+                                    tag:
+                                        metadata.publisher_alt?.length > 1
+                                            ? "Alternative publishers"
+                                            : "Alternative publisher",
                                     val: metadata.publisher_alt
                                 },
                                 {
-                                    tag: "Alternative label",
+                                    element: "alternativeLabels",
+                                    tag:
+                                        metadata.altLabel?.length > 1
+                                            ? "Alternative labels"
+                                            : "Alternative label",
                                     val: metadata.altLabel
                                 },
                                 {
-                                    tag: "Catalog access type",
+                                    element: "catalogAccessType",
+                                    tag:
+                                        metadata.catalogAccessType?.length > 1
+                                            ? "Catalog access types"
+                                            : "Catalog access type",
                                     val: metadata.catalogAccessType
                                 },
                                 {
-                                    tag: "Catalog license",
+                                    element: "catalogLicense",
+                                    tag:
+                                        metadata.catalogLicense?.length > 1
+                                            ? "Catalog licenses"
+                                            : "Catalog license",
                                     val: metadata.catalogLicense
                                 },
                                 {
-                                    tag: "Catalog access restriction",
+                                    element: "catalogAccessRestriction",
+                                    tag:
+                                        metadata.catalogAccessRestriction?.length > 1
+                                            ? "Catalog access restrictions"
+                                            : "Catalog access restriction",
                                     val: metadata.catalogAccessRestriction
                                 },
                                 {
-                                    tag: "Data access type",
+                                    element: "dataAccessType",
+                                    tag:
+                                        metadata.dataAccessType?.length > 1
+                                            ? "Data access types"
+                                            : "Data access type",
                                     val: metadata.dataAccessType
                                 },
                                 {
-                                    tag: "Data license",
+                                    element: "dataLicense",
+                                    tag:
+                                        metadata.dataLicense?.length > 1
+                                            ? "Data licenses"
+                                            : "Data license",
                                     val: metadata.dataLicense
                                 },
                                 {
-                                    tag: "Data upload restriction",
+                                    element: "dataUploadRestriction",
+                                    tag:
+                                        metadata.dataUploadRestriction?.length > 1
+                                            ? "Data upload restrictions"
+                                            : "Data upload restriction",
                                     val: metadata.dataUploadRestriction
                                 },
                                 {
-                                    tag: "Data access restriction",
+                                    element: "dataAccessRestriction",
+                                    tag:
+                                        metadata.dataAccessRestriction?.length > 1
+                                            ? "Data access restrictions"
+                                            : "Data access restriction",
                                     val: metadata.dataAccessRestriction
                                 },
                                 {
-                                    tag: "Data upload type",
+                                    element: "dataUploadType",
+                                    tag:
+                                        metadata.dataUploadType?.length > 1
+                                            ? "Data upload types"
+                                            : "Data upload type",
                                     val: metadata.dataUploadType
                                 },
                                 {
-                                    tag: "Language",
+                                    element: "language",
+                                    tag: metadata.language?.length > 1 ? "Languages" : "Language",
                                     val: metadata.language
                                 },
                                 {
-                                    tag: "Supports metadata standard",
+                                    element: "supportsMetadataStandard",
+                                    tag:
+                                        metadata.supportsMetadataStandard?.length > 1
+                                            ? "Supports metadata standards"
+                                            : "Supports metadata standard",
                                     val: metadata.supportsMetadataStandard
                                 },
                                 {
+                                    element: "type",
                                     tag: "Type",
                                     val: metadata.type
                                 },
                                 {
-                                    tag: "Assigns identifier scheme",
+                                    element: "assignsIdentifierScheme",
+                                    tag:
+                                        metadata.assignsIdentifierScheme?.length > 1
+                                            ? "Assigns identifier schemes"
+                                            : "Assigns identifier scheme",
                                     val: metadata.assignsIdentifierScheme
                                 }
                             ]}

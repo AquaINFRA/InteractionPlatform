@@ -44,24 +44,31 @@ export function ToolsSoftwareView(props: ToolsSoftwareViewProps) {
                         <Metadata
                             metadataElements={[
                                 {
+                                    element: "type",
                                     tag: "Type",
                                     val: metadata.type
                                 },
                                 {
-                                    tag: "Keywords",
+                                    element: "keyword",
+                                    tag: metadata.keyword?.length > 1 ? "Keywords" : "Keyword",
                                     val: metadata.keyword
                                 },
                                 {
-                                    tag: "License",
+                                    element: "license",
+                                    tag: metadata.license?.length > 1 ? "Licenses" : "License",
                                     val: metadata.license
                                 },
                                 {
-                                    tag: "Programming language",
+                                    element: "porgrammingLanguage",
+                                    tag:
+                                        metadata.programmingLanguage?.length > 1
+                                            ? "Programming languages"
+                                            : "Programming language",
                                     val: metadata.programmingLanguage
                                 }
                             ]}
                             visibleElements={2}
-                            expandedByDefault={false}
+                            expandedByDefault={true}
                         />
                     </Box>
                     {metadata.description ? (

@@ -14,7 +14,7 @@ export const Contact = (props: { address: any; location: string }) => {
         <Box>
             <p className="metadataSectionHeader">{address.tag}</p>
             <Flex gap="8px" pt="10px">
-                <Misc val={address.val} />
+                <Misc val={address.val} tag={address.tag} />
                 <ActionButton
                     label="Go to location"
                     icon={<GoToLocationBtnIcon />}

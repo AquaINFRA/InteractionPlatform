@@ -14,12 +14,16 @@ export interface LearningResourceMetadataResponse extends SolrSearchResultItem {
     description: string;
     language: string;
     relatedContent: Array<object>;
-    sourceSystem_homepage: string;
-    sourceSystem_title: string;
     license: string;
     type: string;
     url: string;
-    keyword: string;
+    keyword: string; //
+    publisher_alt: string;
+    publisher: string;
+    learningResourceType: string;
+    datePublished: string;
+    competencyRequired: string;
+    about: string;
 }
 
 export interface LearningResourceViewProps {
@@ -42,28 +46,72 @@ export function LearningResourceView(props: LearningResourceViewProps) {
                         <Metadata
                             metadataElements={[
                                 {
-                                    tag: "Author",
+                                    element: "author",
+                                    tag: metadata.author?.length > 1 ? "Authors" : "Author",
                                     val: metadata.author
                                 },
                                 {
-                                    tag: "Keywords",
+                                    element: "keyword",
+                                    tag: metadata.keyword?.length > 1 ? "Keywords" : "Keyword",
                                     val: metadata.keyword
                                 },
                                 {
-                                    tag: "License",
+                                    element: "license",
+                                    tag: metadata.license?.length > 1 ? "Licenses" : "License",
                                     val: metadata.license
                                 },
                                 {
-                                    tag: "Language",
+                                    element: "language",
+                                    tag: metadata.language?.length > 1 ? "Languages" : "Language",
                                     val: metadata.language
                                 },
                                 {
+                                    element: "type",
                                     tag: "Type",
                                     val: metadata.type
+                                },
+                                {
+                                    element: "publisher",
+                                    tag:
+                                        metadata.publisher?.length > 1 ? "Publishers" : "Publisher",
+                                    val: metadata.publisher
+                                },
+                                {
+                                    element: "publisherAlt",
+                                    tag:
+                                        metadata.publisher_alt?.length > 1
+                                            ? "Alternative publishers"
+                                            : "Alternative publisher",
+                                    val: metadata.publisher_alt
+                                },
+                                {
+                                    element: "learningResourceType",
+                                    tag:
+                                        metadata.learningResourceType?.length > 1
+                                            ? "Learning resource types"
+                                            : "Learning resource type",
+                                    val: metadata.learningResourceType
+                                },
+                                {
+                                    element: "competencyRequired",
+                                    tag: "Competency required",
+                                    val: metadata.competencyRequired
+                                },
+                                {
+                                    element: "datePublished",
+                                    tag: "Published",
+                                    val: metadata.datePublished
+                                        ? new Date(metadata.datePublished).toLocaleDateString()
+                                        : undefined
+                                },
+                                {
+                                    element: "about",
+                                    tag: "About",
+                                    val: metadata.about
                                 }
                             ]}
                             visibleElements={2}
-                            expandedByDefault={false}
+                            expandedByDefault={true}
                         />
                     </Box>
                     {metadata.description ? (
@@ -92,9 +140,9 @@ export function LearningResourceView(props: LearningResourceViewProps) {
                                     <CopyToClipboardButton data={metadata.url} label="Copy URL" />
                                 </>
                             ) : null}
-                            {metadata.sourceSystem_homepage ? (
+                            {metadata.sourceSystem_id ? (
                                 <Link
-                                    to={metadata.sourceSystem_homepage[0] as string}
+                                    to={metadata.sourceSystem_id as string}
                                     className="actionButtonLink"
                                     target="_blank"
                                 >

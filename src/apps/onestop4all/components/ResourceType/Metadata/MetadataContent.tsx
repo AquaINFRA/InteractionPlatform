@@ -18,16 +18,16 @@ export const MetadataContent = (props: {
             {metadataElements
                 .slice(start, end)
                 .map((e, i) =>
-                    e.val && e.tag ? (
-                        e.tag == "Keywords" ? (
-                            <Keywords key={i} list={e.val} tag="keyword" />
-                        ) : e.tag == "Author" || e.tag == "Resource providers" ? (
-                            <Authors key={i} authors={e.val} />
-                        ) : e.tag == "Theme" ? (
-                            <Keywords key={i} list={e.val} tag="theme" />
-                        ) : e.tag == "nfdi" ? (
-                            <NfdiContact key={i} contact={e.val} />
-                        ) : e.tag == "Source" ? (
+                    e.val && e.tag && e.element ? (
+                        e.element == "keyword" ? (
+                            <Keywords key={i} list={e.val} tag={e.tag} element={e.element} />
+                        ) : e.element == "author" || e.tag == "Resource providers" ? (
+                            <Authors key={i} authors={e.val} tag={e.tag} />
+                        ) : e.element == "theme" ? (
+                            <Keywords key={i} list={e.val} tag={e.tag} element={e.element} />
+                        ) : e.element == "nfdi" ? (
+                            <NfdiContact key={i} contact={e.val} tag={e.tag} />
+                        ) : e.element == "source" ? (
                             <Source key={i} source={e.val} />
                         ) : (
                             <Misc key={i} tag={e.tag} val={e.val} />

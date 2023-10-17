@@ -1,4 +1,4 @@
-import { Box, Flex } from "@open-pioneer/chakra-integration";
+import { Box } from "@open-pioneer/chakra-integration";
 import { PersonalInfo } from "./PersonalInfo";
 
 export interface Author {
@@ -25,15 +25,14 @@ const AuthorEntry = (props: Author) => {
     );
 };
 
-export const Authors = (props: { authors: Author }) => {
+export const Authors = (props: { authors: Author; tag: string }) => {
     const authors = props.authors;
+    const tag = props.tag;
 
     return (
         <Box className="metadataSection">
             <div className="seperator"></div>
-            <span className="metadataTag">
-                {Array.isArray(authors) ? "Authors:" : "Author:"}&nbsp;
-            </span>
+            <span className="metadataTag">{tag}:&nbsp;</span>
             {Array.isArray(authors) ? (
                 authors.map((elem: Author, j: number) => (
                     <div className="metadataValue" key={j}>

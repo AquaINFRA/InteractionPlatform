@@ -68,7 +68,8 @@ export function OrganisationView(props: OrganisationViewProps) {
                         <Metadata
                             metadataElements={[
                                 {
-                                    tag: "URL",
+                                    element: "url",
+                                    tag: metadata.homepage?.length > 1 ? "URLs" : "URL",
                                     val: metadata.homepage
                                 },
                                 {
@@ -78,39 +79,52 @@ export function OrganisationView(props: OrganisationViewProps) {
                                         : undefined
                                 },
                                 {
-                                    tag: "Alternative name",
+                                    element: "alternativeName",
+                                    tag:
+                                        metadata.name_alt?.length > 1
+                                            ? "Alternative names"
+                                            : "Alternative name",
                                     val: metadata.name_alt
                                 },
                                 {
+                                    element: "type",
                                     tag: "Type",
                                     val: metadata.type
                                 },
                                 {
-                                    tag: "Geometry",
-                                    val: metadata.geometry
-                                },
-                                {
+                                    element: "sameAs",
                                     tag: "Same as",
                                     val: metadata.sameAs
                                 },
                                 {
-                                    tag: "Alternative label",
+                                    element: "alternativeLabels",
+                                    tag:
+                                        metadata.altLabel?.length > 1
+                                            ? "Alternative labels"
+                                            : "Alternative label",
                                     val: metadata.altLabel
                                 },
                                 {
-                                    tag: "Country name",
+                                    element: "countryName",
+                                    tag:
+                                        metadata.countryName?.length > 1
+                                            ? "Country names"
+                                            : "Country name",
                                     val: metadata.countryName
                                 },
                                 {
-                                    tag: "Locality",
+                                    element: "locality",
+                                    tag: metadata.locality?.length > 1 ? "Localities" : "Locality",
                                     val: metadata.locality
                                 },
                                 {
+                                    element: "subOrganizationOf",
                                     tag: "Suborganisation of",
                                     val: metadata.subOrganizationOf
                                 },
                                 {
-                                    tag: "nfdi",
+                                    element: "nfdi",
+                                    tag: "NFDI contact",
                                     val:
                                         nfdiContact.name ||
                                         nfdiContact.email ||
@@ -121,7 +135,7 @@ export function OrganisationView(props: OrganisationViewProps) {
                                 }
                             ]}
                             visibleElements={2}
-                            expandedByDefault={false}
+                            expandedByDefault={true}
                         />
                     </Box>
                 </Box>

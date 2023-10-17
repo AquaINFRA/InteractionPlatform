@@ -1,27 +1,13 @@
 import { Box } from "@open-pioneer/chakra-integration";
 
-export const Keywords = (props: { list: Array<string>; tag: string }) => {
-    const { list, tag } = props;
-    let metadataElement = tag;
-    if (tag == "keyword") {
-        if (list.length > 1) {
-            metadataElement = "Keywords";
-        } else {
-            metadataElement = "Keyword";
-        }
-    } else {
-        if (list.length > 1) {
-            metadataElement = "Themes";
-        } else {
-            metadataElement = "Theme";
-        }
-    }
+export const Keywords = (props: { list: Array<string>; tag: string; element: string }) => {
+    const { list, tag, element } = props;
 
-    const createQuery = (tag: string, elem: string) => {
-        if (tag == "keyword") {
+    const createQuery = (element: string, elem: string) => {
+        if (element == "keyword") {
             return "/search?searchterm=" + elem;
         } else {
-            if (tag == "theme") {
+            if (element == "theme") {
                 return "/search?subjects=" + elem;
             } else {
                 return "/";
@@ -33,16 +19,16 @@ export const Keywords = (props: { list: Array<string>; tag: string }) => {
         <Box className="metadataSection">
             <div className="seperator"></div>
             <span className="metadataTag">
-                {metadataElement}
+                {tag}
                 :&nbsp;
             </span>
-            {list.map((elem: string, j: number) => (
+            {list.map((item: string, j: number) => (
                 <a
-                    href={createQuery(tag, elem)}
-                    className={tag == "keyword" ? "metadataKeyword" : "metadataTheme"}
+                    href={createQuery(element, item)}
+                    className={element == "keyword" ? "metadataKeyword" : "metadataTheme"}
                     key={j}
                 >
-                    {elem}
+                    {item}
                 </a>
             ))}
         </Box>

@@ -45,32 +45,39 @@ export function StandardView(props: StandardViewProps) {
                         <Metadata
                             metadataElements={[
                                 {
-                                    tag: "Parent standard",
+                                    element: "parentStandard",
+                                    tag:
+                                        metadata.parentStandard?.length > 1
+                                            ? "Parent standards"
+                                            : "Parent standard",
                                     val: metadata.parentStandard
                                 },
                                 {
-                                    tag: "Theme",
+                                    element: "theme",
+                                    tag: metadata.theme?.length > 1 ? "Themes" : "Theme",
                                     val: metadata.theme
                                 },
                                 {
+                                    element: "type",
                                     tag: "Type",
                                     val: metadata.type
                                 },
                                 {
-                                    tag: "URI",
-                                    val: metadata.uri
-                                },
-                                {
-                                    tag: "Child standard",
+                                    element: "childStandard",
+                                    tag:
+                                        metadata.childStandard?.length > 1
+                                            ? "Child standards"
+                                            : "Child standard",
                                     val: metadata.childStandard
                                 },
                                 {
-                                    tag: "XSD",
+                                    element: "csd",
+                                    tag: metadata.xsd?.length > 1 ? "XSDs" : "XSD",
                                     val: metadata.xsd
                                 }
                             ]}
                             visibleElements={3}
-                            expandedByDefault={false}
+                            expandedByDefault={true}
                         />
                     </Box>
                     {metadata.description ? (

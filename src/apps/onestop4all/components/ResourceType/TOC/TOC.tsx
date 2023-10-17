@@ -43,7 +43,7 @@ export const TOC = (props: { elementRef: any }) => {
 
     return (
         <Box pt="80px">
-            <p className="tocHeader">Table of contents</p>
+            <p className="tocHeader">Table of content</p>
             <Accordion defaultIndex={[0]} allowMultiple>
                 <AccordionItem borderTopWidth="0 !important" borderBottomWidth="0 !important">
                     <h2>
