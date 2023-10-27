@@ -50,11 +50,13 @@ interface SolrFacetResponse {
     };
 }
 
+export interface SubjectEntry {
+    label: string;
+    count: number;
+}
+
 export interface Facets {
-    subjects: {
-        label: string;
-        count: number;
-    }[];
+    subjects: SubjectEntry[];
     resourceType: {
         resourceType: ResourceType;
         count: number;

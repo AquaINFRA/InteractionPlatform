@@ -2,7 +2,7 @@ import { useService } from "open-pioneer:react-hooks";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { SearchResult } from "../../services/SearchService";
+import { SearchResult, SubjectEntry } from "../../services/SearchService";
 import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
 
 export enum UrlSearchParameterType {
@@ -29,10 +29,11 @@ export interface SelectableResourceType {
     selected: boolean;
 }
 
-export interface SelectableSubjects {
+export interface SelectableSubject {
     label: string;
-    count: number;
-    selected: boolean;
+    children: SelectableSubject[];
+    count?: number;
+    selected?: boolean;
 }
 
 export interface ISearchState {
@@ -43,7 +44,7 @@ export interface ISearchState {
     selectableResourceTypes: SelectableResourceType[];
     selectedSubjects: string[];
     setSelectedSubjects(subjects: string[]): void;
-    selectableSubjects: SelectableSubjects[];
+    selectableSubjects: SelectableSubject[];
     spatialFilter: number[];
     setSpatialFilter(sf: number[]): void;
     pageSize: number;
@@ -106,7 +107,7 @@ export const SearchState = (props: PropsWithChildren) => {
     const [selectedResourceTypes, setSelectedResourceTypes] = useState<string[]>(sRt);
 
     // init selectable subjects
-    const [selectableSubjects, setSelecteableSubjects] = useState<SelectableSubjects[]>([]);
+    const [selectableSubjects, setSelecteableSubjects] = useState<SelectableSubject[]>([]);
 
     // init selected subjects
     const subjects: string[] = [];
@@ -149,20 +150,36 @@ export const SearchState = (props: PropsWithChildren) => {
                     } as SelectableResourceType;
                 });
                 setSelecteableResourceTypes(resourceTypeFacet);
-                const subjects = result.facets.subjects.map(
-                    (e) =>
-                        ({
-                            label: e.label,
-                            count: e.count,
-                            selected: selectedSubjects.findIndex((s) => s === e.label) >= 0
-                        } as SelectableSubjects)
-                );
-                setSelecteableSubjects(subjects);
+                handleSubjects(result.facets.subjects);
             })
             .catch((error) => {
                 setIsLoaded(true);
                 console.error(error);
             });
+
+        function handleSubjects(subjects: SubjectEntry[]) {
+            function removeZeroCounts(subjectConf: SelectableSubject[]): SelectableSubject[] {
+                subjectConf.forEach((e) => (e.children = removeZeroCounts(e.children)));
+                return subjectConf.filter((e) => e.count !== undefined);
+            }
+
+            function adjustEntry(entry: SubjectEntry, tree: SelectableSubject[]) {
+                tree.find((e) => adjustEntry(entry, e.children));
+                const match = tree.find((e) => e.label === entry.label);
+                if (match) {
+                    match.count = entry.count;
+                    match.selected = selectedSubjects.findIndex((s) => s === entry.label) >= 0;
+                }
+            }
+
+            fetch("./subject-config.json").then((result) => {
+                result.json().then((subjectConf: SelectableSubject[]) => {
+                    subjects.forEach((entry) => adjustEntry(entry, subjectConf));
+                    removeZeroCounts(subjectConf);
+                    setSelecteableSubjects(subjectConf);
+                });
+            });
+        }
     }
 
     const state: ISearchState = {
