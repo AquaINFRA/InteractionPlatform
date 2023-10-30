@@ -115,6 +115,9 @@ importers:
       '@vitejs/plugin-react-swc':
         specifier: ^3.3.2
         version: 3.3.2(vite@4.3.9)
+      convert-csv-to-json:
+        specifier: ^2.0.0
+        version: 2.0.0
       eslint:
         specifier: ^8.42.0
         version: 8.42.0
@@ -4306,6 +4309,10 @@ packages:
       md5-hex: 3.0.1
       semver: 7.5.3
       well-known-symbols: 2.0.0
+    dev: true
+
+  /convert-csv-to-json@2.0.0:
+    resolution: {integrity: sha512-pMDclso1Afm8tGsJfcVqay10WSPgpoGKGoHdIXWIMXJX29qayEC/MlAsd6csYr59mUjLoJxpkHi37cTUSaNUpw==}
     dev: true
 
   /convert-source-map@1.9.0:

@@ -4,7 +4,7 @@ import { PrimaryColor } from "../../../../Theme";
 
 export interface FacetCheckboxProps {
     label: string;
-    count: number;
+    count?: number;
 }
 
 export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
@@ -27,6 +27,7 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
             gridColumnGap={2}
             rounded="lg"
             cursor="pointer"
+            onClick={(event) => event.stopPropagation()}
             {...htmlProps}
         >
             <input {...getInputProps()} hidden />
@@ -72,7 +73,7 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
             >
                 {label}
             </Box>
-            <Box __css={countStyles}>({count})</Box>
+            {count !== undefined ? <Box __css={countStyles}>({count})</Box> : <></>}
         </chakra.label>
     );
 };

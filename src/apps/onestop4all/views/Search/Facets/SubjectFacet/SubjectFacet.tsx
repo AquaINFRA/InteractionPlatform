@@ -1,13 +1,13 @@
 import { Box } from "@open-pioneer/chakra-integration";
 import { useEffect, useState } from "react";
 
-import { SelectableSubjects, useSearchState } from "../../SearchState";
+import { SelectableSubject, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
-import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
+import { SubjectTreeEntry } from "./SubjectTreeEntry";
 
 export function SubjectFacet() {
     const searchState = useSearchState();
-    const [entries, setEntries] = useState<SelectableSubjects[]>([]);
+    const [entries, setEntries] = useState<SelectableSubject[]>([]);
 
     useEffect(() => {
         if (searchState.selectableSubjects) {
@@ -19,33 +19,14 @@ export function SubjectFacet() {
         }
     }, [searchState.selectableSubjects]);
 
-    function subjectToggled(checked: boolean, subject: string) {
-        if (checked) {
-            searchState.setSelectedSubjects([...searchState.selectedSubjects, subject]);
-        } else {
-            searchState.setSelectedSubjects(
-                searchState.selectedSubjects.filter((e) => e !== subject)
-            );
-        }
-    }
-
     return (
         <Box>
-            <FacetBase title="Subject" expanded={false}>
-                {entries.map((entry, i) => {
-                    return (
-                        <Box key={i} padding="4px 0px">
-                            <FacetCheckbox
-                                label={entry.label}
-                                count={entry.count}
-                                isChecked={entry.selected}
-                                onChange={(event) =>
-                                    subjectToggled(event.target.checked, entry.label)
-                                }
-                            ></FacetCheckbox>
-                        </Box>
-                    );
-                })}
+            <FacetBase title="Subject" expanded={true}>
+                {entries.map((entry, i) => (
+                    <Box key={i} padding="4px 0px">
+                        <SubjectTreeEntry entry={entry}></SubjectTreeEntry>
+                    </Box>
+                ))}
             </FacetBase>
         </Box>
     );
