@@ -12,7 +12,7 @@ If the access token has expired a error like the following will appear when tryi
  - copy new Access Token (only visible once)
  - go to [OneStop4All Implementation Repository](https://git.rwth-aachen.de/nfdi4earth/onestop4all/onestop4all-implementation)
  - go to [docker/harvest.dockerfile](https://git.rwth-aachen.de/nfdi4earth/onestop4all/onestop4all-implementation/-/blob/develop/docker/harvester.dockerfile)
- - replace Access Toke in *ARG GITLAB_TOKEN*
+ - replace Access Token in *ARG GITLAB_TOKEN*
   - go to [docker/solr.dockerfile](https://git.rwth-aachen.de/nfdi4earth/onestop4all/onestop4all-implementation/-/blob/develop/docker/solr.dockerfile)
- - replace Access Toke in *ARG GITLAB_TOKEN*
+ - replace Access Token in *ARG GITLAB_TOKEN*
  - commit changes
