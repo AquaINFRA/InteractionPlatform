@@ -36,7 +36,9 @@ export function SearchBar() {
 
     function startSearch(): void {
         searchState.setSearchTerm(searchTerm);
-        if (selectedResource) {
+        if (selectedResource === "") {
+            searchState.setSelectedResourceTypes([]);
+        } else {
             searchState.setSelectedResourceTypes([selectedResource]);
         }
         if (!location.pathname.endsWith("search")) {
