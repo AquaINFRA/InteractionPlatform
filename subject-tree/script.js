@@ -28,6 +28,12 @@ for (let i = 0; i < json.length; i++) {
 const addToTree = function (tree, entries) {
     if (entries.length > 0) {
         const entry = entries.pop();
+        if (entries[0]) {
+            console.log(`${entry} - ${entries[0]}`);
+        }
+        if (entries.length && entry === entries[entries.length - 1]) {
+            addToTree(tree, entries);
+        }
         let found = tree.find(e => e.label === entry);
         if (!found) {
             found = {
@@ -46,4 +52,4 @@ for (let i = 0; i < json.length; i++) {
     addToTree(tree, [json[i].level4, json[i].level3, json[i].level2, json[i].level1]);
 }
 
-writeFileSync(outputFile, JSON.stringify(tree, null, 2));
+writeFileSync(outputFile, JSON.stringify(tree, null, 4));
