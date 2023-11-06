@@ -427,141 +427,136 @@
                         ]
                     },
                     {
-                        "label": "Medicine",
-                        "children": [
-                            {
-                                "label": "Epidemiology and Medical Biometry/Statistics",
-                                "children": []
-                            },
-                            {
-                                "label": "Public Health, Health Services Research, Social Medicine",
-                                "children": []
-                            },
-                            {
-                                "label": "Human Genetics",
-                                "children": []
-                            },
-                            {
-                                "label": "Physiology",
-                                "children": []
-                            },
-                            {
-                                "label": "Nutritional Sciences",
-                                "children": []
-                            },
-                            {
-                                "label": "Pathology",
-                                "children": []
-                            },
-                            {
-                                "label": "Medical Informatics and Medical Bioinformatics",
-                                "children": []
-                            },
-                            {
-                                "label": "Pharmacy",
-                                "children": []
-                            },
-                            {
-                                "label": "Pharmacology",
-                                "children": []
-                            },
-                            {
-                                "label": "Toxicology, Occupational Medicine, Clinical Chemistry",
-                                "children": []
-                            },
-                            {
-                                "label": "Anaesthesiology",
-                                "children": []
-                            },
-                            {
-                                "label": "Cardiology, Angiology",
-                                "children": []
-                            },
-                            {
-                                "label": "Pneumology, Thoracic Surgery",
-                                "children": []
-                            },
-                            {
-                                "label": "Hematology, Oncology",
-                                "children": []
-                            },
-                            {
-                                "label": "Gastroenterology",
-                                "children": []
-                            },
-                            {
-                                "label": "Nephrology",
-                                "children": []
-                            },
-                            {
-                                "label": "Endocrinology, Diabetology, Metabolism",
-                                "children": []
-                            },
-                            {
-                                "label": "Rheumatology",
-                                "children": []
-                            },
-                            {
-                                "label": "Dermatology",
-                                "children": []
-                            },
-                            {
-                                "label": "Pediatric and Adolescent Medicine",
-                                "children": []
-                            },
-                            {
-                                "label": "Gynaecology and Obstetrics",
-                                "children": []
-                            },
-                            {
-                                "label": "Clinical Immunology and Allergology",
-                                "children": []
-                            },
-                            {
-                                "label": "Reproductive Medicine, Urology",
-                                "children": []
-                            },
-                            {
-                                "label": "Biogerontology and Geriatric Medicine",
-                                "children": []
-                            },
-                            {
-                                "label": "General and Visceral Surgery",
-                                "children": []
-                            },
-                            {
-                                "label": "Cardiac and Vascular Sugery",
-                                "children": []
-                            },
-                            {
-                                "label": "Orthopaedics, Traumatology, Reconstructive Surgery",
-                                "children": []
-                            },
-                            {
-                                "label": "Dentistry, Oral Surgery",
-                                "children": []
-                            },
-                            {
-                                "label": "Otolaryngology",
-                                "children": []
-                            },
-                            {
-                                "label": "Radiology, Nuclear Medicine, Radiotherapy, Radiobiology",
-                                "children": []
-                            },
-                            {
-                                "label": "Clinical Infectiology and Tropical Medicine",
-                                "children": []
-                            },
-                            {
-                                "label": "Medical Physics, Biomedical Technology",
-                                "children": []
-                            },
-                            {
-                                "label": "Anatomy",
-                                "children": []
-                            }
-                        ]
+                        "label": "Epidemiology and Medical Biometry/Statistics",
+                        "children": []
+                    },
+                    {
+                        "label": "Public Health, Health Services Research, Social Medicine",
+                        "children": []
+                    },
+                    {
+                        "label": "Human Genetics",
+                        "children": []
+                    },
+                    {
+                        "label": "Physiology",
+                        "children": []
+                    },
+                    {
+                        "label": "Nutritional Sciences",
+                        "children": []
+                    },
+                    {
+                        "label": "Pathology",
+                        "children": []
+                    },
+                    {
+                        "label": "Medical Informatics and Medical Bioinformatics",
+                        "children": []
+                    },
+                    {
+                        "label": "Pharmacy",
+                        "children": []
+                    },
+                    {
+                        "label": "Pharmacology",
+                        "children": []
+                    },
+                    {
+                        "label": "Toxicology, Occupational Medicine, Clinical Chemistry",
+                        "children": []
+                    },
+                    {
+                        "label": "Anaesthesiology",
+                        "children": []
+                    },
+                    {
+                        "label": "Cardiology, Angiology",
+                        "children": []
+                    },
+                    {
+                        "label": "Pneumology, Thoracic Surgery",
+                        "children": []
+                    },
+                    {
+                        "label": "Hematology, Oncology",
+                        "children": []
+                    },
+                    {
+                        "label": "Gastroenterology",
+                        "children": []
+                    },
+                    {
+                        "label": "Nephrology",
+                        "children": []
+                    },
+                    {
+                        "label": "Endocrinology, Diabetology, Metabolism",
+                        "children": []
+                    },
+                    {
+                        "label": "Rheumatology",
+                        "children": []
+                    },
+                    {
+                        "label": "Dermatology",
+                        "children": []
+                    },
+                    {
+                        "label": "Pediatric and Adolescent Medicine",
+                        "children": []
+                    },
+                    {
+                        "label": "Gynaecology and Obstetrics",
+                        "children": []
+                    },
+                    {
+                        "label": "Clinical Immunology and Allergology",
+                        "children": []
+                    },
+                    {
+                        "label": "Reproductive Medicine, Urology",
+                        "children": []
+                    },
+                    {
+                        "label": "Biogerontology and Geriatric Medicine",
+                        "children": []
+                    },
+                    {
+                        "label": "General and Visceral Surgery",
+                        "children": []
+                    },
+                    {
+                        "label": "Cardiac and Vascular Sugery",
+                        "children": []
+                    },
+                    {
+                        "label": "Orthopaedics, Traumatology, Reconstructive Surgery",
+                        "children": []
+                    },
+                    {
+                        "label": "Dentistry, Oral Surgery",
+                        "children": []
+                    },
+                    {
+                        "label": "Otolaryngology",
+                        "children": []
+                    },
+                    {
+                        "label": "Radiology, Nuclear Medicine, Radiotherapy, Radiobiology",
+                        "children": []
+                    },
+                    {
+                        "label": "Clinical Infectiology and Tropical Medicine",
+                        "children": []
+                    },
+                    {
+                        "label": "Medical Physics, Biomedical Technology",
+                        "children": []
+                    },
+                    {
+                        "label": "Anatomy",
+                        "children": []
                     },
                     {
                         "label": "Neurosciences",
@@ -618,41 +613,36 @@
                 "label": "Agriculture, Forestry and Veterinary Medicine",
                 "children": [
                     {
-                        "label": "Agriculture, Forestry and Veterinary Medicine",
-                        "children": [
-                            {
-                                "label": "Soil Sciences",
-                                "children": []
-                            },
-                            {
-                                "label": "Plant Breeding and Plant Pathology",
-                                "children": []
-                            },
-                            {
-                                "label": "Plant Cultivation, Plant Nutrition, Agricultural Technology",
-                                "children": []
-                            },
-                            {
-                                "label": "Ecology of Land Use",
-                                "children": []
-                            },
-                            {
-                                "label": "Agricultural Economics, Agricultural Policy, Agricultural Sociology",
-                                "children": []
-                            },
-                            {
-                                "label": "Forestry",
-                                "children": []
-                            },
-                            {
-                                "label": "Animal Breeding, Animal Nutrition, Animal Husbandry",
-                                "children": []
-                            },
-                            {
-                                "label": "Veterinary Medical Science",
-                                "children": []
-                            }
-                        ]
+                        "label": "Soil Sciences",
+                        "children": []
+                    },
+                    {
+                        "label": "Plant Breeding and Plant Pathology",
+                        "children": []
+                    },
+                    {
+                        "label": "Plant Cultivation, Plant Nutrition, Agricultural Technology",
+                        "children": []
+                    },
+                    {
+                        "label": "Ecology of Land Use",
+                        "children": []
+                    },
+                    {
+                        "label": "Agricultural Economics, Agricultural Policy, Agricultural Sociology",
+                        "children": []
+                    },
+                    {
+                        "label": "Forestry",
+                        "children": []
+                    },
+                    {
+                        "label": "Animal Breeding, Animal Nutrition, Animal Husbandry",
+                        "children": []
+                    },
+                    {
+                        "label": "Veterinary Medical Science",
+                        "children": []
                     }
                 ]
             }
@@ -701,12 +691,7 @@
                     },
                     {
                         "label": "Analytical Chemistry",
-                        "children": [
-                            {
-                                "label": "Analytical Chemistry",
-                                "children": []
-                            }
-                        ]
+                        "children": []
                     },
                     {
                         "label": "Biological Chemistry and Food Chemistry",
@@ -789,37 +774,17 @@
                     },
                     {
                         "label": "Statistical Physics, Soft Matter, Biological Physics, Nonlinear Dynamics",
-                        "children": [
-                            {
-                                "label": "Statistical Physics, Soft Matter, Biological Physics, Nonlinear Dynamics",
-                                "children": []
-                            }
-                        ]
+                        "children": []
                     },
                     {
                         "label": "Astrophysics and Astronomy",
-                        "children": [
-                            {
-                                "label": "Astrophysics and Astronomy",
-                                "children": []
-                            }
-                        ]
+                        "children": []
                     }
                 ]
             },
             {
                 "label": "Mathematics",
-                "children": [
-                    {
-                        "label": "Mathematics",
-                        "children": [
-                            {
-                                "label": "Mathematics",
-                                "children": []
-                            }
-                        ]
-                    }
-                ]
+                "children": []
             },
             {
                 "label": "Geosciences",
@@ -839,12 +804,7 @@
                     },
                     {
                         "label": "Geology and Palaeontology",
-                        "children": [
-                            {
-                                "label": "Geology and Palaeontology",
-                                "children": []
-                            }
-                        ]
+                        "children": []
                     },
                     {
                         "label": "Geophysics and Geodesy",
@@ -861,12 +821,7 @@
                     },
                     {
                         "label": "Mineralogy, Petrology and Geochemistry",
-                        "children": [
-                            {
-                                "label": "Mineralogy, Petrology and Geochemistry",
-                                "children": []
-                            }
-                        ]
+                        "children": []
                     },
                     {
                         "label": "Geography",
@@ -1146,33 +1101,28 @@
                 "label": "Construction Engineering and Architecture",
                 "children": [
                     {
-                        "label": "Construction Engineering and Architecture",
-                        "children": [
-                            {
-                                "label": "Architecture, Building and Construction History, Construction Research, Sustainable Building Technology",
-                                "children": []
-                            },
-                            {
-                                "label": "Urbanism, Spatial Planning, Transportation and Infrastructure Planning, Landscape Planning",
-                                "children": []
-                            },
-                            {
-                                "label": "Construction Material Sciences, Chemistry, Building Physics",
-                                "children": []
-                            },
-                            {
-                                "label": "Structural Engineering, Building Informatics and Construction Operation",
-                                "children": []
-                            },
-                            {
-                                "label": "Applied Mechanics, Statics and Dynamics",
-                                "children": []
-                            },
-                            {
-                                "label": "Geotechnics, Hydraulic Engineering",
-                                "children": []
-                            }
-                        ]
+                        "label": "Architecture, Building and Construction History, Construction Research, Sustainable Building Technology",
+                        "children": []
+                    },
+                    {
+                        "label": "Urbanism, Spatial Planning, Transportation and Infrastructure Planning, Landscape Planning",
+                        "children": []
+                    },
+                    {
+                        "label": "Construction Material Sciences, Chemistry, Building Physics",
+                        "children": []
+                    },
+                    {
+                        "label": "Structural Engineering, Building Informatics and Construction Operation",
+                        "children": []
+                    },
+                    {
+                        "label": "Applied Mechanics, Statics and Dynamics",
+                        "children": []
+                    },
+                    {
+                        "label": "Geotechnics, Hydraulic Engineering",
+                        "children": []
                     }
                 ]
             }
