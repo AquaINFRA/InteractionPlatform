@@ -11,6 +11,7 @@ import { TOC } from "../../components/ResourceType/TOC/TOC";
 import { SolrSearchResultItem } from "../../services/SearchService";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { MetadataSourceIcon } from "../../components/Icons";
+import remarkGfm from "remark-gfm";
 
 export interface LHB_ArticleMetadataResponse extends SolrSearchResultItem {
     name: string;
@@ -110,7 +111,7 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                         />
                     </Box>
                     <Box pt="80px" ref={elementRef}>
-                        <ReactMarkdown components={ChakraUIRenderer()}>
+                        <ReactMarkdown components={ChakraUIRenderer()} remarkPlugins={[remarkGfm]}>
                             {metadata.articleBody
                                 ? metadata.articleBody[0]
                                     ? metadata.articleBody[0]
