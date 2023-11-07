@@ -57,9 +57,9 @@ export function OrganisationView(props: OrganisationViewProps) {
         <Box>
             <Flex gap="10%">
                 <Box w="65%">
-                    {metadata.name ? (
+                    {metadata.name || metadata.name_alt ? (
                         <Box className="title" pt="15px">
-                            {metadata.name}
+                            {metadata.name ? metadata.name : metadata.name_alt[0]}
                         </Box>
                     ) : (
                         ""
@@ -157,7 +157,11 @@ export function OrganisationView(props: OrganisationViewProps) {
                                         />
                                     </Link>
                                     <CopyToClipboardButton
-                                        data={metadata.homepage}
+                                        data={
+                                            metadata.homepage[0]
+                                                ? metadata.homepage[0]
+                                                : metadata.homepage
+                                        }
                                         label="Copy URL"
                                     />
                                 </>

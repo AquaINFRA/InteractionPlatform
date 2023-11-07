@@ -16,6 +16,7 @@ export interface ToolsSoftwareMetadataResponse extends SolrSearchResultItem {
     keyword: string;
     license: string;
     uri: string;
+    url: string;
     relatedContent: Array<object>;
     programmingLanguage: Array<string>;
     sourceSystem_homepage: string;
@@ -78,8 +79,22 @@ export function ToolsSoftwareView(props: ToolsSoftwareViewProps) {
                     ) : null}
                 </Box>
                 <Box w="25%">
-                    {metadata.codeRepository || metadata.sourceSystem_homepage ? (
+                    {metadata.url || metadata.codeRepository || metadata.sourceSystem_homepage ? (
                         <Box className="actionButtonGroup" pt="74px">
+                            {metadata.url && metadata.url != "None" ? ( //Found this metadata value by accident. Actually an issue in KH.
+                                <Link
+                                    to={metadata.url[0] as string}
+                                    className="actionButtonLink"
+                                    target="_blank"
+                                >
+                                    <ActionButton
+                                        label="VISIT PROJECT PAGE"
+                                        icon={<ExternalLinkIcon color="white" />}
+                                        variant="solid"
+                                        fun={() => void 0}
+                                    />
+                                </Link>
+                            ) : null}
                             {metadata.codeRepository ? (
                                 <>
                                     <Link
@@ -88,16 +103,13 @@ export function ToolsSoftwareView(props: ToolsSoftwareViewProps) {
                                         target="_blank"
                                     >
                                         <ActionButton
-                                            label="VISIT PROJECT PAGE"
+                                            label="VISIT CODE REPOSITORY"
                                             icon={<ExternalLinkIcon color="white" />}
                                             variant="solid"
                                             fun={() => void 0}
                                         />
                                     </Link>
-                                    <CopyToClipboardButton
-                                        data={metadata.codeRepository}
-                                        label="Copy URL"
-                                    />
+                                    <CopyToClipboardButton data={metadata.url} label="Copy URL" />
                                 </>
                             ) : null}
                             {metadata.sourceSystem_homepage ? (

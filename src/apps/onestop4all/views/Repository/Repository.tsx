@@ -54,9 +54,9 @@ export function RepositoryView(props: RepositoryViewProps) {
         <Box>
             <Flex gap="10%">
                 <Box w="65%">
-                    {metadata.title ? (
+                    {metadata.title || metadata.altLabel ? (
                         <Box className="title" pt="15px">
-                            {metadata.title}
+                            {metadata.title ? metadata.title : metadata.altLabel}
                         </Box>
                     ) : null}
                     <Box pt="36px">
