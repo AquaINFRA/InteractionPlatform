@@ -53,6 +53,7 @@ export function SubjectTreeEntry(props: SubjectTreeEntryProps) {
                             <Box paddingRight="50px">
                                 <FacetCheckbox
                                     label={entry.label}
+                                    count={entry.count}
                                     isChecked={entry.selected}
                                     onChange={(event) =>
                                         subjectToggled(event.target.checked, entry.label)
@@ -76,6 +77,7 @@ export function SubjectTreeEntry(props: SubjectTreeEntryProps) {
                                     <Box paddingRight="50px" key={i}>
                                         <FacetCheckbox
                                             label={e.label}
+                                            count={e.count}
                                             isChecked={e.selected}
                                             onChange={(event) =>
                                                 subjectToggled(event.target.checked, e.label)
