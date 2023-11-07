@@ -35,7 +35,7 @@ export const Authors = (props: { authors: Author; tag: string }) => {
             <span className="metadataTag">{tag}:&nbsp;</span>
             {Array.isArray(authors) ? (
                 authors.map((elem: Author, j: number) => (
-                    <div className="metadataValueAuthor" key={j}>
+                    <div className="metadataValue" key={j}>
                         <AuthorEntry
                             key={j}
                             name={elem.name}
@@ -48,7 +48,7 @@ export const Authors = (props: { authors: Author; tag: string }) => {
                     </div>
                 ))
             ) : (
-                <div className="metadataValueAuthor">
+                <div className="metadataValue">
                     <AuthorEntry
                         name={authors.name}
                         orcidId={authors.orcidId}
