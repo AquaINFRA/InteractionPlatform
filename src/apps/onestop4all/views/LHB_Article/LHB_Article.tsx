@@ -1,7 +1,7 @@
 import { Box, Flex } from "@open-pioneer/chakra-integration";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 import ReactMarkdown from "react-markdown";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { LastUpdate } from "../../components/ResourceType/Metadata/LastUpdate";
@@ -12,6 +12,14 @@ import { SolrSearchResultItem } from "../../services/SearchService";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { MetadataSourceIcon } from "../../components/Icons";
 import remarkGfm from "remark-gfm";
+import rehype from "rehype";
+import { Remark } from "react-remark";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeCitation from "rehype-citation";
+import rehypeStringify from "rehype-stringify";
+import parse from "html-react-parser";
 
 export interface LHB_ArticleMetadataResponse extends SolrSearchResultItem {
     name: string;
@@ -35,7 +43,27 @@ export interface ArticleViewProps {
 
 export function LHB_ArticleView(props: ArticleViewProps) {
     const metadata = props.item;
+    //const markdownContent = metadata.articleBody[0];
+    const [markdownContent, setMdCon] = useState("");
     const elementRef = useRef(null);
+    const bibliography = "https://raw.githubusercontent.com/MarkusKonk/test/main/ref.bib";
+    const cff = "https://raw.githubusercontent.com/timlrx/rehype-citation/main/test/CITATION.cff";
+    const rehypeCitationOptions = { bibliography, cff };
+
+    useEffect(() => {
+        unified()
+            .use(remarkParse)
+            .use(remarkGfm)
+            .use(remarkRehype, {})
+            .use(rehypeCitation, rehypeCitationOptions)
+            .use(rehypeStringify)
+            .process(metadata.articleBody[0])
+            .then((file) => {
+                setMdCon(file.value as string);
+                console.log(file.value);
+                console.log(parse(markdownContent));
+            });
+    }, [markdownContent, rehypeCitationOptions]);
 
     return (
         <Box>
@@ -111,13 +139,7 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                         />
                     </Box>
                     <Box pt="80px" ref={elementRef}>
-                        <ReactMarkdown components={ChakraUIRenderer()} remarkPlugins={[remarkGfm]}>
-                            {metadata.articleBody
-                                ? metadata.articleBody[0]
-                                    ? metadata.articleBody[0]
-                                    : ""
-                                : ""}
-                        </ReactMarkdown>
+                        {markdownContent != "" ? parse(markdownContent) : null}
                     </Box>
                     <Box pt="80px">
                         <Support />
