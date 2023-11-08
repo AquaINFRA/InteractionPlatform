@@ -6,6 +6,12 @@ import { RelatedContentEntry } from "./RelatedContentEntry";
 
 export const RelatedContent = (props: { relatedContentItems: object }) => {
     const relatedContentItemsList = Object.values(props.relatedContentItems);
+    relatedContentItemsList.forEach((elem) => {
+        if (!elem[0].title && elem[0].name) {
+            elem[0].title = elem[0].name;
+            delete elem[0].name;
+        }
+    });
 
     relatedContentItemsList.sort((a, b) => {
         const nameA = a[0].title
