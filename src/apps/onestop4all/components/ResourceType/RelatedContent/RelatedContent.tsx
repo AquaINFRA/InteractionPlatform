@@ -36,7 +36,7 @@ export const RelatedContent = (props: { relatedContentItems: object }) => {
     return (
         <Box className="relatedContentSection">
             <Flex alignItems="center" gap="40px" display="flex">
-                <Box className="relatedContentSectionHeader">Related Contents</Box>
+                <Box className="relatedContentSectionHeader">Related Content</Box>
             </Flex>
             <SimpleGrid columns={3} spacing={10} width={"80%"}>
                 {relatedContentItemsList.map((e, i) =>
