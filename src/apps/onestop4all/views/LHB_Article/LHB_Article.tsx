@@ -60,8 +60,6 @@ export function LHB_ArticleView(props: ArticleViewProps) {
             .process(metadata.articleBody[0])
             .then((file) => {
                 setMdCon(file.value as string);
-                console.log(file.value);
-                console.log(parse(markdownContent));
             });
     }, [markdownContent, rehypeCitationOptions]);
 
