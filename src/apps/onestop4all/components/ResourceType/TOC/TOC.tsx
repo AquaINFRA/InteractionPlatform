@@ -43,17 +43,17 @@ export const TOC = (props: { elementRef: any }) => {
 
     return (
         <Box pt="80px">
-            <p className="tocHeader">Table of content</p>
+            <div className="tocHeader">Table of content</div>
             <Accordion defaultIndex={[0]} allowMultiple>
                 <AccordionItem borderTopWidth="0 !important" borderBottomWidth="0 !important">
-                    <h2>
+                    <div>
                         <AccordionButton>
                             <Box as="span" flex="1" textAlign="left">
                                 <span className="tocTitle">{title}</span>
                             </Box>
                             <AccordionIcon />
                         </AccordionButton>
-                    </h2>
+                    </div>
                     <AccordionPanel>
                         {heading.map((heading, i) => (
                             <Box

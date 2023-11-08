@@ -12,7 +12,7 @@ export const Contact = (props: { address: any; location: string }) => {
 
     return (
         <Box>
-            <p className="metadataSectionHeader">{address.tag}</p>
+            <div className="metadataSectionHeader">{address.tag}</div>
             <Flex gap="8px" pt="10px">
                 <Misc val={address.val} tag={address.tag} />
                 <ActionButton

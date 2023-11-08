@@ -4,8 +4,8 @@ export const Abstract = (props: { abstractText: string }) => {
     const { abstractText } = props;
     return (
         <Box>
-            <p className="abstractSectionHeader">Abstract</p>
-            <p className="abstractText">{abstractText}</p>
+            <div className="abstractSectionHeader">Abstract</div>
+            <div className="abstractText">{abstractText}</div>
         </Box>
     );
 };

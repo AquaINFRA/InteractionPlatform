@@ -7,7 +7,7 @@ export const SpatialInformation = (props: { metadataElements: object; bbox: stri
     const bbox = props.bbox;
     return (
         <Box>
-            <p className="metadataSectionHeader">Spatial Extent</p>
+            <div className="metadataSectionHeader">Spatial Extent</div>
             {metadataElements.map((e, i) =>
                 e.tag == "Bounding box" ? (
                     <Misc key={i} tag={e.tag} val={e.val} />

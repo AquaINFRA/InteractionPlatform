@@ -139,7 +139,7 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                         />
                     </Box>
                     <Box pt="80px" ref={elementRef}>
-                        {markdownContent != "" ? parse(markdownContent) : null}
+                        {markdownContent != "" ? <div>{parse(markdownContent)}</div> : null}
                     </Box>
                     <Box pt="80px">
                         <Support />

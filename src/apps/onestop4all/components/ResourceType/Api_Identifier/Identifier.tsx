@@ -11,11 +11,11 @@ export const Identifier = (props: { identifiers: object }) => {
 
     return (
         <Box>
-            <p className="api_identifierHeader">Other Identifiers</p>
+            <div className="api_identifierHeader">Other Identifiers</div>
             {identifiers.map((identifier, i) => (
                 <Box key={i} pt="10px">
                     {identifier.isni ? (
-                        <p className="identifier">
+                        <div className="identifier">
                             <span className="api_identifierKey">ISNI: </span>
                             <span className="api_identifierVal">
                                 <a
@@ -26,10 +26,10 @@ export const Identifier = (props: { identifiers: object }) => {
                                     {identifier.isni}
                                 </a>
                             </span>
-                        </p>
+                        </div>
                     ) : null}
                     {identifier.crossref ? (
-                        <p className="identifier">
+                        <div className="identifier">
                             <span className="api_identifierKey">Crossref Funder ID: </span>
                             <span className="api_identifierVal">
                                 <a
@@ -40,10 +40,10 @@ export const Identifier = (props: { identifiers: object }) => {
                                     {identifier.crossref}
                                 </a>
                             </span>
-                        </p>
+                        </div>
                     ) : null}
                     {identifier.wikidata ? (
-                        <p className="identifier">
+                        <div className="identifier">
                             <span className="api_identifierKey">Wikidata: </span>
                             <span className="api_identifierVal">
                                 <a
@@ -54,7 +54,7 @@ export const Identifier = (props: { identifiers: object }) => {
                                     {identifier.wikidata}
                                 </a>
                             </span>
-                        </p>
+                        </div>
                     ) : null}
                 </Box>
             ))}

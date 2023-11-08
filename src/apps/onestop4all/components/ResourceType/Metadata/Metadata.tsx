@@ -22,7 +22,7 @@ export const Metadata = (props: {
     return (
         <Box>
             <Box>
-                <p className="metadataSectionHeader">Metadata</p>
+                <div className="metadataSectionHeader">Metadata</div>
                 <MetadataContent
                     metadataElements={props.metadataElements}
                     start={0}
@@ -43,7 +43,7 @@ export const Metadata = (props: {
                         />
                     </AccordionPanel>
                     {visibleElements < metadataElements.length ? (
-                        <h2>
+                        <div>
                             <AccordionButton onClick={() => setExpanded(!expanded)}>
                                 <Flex
                                     alignItems="center"
@@ -68,7 +68,7 @@ export const Metadata = (props: {
                                     )}
                                 </Flex>
                             </AccordionButton>
-                        </h2>
+                        </div>
                     ) : (
                         <></>
                     )}

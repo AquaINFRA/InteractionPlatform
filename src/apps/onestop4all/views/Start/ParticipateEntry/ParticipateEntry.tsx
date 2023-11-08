@@ -16,7 +16,7 @@ export const ParticipateEntry = ({ text, imageUrl }: ParticipateEntryProps) => {
                 </div>
                 <img className="image" src={`/get-involved/${imageUrl}`} />
             </div>
-            <p className="label">{text}</p>
+            <div className="label">{text}</div>
         </div>
     );
 };
