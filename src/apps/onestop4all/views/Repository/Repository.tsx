@@ -35,7 +35,8 @@ export interface RepositoryMetadataResponse extends SolrSearchResultItem {
     supportsMetadataStandard: string;
     uri: string;
     api: Array<object>;
-    relatedContent: Array<object>;
+    relatedContent: Array<string>;
+    relatedResources: Array<object>;
     dateModified: string;
     distribution_accessURL: Array<string>;
     distribution_conformsTo: Array<string>;

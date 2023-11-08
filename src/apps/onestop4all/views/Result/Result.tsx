@@ -33,6 +33,7 @@ export function Result() {
 
     const [result, setResult] = useState<number>();
     const [resultCount, setResultCount] = useState<number>();
+    const [relatedResources, setRelatedResources] = useState<object>([]);
     const searchState = useSearchState();
 
     useEffect(() => {
@@ -47,38 +48,30 @@ export function Result() {
         setLoading(true);
         searchSrvc.getMetadata(resultId).then((result) => {
             if (result.results[0]) {
-                //TEST DATA FOR RELATED CONTENT SECTION AND SOURCE INFORMATION. REMOVE LATER.
-                const relatedContent = [
-                    {
-                        title: "This is a related service with a title a bit longer than the allowed 100 characters (complete example)",
-                        resourceType: "Service",
-                        id: "1234"
-                    },
-                    {
-                        title: "This is a related standard (url missing)",
-                        resourceType: "Standard"
-                    },
-                    {
-                        title: "This is a related organisation (resource type missing)",
-                        id: "1234"
-                    },
-                    {
-                        resourceType: "Tool/Software",
-                        id: "1234"
-                    },
-                    {
-                        title: "This is a related lesson",
-                        resourceType: "Educational resource",
-                        id: "1234"
-                    }
-                ];
-                result.results[0].relatedContent = relatedContent;
-                // TESTDATA END
-                setSearchResult(result.results[0]);
-                setResourceType(mapToResourceType(result.results[0].type));
+                if (result.results[0].relatedContent?.length > 0) {
+                    const relatedResources = [] as object[];
+                    result.results[0].relatedContent.forEach((relatedResourceId: string) => {
+                        searchSrvc.getMetadata(relatedResourceId).then((res) => {
+                            const relResTmp = relatedResources;
+                            relResTmp.push(res.results);
+                            setRelatedResources(relResTmp);
+                            if (
+                                relatedResources?.length ===
+                                result?.results[0]?.relatedContent.length
+                            ) {
+                                result.results[0].relatedResources = relatedResources;
+                                setSearchResult(result.results[0]);
+                                setResourceType(mapToResourceType(result.results[0].type));
+                                setLoading(false);
+                            }
+                        });
+                    });
+                } else {
+                    setSearchResult(result.results[0]);
+                    setResourceType(mapToResourceType(result.results[0].type));
+                    setLoading(false);
+                }
                 console.log(result.results[0]);
-                console.log(result.results[0].homepage);
-                setLoading(false);
             } else {
                 // TODO: error handling
             }
@@ -234,9 +227,11 @@ export function Result() {
                 ) : (
                     <>
                         <Box>{getResourceView()}</Box>
-                        {searchResult?.relatedContent ? (
+                        {searchResult?.relatedResources?.length > 0 ? (
                             <Box pt="80px">
-                                <RelatedContent relatedContentItems={searchResult.relatedContent} />
+                                <RelatedContent
+                                    relatedContentItems={searchResult?.relatedResources}
+                                />
                             </Box>
                         ) : null}
                     </>

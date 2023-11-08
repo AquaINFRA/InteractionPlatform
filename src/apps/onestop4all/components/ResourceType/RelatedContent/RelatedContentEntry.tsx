@@ -1,68 +1,46 @@
 import { Box, Button, Flex } from "@open-pioneer/chakra-integration";
 import { ResourceIcon } from "../../../views/Start/ResourceEntry/ResourceIcons";
 import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
+import { mapToResourceType } from "../../../services/ResourceTypeUtils";
 
 export interface RelatedContentEntryProps {
     title: string;
-    resourceType: ResourceType;
+    type: ResourceType;
     id: string;
 }
 
-export const RelatedContentEntry = ({ title, resourceType, id }: RelatedContentEntryProps) => {
-    const getResType = (resType: string) => {
-        switch (resType) {
-            case "Repositories / Archives":
-                return "Repository";
-            case "Services":
-                return "Service";
-            case "Tools/Software":
-                return "Tool/Software";
-            case "Standards":
-                return "Standard";
-            case "Educational resources":
-                return "Educational Resource";
-            case "Documents":
-                return "Document";
-            case "Organisations":
-                return "Organisation";
-            default:
-                return "";
-        }
-    };
+export const RelatedContentEntry = ({ title, type, id }: RelatedContentEntryProps) => {
+    console.log(title, type, id);
+    const resType = mapToResourceType(type);
 
     return (
         <Box className="relatedContentEntry">
-            {resourceType ? (
+            {type ? (
                 <Flex className="relatedContentResource-entry" alignItems="center">
                     <Box className="relatedContentOverlap">
                         <div className="relatedContentCircle-group"></div>
                         <div className="relatedContentIcon-base"></div>
                         <div className="relatedContentIcon">
-                            <ResourceIcon type={resourceType} size={20} />
+                            <ResourceIcon type={resType} size={20} />
                         </div>
                     </Box>
-                    <Box className="relatedContentResourceType">{resourceType}</Box>
+                    <Box className="relatedContentResourceType">{resType}</Box>
                 </Flex>
             ) : null}
             <Box className="relatedContentTitle">
-                {title ? (
+                {title && title[0] ? (
                     <a href={id} rel="noreferrer" target="_blank">
-                        {title.substring(0, 99)}
-                        {title.length > 100 ? "..." : ""}
+                        {title[0].substring(0, 99)}
+                        {title[0].length > 100 ? "..." : ""}
                     </a>
                 ) : null}
             </Box>
             {id ? (
-                <Button className="relatedContentButton">
-                    <a
-                        href={id}
-                        className="relatedContentButtonLabel"
-                        rel="noreferrer"
-                        target="_blank"
-                    >
-                        Visit {getResType(resourceType)}
-                    </a>
-                </Button>
+                <a href={id} className="relatedContentLink" rel="noreferrer" target="_blank">
+                    <Button className="relatedContentButton">
+                        <span className="relatedContentLabel">Visit {resType}</span>
+                    </Button>
+                </a>
             ) : null}
         </Box>
     );

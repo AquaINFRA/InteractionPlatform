@@ -110,15 +110,18 @@
     flex: 0 0 1;
 }
 
-.relatedContentButtonLabel {
+.relatedContentLink {
     color: #fff;
-    text-align: center;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 700;
     line-height: 18px; /* 150% */
     text-transform: uppercase;
     align-self: stretch;
+}
+
+.relatedContentLabel {
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
 }
 
 .relatedContentLine {
