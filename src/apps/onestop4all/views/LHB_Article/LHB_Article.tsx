@@ -35,6 +35,7 @@ export interface LHB_ArticleMetadataResponse extends SolrSearchResultItem {
     hasPart: string;
     additionalType: string;
     about: string;
+    audience: string;
 }
 
 export interface ArticleViewProps {
@@ -114,6 +115,11 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                                     val: metadata.targetGroup
                                 },
                                 {
+                                    element: "audience",
+                                    tag: metadata.audience?.length > 1 ? "Audiences" : "Audience",
+                                    val: metadata.audience
+                                },
+                                {
                                     element: "partOf",
                                     tag: "Is part of",
                                     val: metadata.isPartOf
@@ -133,7 +139,7 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                                 }
                             ]}
                             visibleElements={2}
-                            expandedByDefault={true}
+                            expandedByDefault={false}
                         />
                     </Box>
                     <Box pt="80px" ref={elementRef}>

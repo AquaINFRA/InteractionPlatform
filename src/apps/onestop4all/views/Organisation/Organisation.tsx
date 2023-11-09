@@ -135,7 +135,7 @@ export function OrganisationView(props: OrganisationViewProps) {
                                 }
                             ]}
                             visibleElements={2}
-                            expandedByDefault={true}
+                            expandedByDefault={false}
                         />
                     </Box>
                 </Box>

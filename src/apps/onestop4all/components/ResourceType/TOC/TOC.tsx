@@ -32,13 +32,7 @@ export const TOC = (props: { elementRef: any }) => {
     useEffect(() => {
         const divElement = Array.from(elementRef.current.children);
         const headingsList = new Array<HeadingProperties>();
-        const h1 = divElement.filter((child: any) => child.localName === "h1")[0] as H1;
-        const h2 = divElement.filter((child: any) => child.localName === "h2");
-        setTitle(h1.innerHTML);
-        h2.forEach((elem: any) => {
-            headingsList.push({ title: elem.innerHTML, offset: elem.offsetTop });
-        });
-        setHeading(headingsList);
+        console.log(elementRef);
     }, []);
 
     return (

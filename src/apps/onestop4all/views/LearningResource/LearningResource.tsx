@@ -111,7 +111,7 @@ export function LearningResourceView(props: LearningResourceViewProps) {
                                 }
                             ]}
                             visibleElements={2}
-                            expandedByDefault={true}
+                            expandedByDefault={false}
                         />
                     </Box>
                     {metadata.description ? (

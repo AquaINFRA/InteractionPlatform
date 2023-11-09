@@ -212,7 +212,7 @@ export function RepositoryView(props: RepositoryViewProps) {
                                 }
                             ]}
                             visibleElements={7}
-                            expandedByDefault={true}
+                            expandedByDefault={false}
                         />
                     </Box>
                     {metadata.description ? (

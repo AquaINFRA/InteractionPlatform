@@ -83,7 +83,7 @@ export function ArticleView(props: ArticleViewProps) {
                                 }
                             ]}
                             visibleElements={2}
-                            expandedByDefault={true}
+                            expandedByDefault={false}
                         />
                     </Box>
                     {metadata.description ? (

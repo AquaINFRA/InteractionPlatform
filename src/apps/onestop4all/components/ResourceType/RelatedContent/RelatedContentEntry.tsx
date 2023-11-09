@@ -12,7 +12,6 @@ export interface RelatedContentEntryProps {
 }
 
 export const RelatedContentEntry = ({ title, type, id }: RelatedContentEntryProps) => {
-    console.log(title, type, id);
     const resType = mapToResourceType(type);
     const navigate = useNavigate();
 
