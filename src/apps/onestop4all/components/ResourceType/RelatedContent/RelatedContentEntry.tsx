@@ -1,4 +1,6 @@
-import { Box, Button, Flex } from "@open-pioneer/chakra-integration";
+import { Box, Button, Flex, SystemStyleObject } from "@open-pioneer/chakra-integration";
+import { useNavigate } from "react-router-dom";
+
 import { ResourceIcon } from "../../../views/Start/ResourceEntry/ResourceIcons";
 import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
 import { mapToResourceType } from "../../../services/ResourceTypeUtils";
@@ -12,9 +14,19 @@ export interface RelatedContentEntryProps {
 export const RelatedContentEntry = ({ title, type, id }: RelatedContentEntryProps) => {
     console.log(title, type, id);
     const resType = mapToResourceType(type);
+    const navigate = useNavigate();
+
+    function direct() {
+        navigate(`/result/${id}`);
+    }
+
+    const hoverStyle: SystemStyleObject = {
+        cursor: "pointer",
+        backgroundColor: "var(--primary-primary-transparent-background)"
+    };
 
     return (
-        <Box className="relatedContentEntry">
+        <Box className="relatedContentEntry" _hover={hoverStyle} onClick={direct}>
             {type ? (
                 <Flex className="relatedContentResource-entry" alignItems="center">
                     <Box className="relatedContentOverlap">
@@ -29,18 +41,18 @@ export const RelatedContentEntry = ({ title, type, id }: RelatedContentEntryProp
             ) : null}
             <Box className="relatedContentTitle">
                 {title && title[0] ? (
-                    <a href={id} rel="noreferrer" target="_blank">
+                    <div>
                         {title[0].substring(0, 99)}
                         {title[0].length > 100 ? "..." : ""}
-                    </a>
+                    </div>
                 ) : null}
             </Box>
             {id ? (
-                <a href={id} className="relatedContentLink" rel="noreferrer" target="_blank">
+                <Flex className="relatedContentLink" rel="noreferrer">
                     <Button className="relatedContentButton">
                         <span className="relatedContentLabel">Visit {resType}</span>
                     </Button>
-                </a>
+                </Flex>
             ) : null}
         </Box>
     );
