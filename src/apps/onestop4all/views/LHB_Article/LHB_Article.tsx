@@ -1,6 +1,5 @@
+/* eslint-disable */
 import { Box, Flex } from "@open-pioneer/chakra-integration";
-import ChakraUIRenderer from "chakra-ui-markdown-renderer";
-import ReactMarkdown from "react-markdown";
 import { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -12,8 +11,6 @@ import { SolrSearchResultItem } from "../../services/SearchService";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { MetadataSourceIcon } from "../../components/Icons";
 import remarkGfm from "remark-gfm";
-import rehype from "rehype";
-import { Remark } from "react-remark";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
@@ -46,10 +43,28 @@ export function LHB_ArticleView(props: ArticleViewProps) {
     const metadata = props.item;
     //const markdownContent = metadata.articleBody[0];
     const [markdownContent, setMdCon] = useState("");
-    const elementRef = useRef(null);
+    const elementRef = useRef();
     const bibliography = "https://raw.githubusercontent.com/MarkusKonk/test/main/ref.bib";
     const cff = "https://raw.githubusercontent.com/timlrx/rehype-citation/main/test/CITATION.cff";
     const rehypeCitationOptions = { bibliography, cff };
+
+    const setIdsInHtml = (html: Document, tag: string) => {
+        const htmlTags = html.getElementsByTagName(tag);
+        if (html && htmlTags.length > 0) {
+            for (let i = 0; i < htmlTags.length; i++) {
+                const idString = html
+                    .getElementsByTagName(tag)
+                    [i]?.innerHTML.toLocaleLowerCase()
+                    .replaceAll(" ", "_");
+                if (htmlTags && Array.isArray(htmlTags) && htmlTags[i] && htmlTags[i].id) {
+                    htmlTags[i].id = idString + "_" + i;
+                }
+            }
+            return html;
+        } else {
+            return html;
+        }
+    };
 
     useEffect(() => {
         unified()
@@ -60,7 +75,11 @@ export function LHB_ArticleView(props: ArticleViewProps) {
             .use(rehypeStringify)
             .process(metadata.articleBody[0])
             .then((file) => {
-                setMdCon(file.value as string);
+                const parser = new DOMParser();
+                let html = parser.parseFromString(file.value as string, "text/html");
+                html = setIdsInHtml(html, "h2");
+                html = setIdsInHtml(html, "h3");
+                setMdCon(html.body.innerHTML as string);
             });
     }, [markdownContent, rehypeCitationOptions]);
 
@@ -176,10 +195,10 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                             <LastUpdate date={metadata.dateModified} />
                         </Box>
                     ) : null}
-                    {metadata.articleBody ? (
-                        metadata.articleBody[0] ? (
-                            <></>
-                        ) : null /*<TOC elementRef={elementRef} />*/
+                    {metadata.articleBody[0] &&
+                    elementRef.current &&
+                    elementRef.current.children ? (
+                        <TOC elementRef={elementRef} />
                     ) : null}
                 </Box>
             </Flex>
