@@ -62,7 +62,9 @@ export const Footer = () => {
                         >
                             <Box className="section-header">Support:</Box>
                             <Box display="flex" gap="8px">
-                                <span className="section-entry">FAQ</span>
+                                <a href="/faq" target="_blank" rel="noreferrer">
+                                    <span className="section-entry">FAQ</span>
+                                </a>
                                 <span>|</span>
                                 <Box
                                     className="section-entry"
