@@ -41,14 +41,20 @@ export interface ArticleViewProps {
 
 export function LHB_ArticleView(props: ArticleViewProps) {
     const metadata = props.item;
-    //const markdownContent = metadata.articleBody[0];
+    const markdown = metadata.articleBody[0];
     const [markdownContent, setMdCon] = useState("");
-    const elementRef = useRef();
-    const bibliography = "https://raw.githubusercontent.com/MarkusKonk/test/main/ref.bib";
-    const cff = "https://raw.githubusercontent.com/timlrx/rehype-citation/main/test/CITATION.cff";
-    const rehypeCitationOptions = { bibliography, cff };
 
-    const setIdsInHtml = (html: Document, tag: string) => {
+    const elementRef = useRef();
+
+    const bibliography = "https://raw.githubusercontent.com/MarkusKonk/test/main/ref.bib";
+    //const bibliography =
+    //    "https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/assets/references.bib";
+    const citationFileFormat =
+        "https://raw.githubusercontent.com/timlrx/rehype-citation/main/test/CITATION.cff";
+    const rehypeCitationOptions = { bibliography, citationFileFormat };
+
+    //NOTE: setIdsInHtml enriches the html parsed from markdown with IDs. Thought this is necessary for the TOC but it's not needed for now but might be useful in the future.
+    /*const setIdsInHtml = (html: Document, tag: string) => {
         const htmlTags = html.getElementsByTagName(tag);
         if (html && htmlTags.length > 0) {
             for (let i = 0; i < htmlTags.length; i++) {
@@ -64,7 +70,7 @@ export function LHB_ArticleView(props: ArticleViewProps) {
         } else {
             return html;
         }
-    };
+    };*/
 
     useEffect(() => {
         unified()
@@ -73,15 +79,15 @@ export function LHB_ArticleView(props: ArticleViewProps) {
             .use(remarkRehype, {})
             .use(rehypeCitation, rehypeCitationOptions)
             .use(rehypeStringify)
-            .process(metadata.articleBody[0])
+            .process(markdown)
             .then((file) => {
                 const parser = new DOMParser();
                 let html = parser.parseFromString(file.value as string, "text/html");
-                html = setIdsInHtml(html, "h2");
-                html = setIdsInHtml(html, "h3");
+                //html = setIdsInHtml(html, "h2"); // see comment above
+                //html = setIdsInHtml(html, "h3"); // see comment above
                 setMdCon(html.body.innerHTML as string);
             });
-    }, [markdownContent, rehypeCitationOptions]);
+    }, [markdown, rehypeCitationOptions]);
 
     return (
         <Box>
@@ -195,9 +201,7 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                             <LastUpdate date={metadata.dateModified} />
                         </Box>
                     ) : null}
-                    {metadata.articleBody[0] &&
-                    elementRef.current &&
-                    elementRef.current.children ? (
+                    {markdown && elementRef.current && elementRef.current.children ? (
                         <TOC elementRef={elementRef} />
                     ) : null}
                 </Box>
