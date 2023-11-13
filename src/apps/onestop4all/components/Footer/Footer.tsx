@@ -1,10 +1,12 @@
 import { Box, Container, Flex } from "@open-pioneer/chakra-integration";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { SupportForm } from "../SupportForm/SupportForm";
 
 export const Footer = () => {
     const [openSupportForm, setOpenSupportForm] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <>
@@ -62,7 +64,7 @@ export const Footer = () => {
                         >
                             <Box className="section-header">Support:</Box>
                             <Box display="flex" gap="8px">
-                                <a href="/faq" target="_blank" rel="noreferrer">
+                                <a onClick={()=>{navigate("/faq/FAQ.md");}}>
                                     <span className="section-entry">FAQ</span>
                                 </a>
                                 <span>|</span>

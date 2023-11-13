@@ -31,7 +31,7 @@ const router = createBrowserRouter([
                 element: <Result />
             },
             {
-                path: `faq`,
+                path: `faq/:faq`,
                 element: <Faq />
             },
             {

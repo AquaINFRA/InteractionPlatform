@@ -24,6 +24,7 @@ import { ArticleMetadataResponse, ArticleView } from "../Article/Article";
 
 export function Result() {
     const resultId = useParams().id as string;
+    console.log(resultId);
     const searchSrvc = useService("onestop4all.SearchService");
     const [searchResult, setSearchResult] = useState<SolrSearchResultItem>();
     const [resourceType, setResourceType] = useState<ResourceType>();
