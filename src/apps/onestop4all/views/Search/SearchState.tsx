@@ -2,8 +2,8 @@ import { useService } from "open-pioneer:react-hooks";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import { ResourceType } from "../../services/ResourceTypeUtils";
 import { SearchResult, SubjectEntry } from "../../services/SearchService";
-import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
 
 export enum UrlSearchParameterType {
     Searchterm = "searchterm",

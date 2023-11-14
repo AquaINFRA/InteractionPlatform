@@ -1,13 +1,12 @@
 import "@open-pioneer/runtime";
 
-import { ResourceType } from "../views/Start/ResourceEntry/ResourceEntry";
 import { RepositorySearchHandler } from "./search/result-handler/repository-handler";
 import { SearchResultHandler } from "./search/result-handler/search-result-handler";
 import { ServiceOptions } from "@open-pioneer/runtime";
 import { OrganizationSearchHandler } from "./search/result-handler/organization-handler";
 import { ArticleSearchHandler } from "./search/result-handler/article-handler";
 import { LHB_ArticleSearchHandler } from "./search/result-handler/lhb_article-handler";
-import { mapFromResourceType, mapToResourceType } from "./ResourceTypeUtils";
+import { ResourceType, mapFromResourceType, mapToResourceType } from "./ResourceTypeUtils";
 import { StandardSearchHandler } from "./search/result-handler/standard-handler";
 import { SoftwareSearchHandler } from "./search/result-handler/software-handler";
 import { Learning_ResourceHandler } from "./search/result-handler/learning_resource-handler";

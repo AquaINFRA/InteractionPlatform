@@ -1,7 +1,6 @@
 import { Box, Divider, Flex, Skeleton } from "@open-pioneer/chakra-integration";
 import { useNavigate } from "react-router-dom";
 
-import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
 import {
     BackIcon,
     DocumentsIcon,
@@ -11,6 +10,7 @@ import {
     StandardIcon,
     ToolSoftwareIcon
 } from "../../Icons";
+import { ResourceType } from "../../../services/ResourceTypeUtils";
 
 export function ResourceTypeHeader(props: { resType: ResourceType | undefined; loading: boolean }) {
     const { resType, loading = false } = props;

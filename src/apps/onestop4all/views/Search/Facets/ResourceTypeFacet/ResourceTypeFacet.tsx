@@ -1,7 +1,7 @@
 import { Box } from "@open-pioneer/chakra-integration";
 import { useEffect, useState } from "react";
 
-import { ResourceType } from "../../../Start/ResourceEntry/ResourceEntry";
+import { ResourceType } from "../../../../services/ResourceTypeUtils";
 import { SelectableResourceType, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";

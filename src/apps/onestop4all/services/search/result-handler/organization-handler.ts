@@ -1,4 +1,4 @@
-import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
+import { ResourceType } from "../../ResourceTypeUtils";
 import { SearchResultItem, SolrSearchResultItem } from "../../SearchService";
 import { MinSearchResultItem, SearchResultHandler } from "./search-result-handler";
 

@@ -7,8 +7,9 @@ import { RelatedContent } from "../../components/ResourceType/RelatedContent/Rel
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { SearchBar } from "../../components/SearchBar";
-import { mapToResourceType } from "../../services/ResourceTypeUtils";
+import { mapToResourceType, ResourceType } from "../../services/ResourceTypeUtils";
 import { SolrSearchResultItem } from "../../services/SearchService";
+import { ArticleMetadataResponse, ArticleView } from "../Article/Article";
 import {
     LearningResourceMetadataResponse,
     LearningResourceView
@@ -18,9 +19,7 @@ import { OrganisationMetadataResponse, OrganisationView } from "../Organisation/
 import { RepositoryMetadataResponse, RepositoryView } from "../Repository/Repository";
 import { useSearchState } from "../Search/SearchState";
 import { StandardMetadataResponse, StandardView } from "../Standard/Standard";
-import { ResourceType } from "../Start/ResourceEntry/ResourceEntry";
 import { ToolsSoftwareMetadataResponse, ToolsSoftwareView } from "../ToolsSoftware/ToolsSoftware";
-import { ArticleMetadataResponse, ArticleView } from "../Article/Article";
 
 export function Result() {
     const resultId = useParams().id as string;
