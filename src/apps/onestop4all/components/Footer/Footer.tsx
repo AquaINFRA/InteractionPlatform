@@ -63,8 +63,13 @@ export const Footer = () => {
                             flexDirection={{ base: "column", custombreak: "row" }}
                         >
                             <Box className="section-header">Support:</Box>
-                            <Box display="flex" gap="8px">
-                                <a onClick={()=>{navigate("/faq/FAQ.md");}}>
+                            <Box display="flex" gap="8px" _hover={{ cursor: "pointer" }}>
+                                <a
+                                    onClick={() => {
+                                        navigate("/faq/FAQ.md");
+                                        window.scroll(0, 0);
+                                    }}
+                                >
                                     <span className="section-entry">FAQ</span>
                                 </a>
                                 <span>|</span>

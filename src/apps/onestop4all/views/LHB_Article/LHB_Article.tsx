@@ -44,7 +44,7 @@ export function LHB_ArticleView(props: ArticleViewProps) {
     const markdown = metadata.articleBody[0];
     const [markdownContent, setMdCon] = useState("");
 
-    const elementRef = useRef();
+    const elementRef = useRef<HTMLInputElement>(null);
 
     const bibliography = "https://raw.githubusercontent.com/MarkusKonk/test/main/ref.bib";
     //const bibliography =
