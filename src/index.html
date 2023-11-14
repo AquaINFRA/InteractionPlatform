@@ -18,9 +18,12 @@
         import "/apps/onestop4all/app.ts";
 
         const container = document.getElementById("container");
-        restartApp(undefined);
+        restartApp(getLangParam());
 
         function restartApp(locale) {
+            if (locale !== "de" && locale !== "en") {
+                locale = "en";
+            }
             container.replaceChildren();
             console.info(`Starting app with locale ${locale}`);
 
@@ -38,6 +41,12 @@
             });
 
             container.appendChild(app);
+        }
+
+        function getLangParam() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            return urlParams.get("lang");
         }
     </script>
 </html>

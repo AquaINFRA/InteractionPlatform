@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { Button } from "@open-pioneer/chakra-integration";
+import { useIntl } from "open-pioneer:react-hooks";
 import { useState } from "react";
 
 export interface HowToEntryProps {
@@ -8,6 +9,7 @@ export interface HowToEntryProps {
 }
 
 export const HowToEntry = (props: HowToEntryProps) => {
+    const intl = useIntl();
     const [hovered, setHovered] = useState(false);
 
     return (
@@ -20,7 +22,11 @@ export const HowToEntry = (props: HowToEntryProps) => {
                 <Box className="heading">{props.heading}</Box>
                 <Box className="abstract">{props.description}</Box>
             </Box>
-            <Button size="sm">Learn More</Button>
+            <Button size="sm">
+                {intl.formatMessage({
+                    id: "start.how-to.learn-more-button"
+                })}
+            </Button>
         </Box>
     );
 };

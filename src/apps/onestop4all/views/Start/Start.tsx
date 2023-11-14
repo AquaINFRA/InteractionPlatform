@@ -1,5 +1,6 @@
 import { Box, Container, Flex, Image } from "@open-pioneer/chakra-integration";
 import { ParentSize } from "@visx/responsive";
+import { useIntl } from "open-pioneer:react-hooks";
 
 import NetworkGraph from "../../components/Graph/NetworkGraph";
 import { SearchBar } from "../../components/SearchBar";
@@ -8,28 +9,116 @@ import { ParticipateEntry, ParticipateEntryProps } from "./ParticipateEntry/Part
 import { ResourceEntries } from "./ResourceEntries/ResourceEntries";
 
 export function StartView() {
+    const intl = useIntl();
     const getInvolvedEntries: ParticipateEntryProps[] = [
         {
             imageUrl: "image1.png",
-            text: "Apply for a pilot or incubator"
+            text: intl.formatMessage({ id: "start.get-involved.entry-1" })
         },
         {
             imageUrl: "image2.png",
-            text: "Join the NFDI4Earth Academy"
+            text: intl.formatMessage({ id: "start.get-involved.entry-2" })
         },
         {
             imageUrl: "image3.png",
-            text: "Join or propose an NFDI4Earth Interest Group"
+            text: intl.formatMessage({ id: "start.get-involved.entry-3" })
         },
         {
             imageUrl: "image4.png",
-            text: "Contribute a Living Handbook article"
+            text: intl.formatMessage({ id: "start.get-involved.entry-4" })
         },
         {
             imageUrl: "image5.png",
-            text: "Sign the NFDI4Earth FAIRness & Openness Commitment"
+            text: intl.formatMessage({ id: "start.get-involved.entry-5" })
         }
     ];
+
+    const richTextIntl = {
+        bold: (chunks: string[]) =>
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            chunks.map((chunk, i) => (<b key={`bold_${i}`}>{chunks[0]}</b>) as any)
+    };
+
+    const missionLinksIntl = {
+        NFDI4EarthLink: (
+            <a
+                className="link"
+                target="_blank"
+                key="1"
+                rel="noreferrer"
+                href={intl.formatMessage({
+                    id: "start.mission.links.NFDI4EarthLinkUrl"
+                })}
+            >
+                {intl.formatMessage({
+                    id: "start.mission.links.NFDI4EarthLinkLabel"
+                })}
+            </a>
+        ),
+        MissionLink: (
+            <a
+                className="link"
+                target="_blank"
+                rel="noreferrer"
+                key="2"
+                href={intl.formatMessage({
+                    id: "start.mission.links.MissionLinkUrl"
+                })}
+            >
+                {intl.formatMessage({
+                    id: "start.mission.links.MissionLinkLabel"
+                })}
+            </a>
+        ),
+        ResourcesLink: (
+            <a
+                className="link"
+                target="_blank"
+                key="3"
+                rel="noreferrer"
+                href={intl.formatMessage({
+                    id: "start.mission.links.ResourcesLinkUrl"
+                })}
+            >
+                {intl.formatMessage({
+                    id: "start.mission.links.ResourcesLinkLabel"
+                })}
+            </a>
+        )
+    };
+
+    const resourcesLinksIntl = {
+        MembersLink: (
+            <a
+                className="link"
+                target="_blank"
+                key="1"
+                rel="noreferrer"
+                href={intl.formatMessage({
+                    id: "start.resources.links.MembersLinkUrl"
+                })}
+            >
+                {intl.formatMessage({
+                    id: "start.resources.links.MembersLinkLabel"
+                })}
+            </a>
+        ),
+        CommunityLink: (
+            <a
+                className="link"
+                target="_blank"
+                key="2"
+                rel="noreferrer"
+                href={intl.formatMessage({
+                    id: "start.resources.links.CommunityLinkUrl"
+                })}
+            >
+                {intl.formatMessage({
+                    id: "start.resources.links.CommunityLinkLabel"
+                })}
+            </a>
+        )
+    };
 
     return (
         <Box className="start-view">
@@ -43,8 +132,7 @@ export function StartView() {
                                 fontSize={{ base: "16px", custombreak: "24px" }}
                                 color="white"
                             >
-                                Your One-Stop to FAIR, open and innovative Research Data Management
-                                in <span style={{ fontWeight: 700 }}>Earth System Sciences</span>.
+                                {intl.formatMessage({ id: "start.banner.slogan" }, richTextIntl)}
                             </Box>
                         </Flex>
                     </Container>
@@ -68,14 +156,13 @@ export function StartView() {
                     <Image className="bg-icon" alt="Bg icon" src="/bg-icon.png" />
                     <Box className="mission-text text-centered-box">
                         <Box className="text-centered-box-text">
-                            The <span className="bold">OneStop4All</span> is the primary visual and
-                            user-friendly <span className="link">NFDI4Earth</span> access point. It
-                            offers a coherent view on and points to all relevant Earth System
-                            Sciences (ESS) RDM resources provided by NFDI4Earth members and the ESS
-                            community, such as data repositories, software tools, information on
-                            Research Data Management (RDM), education and training materials. Learn
-                            more about our <span className="link">Mission</span> and the{" "}
-                            <span className="link">Resources</span>.
+                            {intl.formatMessage(
+                                { id: "start.mission.slogan" },
+                                {
+                                    ...richTextIntl,
+                                    ...missionLinksIntl
+                                }
+                            )}
                         </Box>
                     </Box>
                 </Box>
@@ -85,33 +172,48 @@ export function StartView() {
                 <Box className="how-to">
                     <Box className="text-centered-box">
                         <Box className="text-centered-box-header">
-                            We provide guidance on Research Data Management in ESS
+                            {intl.formatMessage({ id: "start.how-to.title" })}
                         </Box>
                         <Box className="text-centered-box-text">
-                            Here, you will find introductory articles to research data management in
-                            the ESS.
+                            {intl.formatMessage({ id: "start.how-to.description" })}
                         </Box>
                     </Box>
 
                     <Flex className="how-to-entries" gap="32px">
                         <HowToEntry
-                            description="Data and service discovery benefits from complete and up-to-date metadata and description of spatio-temporal context..."
-                            heading="Discover and Explore Earth Data Sources"
+                            heading={intl.formatMessage({
+                                id: "start.how-to.how-to-entries-1.title"
+                            })}
+                            description={intl.formatMessage({
+                                id: "start.how-to.how-to-entries-1.description"
+                            })}
                         />
 
                         <HowToEntry
-                            description="Simplifying FAIR data publications and implementing curation with affordable efforts becomes increasingly important..."
-                            heading="Data Publication and Data Curation"
+                            heading={intl.formatMessage({
+                                id: "start.how-to.how-to-entries-2.title"
+                            })}
+                            description={intl.formatMessage({
+                                id: "start.how-to.how-to-entries-2.description"
+                            })}
                         />
 
                         <HowToEntry
-                            description="Implementing FAIR, open and innovative RDM in ESS needs methods and services along all phases of the research data life cycle..."
-                            heading="Research Data Management"
+                            heading={intl.formatMessage({
+                                id: "start.how-to.how-to-entries-3.title"
+                            })}
+                            description={intl.formatMessage({
+                                id: "start.how-to.how-to-entries-3.description"
+                            })}
                         />
 
                         <HowToEntry
-                            description="Sharing concepts of dataflows, distributed data processing and data portal technologies is key to create innovative data products..."
-                            heading="Create and publish Information Products"
+                            heading={intl.formatMessage({
+                                id: "start.how-to.how-to-entries-4.title"
+                            })}
+                            description={intl.formatMessage({
+                                id: "start.how-to.how-to-entries-4.description"
+                            })}
                         />
                     </Flex>
                 </Box>
@@ -121,13 +223,13 @@ export function StartView() {
                 <Container maxW={{ base: "100%", custombreak: "80%" }}>
                     <Box className="text-centered-box">
                         <Box className="text-centered-box-header">
-                            We provide a harmonized view on linked ESS resources
+                            {intl.formatMessage({ id: "start.resources.title" })}
                         </Box>
                         <Box className="text-centered-box-text">
-                            Here you will find easy access to relevant resources from the Earth
-                            System Sciences provided by the{" "}
-                            <span className="link">NFDI4Earth members</span> and the{" "}
-                            <span className="link">ESS community</span>.
+                            {intl.formatMessage(
+                                { id: "start.resources.description" },
+                                { ...richTextIntl, ...resourcesLinksIntl }
+                            )}
                         </Box>
                     </Box>
 
@@ -141,15 +243,13 @@ export function StartView() {
                 <Box className="graph">
                     <Box className="text-centered-box">
                         <Box className="text-centered-box-header">
-                            We show how the resources are linked
+                            {intl.formatMessage({ id: "start.graph.title" })}
                         </Box>
                         <Box className="text-centered-box-text">
-                            Here you will get a graph-based overview on related resources to start
-                            exploration.
+                            {intl.formatMessage({ id: "start.graph.description" })}
                         </Box>
                     </Box>
                     <Box pt={"16px"}>
-                        {/* <Graph data={[1, 2, 3, 4, 5, 6]}></Graph> */}
                         <ParentSize>
                             {(parent) => <NetworkGraph width={parent.width} height={500} />}
                         </ParentSize>
@@ -161,12 +261,10 @@ export function StartView() {
                 <Box className="get-involved">
                     <Box className="text-centered-box">
                         <Box className="text-centered-box-header">
-                            We welcome your participation
+                            {intl.formatMessage({ id: "start.get-involved.title" })}
                         </Box>
                         <Box className="text-centered-box-text">
-                            NFDI4Earth is a community-driven process. We welcome you to join our
-                            NFDI4Earth activities. Here you will find information on how to
-                            participate.
+                            {intl.formatMessage({ id: "start.get-involved.description" })}
                         </Box>
                     </Box>
 
