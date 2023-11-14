@@ -201,7 +201,9 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                             <LastUpdate date={metadata.dateModified} />
                         </Box>
                     ) : null}
-                    {markdown && elementRef.current ? <TOC elementRef={elementRef} /> : null}
+                    {markdown && elementRef.current && elementRef.current.children ? (
+                        <TOC elementRef={elementRef} />
+                    ) : null}
                 </Box>
             </Flex>
         </Box>
