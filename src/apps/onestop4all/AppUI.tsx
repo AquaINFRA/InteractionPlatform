@@ -9,6 +9,7 @@ import { Result } from "./views/Result/Result";
 import { SearchView } from "./views/Search/Search";
 import { SearchState } from "./views/Search/SearchState";
 import { StartView } from "./views/Start/Start";
+import { Faq } from "./views/Start/Faq/Faq";
 
 const basePath = "/";
 
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
             {
                 path: `result/:id`,
                 element: <Result />
+            },
+            {
+                path: `faq/:faq`,
+                element: <Faq />
             },
             {
                 path: "*",

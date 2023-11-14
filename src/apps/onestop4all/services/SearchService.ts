@@ -166,6 +166,25 @@ export class SearchService {
         );
     }
 
+    getFaqList() {
+        console.log("Get list fo FAQs");
+        const url = `http://localhost:8080/https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2fFAQ.md/raw`;
+        return fetch(url).then((response) => {
+            return response;
+        });
+    }
+
+    getFaq(faqId: string) {
+        console.log("Get list fo FAQs");
+        const url =
+            `http://localhost:8080/https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
+            faqId +
+            `/raw`;
+        return fetch(url).then((response) => {
+            return response;
+        });
+    }
+
     private addSpatialFilter(spatialFilter: number[] | undefined, queryParams: URLSearchParams) {
         if (spatialFilter && spatialFilter.length > 0) {
             if (spatialFilter.length === 4) {
