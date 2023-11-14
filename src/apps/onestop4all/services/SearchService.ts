@@ -181,7 +181,7 @@ export class SearchService {
         console.log("Get list fo FAQs");
         const url =
             proxy +
-            `http://localhost:8080/https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
+            `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
             faqId +
             `/raw`;
         return fetch(url).then((response) => {
