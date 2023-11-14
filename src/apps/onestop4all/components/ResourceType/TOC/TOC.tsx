@@ -7,6 +7,8 @@ import {
     AccordionIcon
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useService } from "open-pioneer:react-hooks";
+import yaml from "js-yaml";
 
 export interface H1 {
     innerHTML: string;
@@ -22,6 +24,7 @@ export const TOC = (props: { elementRef: any }) => {
     const { elementRef } = props;
     const [title, setTitle] = useState("");
     const [headings, setHeadings] = useState(new Array<HTMLElement>());
+    const searchSrvc = useService("onestop4all.SearchService");
 
     const scrollTo = (element: HTMLElement) => {
         element.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -33,6 +36,16 @@ export const TOC = (props: { elementRef: any }) => {
     };
 
     useEffect(() => {
+        console.log("start toc stuff");
+        searchSrvc.getLhbStructure().then((result) => {
+            result.text().then((res) => {
+                const parsedYaml = yaml.load(res) as object;
+                console.log(parsedYaml);
+            });
+        });
+    }, []);
+
+    useEffect(() => {
         const divElement = Array.from(elementRef.current.children[0].children);
         const headingsList = new Array<HTMLElement>();
         const h1 = divElement.filter((child: any) => child.localName === "h1")[0] as H1;
@@ -41,7 +54,6 @@ export const TOC = (props: { elementRef: any }) => {
         );
         h1 ? setTitle(h1.innerHTML) : setTitle("Living Handbook");
         heading.forEach((elem: any) => {
-            console.log(typeof elem);
             headingsList.push(elem);
         });
         setHeadings(headingsList);

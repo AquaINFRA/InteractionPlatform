@@ -189,6 +189,16 @@ export class SearchService {
         });
     }
 
+    getLhbStructure() {
+        console.log("Get Living Handbook structure");
+        const url =
+            proxy +
+            `https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/mkdocs.yml`;
+        return fetch(url).then((response) => {
+            return response;
+        });
+    }
+
     private addSpatialFilter(spatialFilter: number[] | undefined, queryParams: URLSearchParams) {
         if (spatialFilter && spatialFilter.length > 0) {
             if (spatialFilter.length === 4) {

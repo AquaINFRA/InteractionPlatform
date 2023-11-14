@@ -54,7 +54,8 @@
         "rehype": "13.0.1",
         "rehype-citation": "^2.0.0",
         "react-remark": "2.1.0",
-        "html-react-parser": "5.0.6"
+        "html-react-parser": "5.0.6",
+        "js-yaml": "^4.1.0"
     },
     "devDependencies": {
         "@open-pioneer/build-package-cli": "^1.0.1",
