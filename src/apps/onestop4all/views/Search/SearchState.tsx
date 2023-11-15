@@ -23,6 +23,8 @@ export interface UrlSearchParams {
     [UrlSearchParameterType.PageStart]?: string;
 }
 
+export const SpatialFilterEnableForResourceTypes = [ResourceType.Organisations];
+
 export interface SelectableResourceType {
     resourceType: ResourceType;
     count: number;
@@ -47,6 +49,7 @@ export interface ISearchState {
     selectableSubjects: SelectableSubject[];
     spatialFilter: number[];
     setSpatialFilter(sf: number[]): void;
+    spatialFilterDisabled: boolean;
     pageSize: number;
     setPageSize(pageSize: number): void;
     pageStart: number;
@@ -105,6 +108,12 @@ export const SearchState = (props: PropsWithChildren) => {
         urlRt.forEach((e) => e && sRt.push(e));
     }
     const [selectedResourceTypes, setSelectedResourceTypes] = useState<string[]>(sRt);
+
+    // check disabling spatial filter
+    const matches = SpatialFilterEnableForResourceTypes.filter(
+        (res) => selectedResourceTypes.findIndex((e) => e === res) >= 0
+    );
+    const spatialFilterDisabled = matches.length === 0 && selectedResourceTypes.length > 0;
 
     // init selectable subjects
     const [selectableSubjects, setSelecteableSubjects] = useState<SelectableSubject[]>([]);
@@ -193,6 +202,7 @@ export const SearchState = (props: PropsWithChildren) => {
             setSelectedResourceTypes(values);
             setPageStart(0);
         },
+        spatialFilterDisabled,
         selectableResourceTypes,
         spatialFilter,
         setSpatialFilter: (value) => {
