@@ -148,38 +148,26 @@ export const TOC = (props: { elementRef: any; sourceId: string }) => {
     useEffect(() => {
         console.log("TOC component rendered with sourceId:", sourceId);
         searchSrvc.getLhbStructure().then((result) => {
-            result.text().then((res) => {
-                const parsedYaml = yaml.load(res) as LhbStructure;
-                const lhbStructure = findLhbStructure(parsedYaml.nav, sourceId);
-                if (lhbStructure.length > 0) {
-                    let chapters = new Array<object>();
-                    lhbStructure.forEach((element) => {
-                        searchSrvc.getChapter(element).then((ch) => {
-                            ch.json().then((chapter) => {
-                                chapters.push(chapter.response);
-                                if (chapters.length === lhbStructure.length) {
-                                    chapters = removeEmptyObjects(chapters);
-                                    if (chapters.length > 0) {
-                                        chapters = sortChapters(chapters, lhbStructure);
-                                        const chaptersBefore = splitChapters(
-                                            chapters,
-                                            sourceId,
-                                            "before"
-                                        );
-                                        const chaptersAfter = splitChapters(
-                                            chapters,
-                                            sourceId,
-                                            "after"
-                                        );
-                                        setChaptersBefore(chaptersBefore);
-                                        setChaptersAfter(chaptersAfter);
-                                    }
-                                }
-                            });
-                        });
+            const parsedYaml = yaml.load(result) as LhbStructure;
+            const lhbStructure = findLhbStructure(parsedYaml.nav, sourceId);
+            if (lhbStructure.length > 0) {
+                let chapters = new Array<object>();
+                lhbStructure.forEach((element) => {
+                    searchSrvc.getChapter(element).then((chapter) => {
+                        chapters.push(chapter.response);
+                        if (chapters.length === lhbStructure.length) {
+                            chapters = removeEmptyObjects(chapters);
+                            if (chapters.length > 0) {
+                                chapters = sortChapters(chapters, lhbStructure);
+                                const chaptersBefore = splitChapters(chapters, sourceId, "before");
+                                const chaptersAfter = splitChapters(chapters, sourceId, "after");
+                                setChaptersBefore(chaptersBefore);
+                                setChaptersAfter(chaptersAfter);
+                            }
+                        }
                     });
-                }
-            });
+                });
+            }
         });
     }, [sourceId]);
 

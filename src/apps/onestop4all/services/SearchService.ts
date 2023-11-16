@@ -190,24 +190,34 @@ export class SearchService {
     }
 
     getLhbStructure() {
-        //console.log("Get Living Handbook structure");
         const url =
             proxy +
             `https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/mkdocs.yml`;
-        return fetch(url).then((response) => {
-            return response;
-        });
+        return fetch(url).then((response) =>
+            response.text().then((responseData: string) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
     }
 
     getChapter(chapter: string) {
-        //console.log("Get Living Handbook chapter for " + chapter);
         const url =
             `${this.config.url}/${this.config.coreSelector}/select?ident=true&q.op=OR&q=sourceSystem_id%3A"` +
             chapter +
             `"`;
-        return fetch(url).then((response) => {
-            return response;
-        });
+        return fetch(url).then((response) =>
+            response.json().then((responseData: { response: object }) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
     }
 
     private addSpatialFilter(spatialFilter: number[] | undefined, queryParams: URLSearchParams) {
