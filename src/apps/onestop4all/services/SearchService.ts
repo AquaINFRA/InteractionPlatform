@@ -190,10 +190,21 @@ export class SearchService {
     }
 
     getLhbStructure() {
-        console.log("Get Living Handbook structure");
+        //console.log("Get Living Handbook structure");
         const url =
             proxy +
             `https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/mkdocs.yml`;
+        return fetch(url).then((response) => {
+            return response;
+        });
+    }
+
+    getChapter(chapter: string) {
+        //console.log("Get Living Handbook chapter for " + chapter);
+        const url =
+            `${this.config.url}/${this.config.coreSelector}/select?ident=true&q.op=OR&q=sourceSystem_id%3A"` +
+            chapter +
+            `"`;
         return fetch(url).then((response) => {
             return response;
         });

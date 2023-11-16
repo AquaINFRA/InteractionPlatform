@@ -202,7 +202,7 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                         </Box>
                     ) : null}
                     {markdown && elementRef.current && elementRef.current.children ? (
-                        <TOC elementRef={elementRef} />
+                        <TOC elementRef={elementRef} sourceId={metadata.sourceSystem_id} />
                     ) : null}
                 </Box>
             </Flex>
