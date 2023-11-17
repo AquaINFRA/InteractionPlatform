@@ -3,13 +3,6 @@ import { Box, Flex } from "@open-pioneer/chakra-integration";
 import { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { LastUpdate } from "../../components/ResourceType/Metadata/LastUpdate";
-import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
-import { Support } from "../../components/ResourceType/Support/Support";
-import { TOC } from "../../components/ResourceType/TOC/TOC";
-import { SolrSearchResultItem } from "../../services/SearchService";
-import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
-import { MetadataSourceIcon } from "../../components/Icons";
 import remarkGfm from "remark-gfm";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
@@ -17,6 +10,14 @@ import remarkRehype from "remark-rehype";
 import rehypeCitation from "rehype-citation";
 import rehypeStringify from "rehype-stringify";
 import parse from "html-react-parser";
+
+import { LastUpdate } from "../../components/ResourceType/Metadata/LastUpdate";
+import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
+import { Support } from "../../components/ResourceType/Support/Support";
+import { TOC } from "../../components/ResourceType/TOC/TOC";
+import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
+import { MetadataSourceIcon } from "../../components/Icons";
+import { SolrSearchResultItem, proxy } from "../../services/SearchService";
 
 export interface LHB_ArticleMetadataResponse extends SolrSearchResultItem {
     name: string;
@@ -46,9 +47,10 @@ export function LHB_ArticleView(props: ArticleViewProps) {
 
     const elementRef = useRef<HTMLInputElement>(null);
 
-    const bibliography = "https://raw.githubusercontent.com/MarkusKonk/test/main/ref.bib";
-    //const bibliography =
-    //    "https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/assets/references.bib";
+    //const bibliography = "https://raw.githubusercontent.com/MarkusKonk/test/main/ref.bib";
+    const bibliography =
+        proxy +
+        "https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/assets/references.bib";
     const citationFileFormat =
         "https://raw.githubusercontent.com/timlrx/rehype-citation/main/test/CITATION.cff";
     const rehypeCitationOptions = { bibliography, citationFileFormat };

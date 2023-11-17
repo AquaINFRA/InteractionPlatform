@@ -75,7 +75,7 @@ export interface SolrConfig {
 
 const SOLR_SUBJECT_FACET_FIELD = "theme_str";
 const SOLR_RESOURCE_TYPE_FACET_FIELD = "type";
-const proxy = "http://localhost:8080/";
+export const proxy = "http://localhost:8080/";
 
 export class SearchService {
     private config: SolrConfig;
@@ -167,7 +167,6 @@ export class SearchService {
     }
 
     getFaqList() {
-        console.log("Get list fo FAQs");
         const url =
             proxy +
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2fFAQ.md/raw`;
@@ -183,7 +182,6 @@ export class SearchService {
     }
 
     getFaq(faqId: string) {
-        console.log("Get list fo FAQs");
         const url =
             proxy +
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
