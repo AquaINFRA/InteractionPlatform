@@ -171,9 +171,15 @@ export class SearchService {
         const url =
             proxy +
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2fFAQ.md/raw`;
-        return fetch(url).then((response) => {
-            return response;
-        });
+        return fetch(url).then((response) =>
+            response.text().then((responseData: string) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
     }
 
     getFaq(faqId: string) {
@@ -183,9 +189,15 @@ export class SearchService {
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
             faqId +
             `/raw`;
-        return fetch(url).then((response) => {
-            return response;
-        });
+        return fetch(url).then((response) =>
+            response.text().then((responseData: string) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
     }
 
     private addSpatialFilter(spatialFilter: number[] | undefined, queryParams: URLSearchParams) {
