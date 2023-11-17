@@ -1,9 +1,8 @@
 import { Box, Button, Flex, SystemStyleObject } from "@open-pioneer/chakra-integration";
 import { useNavigate } from "react-router-dom";
 
+import { mapToResourceType, ResourceType } from "../../../services/ResourceTypeUtils";
 import { ResourceIcon } from "../../../views/Start/ResourceEntry/ResourceIcons";
-import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
-import { mapToResourceType } from "../../../services/ResourceTypeUtils";
 
 export interface RelatedContentEntryProps {
     title: string;

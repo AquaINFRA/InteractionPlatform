@@ -1,5 +1,4 @@
-import { ResourceType } from "../../../views/Start/ResourceEntry/ResourceEntry";
-import { mapFromResourceType } from "../../ResourceTypeUtils";
+import { mapFromResourceType, ResourceType } from "../../ResourceTypeUtils";
 import { SearchResultItem, SolrSearchResultItem } from "../../SearchService";
 
 export type MinSearchResultItem = {

@@ -1,26 +1,13 @@
 import { Box } from "@open-pioneer/chakra-integration";
 import { useNavigate } from "react-router-dom";
 
+import { ResourceType } from "../../../services/ResourceTypeUtils";
 import { useSearchState } from "../../Search/SearchState";
 import { ResourceIcon } from "./ResourceIcons";
 
 export interface ResourceEntryProps {
     resultCount: number;
     resourceType: ResourceType;
-}
-
-// TODO: remove to better place
-export enum ResourceType {
-    Repos = "Repository / Archive",
-    Articles = "Article",
-    // Educational = "Educational resource",
-    // Datasets = "Dataset",
-    Tools = "Tool/Software",
-    Organisations = "Organisation",
-    // Services = "Service",
-    Standards = "Standard",
-    LHB_Articles = "Living Handbook Article",
-    Learning_Resource = "Learning resource"
 }
 
 export const ResourceEntry = ({ resultCount, resourceType }: ResourceEntryProps) => {

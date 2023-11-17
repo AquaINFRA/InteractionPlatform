@@ -3,13 +3,13 @@ import { useIntl } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 
+import { ResourceType } from "../services/ResourceTypeUtils";
 import { BorderColor, PrimaryColor } from "../Theme";
 import {
     UrlSearchParameterType,
     UrlSearchParams,
     useSearchState
 } from "../views/Search/SearchState";
-import { ResourceType } from "../views/Start/ResourceEntry/ResourceEntry";
 import { DropdownArrowIcon, SearchIcon } from "./Icons";
 
 export function SearchBar() {

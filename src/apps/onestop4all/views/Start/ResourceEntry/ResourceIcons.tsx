@@ -1,4 +1,4 @@
-import { ResourceType } from "./ResourceEntry";
+import { ResourceType } from "../../../services/ResourceTypeUtils";
 
 export interface ResourceIconProps {
     type: ResourceType;

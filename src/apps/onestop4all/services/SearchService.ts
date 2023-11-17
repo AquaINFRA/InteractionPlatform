@@ -1,13 +1,12 @@
 import "@open-pioneer/runtime";
 
-import { ResourceType } from "../views/Start/ResourceEntry/ResourceEntry";
 import { RepositorySearchHandler } from "./search/result-handler/repository-handler";
 import { SearchResultHandler } from "./search/result-handler/search-result-handler";
 import { ServiceOptions } from "@open-pioneer/runtime";
 import { OrganizationSearchHandler } from "./search/result-handler/organization-handler";
 import { ArticleSearchHandler } from "./search/result-handler/article-handler";
 import { LHB_ArticleSearchHandler } from "./search/result-handler/lhb_article-handler";
-import { mapFromResourceType, mapToResourceType } from "./ResourceTypeUtils";
+import { ResourceType, mapFromResourceType, mapToResourceType } from "./ResourceTypeUtils";
 import { StandardSearchHandler } from "./search/result-handler/standard-handler";
 import { SoftwareSearchHandler } from "./search/result-handler/software-handler";
 import { Learning_ResourceHandler } from "./search/result-handler/learning_resource-handler";
@@ -76,7 +75,7 @@ export interface SolrConfig {
 
 const SOLR_SUBJECT_FACET_FIELD = "theme_str";
 const SOLR_RESOURCE_TYPE_FACET_FIELD = "type";
-const proxy = "http://localhost:8080/";
+export const proxy = "http://localhost:8080/";
 
 export class SearchService {
     private config: SolrConfig;
@@ -168,25 +167,35 @@ export class SearchService {
     }
 
     getFaqList() {
-        console.log("Get list fo FAQs");
         const url =
             proxy +
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2fFAQ.md/raw`;
-        return fetch(url).then((response) => {
-            return response;
-        });
+        return fetch(url).then((response) =>
+            response.text().then((responseData: string) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
     }
 
     getFaq(faqId: string) {
-        console.log("Get list fo FAQs");
         const url =
             proxy +
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
             faqId +
             `/raw`;
-        return fetch(url).then((response) => {
-            return response;
-        });
+        return fetch(url).then((response) =>
+            response.text().then((responseData: string) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
     }
 
     getLhbStructure() {

@@ -30,11 +30,9 @@ export function Faq() {
     };
 
     useEffect(() => {
-        searchSrvc.getFaqList().then((result) => {
-            result.text().then((res) => {
-                const markdownWithoutYaml = removeYaml(res);
-                setFaqList(markdownWithoutYaml);
-            });
+        searchSrvc.getFaqList().then((res) => {
+            const markdownWithoutYaml = removeYaml(res);
+            setFaqList(markdownWithoutYaml);
         });
     }, []);
 
@@ -52,19 +50,17 @@ export function Faq() {
 
     useEffect(() => {
         faqId
-            ? searchSrvc.getFaq(faqId).then((result) => {
-                  result.text().then((res) => {
-                      const markdownWithoutYaml = removeYaml(res);
-                      unified()
-                          .use(remarkParse)
-                          .use(remarkGfm)
-                          .use(remarkRehype, {})
-                          .use(rehypeStringify)
-                          .process(markdownWithoutYaml)
-                          .then((file) => {
-                              setFaq(file.value as string);
-                          });
-                  });
+            ? searchSrvc.getFaq(faqId).then((res) => {
+                  const markdownWithoutYaml = removeYaml(res);
+                  unified()
+                      .use(remarkParse)
+                      .use(remarkGfm)
+                      .use(remarkRehype, {})
+                      .use(rehypeStringify)
+                      .process(markdownWithoutYaml)
+                      .then((file) => {
+                          setFaq(file.value as string);
+                      });
               })
             : null;
     }, [faqId]);

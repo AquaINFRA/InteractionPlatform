@@ -8,6 +8,7 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { useEffect, useRef, useState } from "react";
 
+import { DisableOverlay } from "../../../../components/DisableOverlay/DisableOverlay";
 import { RectangleSelectIcon } from "../../../../components/Icons";
 import { Active_Control, PrimaryColor } from "../../../../Theme";
 import { useSearchState } from "../../SearchState";
@@ -18,20 +19,18 @@ export interface SpatialCoverageFacetProps {
 }
 
 const usedEPSGCode = "EPSG:4326";
+
 export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     const { map } = useMap(mapId);
 
     const searchState = useSearchState();
 
     const [source] = useState(new VectorSource({ wrapX: false }));
-    const [vector] = useState(
-        new VectorLayer({
-            source: source
-        })
-    );
+    const [vector] = useState(new VectorLayer({ source: source }));
     const draw = useRef<Draw>();
 
     const [bboxActive, setBboxActive] = useState(false);
+    const [disabled, setDisable] = useState(false);
 
     useEffect(() => {
         if (map) {
@@ -52,11 +51,13 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                 source.addFeature(bboxFeature);
             }
 
+            setDisable(searchState.spatialFilterDisabled);
+
             if (searchState.spatialFilter.length === 0) {
                 source.clear();
             }
         }
-    }, [map, searchState.spatialFilter, source]);
+    }, [map, searchState.spatialFilter, searchState.spatialFilterDisabled, source]);
 
     function setSearchArea(): void {
         const features = source.getFeatures();
@@ -103,23 +104,28 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     return (
         <Box>
             <FacetBase title="Spatial Coverage" expanded>
-                <Box height="300px" marginBottom="16px" position="relative">
-                    <IconButton
-                        aria-label="rectangle select"
-                        size="xs"
-                        position="absolute"
-                        zIndex="1000"
-                        right="10px"
-                        bottom="45px"
-                        bg={bboxActive ? Active_Control : PrimaryColor}
-                        onClick={() => selectBbox()}
-                        icon={<RectangleSelectIcon />}
-                    />
-                    <MapContainer mapId={mapId} />
+                <Box position="relative">
+                    <Box height="300px" marginBottom="16px" position="relative">
+                        <IconButton
+                            aria-label="rectangle select"
+                            size="xs"
+                            position="absolute"
+                            zIndex="1000"
+                            right="10px"
+                            bottom="45px"
+                            bg={bboxActive ? Active_Control : PrimaryColor}
+                            onClick={() => selectBbox()}
+                            icon={<RectangleSelectIcon />}
+                        />
+                        <MapContainer mapId={mapId} />
+                    </Box>
+                    <Button width="100%" onClick={() => setSearchArea()}>
+                        set search area
+                    </Button>
+                    {disabled && (
+                        <DisableOverlay label="The spatial selection is disabled"></DisableOverlay>
+                    )}
                 </Box>
-                <Button width="100%" onClick={() => setSearchArea()}>
-                    set search area
-                </Button>
             </FacetBase>
         </Box>
     );
