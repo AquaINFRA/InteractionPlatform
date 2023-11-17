@@ -5,7 +5,7 @@ import * as appMetadata from "open-pioneer:app";
 
 import { AppUI } from "./AppUI";
 
-fetch("./config.json").then((file) => {
+fetch("/config.json").then((file) => {
     file.json().then((config) => {
         const Element = createCustomElement({
             component: AppUI,
