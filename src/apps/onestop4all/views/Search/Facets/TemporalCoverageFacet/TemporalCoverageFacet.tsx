@@ -15,6 +15,7 @@ import {
 import { ParentSize } from "@visx/responsive";
 import { useEffect, useState } from "react";
 
+import { DisableOverlay } from "../../../../components/DisableOverlay/DisableOverlay";
 import { TemporalFacet } from "../../../../services/SearchService";
 import { ActiveControlColor } from "../../../../Theme";
 import { TemporalFacetEndYear, TemporalFacetStartYear, useSearchState } from "../../SearchState";
@@ -27,6 +28,7 @@ export function TemporalCoverageFacet() {
     const [startYear, setStartYear] = useState(TemporalFacetStartYear);
     const [endYear, setEndYear] = useState(TemporalFacetEndYear);
     const [periods, setPeriods] = useState<TemporalFacet[]>();
+    const [disabled, setDisable] = useState(false);
 
     useEffect(() => {
         if (searchState.temporalFilter) {
@@ -44,7 +46,8 @@ export function TemporalCoverageFacet() {
         if (searchState.temporalFacets) {
             setPeriods(searchState.temporalFacets);
         }
-    }, [searchState.temporalFacets]);
+        setDisable(searchState.temporalFilterDisabled);
+    }, [searchState.temporalFacets, searchState.temporalFilterDisabled]);
 
     function setTimespan(): void {
         searchState.setTemporalFilter({ startYear, endYear });
@@ -73,86 +76,92 @@ export function TemporalCoverageFacet() {
     return (
         <Box>
             <FacetBase title="Temporal Coverage" expanded>
-                <ParentSize>
-                    {(parent) => (
-                        <TemporalGraph
-                            width={parent.width}
-                            height={200}
-                            facets={periods || []}
-                            selected={selectPeriod}
-                        ></TemporalGraph>
+                <Box position="relative">
+                    <ParentSize>
+                        {(parent) => (
+                            <TemporalGraph
+                                width={parent.width}
+                                height={200}
+                                facets={periods || []}
+                                selected={selectPeriod}
+                            ></TemporalGraph>
+                        )}
+                    </ParentSize>
+
+                    <Box padding="10px">
+                        <RangeSlider
+                            min={TemporalFacetStartYear}
+                            max={TemporalFacetEndYear}
+                            value={[startYear, endYear]}
+                            onChange={sliderChange}
+                        >
+                            <RangeSliderTrack>
+                                <RangeSliderFilledTrack bg={ActiveControlColor} />
+                            </RangeSliderTrack>
+                            <RangeSliderThumb
+                                index={0}
+                                boxSize={5}
+                                backgroundColor={ActiveControlColor}
+                                borderRadius={0}
+                            >
+                                <Box>{SliderHandle}</Box>
+                            </RangeSliderThumb>
+                            <RangeSliderThumb
+                                index={1}
+                                boxSize={5}
+                                backgroundColor={ActiveControlColor}
+                                borderRadius={0}
+                            >
+                                <Box>{SliderHandle}</Box>
+                            </RangeSliderThumb>
+                        </RangeSlider>
+                    </Box>
+
+                    <Flex justifyContent="space-between" padding="10px 0px">
+                        <NumberInput
+                            value={startYear}
+                            onChange={(valueString) => setStartYear(parseInt(valueString))}
+                            min={TemporalFacetStartYear}
+                            max={endYear}
+                            keepWithinRange={true}
+                            clampValueOnBlur={false}
+                            size="sm"
+                            maxW={20}
+                            variant="custom"
+                        >
+                            <NumberInputField readOnly />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
+
+                        <NumberInput
+                            value={endYear}
+                            onChange={(valueString) => setEndYear(parseInt(valueString))}
+                            min={startYear}
+                            max={TemporalFacetEndYear}
+                            keepWithinRange={true}
+                            clampValueOnBlur={false}
+                            size="sm"
+                            maxW={20}
+                            variant="custom"
+                        >
+                            <NumberInputField readOnly />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
+                    </Flex>
+                    <Button width="100%" onClick={setTimespan}>
+                        set timespan
+                    </Button>
+
+                    {disabled && (
+                        <DisableOverlay label="The temporal selection is disabled"></DisableOverlay>
                     )}
-                </ParentSize>
-
-                <Box padding="10px">
-                    <RangeSlider
-                        min={TemporalFacetStartYear}
-                        max={TemporalFacetEndYear}
-                        value={[startYear, endYear]}
-                        onChange={sliderChange}
-                    >
-                        <RangeSliderTrack>
-                            <RangeSliderFilledTrack bg={ActiveControlColor} />
-                        </RangeSliderTrack>
-                        <RangeSliderThumb
-                            index={0}
-                            boxSize={5}
-                            backgroundColor={ActiveControlColor}
-                            borderRadius={0}
-                        >
-                            <Box>{SliderHandle}</Box>
-                        </RangeSliderThumb>
-                        <RangeSliderThumb
-                            index={1}
-                            boxSize={5}
-                            backgroundColor={ActiveControlColor}
-                            borderRadius={0}
-                        >
-                            <Box>{SliderHandle}</Box>
-                        </RangeSliderThumb>
-                    </RangeSlider>
                 </Box>
-
-                <Flex justifyContent="space-between" padding="10px 0px">
-                    <NumberInput
-                        value={startYear}
-                        onChange={(valueString) => setStartYear(parseInt(valueString))}
-                        min={TemporalFacetStartYear}
-                        max={endYear}
-                        keepWithinRange={true}
-                        clampValueOnBlur={false}
-                        size="sm"
-                        maxW={20}
-                        variant="custom"
-                    >
-                        <NumberInputField readOnly />
-                        <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                        </NumberInputStepper>
-                    </NumberInput>
-
-                    <NumberInput
-                        value={endYear}
-                        onChange={(valueString) => setEndYear(parseInt(valueString))}
-                        min={startYear}
-                        max={TemporalFacetEndYear}
-                        keepWithinRange={true}
-                        clampValueOnBlur={false}
-                        size="sm"
-                        maxW={20}
-                        variant="custom"
-                    >
-                        <NumberInputField readOnly />
-                        <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                        </NumberInputStepper>
-                    </NumberInput>
-                </Flex>
-                <Button width="100%" onClick={setTimespan}>
-                    set timespan
-                </Button>
             </FacetBase>
         </Box>
     );

@@ -31,6 +31,10 @@ export interface UrlSearchParams {
 }
 
 export const SpatialFilterEnableForResourceTypes = [ResourceType.Organisations];
+export const TemporalFilterEnableForResourceTypes = [
+    ResourceType.Articles,
+    ResourceType.Learning_Resource
+];
 
 export const TemporalFacetStartYear = 2000;
 export const TemporalFacetEndYear = 2023;
@@ -64,6 +68,7 @@ export interface ISearchState {
     temporalFilter: TemporalFilter | undefined;
     setTemporalFilter(tf?: TemporalFilter): void;
     temporalFacets: TemporalFacet[];
+    temporalFilterDisabled: boolean;
     pageSize: number;
     setPageSize(pageSize: number): void;
     pageStart: number;
@@ -167,6 +172,12 @@ export const SearchState = (props: PropsWithChildren) => {
     const [temporalFilter, setTemporalFilter] = useState<TemporalFilter | undefined>(tf);
     const [temporalFacets, setTemporalFacets] = useState<TemporalFacet[]>([]);
 
+    // check disabling spatial filter
+    const tempMatches = TemporalFilterEnableForResourceTypes.filter(
+        (res) => selectedResourceTypes.findIndex((e) => e === res) >= 0
+    );
+    const temporalFilterDisabled = tempMatches.length === 0 && selectedResourceTypes.length > 0;
+
     function search() {
         setIsLoaded(false);
         searchSrvc
@@ -256,6 +267,7 @@ export const SearchState = (props: PropsWithChildren) => {
             setPageStart(0);
         },
         temporalFacets,
+        temporalFilterDisabled,
         pageSize,
         setPageSize: (value) => {
             setPageSize(value);
