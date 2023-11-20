@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { DisableOverlay } from "../../../../components/DisableOverlay/DisableOverlay";
 import { RectangleSelectIcon } from "../../../../components/Icons";
-import { Active_Control, PrimaryColor } from "../../../../Theme";
+import { ActiveControlColor, PrimaryColor } from "../../../../Theme";
 import { useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 
@@ -113,7 +113,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                             zIndex="1000"
                             right="10px"
                             bottom="45px"
-                            bg={bboxActive ? Active_Control : PrimaryColor}
+                            bg={bboxActive ? ActiveControlColor : PrimaryColor}
                             onClick={() => selectBbox()}
                             icon={<RectangleSelectIcon />}
                         />

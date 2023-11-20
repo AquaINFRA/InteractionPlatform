@@ -56,7 +56,14 @@ export function Chips() {
     }
 
     // temporal coverage
-    // TODO: implement chip for temporal coverage
+    const temporalFilter = searchState.temporalFilter;
+    if (temporalFilter) {
+        chips.push({
+            title: "Temporal Coverage",
+            values: [`${temporalFilter.startYear} - ${temporalFilter.endYear}`],
+            deleteCb: () => searchState.setTemporalFilter(undefined)
+        });
+    }
 
     const titleStyles = {
         color: PrimaryColor,

@@ -3,7 +3,12 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { ResourceType } from "../../services/ResourceTypeUtils";
-import { SearchResult, SubjectEntry } from "../../services/SearchService";
+import {
+    SearchResult,
+    SubjectEntry,
+    TemporalFacet,
+    TemporalFilter
+} from "../../services/SearchService";
 
 export enum UrlSearchParameterType {
     Searchterm = "searchterm",
@@ -11,7 +16,8 @@ export enum UrlSearchParameterType {
     Subjects = "subjects",
     SpatialFilter = "spatialfilter",
     PageSize = "pageSize",
-    PageStart = "pageStart"
+    PageStart = "pageStart",
+    TemporalFilter = "temporalfilter"
 }
 
 export interface UrlSearchParams {
@@ -21,9 +27,14 @@ export interface UrlSearchParams {
     [UrlSearchParameterType.SpatialFilter]?: string;
     [UrlSearchParameterType.PageSize]?: string;
     [UrlSearchParameterType.PageStart]?: string;
+    [UrlSearchParameterType.TemporalFilter]?: string;
 }
 
 export const SpatialFilterEnableForResourceTypes = [ResourceType.Organisations];
+
+export const TemporalFacetStartYear = 2000;
+export const TemporalFacetEndYear = 2023;
+export const TemporalFacetGap = "+1YEAR";
 
 export interface SelectableResourceType {
     resourceType: ResourceType;
@@ -50,6 +61,9 @@ export interface ISearchState {
     spatialFilter: number[];
     setSpatialFilter(sf: number[]): void;
     spatialFilterDisabled: boolean;
+    temporalFilter: TemporalFilter | undefined;
+    setTemporalFilter(tf?: TemporalFilter): void;
+    temporalFacets: TemporalFacet[];
     pageSize: number;
     setPageSize(pageSize: number): void;
     pageStart: number;
@@ -137,6 +151,22 @@ export const SearchState = (props: PropsWithChildren) => {
     }
     const [spatialFilter, setSpatialFilter] = useState(sp);
 
+    // init temporal filter
+    const tempFilterString = searchParams.get(UrlSearchParameterType.TemporalFilter);
+    let tf: TemporalFilter | undefined = undefined;
+    if (tempFilterString) {
+        const [s, e] = tempFilterString.split(",");
+        if (s && e) {
+            const start = parseInt(s, 10);
+            const end = parseInt(e, 10);
+            if (!isNaN(start) && !isNaN(end)) {
+                tf = { startYear: start, endYear: end };
+            }
+        }
+    }
+    const [temporalFilter, setTemporalFilter] = useState<TemporalFilter | undefined>(tf);
+    const [temporalFacets, setTemporalFacets] = useState<TemporalFacet[]>([]);
+
     function search() {
         setIsLoaded(false);
         searchSrvc
@@ -146,7 +176,13 @@ export const SearchState = (props: PropsWithChildren) => {
                 subjects: selectedSubjects,
                 spatialFilter,
                 pageSize,
-                pageStart
+                pageStart,
+                temporalFilter,
+                temporalConfig: {
+                    startYear: TemporalFacetStartYear,
+                    endYear: TemporalFacetEndYear,
+                    gap: TemporalFacetGap
+                }
             })
             .then((result) => {
                 setIsLoaded(true);
@@ -160,6 +196,7 @@ export const SearchState = (props: PropsWithChildren) => {
                 });
                 setSelecteableResourceTypes(resourceTypeFacet);
                 handleSubjects(result.facets.subjects);
+                handleTemporalFacets(result.facets.temporal);
             })
             .catch((error) => {
                 setIsLoaded(true);
@@ -189,6 +226,10 @@ export const SearchState = (props: PropsWithChildren) => {
                 });
             });
         }
+
+        function handleTemporalFacets(facets: TemporalFacet[]) {
+            setTemporalFacets(facets);
+        }
     }
 
     const state: ISearchState = {
@@ -202,13 +243,19 @@ export const SearchState = (props: PropsWithChildren) => {
             setSelectedResourceTypes(values);
             setPageStart(0);
         },
-        spatialFilterDisabled,
         selectableResourceTypes,
         spatialFilter,
         setSpatialFilter: (value) => {
             setSpatialFilter(value);
             setPageStart(0);
         },
+        spatialFilterDisabled,
+        temporalFilter,
+        setTemporalFilter: (tf) => {
+            setTemporalFilter(tf);
+            setPageStart(0);
+        },
+        temporalFacets,
         pageSize,
         setPageSize: (value) => {
             setPageSize(value);

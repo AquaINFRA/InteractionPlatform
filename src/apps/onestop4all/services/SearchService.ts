@@ -29,6 +29,24 @@ export interface SearchRequestParams {
     pageSize?: number;
     pageStart?: number;
     spatialFilter?: number[];
+    temporalFilter?: TemporalFilter;
+    temporalConfig?: TemporalConfig;
+}
+
+export interface TemporalConfig {
+    startYear: number;
+    endYear: number;
+    gap: string;
+}
+
+export interface TemporalFilter {
+    startYear: number;
+    endYear: number;
+}
+
+export interface TemporalFacet {
+    dateStr: string;
+    count: number;
 }
 
 export interface SolrSearchResultItem {
@@ -47,6 +65,11 @@ interface SolrFacetResponse {
     facet_fields: {
         [key: string]: [];
     };
+    facet_ranges: {
+        [key: string]: {
+            counts: [];
+        };
+    };
 }
 
 export interface SubjectEntry {
@@ -60,6 +83,7 @@ export interface Facets {
         resourceType: ResourceType;
         count: number;
     }[];
+    temporal: TemporalFacet[];
 }
 
 export interface SearchResult {
@@ -75,6 +99,7 @@ export interface SolrConfig {
 
 const SOLR_SUBJECT_FACET_FIELD = "theme_str";
 const SOLR_RESOURCE_TYPE_FACET_FIELD = "type";
+const SOLR_TEMPORAL_FACET_RANGE_FIELD = "datePublished";
 export const proxy = "http://localhost:8080/";
 
 export class SearchService {
@@ -116,6 +141,12 @@ export class SearchService {
         this.addSubjects(searchParams.subjects, queryParams);
 
         this.addSpatialFilter(searchParams.spatialFilter, queryParams);
+
+        this.addTemporalFilter(
+            searchParams.temporalFilter,
+            queryParams,
+            searchParams.temporalConfig
+        );
 
         const url = `${this.config.url}/${
             this.config.coreSelector
@@ -238,6 +269,25 @@ export class SearchService {
         }
     }
 
+    private addTemporalFilter(
+        temporalFilter: TemporalFilter | undefined,
+        queryParams: URLSearchParams,
+        temporalConfig?: TemporalConfig
+    ) {
+        if (temporalFilter) {
+            queryParams.set(
+                "fq",
+                `datePublished:[${temporalFilter.startYear} TO ${temporalFilter.endYear}]`
+            );
+        }
+        if (temporalConfig) {
+            queryParams.set("facet.range", SOLR_TEMPORAL_FACET_RANGE_FIELD);
+            queryParams.set("facet.range.start", `${temporalConfig.startYear}-01-01T00:00:00Z`);
+            queryParams.set("facet.range.end", `${temporalConfig.endYear + 1}-01-01T00:00:00Z`);
+            queryParams.set("facet.range.gap", temporalConfig.gap);
+        }
+    }
+
     private addResourceTypes(resourceTypes: string[] | undefined, queryParams: URLSearchParams) {
         if (resourceTypes?.length) {
             const mapping = resourceTypes.map((e) => mapFromResourceType(e as ResourceType));
@@ -302,7 +352,8 @@ export class SearchService {
     private createFacets(facet_counts: SolrFacetResponse): Facets {
         return {
             subjects: this.createSubjectFacets(facet_counts),
-            resourceType: this.createResourceTypeFacet(facet_counts)
+            resourceType: this.createResourceTypeFacet(facet_counts),
+            temporal: this.createTemporalFacet(facet_counts)
         };
     }
 
@@ -318,6 +369,17 @@ export class SearchService {
         if (resourceTypeFacet) {
             return this.createFragments(resourceTypeFacet).map((e) => ({
                 resourceType: mapToResourceType(e.label),
+                count: e.count
+            }));
+        }
+        return [];
+    }
+
+    private createTemporalFacet(facet_counts: SolrFacetResponse) {
+        const facetCounts = facet_counts.facet_ranges[SOLR_TEMPORAL_FACET_RANGE_FIELD]?.counts;
+        if (facetCounts) {
+            return this.createFragments(facetCounts).map((e) => ({
+                dateStr: e.label.substring(0, 4),
                 count: e.count
             }));
         }
