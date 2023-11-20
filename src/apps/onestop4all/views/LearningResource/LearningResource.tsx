@@ -101,7 +101,7 @@ export function LearningResourceView(props: LearningResourceViewProps) {
                                     element: "datePublished",
                                     tag: "Published",
                                     val: metadata.datePublished
-                                        ? new Date(metadata.datePublished).toLocaleDateString()
+                                        ? new Date(metadata.datePublished).getUTCFullYear()
                                         : undefined
                                 },
                                 {
