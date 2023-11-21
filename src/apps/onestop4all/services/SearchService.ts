@@ -31,6 +31,7 @@ export interface SearchRequestParams {
     spatialFilter?: number[];
     temporalFilter?: TemporalFilter;
     temporalConfig?: TemporalConfig;
+    sorting?: string;
 }
 
 export interface TemporalConfig {
@@ -141,6 +142,8 @@ export class SearchService {
         this.addSubjects(searchParams.subjects, queryParams);
 
         this.addSpatialFilter(searchParams.spatialFilter, queryParams);
+
+        this.addSorting(searchParams.sorting, queryParams);
 
         this.addTemporalFilter(
             searchParams.temporalFilter,
@@ -325,6 +328,12 @@ export class SearchService {
             if (pageStart !== undefined) {
                 queryParams.set("start", (pageStart * pageSize).toString());
             }
+        }
+    }
+
+    private addSorting(sorting: string | undefined, queryParams: URLSearchParams) {
+        if (sorting !== undefined && sorting !== "") {
+            queryParams.set("sort", sorting);
         }
     }
 

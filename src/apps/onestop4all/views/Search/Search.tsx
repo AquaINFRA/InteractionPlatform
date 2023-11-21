@@ -58,6 +58,10 @@ export function SearchView() {
             ] = `${searchState.temporalFilter.startYear},${searchState.temporalFilter.endYear}`;
         }
 
+        if (searchState.sorting) {
+            params[UrlSearchParameterType.SortingFilter] = `${searchState.sorting.term}`;
+        }
+
         navigate({
             pathname: "/search",
             search: `?${createSearchParams({ ...params })}`
@@ -70,7 +74,8 @@ export function SearchView() {
         searchState.spatialFilter,
         searchState.pageSize,
         searchState.pageStart,
-        searchState.temporalFilter
+        searchState.temporalFilter,
+        searchState.sorting
     ]);
 
     const [openMenu, setOpenMenu] = useState(false);

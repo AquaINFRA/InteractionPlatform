@@ -17,7 +17,8 @@ export enum UrlSearchParameterType {
     SpatialFilter = "spatialfilter",
     PageSize = "pageSize",
     PageStart = "pageStart",
-    TemporalFilter = "temporalfilter"
+    TemporalFilter = "temporalfilter",
+    SortingFilter = "sort"
 }
 
 export interface UrlSearchParams {
@@ -28,12 +29,19 @@ export interface UrlSearchParams {
     [UrlSearchParameterType.PageSize]?: string;
     [UrlSearchParameterType.PageStart]?: string;
     [UrlSearchParameterType.TemporalFilter]?: string;
+    [UrlSearchParameterType.SortingFilter]?: string;
 }
 
 export const SpatialFilterEnableForResourceTypes = [ResourceType.Organisations];
 export const TemporalFilterEnableForResourceTypes = [
     ResourceType.Articles,
     ResourceType.Learning_Resource
+];
+
+export const SortOptions: SortOption[] = [
+    { label: "Relevanz", term: "" },
+    { label: "Title (A-Z)", term: "mainTitle asc" },
+    { label: "Title (Z-A)", term: "mainTitle desc" }
 ];
 
 export const TemporalFacetStartYear = 2000;
@@ -51,6 +59,11 @@ export interface SelectableSubject {
     children: SelectableSubject[];
     count?: number;
     selected?: boolean;
+}
+
+export interface SortOption {
+    label: string;
+    term: string;
 }
 
 export interface ISearchState {
@@ -75,6 +88,8 @@ export interface ISearchState {
     setPageStart(pageSize: number): void;
     searchResults: SearchResult | undefined;
     isLoaded: boolean;
+    sorting: SortOption | undefined;
+    setSorting(sortOption: SortOption): unknown;
     search(): void;
 }
 
@@ -178,6 +193,12 @@ export const SearchState = (props: PropsWithChildren) => {
     );
     const temporalFilterDisabled = tempMatches.length === 0 && selectedResourceTypes.length > 0;
 
+    // sorting
+    const sortString = searchParams.get(UrlSearchParameterType.SortingFilter);
+    const sortMatch = SortOptions.find((so) => so.term === sortString);
+    const sort = sortMatch || SortOptions[0];
+    const [sorting, setSorting] = useState<SortOption | undefined>(sort);
+
     function search() {
         setIsLoaded(false);
         searchSrvc
@@ -193,7 +214,8 @@ export const SearchState = (props: PropsWithChildren) => {
                     startYear: TemporalFacetStartYear,
                     endYear: TemporalFacetEndYear,
                     gap: TemporalFacetGap
-                }
+                },
+                sorting: sorting?.term
             })
             .then((result) => {
                 setIsLoaded(true);
@@ -277,6 +299,11 @@ export const SearchState = (props: PropsWithChildren) => {
         setPageStart,
         searchResults,
         isLoaded,
+        sorting,
+        setSorting(sortOption) {
+            setSorting(sortOption);
+            setPageStart(0);
+        },
         search,
         selectedSubjects,
         setSelectedSubjects,
