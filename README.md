@@ -61,3 +61,7 @@ docker run --rm -p 80:80 -e SOLR_URL="http://localhost:8080/http://localhost:898
 ## Contact
 
 [Markus Konkol, 52°North](m.konkol@52north.org)
+
+## Contributors
+
+Christin Henzen, Auriol Degbelo, Markus Konkol, Simon Jirka, Jan Schulte, Arne Vogt, Christoph Wagner, Jonas Grieb, Ralf Klammer.
