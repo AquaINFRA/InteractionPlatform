@@ -57,3 +57,7 @@ docker run --rm -p 80:80 -e SOLR_URL="http://localhost:8080/http://localhost:898
 ## License
 
 [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
+## Contact
+
+[Markus Konkol, 52°North](m.konkol@52north.org)
