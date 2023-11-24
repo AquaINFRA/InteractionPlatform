@@ -57,3 +57,15 @@ docker run --rm -p 80:80 -e SOLR_URL="http://localhost:8080/http://localhost:898
 ## License
 
 [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
+## Contact
+
+[Markus Konkol, 52°North](m.konkol@52north.org)
+
+## Contributors
+
+Christin Henzen, Auriol Degbelo, Markus Konkol, Simon Jirka, Jan Schulte, Arne Vogt, Christoph Wagner, Jonas Grieb, Ralf Klammer.
+
+## Funding
+
+This work has been funded by the German Research Foundation (DFG) through the project NFDI4Earth ( TA2 M2.1 , DFG project no. 460036893, https://www.nfdi4earth.de/) within the German National Research Data Infrastructure (NFDI, https://www.nfdi.de/). 
