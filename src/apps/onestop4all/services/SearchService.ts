@@ -349,6 +349,7 @@ export class SearchService {
 
     private addChildQueryParams(queryParams: URLSearchParams) {
         queryParams.set("fl", "*, [child author]");
+        queryParams.set("fq", '-type:"person_nested"');
     }
 
     private createQueryParams(): URLSearchParams {
