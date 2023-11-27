@@ -26,7 +26,19 @@ export const Header = () => {
             <Box _hover={{ cursor: "pointer" }} onClick={backToStart}>
                 <Logo />
             </Box>
-            <Box w="100%"></Box>
+            <Box w="100%">
+                <div style={{ textAlign: "center", fontSize: "16pt" }}>
+                    The OneStop4All is a beta version. Do you have feedback?&nbsp;
+                    <a
+                        href="https://docs.google.com/document/d/1AbH2EOsxC2kddhmSnqpSaRkmfvrtbd0658rr8N05Vc8/edit"
+                        className="link"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        Tell us here!
+                    </a>
+                </div>
+            </Box>
             <Hide below="custombreak">
                 <UserSupportLink></UserSupportLink>
             </Hide>
