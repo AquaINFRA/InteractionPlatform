@@ -159,7 +159,7 @@ export function TemporalCoverageFacet() {
                     </Button>
 
                     {disabled && (
-                        <DisableOverlay label="The temporal selection is disabled"></DisableOverlay>
+                        <DisableOverlay label="The temporal filter is disabled because the current selection does not have temporal information."></DisableOverlay>
                     )}
                 </Box>
             </FacetBase>

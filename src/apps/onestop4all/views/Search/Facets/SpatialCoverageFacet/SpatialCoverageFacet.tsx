@@ -123,7 +123,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         set search area
                     </Button>
                     {disabled && (
-                        <DisableOverlay label="The spatial selection is disabled"></DisableOverlay>
+                        <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
                     )}
                 </Box>
             </FacetBase>

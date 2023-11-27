@@ -15,7 +15,7 @@ export function DisableOverlay(props: { label: string }) {
             alignItems="center"
             zIndex="9999"
         >
-            <Box backgroundColor="white" padding="10px">
+            <Box backgroundColor="white" padding="10px" maxW="83%">
                 {label}
             </Box>
         </Box>
