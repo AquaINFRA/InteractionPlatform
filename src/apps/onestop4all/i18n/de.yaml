@@ -17,7 +17,7 @@ messages:
       links:
         NFDI4EarthLinkUrl: https://www.nfdi4earth.de/
         NFDI4EarthLinkLabel: NFDI4Earth
-        MissionLinkUrl: /
+        MissionLinkUrl: https://www.nfdi4earth.de/about-us
         MissionLinkLabel: Mission
         ResourcesLinkUrl: /
         ResourcesLinkLabel: Resources

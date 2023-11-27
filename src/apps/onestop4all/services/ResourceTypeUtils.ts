@@ -22,11 +22,11 @@ const mapping = [
     },
     {
         type: ResourceType.Repos,
-        identifier: "http://nfdi4earth.de/ontology#Repository"
+        identifier: "http://nfdi4earth.de/ontology/Repository"
     },
     {
         type: ResourceType.Standards,
-        identifier: "http://nfdi4earth.de/ontology#MetadataStandard"
+        identifier: "http://nfdi4earth.de/ontology/MetadataStandard"
     },
     {
         type: ResourceType.Tools,
