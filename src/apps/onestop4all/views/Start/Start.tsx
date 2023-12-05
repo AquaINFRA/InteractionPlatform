@@ -4,9 +4,9 @@ import { useIntl } from "open-pioneer:react-hooks";
 
 import NetworkGraph from "../../components/Graph/NetworkGraph";
 import { SearchBar } from "../../components/SearchBar";
-import { HowToEntry } from "./HowTo/HowToEntry";
 import { ParticipateEntry, ParticipateEntryProps } from "./ParticipateEntry/ParticipateEntry";
 import { ResourceEntries } from "./ResourceEntries/ResourceEntries";
+import { HowToEntries } from "./HowTo/HowToEntries";
 
 export function StartView() {
     const intl = useIntl();
@@ -169,54 +169,7 @@ export function StartView() {
 
                 <div className="seperator"></div>
 
-                <Box className="how-to">
-                    <Box className="text-centered-box">
-                        <Box className="text-centered-box-header">
-                            {intl.formatMessage({ id: "start.how-to.title" })}
-                        </Box>
-                        <Box className="text-centered-box-text">
-                            {intl.formatMessage({ id: "start.how-to.description" })}
-                        </Box>
-                    </Box>
-
-                    <Flex className="how-to-entries" gap="32px">
-                        <HowToEntry
-                            heading={intl.formatMessage({
-                                id: "start.how-to.how-to-entries-1.title"
-                            })}
-                            description={intl.formatMessage({
-                                id: "start.how-to.how-to-entries-1.description"
-                            })}
-                        />
-
-                        <HowToEntry
-                            heading={intl.formatMessage({
-                                id: "start.how-to.how-to-entries-2.title"
-                            })}
-                            description={intl.formatMessage({
-                                id: "start.how-to.how-to-entries-2.description"
-                            })}
-                        />
-
-                        <HowToEntry
-                            heading={intl.formatMessage({
-                                id: "start.how-to.how-to-entries-3.title"
-                            })}
-                            description={intl.formatMessage({
-                                id: "start.how-to.how-to-entries-3.description"
-                            })}
-                        />
-
-                        <HowToEntry
-                            heading={intl.formatMessage({
-                                id: "start.how-to.how-to-entries-4.title"
-                            })}
-                            description={intl.formatMessage({
-                                id: "start.how-to.how-to-entries-4.description"
-                            })}
-                        />
-                    </Flex>
-                </Box>
+                <HowToEntries />
             </Container>
 
             <Box className="resources">

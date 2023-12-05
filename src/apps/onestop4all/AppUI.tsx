@@ -4,6 +4,7 @@ import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-rou
 import { BaseMenu } from "./components/BaseMenu/BaseMenu";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
+import { HowToEntryContent } from "./views/Start/HowTo/HowToEntryContent";
 import { Theme } from "./Theme";
 import { Result } from "./views/Result/Result";
 import { SearchView } from "./views/Search/Search";
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
             {
                 path: `faq/:faq`,
                 element: <Faq />
+            },
+            {
+                path: `howtoentry/:content`,
+                element: <HowToEntryContent />
             },
             {
                 path: "*",

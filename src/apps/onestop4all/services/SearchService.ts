@@ -232,6 +232,24 @@ export class SearchService {
         );
     }
 
+    getHowToEntry(howToEntry: string) {
+        //console.log("start fetching entry point for id: " + howToEntry);
+        const url =
+            proxy +
+            `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
+            howToEntry +
+            `/raw`;
+        return fetch(url).then((response) =>
+            response.text().then((responseData: string) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
+    }
+
     getLhbStructure() {
         const url =
             proxy +
