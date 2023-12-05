@@ -12,8 +12,8 @@ import { HowToEntry } from "./HowToEntry";
 export const HowToEntries = () => {
     const intl = useIntl();
     const language = "eng";
-    const searchSrvc = useService("onestop4all.SearchService");
 
+    const searchSrvc = useService("onestop4all.SearchService");
     const [howToEntries, setEntries] = useState(new Array<string>());
 
     const getHowToEntriesList = (sections: object[]) => {
@@ -40,23 +40,27 @@ export const HowToEntries = () => {
         });
     }, []);
 
-    return (
-        <Box className="how-to">
-            <Box className="text-centered-box">
-                <Box className="text-centered-box-header">
-                    {intl.formatMessage({ id: "start.how-to.title" })}
+    if (howToEntries.length > 2) {
+        return (
+            <Box className="how-to">
+                <Box className="text-centered-box">
+                    <Box className="text-centered-box-header">
+                        {intl.formatMessage({ id: "start.how-to.title" })}
+                    </Box>
+                    <Box className="text-centered-box-text">
+                        {intl.formatMessage({ id: "start.how-to.description" })}
+                    </Box>
                 </Box>
-                <Box className="text-centered-box-text">
-                    {intl.formatMessage({ id: "start.how-to.description" })}
-                </Box>
+                <SimpleGrid columns={3} spacing={10} paddingTop={"1%"}>
+                    {howToEntries.slice(1, howToEntries.length).map((howToEntry, index) => (
+                        <Flex key={index}>
+                            <HowToEntry howToEntryTitle={howToEntry} key={index} />
+                        </Flex>
+                    ))}
+                </SimpleGrid>
             </Box>
-            <SimpleGrid columns={3} spacing={10} paddingTop={"1%"}>
-                {howToEntries.slice(1, howToEntries.length).map((howToEntry, index) => (
-                    <Flex key={index}>
-                        <HowToEntry howToEntryTitle={howToEntry} key={index} />
-                    </Flex>
-                ))}
-            </SimpleGrid>
-        </Box>
-    );
+        );
+    } else {
+        return null;
+    }
 };

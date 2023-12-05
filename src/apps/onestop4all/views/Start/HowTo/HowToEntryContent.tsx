@@ -52,7 +52,7 @@ export const HowToEntryContent = () => {
                                 if (tmp) {
                                     const id = res && res.docs && res.docs[0] ? res.docs[0].id : "";
                                     tmp.href = "/result/" + id;
-                                    setMdCon(html.body.innerHTML as string);
+                                    //setMdCon(html.body.innerHTML as string);
                                 }
                             });
                         }
@@ -98,8 +98,8 @@ export const HowToEntryContent = () => {
                         to starting page
                     </Box>
                 </Flex>
-                <Box w="90%" padding="3%">
-                    <div>
+                {markdownContent ? (
+                    <Box w="90%" padding="3%">
                         {parse(markdownContent, {
                             replace: (domNode: any) => {
                                 if (domNode.type === "tag" && domNode.name === "img") {
@@ -114,8 +114,10 @@ export const HowToEntryContent = () => {
                                 }
                             }
                         })}
-                    </div>
-                </Box>
+                    </Box>
+                ) : (
+                    <div className="notFound">No content found</div>
+                )}
             </Container>
         </Box>
     );

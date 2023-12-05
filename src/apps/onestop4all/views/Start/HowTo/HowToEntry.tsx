@@ -14,10 +14,11 @@ export const HowToEntry = (props: { howToEntryTitle: string }) => {
     const intl = useIntl();
     const [hovered, setHovered] = useState(false);
     const searchSrvc = useService("onestop4all.SearchService");
+    const navigate = useNavigate();
+
     const howToEntryTitle = props.howToEntryTitle;
     const [howToEntryYaml, setEntryYaml] = useState<HowToEntryYaml>();
     const [howToEntryMarkdown, setEntryMarkdown] = useState<string>();
-    const navigate = useNavigate();
 
     const extractYaml = (md: string) => {
         const yamlRegex = /^---\n([\s\S]*?)\n---\n/;
@@ -31,13 +32,17 @@ export const HowToEntry = (props: { howToEntryTitle: string }) => {
     const extractMarkdown = (md: string) => {
         const yamlRegex = /^---\n([\s\S]*?)\n---\n/;
         const mdWithoutYaml = md.replace(yamlRegex, "");
-        setEntryMarkdown(mdWithoutYaml);
+        if (mdWithoutYaml) {
+            setEntryMarkdown(mdWithoutYaml);
+        }
     };
 
     useEffect(() => {
         searchSrvc.getHowToEntry(howToEntryTitle).then((result) => {
-            extractYaml(result);
-            extractMarkdown(result);
+            if (result) {
+                extractYaml(result);
+                extractMarkdown(result);
+            }
         });
     }, [howToEntryTitle]);
 
@@ -48,7 +53,7 @@ export const HowToEntry = (props: { howToEntryTitle: string }) => {
 
     return (
         <div>
-            {howToEntryYaml ? (
+            {howToEntryYaml && howToEntryMarkdown ? (
                 <Box
                     className={`how-to-entry ${hovered ? "hover" : "default"}`}
                     onMouseLeave={() => setHovered(false)}
