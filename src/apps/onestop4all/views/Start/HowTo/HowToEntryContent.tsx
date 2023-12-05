@@ -52,6 +52,9 @@ export const HowToEntryContent = () => {
                                 if (tmp) {
                                     const id = res && res.docs && res.docs[0] ? res.docs[0].id : "";
                                     tmp.href = "/result/" + id;
+                                    tmp.target = "_blank";
+                                    tmp.rel = "noopener";
+                                    console.log(html.body.innerHTML);
                                     setMdCon(html.body.innerHTML as string);
                                 }
                             });
