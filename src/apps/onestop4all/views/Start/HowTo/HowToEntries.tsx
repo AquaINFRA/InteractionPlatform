@@ -11,8 +11,8 @@ import { HowToEntry } from "./HowToEntry";
 
 export const HowToEntries = () => {
     const intl = useIntl();
-    const searchSrvc = useService("onestop4all.SearchService");
     const language = "eng";
+    const searchSrvc = useService("onestop4all.SearchService");
 
     const [howToEntries, setEntries] = useState(new Array<string>());
 
@@ -36,7 +36,6 @@ export const HowToEntries = () => {
                     : language === "de"
                     ? howToEntriesList.filter((str) => str.includes("_DEU.md"))
                     : howToEntriesList;
-            console.log(howToEntriesList);
             setEntries(howToEntriesList);
         });
     }, []);
@@ -52,7 +51,7 @@ export const HowToEntries = () => {
                 </Box>
             </Box>
             <SimpleGrid columns={3} spacing={10} paddingTop={"1%"}>
-                {howToEntries.map((howToEntry, index) => (
+                {howToEntries.slice(1, howToEntries.length).map((howToEntry, index) => (
                     <Flex key={index}>
                         <HowToEntry howToEntryTitle={howToEntry} key={index} />
                     </Flex>
