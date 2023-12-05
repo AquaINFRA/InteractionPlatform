@@ -7,6 +7,7 @@ import { SearchBar } from "../../components/SearchBar";
 import { ParticipateEntry, ParticipateEntryProps } from "./ParticipateEntry/ParticipateEntry";
 import { ResourceEntries } from "./ResourceEntries/ResourceEntries";
 import { HowToEntries } from "./HowTo/HowToEntries";
+import { useRef } from "react";
 
 export function StartView() {
     const intl = useIntl();
@@ -37,6 +38,16 @@ export function StartView() {
         bold: (chunks: string[]) =>
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             chunks.map((chunk, i) => (<b key={`bold_${i}`}>{chunks[0]}</b>) as any)
+    };
+
+    const resourcesSectionRef = useRef<HTMLInputElement>(null);
+    const scrollToResources = () => {
+        if (resourcesSectionRef.current) {
+            resourcesSectionRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
     };
 
     const missionLinksIntl = {
@@ -71,15 +82,7 @@ export function StartView() {
             </a>
         ),
         ResourcesLink: (
-            <a
-                className="link"
-                target="_blank"
-                key="3"
-                rel="noreferrer"
-                href={intl.formatMessage({
-                    id: "start.mission.links.ResourcesLinkUrl"
-                })}
-            >
+            <a className="link" key="3" onClick={scrollToResources} style={{ cursor: "pointer" }}>
                 {intl.formatMessage({
                     id: "start.mission.links.ResourcesLinkLabel"
                 })}
@@ -172,7 +175,7 @@ export function StartView() {
                 <HowToEntries />
             </Container>
 
-            <Box className="resources">
+            <Box className="resources" ref={resourcesSectionRef}>
                 <Container maxW={{ base: "100%", custombreak: "80%" }}>
                     <Box className="text-centered-box">
                         <Box className="text-centered-box-header">
