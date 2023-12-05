@@ -52,7 +52,7 @@ export const HowToEntryContent = () => {
                                 if (tmp) {
                                     const id = res && res.docs && res.docs[0] ? res.docs[0].id : "";
                                     tmp.href = "/result/" + id;
-                                    //setMdCon(html.body.innerHTML as string);
+                                    setMdCon(html.body.innerHTML as string);
                                 }
                             });
                         }
