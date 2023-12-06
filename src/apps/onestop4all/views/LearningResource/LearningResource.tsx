@@ -15,7 +15,6 @@ export interface LearningResourceMetadataResponse extends SolrSearchResultItem {
     language: string;
     relatedContent: Array<object>;
     license: string;
-    type: string;
     url: string;
     keyword: string; //
     publisher_alt: string;

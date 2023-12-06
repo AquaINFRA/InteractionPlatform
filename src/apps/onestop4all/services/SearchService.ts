@@ -1,15 +1,12 @@
 import "@open-pioneer/runtime";
 
-import { RepositorySearchHandler } from "./search/result-handler/repository-handler";
-import { SearchResultHandler } from "./search/result-handler/search-result-handler";
 import { ServiceOptions } from "@open-pioneer/runtime";
-import { OrganizationSearchHandler } from "./search/result-handler/organization-handler";
-import { ArticleSearchHandler } from "./search/result-handler/article-handler";
-import { LHB_ArticleSearchHandler } from "./search/result-handler/lhb_article-handler";
-import { ResourceType, mapFromResourceType, mapToResourceType } from "./ResourceTypeUtils";
-import { StandardSearchHandler } from "./search/result-handler/standard-handler";
-import { SoftwareSearchHandler } from "./search/result-handler/software-handler";
-import { Learning_ResourceHandler } from "./search/result-handler/learning_resource-handler";
+import {
+    ResourceType,
+    getHandler,
+    mapFromResourceType,
+    mapToResourceType
+} from "./ResourceTypeUtils";
 
 export interface SearchResultItem {
     id: string;
@@ -52,7 +49,7 @@ export interface TemporalFacet {
 
 export interface SolrSearchResultItem {
     id: string;
-    type: string;
+    type: string[];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 }
@@ -115,16 +112,6 @@ export class SearchService {
             throw new Error("Configuration for solr is missing.");
         }
     }
-
-    private searchResultHandlers: SearchResultHandler[] = [
-        new RepositorySearchHandler(),
-        new OrganizationSearchHandler(),
-        new ArticleSearchHandler(),
-        new StandardSearchHandler(),
-        new SoftwareSearchHandler(),
-        new LHB_ArticleSearchHandler(),
-        new Learning_ResourceHandler()
-    ];
 
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
         console.log("Search with following parameters: " + JSON.stringify(searchParams));
@@ -430,16 +417,7 @@ export class SearchService {
     }
 
     private createResultEntries(docs: SolrSearchResultItem[]): SearchResultItem[] {
-        return docs.map((item) => {
-            const match = this.searchResultHandlers.find((h) => h.canHandle(item));
-            if (match) {
-                return match.handle(item);
-            } else {
-                throw new Error(
-                    "Unknown search item, please implement a handler: " + JSON.stringify(item)
-                );
-            }
-        });
+        return docs.map((item) => getHandler(item).handle(item));
     }
 }
 

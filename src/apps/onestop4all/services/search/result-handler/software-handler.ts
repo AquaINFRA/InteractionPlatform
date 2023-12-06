@@ -3,7 +3,7 @@ import { SearchResultItem, SolrSearchResultItem } from "../../SearchService";
 import { MinSearchResultItem, SearchResultHandler } from "./search-result-handler";
 
 export class SoftwareSearchHandler extends SearchResultHandler {
-    protected resourceType = ResourceType.Tools;
+    resourceType = ResourceType.Tools;
 
     protected handleExplicit(
         item: SolrSearchResultItem
