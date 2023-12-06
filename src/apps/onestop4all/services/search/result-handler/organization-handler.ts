@@ -3,7 +3,7 @@ import { SearchResultItem, SolrSearchResultItem } from "../../SearchService";
 import { MinSearchResultItem, SearchResultHandler } from "./search-result-handler";
 
 export class OrganizationSearchHandler extends SearchResultHandler {
-    protected resourceType = ResourceType.Organisations;
+    resourceType = ResourceType.Organisations;
 
     protected handleExplicit(
         item: SolrSearchResultItem

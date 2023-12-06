@@ -7,7 +7,7 @@ import { RelatedContent } from "../../components/ResourceType/RelatedContent/Rel
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { SearchBar } from "../../components/SearchBar";
-import { mapToResourceType, ResourceType } from "../../services/ResourceTypeUtils";
+import { getResourceType, ResourceType } from "../../services/ResourceTypeUtils";
 import { SolrSearchResultItem } from "../../services/SearchService";
 import { ArticleMetadataResponse, ArticleView } from "../Article/Article";
 import {
@@ -61,14 +61,14 @@ export function Result() {
                             ) {
                                 result.results[0].relatedResources = relatedResources;
                                 setSearchResult(result.results[0]);
-                                setResourceType(mapToResourceType(result.results[0].type));
+                                setResourceType(getResourceType(result.results[0]));
                                 setLoading(false);
                             }
                         });
                     });
                 } else {
                     setSearchResult(result.results[0]);
-                    setResourceType(mapToResourceType(result.results[0].type));
+                    setResourceType(getResourceType(result.results[0]));
                     setLoading(false);
                 }
                 console.log(result.results[0]);

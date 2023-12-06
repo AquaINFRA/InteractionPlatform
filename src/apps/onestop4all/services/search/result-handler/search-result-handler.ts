@@ -8,10 +8,13 @@ export type MinSearchResultItem = {
 };
 
 export abstract class SearchResultHandler {
-    protected abstract resourceType: ResourceType;
+    public abstract readonly resourceType: ResourceType;
 
     public canHandle(item: SolrSearchResultItem): boolean {
-        return item.type === mapFromResourceType(this.resourceType);
+        if (item.type.length === 1) {
+            return item.type[0] === mapFromResourceType(this.resourceType);
+        }
+        return false;
     }
 
     protected abstract handleExplicit(
