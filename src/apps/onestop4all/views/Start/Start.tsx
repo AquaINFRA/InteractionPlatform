@@ -4,35 +4,13 @@ import { useIntl } from "open-pioneer:react-hooks";
 
 import NetworkGraph from "../../components/Graph/NetworkGraph";
 import { SearchBar } from "../../components/SearchBar";
-import { ParticipateEntry, ParticipateEntryProps } from "./ParticipateEntry/ParticipateEntry";
+import { ParticipateEntries } from "./ParticipateEntries/ParticipateEntries";
 import { ResourceEntries } from "./ResourceEntries/ResourceEntries";
 import { HowToEntries } from "./HowTo/HowToEntries";
 import { useRef } from "react";
 
 export function StartView() {
     const intl = useIntl();
-    const getInvolvedEntries: ParticipateEntryProps[] = [
-        {
-            imageUrl: "image1.png",
-            text: intl.formatMessage({ id: "start.get-involved.entry-1" })
-        },
-        {
-            imageUrl: "image2.png",
-            text: intl.formatMessage({ id: "start.get-involved.entry-2" })
-        },
-        {
-            imageUrl: "image3.png",
-            text: intl.formatMessage({ id: "start.get-involved.entry-3" })
-        },
-        {
-            imageUrl: "image4.png",
-            text: intl.formatMessage({ id: "start.get-involved.entry-4" })
-        },
-        {
-            imageUrl: "image5.png",
-            text: intl.formatMessage({ id: "start.get-involved.entry-5" })
-        }
-    ];
 
     const richTextIntl = {
         bold: (chunks: string[]) =>
@@ -211,32 +189,7 @@ export function StartView() {
                         </ParentSize>
                     </Box>
                 </Box>
-            </Container>
-
-            <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Box className="get-involved">
-                    <Box className="text-centered-box">
-                        <Box className="text-centered-box-header">
-                            {intl.formatMessage({ id: "start.get-involved.title" })}
-                        </Box>
-                        <Box className="text-centered-box-text">
-                            {intl.formatMessage({ id: "start.get-involved.description" })}
-                        </Box>
-                    </Box>
-
-                    <Flex
-                        className="entries"
-                        justifyContent="space-between"
-                        pt="32px"
-                        overflow="auto"
-                    >
-                        {getInvolvedEntries.map((e, i) => (
-                            <Box key={i}>
-                                <ParticipateEntry {...e}></ParticipateEntry>
-                            </Box>
-                        ))}
-                    </Flex>
-                </Box>
+                <ParticipateEntries />
             </Container>
         </Box>
     );

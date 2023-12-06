@@ -5,6 +5,7 @@ import { BaseMenu } from "./components/BaseMenu/BaseMenu";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { HowToEntryContent } from "./views/Start/HowTo/HowToEntryContent";
+import { ParticipateEntryContent } from "./views/Start/ParticipateEntries/ParticipateEntryContent";
 import { Theme } from "./Theme";
 import { Result } from "./views/Result/Result";
 import { SearchView } from "./views/Search/Search";
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: `howtoentry/:content`,
                 element: <HowToEntryContent />
+            },
+            {
+                path: `participateentry/:content`,
+                element: <ParticipateEntryContent />
             },
             {
                 path: "*",

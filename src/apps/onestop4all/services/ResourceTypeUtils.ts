@@ -34,7 +34,7 @@ const mapping = [
     },
     {
         type: ResourceType.LHB_Articles,
-        identifier: "http://nfdi4earth.de/ontology#LHBArticle"
+        identifier: "http://nfdi4earth.de/ontology/LHBArticle"
     },
     {
         type: ResourceType.Learning_Resource,
