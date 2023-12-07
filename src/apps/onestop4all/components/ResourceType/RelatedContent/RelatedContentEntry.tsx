@@ -15,7 +15,7 @@ export const RelatedContentEntry = ({ title, type, id }: RelatedContentEntryProp
     const navigate = useNavigate();
 
     function direct() {
-        navigate(`/result/${id}`);
+        window.open(`/result/${id}`, `_blank`);
     }
 
     const hoverStyle: SystemStyleObject = {
