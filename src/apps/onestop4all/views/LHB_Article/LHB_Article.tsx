@@ -2,6 +2,7 @@
 import { Box, Flex } from "@open-pioneer/chakra-integration";
 import { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useService } from "open-pioneer:react-hooks";
 
 import remarkGfm from "remark-gfm";
 import { unified } from "unified";
@@ -18,6 +19,7 @@ import { TOC } from "../../components/ResourceType/TOC/TOC";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { MetadataSourceIcon } from "../../components/Icons";
 import { SolrSearchResultItem, proxy } from "../../services/SearchService";
+import { HowToResponse } from "../Start/HowTo/HowToEntryContent";
 
 export interface LHB_ArticleMetadataResponse extends SolrSearchResultItem {
     name: string;
@@ -41,9 +43,10 @@ export interface ArticleViewProps {
 }
 
 export function LHB_ArticleView(props: ArticleViewProps) {
+    const searchSrvc = useService("onestop4all.SearchService");
     const metadata = props.item;
     const markdown = metadata.articleBody[0];
-    const [markdownHtml, setMarkdownHtml] = useState("");
+    const [markdownHtml, setMdCon] = useState("");
 
     const elementRef = useRef<HTMLInputElement>(null);
 
@@ -84,12 +87,68 @@ export function LHB_ArticleView(props: ArticleViewProps) {
             .process(markdown)
             .then((file) => {
                 const parser = new DOMParser();
-                let html = parser.parseFromString(file.value as string, "text/html");
-                //html = setIdsInHtml(html, "h2"); // see comment above
-                //html = setIdsInHtml(html, "h3"); // see comment above
-                setMarkdownHtml(html.body.innerHTML as string);
+                console.log(file.value);
+                const html = parser.parseFromString(file.value as string, "text/html");
+                const htmlTags = html.getElementsByTagName("a");
+                if (html && htmlTags && htmlTags.length > 0) {
+                    for (let i = 0; i < htmlTags.length; i++) {
+                        const tmp = htmlTags[i];
+                        const link = html.getElementsByTagName("a")[i]?.href;
+                        const linkType =
+                            link?.includes("mailto") &&
+                            !link?.includes(".md") &&
+                            !link?.includes("http")
+                                ? "mail"
+                                : link?.includes("http") &&
+                                  !link?.includes(".md") &&
+                                  !link?.includes("mailto") &&
+                                  !link?.includes("cordra.knowledgehub.nfdi4earth.de")
+                                ? "url"
+                                : link?.includes(".md") && !link?.includes("mailto")
+                                ? "markdown"
+                                : link?.includes("cordra.knowledgehub.nfdi4earth.de")
+                                ? "cordra"
+                                : undefined;
+                        console.log(link, linkType);
+                        if (tmp && linkType) {
+                            if (linkType == "mail") {
+                                setMdCon(html.body.innerHTML as string);
+                            }
+                            if (linkType == "url") {
+                                tmp.target = "_blank";
+                                tmp.rel = "noopener";
+                                setMdCon(html.body.innerHTML as string);
+                            }
+                            if (linkType == "markdown") {
+                                const markdownLink = html
+                                    .getElementsByTagName("a")
+                                    [i]?.href.split("/")
+                                    .pop();
+                                if (markdownLink) {
+                                    searchSrvc.getChapter(markdownLink).then((result) => {
+                                        const res = result.response as HowToResponse;
+                                        const id =
+                                            res && res.docs && res.docs[0] ? res.docs[0].id : "";
+                                        tmp.href = "/result/" + id;
+                                        tmp.target = "_blank";
+                                        tmp.rel = "noopener";
+                                        setMdCon(html.body.innerHTML as string);
+                                    });
+                                }
+                            }
+                            if (linkType == "cordra") {
+                                const id = tmp.href.split("/").pop();
+                                tmp.href = "/result/" + id;
+                                tmp.target = "_blank";
+                                tmp.rel = "noopener";
+                                setMdCon(html.body.innerHTML as string);
+                            }
+                        }
+                    }
+                }
+                setMdCon(html.body.innerHTML as string);
             });
-    }, [markdown, rehypeCitationOptions]);
+    }, [markdown]);
 
     return (
         <Box>
