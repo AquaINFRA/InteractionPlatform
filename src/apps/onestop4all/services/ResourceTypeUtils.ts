@@ -71,10 +71,10 @@ export function mapFromResourceType(resourceType: ResourceType): string {
 const searchResultHandlers: SearchResultHandler[] = [
     new RepositorySearchHandler(),
     new OrganizationSearchHandler(),
+    new LHB_ArticleSearchHandler(),
     new ArticleSearchHandler(),
     new StandardSearchHandler(),
     new SoftwareSearchHandler(),
-    new LHB_ArticleSearchHandler(),
     new Learning_ResourceHandler()
 ];
 

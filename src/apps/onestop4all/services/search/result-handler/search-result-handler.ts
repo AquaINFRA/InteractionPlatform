@@ -11,8 +11,8 @@ export abstract class SearchResultHandler {
     public abstract readonly resourceType: ResourceType;
 
     public canHandle(item: SolrSearchResultItem): boolean {
-        if (item.type.length === 1) {
-            return item.type[0] === mapFromResourceType(this.resourceType);
+        if (item.type.length) {
+            return item.type.findIndex((e) => e === mapFromResourceType(this.resourceType)) > -1;
         }
         return false;
     }
