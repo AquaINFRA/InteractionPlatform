@@ -72,7 +72,9 @@ export function SearchBar() {
                     variant="unstyled"
                     textTransform="uppercase"
                     color={PrimaryColor}
-                    placeholder="All resources"
+                    placeholder={intl.formatMessage({
+                        id: "search.search-bar.dropdownPlaceholder"
+                    })}
                     borderColor="white"
                     flex={{ base: "0 0 100px", custombreak: "0 0 250px" }}
                     value={selectedResource}

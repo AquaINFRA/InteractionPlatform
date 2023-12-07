@@ -1,5 +1,6 @@
 import { Box, Hide, HStack } from "@open-pioneer/chakra-integration";
 import { useNavigate } from "react-router-dom";
+import { useIntl } from "open-pioneer:react-hooks";
 
 import { BorderColor } from "../../Theme";
 import { LanguageToggler } from "./LanguageToggler";
@@ -9,6 +10,7 @@ import { MenuButton } from "./MenuButton";
 import { UserSupportLink } from "./UserSupportLink";
 
 export const Header = () => {
+    const intl = useIntl();
     const navigate = useNavigate();
 
     const backToStart = () => {
@@ -28,14 +30,19 @@ export const Header = () => {
             </Box>
             <Box w="100%">
                 <div style={{ textAlign: "center", fontSize: "16pt" }}>
-                    The OneStop4All is a beta version. Do you have feedback?&nbsp;
+                    {intl.formatMessage({
+                        id: "header.feedback"
+                    })}
+                    &nbsp;
                     <a
                         href="https://docs.google.com/document/d/1AbH2EOsxC2kddhmSnqpSaRkmfvrtbd0658rr8N05Vc8/edit"
                         className="link"
                         target="_blank"
                         rel="noreferrer"
                     >
-                        Tell us here!
+                        {intl.formatMessage({
+                            id: "header.feedbackLink"
+                        })}
                     </a>
                 </div>
             </Box>

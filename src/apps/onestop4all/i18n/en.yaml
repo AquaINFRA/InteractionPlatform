@@ -4,10 +4,20 @@ messages:
   header:
     user-support: "User Support"
     login: "Login"
+    feedback: "The OneStop4All is a beta version. Do you have feedback?"
+    feedbackLink: "Tell us here!"
+  footer:
+    get-connected: Get connected
+    about: About us
+    partners: Partners
+    contact: Contact
+    legal-information: Legal information
+    privacy: Privacy
   search:
     search-bar:
       button-label: "Search"
       placeholder: "Search for data repositories, software tools, information or research data materials"
+      dropdownPlaceholder: "All resources"
   start:
     banner:
       slogan: "Your One-Stop to FAIR, open and innovative Research Data Management in <bold>Earth System Sciences</bold>."
@@ -24,25 +34,13 @@ messages:
       title: We provide guidance on Research Data Management in ESS
       description: Here, you will find introductory articles to research data management in the ESS.
       learn-more-button: Learn More
-      how-to-entries-1:
-        title: "Discover and Explore Earth Data Sources"
-        description: "Data and service discovery benefits from complete and up-to-date metadata and description of spatio-temporal context..."
-      how-to-entries-2:
-        title: "Data Publication and Data Curation"
-        description: "Simplifying FAIR data publications and implementing curation with affordable efforts becomes increasingly important..."
-      how-to-entries-3:
-        title: "Research Data Management"
-        description: "Implementing FAIR, open and innovative RDM in ESS needs methods and services along all phases of the research data life cycle..."
-      how-to-entries-4:
-        title: "Create and publish Information Products"
-        description: "Sharing concepts of dataflows, distributed data processing and data portal technologies is key to create innovative data products..."
     resources:
       title: We provide a harmonized view on linked ESS resources
       description: Here you will find easy access to relevant resources from the Earth System Sciences provided by the {MembersLink} and the {CommunityLink}.
       links:
-        MembersLinkUrl: /
+        MembersLinkUrl: https://www.nfdi4earth.de/about-us/consortium
         MembersLinkLabel: NFDI4Earth members
-        CommunityLinkUrl: /
+        CommunityLinkUrl: https://www.nfdi4earth.de/2participate/pilots
         CommunityLinkLabel: ESS community
     graph:
       title: We show how the resources are linked
@@ -50,8 +48,11 @@ messages:
     get-involved:
       title: We welcome your participation
       description: NFDI4Earth is a community-driven process. We welcome you to join our NFDI4Earth activities. Here you will find information on how to participate.
-      entry-1: Apply for a pilot or incubator
-      entry-2: Join the NFDI4Earth Academy
-      entry-3: Join or propose an NFDI4Earth Interest Group
-      entry-4: Contribute a Living Handbook article
-      entry-5: Sign the NFDI4Earth FAIRness & Openness Commitment
+  resourceType:
+    repos: "Repository / Archive"
+    articles: "Article"
+    tools: "Tool/Software"
+    orgas: "Organisation"
+    standards: "Standard"
+    lhbs: "Living Handbook Article"
+    learning-res: "Learning resource"

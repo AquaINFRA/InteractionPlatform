@@ -60,7 +60,14 @@ export function StartView() {
             </a>
         ),
         ResourcesLink: (
-            <a className="link" key="3" onClick={scrollToResources} style={{ cursor: "pointer" }}>
+            <a
+                className="link"
+                target="_blank"
+                rel="noreferrer"
+                key="3"
+                onClick={scrollToResources}
+                style={{ cursor: "pointer" }}
+            >
                 {intl.formatMessage({
                     id: "start.mission.links.ResourcesLinkLabel"
                 })}
@@ -150,7 +157,7 @@ export function StartView() {
 
                 <div className="seperator"></div>
 
-                <HowToEntries />
+                <HowToEntries lang={intl.locale} />
             </Container>
 
             <Box className="resources" ref={resourcesSectionRef}>
@@ -189,7 +196,7 @@ export function StartView() {
                         </ParentSize>
                     </Box>
                 </Box>
-                <ParticipateEntries />
+                <ParticipateEntries lang={intl.locale} />
             </Container>
         </Box>
     );

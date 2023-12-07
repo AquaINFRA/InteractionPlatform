@@ -9,9 +9,9 @@ import yaml from "js-yaml";
 import { LhbStructure } from "../../../components/ResourceType/TOC/TOC";
 import { HowToEntry } from "./HowToEntry";
 
-export const HowToEntries = () => {
+export const HowToEntries = (props: { lang: string }) => {
     const intl = useIntl();
-    const language = "eng";
+    const language = props.lang;
 
     const searchSrvc = useService("onestop4all.SearchService");
     const [howToEntries, setEntries] = useState(new Array<string>());
@@ -31,7 +31,7 @@ export const HowToEntries = () => {
             const parsedYaml = yaml.load(result) as LhbStructure;
             let howToEntriesList = getHowToEntriesList(parsedYaml.nav);
             howToEntriesList =
-                language === "eng"
+                language === "en"
                     ? howToEntriesList.filter((str) => str.includes("_ENG.md"))
                     : language === "de"
                     ? howToEntriesList.filter((str) => str.includes("_DEU.md"))

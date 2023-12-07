@@ -1,10 +1,12 @@
 import { Box, Container, Flex } from "@open-pioneer/chakra-integration";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useIntl } from "open-pioneer:react-hooks";
 
 import { SupportForm } from "../SupportForm/SupportForm";
 
 export const Footer = () => {
+    const intl = useIntl();
     const [openSupportForm, setOpenSupportForm] = useState(false);
     const navigate = useNavigate();
 
@@ -24,7 +26,12 @@ export const Footer = () => {
                             gap={{ base: "column", custombreak: "10px" }}
                             flexDirection={{ base: "column", custombreak: "row" }}
                         >
-                            <Box className="section-header">Get connected:</Box>
+                            <Box className="section-header">
+                                {intl.formatMessage({
+                                    id: "footer.get-connected"
+                                })}
+                                :
+                            </Box>
                             <Box display="flex" gap="8px">
                                 <span className="section-entry">
                                     <a
@@ -32,7 +39,9 @@ export const Footer = () => {
                                         target="_blank"
                                         rel="noreferrer"
                                     >
-                                        About us
+                                        {intl.formatMessage({
+                                            id: "footer.about"
+                                        })}
                                     </a>
                                 </span>
                                 <span>|</span>
@@ -42,7 +51,9 @@ export const Footer = () => {
                                         target="_blank"
                                         rel="noreferrer"
                                     >
-                                        Partners
+                                        {intl.formatMessage({
+                                            id: "footer.partners"
+                                        })}
                                     </a>
                                 </span>
                                 <span>|</span>
@@ -52,7 +63,9 @@ export const Footer = () => {
                                         target="_blank"
                                         rel="noreferrer"
                                     >
-                                        Contact
+                                        {intl.formatMessage({
+                                            id: "footer.contact"
+                                        })}
                                     </a>
                                 </span>
                             </Box>
@@ -87,7 +100,12 @@ export const Footer = () => {
                             gap={{ base: "column", custombreak: "10px" }}
                             flexDirection={{ base: "column", custombreak: "row" }}
                         >
-                            <Box className="section-header">Legal information:</Box>
+                            <Box className="section-header">
+                                {intl.formatMessage({
+                                    id: "footer.legal-information"
+                                })}
+                                :
+                            </Box>
                             <Box display="flex" gap="8px">
                                 <span className="section-entry">
                                     <a
@@ -95,7 +113,9 @@ export const Footer = () => {
                                         target="_blank"
                                         rel="noreferrer"
                                     >
-                                        Legal information
+                                        {intl.formatMessage({
+                                            id: "footer.legal-information"
+                                        })}
                                     </a>
                                 </span>
                                 <span>|</span>
@@ -105,7 +125,9 @@ export const Footer = () => {
                                         target="_blank"
                                         rel="noreferrer"
                                     >
-                                        Privacy
+                                        {intl.formatMessage({
+                                            id: "footer.privacy"
+                                        })}
                                     </a>
                                 </span>
                             </Box>
