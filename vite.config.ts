@@ -41,7 +41,7 @@ export default defineConfig(({ mode }) => {
         root: resolve(__dirname, "src"),
 
         // Generates relative urls in html etc.
-        base: "./",
+        base: "/",
 
         // Vite's build output is written to dist/www
         build: {
