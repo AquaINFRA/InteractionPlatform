@@ -81,9 +81,27 @@ export function BaseMenu() {
                 {createBlock(
                     "Get connected",
                     <>
-                        <Link>About us</Link>
-                        <Link>Partners</Link>
-                        <Link>Contact</Link>
+                        <Link
+                            href="https://www.nfdi4earth.de/about-us"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            About us
+                        </Link>
+                        <Link
+                            href="https://www.nfdi4earth.de/about-us/consortium"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Partners
+                        </Link>
+                        <Link
+                            href="https://www.nfdi4earth.de/2coordinate/coordination-office"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Contact
+                        </Link>
                     </>
                 )}
                 <div className="seperator"></div>
@@ -97,8 +115,20 @@ export function BaseMenu() {
                 {createBlock(
                     "Legal information",
                     <>
-                        <Link>Legal information</Link>
-                        <Link>Privacy</Link>
+                        <Link
+                            href="https://www.nfdi4earth.de/legal-notice"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Legal information
+                        </Link>
+                        <Link
+                            href="https://www.nfdi4earth.de/privacy-policy"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            Privacy
+                        </Link>
                     </>
                 )}
                 <div className="seperator"></div>
