@@ -178,18 +178,21 @@ export const TOC = (props: { elementRef: any; sourceId: string }) => {
     }, [sourceId]);
 
     useEffect(() => {
-        const divElement = Array.from(elementRef.current.children[0].children);
-        const headingsList = new Array<HTMLElement>();
-        const h1 = divElement.filter((child: any) => child.localName === "h1")[0] as H1;
-        const heading = divElement.filter(
-            (child: any) => child.localName === "h2" || child.localName === "h3"
-        );
-        h1 ? setTitle(h1.innerHTML) : setTitle("Living Handbook");
-        heading.forEach((elem: any) => {
-            headingsList.push(elem);
-        });
-        setHeadings(headingsList);
-    }, [elementRef.current.children[0]]);
+        const currentElement = elementRef.current;
+        if (currentElement && currentElement.children && currentElement.children[0]) {
+            const divElement = Array.from(currentElement.children[0].children);
+            const headingsList = new Array<HTMLElement>();
+            const h1 = divElement.filter((child: any) => child.localName === "h1")[0] as H1;
+            const heading = divElement.filter(
+                (child: any) => child.localName === "h2" || child.localName === "h3"
+            );
+            h1 ? setTitle(h1.innerHTML) : setTitle("Living Handbook");
+            heading.forEach((elem: any) => {
+                headingsList.push(elem);
+            });
+            setHeadings(headingsList);
+        }
+    }, [elementRef.current]);
 
     return (
         <nav>
