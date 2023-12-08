@@ -112,6 +112,11 @@ export const TOC = (props: { elementRef: any; sourceId: string }) => {
         backgroundColor: "var(--primary-primary-transparent-background)"
     };
 
+    const getIndex = (i: number, chap?: number) => {
+        const index = i + (chap ? chap : 0);
+        return index === 1 ? "" : index - 1;
+    };
+
     const OtherChaptersLink = (props: {
         otherChapters: OtherChaptersLinking[];
         chapterNumber?: number;
@@ -128,8 +133,7 @@ export const TOC = (props: { elementRef: any; sourceId: string }) => {
                         _hover={{ cursor: "pointer" }}
                         className="tocElementOtherIndividual"
                     >
-                        {index + (chapterNumber ? chapterNumber : 0)}{" "}
-                        <a className="faqListItems">{chap.name}</a>
+                        {getIndex(index, chapterNumber)} <a className="faqListItems">{chap.name}</a>
                     </Box>
                 ))}
             </div>
@@ -138,15 +142,17 @@ export const TOC = (props: { elementRef: any; sourceId: string }) => {
 
     const Title = (props: { otherChapters?: object[]; title: string }) => {
         const { otherChapters, title } = props;
+        let index =
+            otherChapters && otherChapters.length > 0 ? otherChapters.length + 1 : (1 as any);
+        index = index === 1 ? (index = "") : index - 1; //Don't show the number before the title if it's the first element in the TOC. First elements should not have a number.
         return (
             <Box as="span" flex="1" textAlign="left" className="tocTitle">
-                {otherChapters && otherChapters.length > 0 ? otherChapters.length + 1 : 1} {title}
+                {index} {title}
             </Box>
         );
     };
 
     useEffect(() => {
-        console.log("TOC component rendered with sourceId:", sourceId);
         searchSrvc.getLhbStructure().then((result) => {
             const parsedYaml = yaml.load(result) as LhbStructure;
             const lhbStructure = findLhbStructure(parsedYaml.nav, sourceId);

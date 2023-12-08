@@ -87,7 +87,6 @@ export function LHB_ArticleView(props: ArticleViewProps) {
             .process(markdown)
             .then((file) => {
                 const parser = new DOMParser();
-                console.log(file.value);
                 const html = parser.parseFromString(file.value as string, "text/html");
                 const htmlTags = html.getElementsByTagName("a");
                 if (html && htmlTags && htmlTags.length > 0) {
@@ -109,7 +108,6 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                                 : link?.includes("cordra.knowledgehub.nfdi4earth.de")
                                 ? "cordra"
                                 : undefined;
-                        console.log(link, linkType);
                         if (tmp && linkType) {
                             if (linkType == "mail") {
                                 setMdCon(html.body.innerHTML as string);
