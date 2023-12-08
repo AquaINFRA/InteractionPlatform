@@ -23,6 +23,8 @@ Step 1: Install backend. First, you need to create a [personal access token](htt
 ```bash
 $ git clone https://<username>@git.rwth-aachen.de/nfdi4earth/onestop4all/onestop4all-harvester.git
 ```
+### Update backend
+
 The stable branch is `main` and current developments can be seen in `feature/new_harvesters`. Updates in the main branch require the following steps:
 
 1_1 `docker volume ls` to find the exact name of the volume.
