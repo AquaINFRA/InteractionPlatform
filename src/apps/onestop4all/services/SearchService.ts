@@ -99,6 +99,7 @@ const SOLR_SUBJECT_FACET_FIELD = "theme_str";
 const SOLR_RESOURCE_TYPE_FACET_FIELD = "type";
 const SOLR_TEMPORAL_FACET_RANGE_FIELD = "datePublished";
 export const proxy = "http://localhost:8080/";
+export const supportForm = "http://localhost/html/nfdi/";
 
 export class SearchService {
     private config: SolrConfig;
@@ -180,6 +181,29 @@ export class SearchService {
                         count: response.numFound,
                         results: response.docs
                     };
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
+    }
+
+    sendSupportRequest(name: string, email: string, subject: string, content: string) {
+        console.log("Send support form request");
+        const url =
+            supportForm +
+            `?name=` +
+            name +
+            `&email=` +
+            email +
+            `&subject=` +
+            subject +
+            `&message=` +
+            content;
+        return fetch(url).then((response) =>
+            response.text().then((responseData: string) => {
+                if (responseData) {
+                    return responseData;
                 } else {
                     throw new Error("Unexpected response: " + JSON.stringify(responseData));
                 }

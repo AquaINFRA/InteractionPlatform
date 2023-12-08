@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Box, Flex, SimpleGrid } from "@open-pioneer/chakra-integration";
+import { Box, Flex } from "@open-pioneer/chakra-integration";
 import { useIntl } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { useService } from "open-pioneer:react-hooks";
@@ -23,7 +23,6 @@ export const ParticipateEntries = (props: { lang: string }) => {
                 foundList = Object.values(elem)[0];
             }
         });
-        console.log(foundList);
         return foundList;
     };
 
