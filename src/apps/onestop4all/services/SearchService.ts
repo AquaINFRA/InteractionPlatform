@@ -191,6 +191,7 @@ export class SearchService {
     sendSupportRequest(name: string, email: string, subject: string, content: string) {
         console.log("Send support form request");
         const url =
+            proxy +
             supportForm +
             `?name=` +
             name +
