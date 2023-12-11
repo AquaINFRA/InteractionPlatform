@@ -11,7 +11,15 @@ import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
+import rehypeCitation from "rehype-citation";
 import parse from "html-react-parser";
+import {
+    rehypeCitationOptions,
+    parseMarkdown,
+    getTags,
+    getLinkType
+} from "../../../services/MarkdownUtils";
+import { HowToResponse } from "../../Start/HowTo/HowToEntryContent";
 
 export function Faq() {
     let faqId = useParams().faq;
@@ -41,6 +49,7 @@ export function Faq() {
             .use(remarkParse)
             .use(remarkGfm)
             .use(remarkRehype, {})
+            .use(rehypeCitation, rehypeCitationOptions)
             .use(rehypeStringify)
             .process(faqList)
             .then((file) => {
@@ -56,10 +65,50 @@ export function Faq() {
                       .use(remarkParse)
                       .use(remarkGfm)
                       .use(remarkRehype, {})
+                      .use(rehypeCitation, rehypeCitationOptions)
                       .use(rehypeStringify)
                       .process(markdownWithoutYaml)
                       .then((file) => {
-                          setFaq(file.value as string);
+                          const html = parseMarkdown(file.value as string);
+                          const htmlTags = getTags(html);
+                          if (html && htmlTags && htmlTags.length > 0) {
+                              for (let i = 0; i < htmlTags.length; i++) {
+                                  const tmp = htmlTags[i];
+                                  const tag = html.getElementsByTagName("a")[i];
+                                  const link = tag?.href;
+                                  const linkType = getLinkType(link as string);
+                                  if (tmp && linkType) {
+                                      tmp.target = "_blank";
+                                      tmp.rel = "noopener";
+                                      if (linkType == "mail" || linkType == "url") {
+                                          setFaq(html.body.innerHTML as string);
+                                      }
+                                      if (linkType == "markdown") {
+                                          const markdownLink = html
+                                              .getElementsByTagName("a")
+                                              [i]?.href.split("/")
+                                              .pop();
+                                          if (markdownLink) {
+                                              searchSrvc.getChapter(markdownLink).then((result) => {
+                                                  const res = result.response as HowToResponse;
+                                                  const id =
+                                                      res && res.docs && res.docs[0]
+                                                          ? res.docs[0].id
+                                                          : "";
+                                                  tmp.href = "/result/" + id;
+                                                  setFaq(html.body.innerHTML as string);
+                                              });
+                                          }
+                                      }
+                                      if (linkType == "cordra") {
+                                          const id = tmp.href.split("/").pop();
+                                          tmp.href = "/result/" + id;
+                                          setFaq(html.body.innerHTML as string);
+                                      }
+                                  }
+                              }
+                          }
+                          setFaq(html.body.innerHTML as string);
                       });
               })
             : null;
@@ -112,48 +161,7 @@ export function Faq() {
                         </div>
                     </Box>
                     <Box w="50%" padding="3%">
-                        <div>
-                            {parse(faq, {
-                                replace: (domNode: any) => {
-                                    if (
-                                        domNode.type === "tag" &&
-                                        domNode.name === "a" &&
-                                        !domNode.attribs.href?.includes("http") &&
-                                        domNode.attribs.href?.includes(".md")
-                                    ) {
-                                        const to = "/faq/" + domNode.attribs.href; // Replace with the correct URL
-                                        return (
-                                            <Box _hover={{ cursor: "pointer" }}>
-                                                <a
-                                                    onClick={(event) => handleClick(event, to)}
-                                                    className="faqListItems"
-                                                >
-                                                    {domNode.children[0]?.data}
-                                                </a>
-                                            </Box>
-                                        );
-                                    } else {
-                                        if (
-                                            domNode.type === "tag" &&
-                                            domNode.name === "a" &&
-                                            domNode.attribs.href?.includes("http")
-                                        ) {
-                                            const to = domNode.attribs.href; // Replace with the correct URL
-                                            return (
-                                                <a
-                                                    href={to}
-                                                    className="faqListItems"
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
-                                                    {domNode.children[0]?.data}
-                                                </a>
-                                            );
-                                        }
-                                    }
-                                }
-                            })}
-                        </div>
+                        <div>{parse(faq)}</div>
                     </Box>
                 </Flex>
             </Container>
