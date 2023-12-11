@@ -46,7 +46,7 @@ export const ParticipateEntry = (props: { participateEntryTitle: string }) => {
     }, [participateEntryTitle]);
 
     const handleClick = () => {
-        navigate(`/participateentry/` + encodeURIComponent(participateEntryMarkdown as string));
+        navigate(`/howtoentry/` + encodeURIComponent(participateEntryMarkdown as string));
         window.scroll(0, 0);
     };
 

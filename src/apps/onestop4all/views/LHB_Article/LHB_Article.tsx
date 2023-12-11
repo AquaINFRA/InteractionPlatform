@@ -11,6 +11,12 @@ import remarkRehype from "remark-rehype";
 import rehypeCitation from "rehype-citation";
 import rehypeStringify from "rehype-stringify";
 import parse from "html-react-parser";
+import {
+    rehypeCitationOptions,
+    parseMarkdown,
+    getTags,
+    getLinkType
+} from "../../services/MarkdownUtils";
 
 import { LastUpdate } from "../../components/ResourceType/Metadata/LastUpdate";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
@@ -18,7 +24,7 @@ import { Support } from "../../components/ResourceType/Support/Support";
 import { TOC } from "../../components/ResourceType/TOC/TOC";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { MetadataSourceIcon } from "../../components/Icons";
-import { SolrSearchResultItem, proxy } from "../../services/SearchService";
+import { SolrSearchResultItem } from "../../services/SearchService";
 import { HowToResponse } from "../Start/HowTo/HowToEntryContent";
 
 export interface LHB_ArticleMetadataResponse extends SolrSearchResultItem {
@@ -46,17 +52,9 @@ export function LHB_ArticleView(props: ArticleViewProps) {
     const searchSrvc = useService("onestop4all.SearchService");
     const metadata = props.item;
     const markdown = metadata.articleBody[0];
-    const [markdownHtml, setMdCon] = useState("");
+    const [markdownContent, setMdCon] = useState("");
 
     const elementRef = useRef<HTMLInputElement>(null);
-
-    //const bibliography = "https://raw.githubusercontent.com/MarkusKonk/test/main/ref.bib";
-    const bibliography =
-        proxy +
-        "https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/assets/references.bib";
-    const citationFileFormat =
-        "https://raw.githubusercontent.com/timlrx/rehype-citation/main/test/CITATION.cff";
-    const rehypeCitationOptions = { bibliography, citationFileFormat };
 
     //NOTE: setIdsInHtml enriches the html parsed from markdown with IDs. Thought this is necessary for the TOC but it's not needed for now but might be useful in the future.
     /*const setIdsInHtml = (html: Document, tag: string) => {
@@ -86,35 +84,18 @@ export function LHB_ArticleView(props: ArticleViewProps) {
             .use(rehypeStringify)
             .process(markdown)
             .then((file) => {
-                const parser = new DOMParser();
-                const html = parser.parseFromString(file.value as string, "text/html");
-                const htmlTags = html.getElementsByTagName("a");
+                const html = parseMarkdown(file.value as string);
+                const htmlTags = getTags(html);
                 if (html && htmlTags && htmlTags.length > 0) {
                     for (let i = 0; i < htmlTags.length; i++) {
                         const tmp = htmlTags[i];
-                        const link = html.getElementsByTagName("a")[i]?.href;
-                        const linkType =
-                            link?.includes("mailto") &&
-                            !link?.includes(".md") &&
-                            !link?.includes("http")
-                                ? "mail"
-                                : link?.includes("http") &&
-                                  !link?.includes(".md") &&
-                                  !link?.includes("mailto") &&
-                                  !link?.includes("cordra.knowledgehub.nfdi4earth.de")
-                                ? "url"
-                                : link?.includes(".md") && !link?.includes("mailto")
-                                ? "markdown"
-                                : link?.includes("cordra.knowledgehub.nfdi4earth.de")
-                                ? "cordra"
-                                : undefined;
+                        const tag = html.getElementsByTagName("a")[i];
+                        const link = tag?.href;
+                        const linkType = getLinkType(link as string);
                         if (tmp && linkType) {
-                            if (linkType == "mail") {
-                                setMdCon(html.body.innerHTML as string);
-                            }
-                            if (linkType == "url") {
-                                tmp.target = "_blank";
-                                tmp.rel = "noopener";
+                            tmp.target = "_blank";
+                            tmp.rel = "noopener";
+                            if (linkType == "mail" || linkType == "url") {
                                 setMdCon(html.body.innerHTML as string);
                             }
                             if (linkType == "markdown") {
@@ -128,8 +109,6 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                                         const id =
                                             res && res.docs && res.docs[0] ? res.docs[0].id : "";
                                         tmp.href = "/result/" + id;
-                                        tmp.target = "_blank";
-                                        tmp.rel = "noopener";
                                         setMdCon(html.body.innerHTML as string);
                                     });
                                 }
@@ -137,8 +116,6 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                             if (linkType == "cordra") {
                                 const id = tmp.href.split("/").pop();
                                 tmp.href = "/result/" + id;
-                                tmp.target = "_blank";
-                                tmp.rel = "noopener";
                                 setMdCon(html.body.innerHTML as string);
                             }
                         }
@@ -227,7 +204,7 @@ export function LHB_ArticleView(props: ArticleViewProps) {
                         />
                     </Box>
                     <Box pt="80px" ref={elementRef}>
-                        {markdownHtml != "" ? <div>{parse(markdownHtml)}</div> : null}
+                        {markdownContent != "" ? <div>{parse(markdownContent)}</div> : null}
                     </Box>
                     <Box pt="80px">
                         <Support />

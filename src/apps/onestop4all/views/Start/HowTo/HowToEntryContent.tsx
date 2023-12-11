@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Box, Container, Flex } from "@open-pioneer/chakra-integration";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -7,8 +8,15 @@ import remarkGfm from "remark-gfm";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
+import rehypeCitation from "rehype-citation";
 import rehypeStringify from "rehype-stringify";
 import parse from "html-react-parser";
+import {
+    rehypeCitationOptions,
+    parseMarkdown,
+    getTags,
+    getLinkType
+} from "../../../services/MarkdownUtils";
 
 import { BackIcon } from "../../../components/Icons";
 import { useService } from "open-pioneer:react-hooks";
@@ -24,7 +32,7 @@ export interface HowToResponse {
 export const HowToEntryContent = () => {
     const searchSrvc = useService("onestop4all.SearchService");
 
-    const markdownContentRaw = useParams().content;
+    const markdown = useParams().content;
     const [markdownContent, setMdCon] = useState("");
     const navigate = useNavigate();
 
@@ -33,36 +41,50 @@ export const HowToEntryContent = () => {
             .use(remarkParse)
             .use(remarkGfm)
             .use(remarkRehype, {})
+            .use(rehypeCitation, rehypeCitationOptions)
             .use(rehypeStringify)
-            .process(markdownContentRaw)
+            .process(markdown)
             .then((file) => {
-                const parser = new DOMParser();
-                const html = parser.parseFromString(file.value as string, "text/html");
-                const htmlTags = html.getElementsByTagName("a");
+                const html = parseMarkdown(file.value as string);
+                const htmlTags = getTags(html);
                 if (html && htmlTags && htmlTags.length > 0) {
                     for (let i = 0; i < htmlTags.length; i++) {
-                        const markdownLink = html
-                            .getElementsByTagName("a")
-                            [i]?.href.split("/")
-                            .pop();
-                        if (markdownLink) {
-                            const tmp = htmlTags[i];
-                            searchSrvc.getChapter(markdownLink).then((result) => {
-                                const res = result.response as HowToResponse;
-                                if (tmp) {
-                                    const id = res && res.docs && res.docs[0] ? res.docs[0].id : "";
-                                    tmp.href = "/result/" + id;
-                                    tmp.target = "_blank";
-                                    tmp.rel = "noopener";
-                                    console.log(html.body.innerHTML);
-                                    setMdCon(html.body.innerHTML as string);
+                        const tmp = htmlTags[i];
+                        const tag = html.getElementsByTagName("a")[i];
+                        const link = tag?.href;
+                        const linkType = getLinkType(link as string);
+                        if (tmp && linkType) {
+                            tmp.target = "_blank";
+                            tmp.rel = "noopener";
+                            if (linkType == "mail" || linkType == "url") {
+                                setMdCon(html.body.innerHTML as string);
+                            }
+                            if (linkType == "markdown") {
+                                const markdownLink = html
+                                    .getElementsByTagName("a")
+                                    [i]?.href.split("/")
+                                    .pop();
+                                if (markdownLink) {
+                                    searchSrvc.getChapter(markdownLink).then((result) => {
+                                        const res = result.response as HowToResponse;
+                                        const id =
+                                            res && res.docs && res.docs[0] ? res.docs[0].id : "";
+                                        tmp.href = "/result/" + id;
+                                        setMdCon(html.body.innerHTML as string);
+                                    });
                                 }
-                            });
+                            }
+                            if (linkType == "cordra") {
+                                const id = tmp.href.split("/").pop();
+                                tmp.href = "/result/" + id;
+                                setMdCon(html.body.innerHTML as string);
+                            }
                         }
                     }
                 }
+                setMdCon(html.body.innerHTML as string);
             });
-    }, [markdownContentRaw]);
+    }, [markdown]);
 
     function backToStart() {
         navigate({ pathname: "/" });
