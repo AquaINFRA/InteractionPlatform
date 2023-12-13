@@ -69,10 +69,10 @@ export const SupportForm = (props: SupportFormProps) => {
             console.log("Sending request with form data:", formData);
             searchSrvc.sendSupportRequest(name, email, subject, content).then((result) => {
                 console.log(result);
-                const statusLine = result.match(/HTTP\/\d+\.\d+\s+(\d+)\s+/);
-                const statusCode = statusLine && statusLine[1] ? parseInt(statusLine[1]) : null;
-                console.log("HTTP Status Code:", statusCode);
-                if (statusCode) setStatus(statusCode);
+                //const statusLine = result.match(/HTTP\/\d+\.\d+\s+(\d+)\s+/);
+                //const statusCode = statusLine && statusLine[1] ? parseInt(statusLine[1]) : null;
+                console.log("HTTP Status Code:", result);
+                if (result) setStatus(result);
             });
             //closeForm();
         } else {
@@ -142,12 +142,10 @@ export const SupportForm = (props: SupportFormProps) => {
                         />
                         {!isContentFilled && <p color="red">Content cannot be empty.</p>}
                     </FormControl>
-                    {status === 200 ? (
+                    {status === "Message sent!" ? (
                         <b>The message was sent! You can close this form now.</b>
-                    ) : status !== 0 && status !== 200 ? (
-                        <b>The message could not be sent. Please contact the admin.</b>
                     ) : (
-                        ""
+                        <b>The message could not be sent. Please contact the admin.</b>
                     )}
                 </ModalBody>
                 <ModalFooter>
