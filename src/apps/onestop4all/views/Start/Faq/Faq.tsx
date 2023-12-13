@@ -105,6 +105,13 @@ export function Faq() {
                                           tmp.href = "/result/" + id;
                                           setFaq(html.body.innerHTML as string);
                                       }
+                                      if (linkType == "pdf_docx") {
+                                          const id = tmp.href.split("/").pop();
+                                          tmp.href =
+                                              "https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/docs/pdf/" +
+                                              id;
+                                          setMdCon(html.body.innerHTML as string);
+                                      }
                                   }
                               }
                           }

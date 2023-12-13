@@ -32,11 +32,17 @@ export function getLinkType(link: string) {
         : link?.includes("http") &&
           !link?.includes(".md") &&
           !link?.includes("mailto") &&
-          !link?.includes("cordra.knowledgehub.nfdi4earth.de")
+          !link?.includes("cordra.knowledgehub.nfdi4earth.de") &&
+          !link?.includes("pdf/") &&
+          !link?.includes(".docx")
         ? "url"
         : link?.includes(".md") && !link?.includes("mailto")
         ? "markdown"
         : link?.includes("cordra.knowledgehub.nfdi4earth.de")
         ? "cordra"
+        : link?.includes("pdf/") && link?.includes(".docx")
+        ? "pdf_docx"
+        : link?.includes("pdf/") && link?.includes(".pdf")
+        ? "pdf_docx"
         : undefined;
 }

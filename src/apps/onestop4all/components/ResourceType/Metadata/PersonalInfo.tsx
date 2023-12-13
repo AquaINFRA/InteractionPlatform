@@ -31,7 +31,6 @@ export const PersonalInfo = (props: {
     affiliation: string;
 }) => {
     const { name, orcid, email, affiliation } = props;
-    console.log(orcid);
 
     return (
         <>
