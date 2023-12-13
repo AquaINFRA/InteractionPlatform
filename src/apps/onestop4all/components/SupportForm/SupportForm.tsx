@@ -43,7 +43,7 @@ export const SupportForm = (props: SupportFormProps) => {
     const [isNameFilled, setIsNameFilled] = useState(true);
     const [isSubjectFilled, setIsSubjectFilled] = useState(true);
     const [isContentFilled, setIsContentFilled] = useState(true);
-    const [status, setStatus] = useState<number>(0);
+    const [status, setStatus] = useState<string>("");
 
     function validateEmail(email: string): boolean {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
