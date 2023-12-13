@@ -31,6 +31,7 @@ export const PersonalInfo = (props: {
     affiliation: string;
 }) => {
     const { name, orcid, email, affiliation } = props;
+    console.log(orcid);
 
     return (
         <>
@@ -48,7 +49,7 @@ export const PersonalInfo = (props: {
             ) : (
                 ""
             )}
-            {orcid ? (
+            {orcid && orcid[0] !== "" ? (
                 <a
                     href={isUrl(orcid) ? orcid : "https://orcid.org/" + orcid}
                     rel="noreferrer"
