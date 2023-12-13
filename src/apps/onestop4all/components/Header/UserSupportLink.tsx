@@ -1,16 +1,33 @@
-import { Button, HStack } from "@open-pioneer/chakra-integration";
+import { HStack, Icon, Link } from "@open-pioneer/chakra-integration";
 import { useIntl } from "open-pioneer:react-hooks";
+import { useState } from "react";
 
+import { PrimaryColor } from "../../Theme";
 import { UserSupportIcon } from "../Icons";
+import { SupportForm } from "../SupportForm/SupportForm";
 
-export function UserSupportLink() {
+export interface UserSupportLinkProps {
+    hideIcon?: boolean;
+}
+
+export function UserSupportLink({ hideIcon = false }: UserSupportLinkProps) {
     const intl = useIntl();
+    const [openSupportForm, setOpenSupportForm] = useState(false);
 
     return (
-        <HStack>
-            <Button leftIcon={<UserSupportIcon boxSize={6} />} variant="ghost" colorScheme="teal">
-                {intl.formatMessage({ id: "header.user-support" })}
-            </Button>
-        </HStack>
+        <>
+            <HStack onClick={() => setOpenSupportForm(true)} _hover={{ cursor: "pointer" }}>
+                {!hideIcon && (
+                    <Icon boxSize={6} color={PrimaryColor}>
+                        <UserSupportIcon />
+                    </Icon>
+                )}
+                <Link whiteSpace="nowrap">{intl.formatMessage({ id: "header.user-support" })}</Link>
+            </HStack>
+            <SupportForm
+                openForm={openSupportForm}
+                menuClosed={() => setOpenSupportForm(false)}
+            ></SupportForm>
+        </>
     );
 }

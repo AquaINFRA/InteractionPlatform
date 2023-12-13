@@ -1,0 +1,18 @@
+.navigation-menu {
+    .block {
+        .block-header {
+            color: var(--primary-primary-main, #05668d);
+            //font-family: Open Sans;
+            font-weight: 300;
+            line-height: 26px;
+            text-transform: uppercase;
+        }
+
+        .block-content {
+            .chakra-link {
+                display: block;
+                line-height: 36px;
+            }
+        }
+    }
+}

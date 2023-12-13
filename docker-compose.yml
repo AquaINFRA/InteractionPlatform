@@ -1,0 +1,51 @@
+version: "3.3"
+services:
+  frontend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SOLR_URL=http://localhost/solr
+      - SOLR_CORE_SELECTOR=metadata
+    depends_on:
+      harvester:
+        condition: service_completed_successfully
+    ports:
+      - 80:80
+    networks:
+      - index_network
+  harvester:
+    build:
+      context: .
+      dockerfile: ./docker/harvester.dockerfile
+      args:
+        - HARVESTER_BRANCH=main
+    environment:
+      - SOLR_URL=http://index:8983/solr/
+      - SOLR_CORE=metadata
+    depends_on:
+      index:
+        condition: service_healthy
+    networks:
+      - index_network
+  index:
+    build:
+      context: .
+      dockerfile: ./docker/solr.dockerfile
+      args:
+        - HARVESTER_BRANCH=main
+    healthcheck:
+      test: curl --fail http://localhost:8983/solr/metadata/admin/ping || exit 1
+      interval: 10s
+      timeout: 35s
+      retries: 10
+    ports:
+      - 8983:8983
+    volumes:
+      - index_data:/var/solr
+    networks:
+      - index_network
+volumes:
+  index_data:
+networks:
+  index_network:

@@ -41,7 +41,7 @@ export default defineConfig(({ mode }) => {
         root: resolve(__dirname, "src"),
 
         // Generates relative urls in html etc.
-        base: "./",
+        base: "/",
 
         // Vite's build output is written to dist/www
         build: {
@@ -81,6 +81,12 @@ export default defineConfig(({ mode }) => {
         // https://vitest.dev/config/
         test: {
             globals: true
+        },
+
+        server: {
+            proxy: {
+                "/solr": "http://localhost:8983"
+            }
         }
 
         // disable hot reloading

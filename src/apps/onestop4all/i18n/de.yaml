@@ -1,12 +1,50 @@
 # at least one empty yaml file must exist for each supported language
 # (might be empty if all messages are defined in the packages used by this app)
 messages:
-  picker:
-    choose: "Wählen Sie eine Sprache aus:"
   header:
     user-support: "Nutzer Support"
     login: "Login"
+    feedback: "Der OneStop4All ist eine Beta-Version. Haben Sie ein Feedback?"
+    feedbackLink: "Sagen Sie es uns hier!"
+  footer:
+    get-connected: Verbunden werden
+    about: Informationen über uns
+    partners: Partner
+    contact: Kontact
+    legal-information: Rechtliche Informationen
+    privacy: Datenschutz
   search:
     search-bar:
       button-label: "Suche"
-      placeholder: "Search for data repositories, software tools, information or research data materials"
+      placeholder: "Suche nach Datenbeständen, Software-Tools, Informationen oder Forschungsdatenmaterial"
+      dropdownPlaceholder: "Alle Ressourcen"
+  start:
+    banner:
+      slogan: "Ihre zentrale Anlaufstelle für FAIRes, offenes und innovatives Forschungsdatenmanagement in den <bold>Erdsystemwissenschaften</bold>."
+    mission:
+      slogan: "<bold>OneStop4All</bold> ist der wichtigste visuelle und benutzerfreundliche Zugangspunkt zu {NFDI4EarthLink}. Er bietet einen kohärenten Überblick über alle relevanten RDM-Ressourcen der Erdsystemwissenschaften (ESS), die von NFDI4Earth-Mitgliedern und der ESS-Gemeinschaft zur Verfügung gestellt werden, wie z. B. Daten-Repositories, Software-Tools, Informationen zum Forschungsdatenmanagement (RDM) sowie Schulungs- und Trainingsmaterialien. Erfahren Sie mehr über unsere {MissionLink} und die {ResourcesLink}."
+      links:
+        NFDI4EarthLinkUrl: https://www.nfdi4earth.de/
+        NFDI4EarthLinkLabel: NFDI4Earth
+        MissionLinkUrl: https://www.nfdi4earth.de/about-us
+        MissionLinkLabel: Mission
+        ResourcesLinkUrl: /
+        ResourcesLinkLabel: Ressourcen
+    how-to:
+      title: Wir bieten Beratung zum Forschungsdatenmanagement im ESS
+      description: Hier finden Sie einführende Artikel zum Forschungsdatenmanagement im ESS.
+      learn-more-button: Mehr erfahren
+    resources:
+      title: Wir bieten eine harmonisierte Sicht auf verknüpfte ESS-Ressourcen
+      description: Hier finden Sie einen einfachen Zugang zu relevanten Ressourcen aus den Erdsystemwissenschaften, die von den {MembersLink} und der {CommunityLink} bereitgestellt werden..
+      links:
+        MembersLinkUrl: https://www.nfdi4earth.de/about-us/consortium
+        MembersLinkLabel: NFDI4Earth-Mitgliedern
+        CommunityLinkUrl: https://www.nfdi4earth.de/2participate/pilots
+        CommunityLinkLabel: ESS-Community
+    graph:
+      title: Wir zeigen, wie die Ressourcen miteinander verbunden sind
+      description: Hier erhalten Sie einen grafischen Überblick über verwandte Ressourcen, um mit der Erkundung zu beginnen.
+    get-involved:
+      title: Wir begrüßen Ihre Teilnahme
+      description: NFDI4Earth ist ein von der Gemeinschaft getragener Prozess. Wir heißen Sie willkommen, sich an unseren NFDI4Earth-Aktivitäten zu beteiligen. Hier finden Sie Informationen darüber, wie Sie sich beteiligen können.

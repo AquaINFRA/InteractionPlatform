@@ -1,0 +1,1131 @@
+[
+    {
+        "label": "Humanities and Social Sciences",
+        "children": [
+            {
+                "label": "Humanities",
+                "children": [
+                    {
+                        "label": "Ancient Cultures",
+                        "children": [
+                            {
+                                "label": "Prehistory and World Archaeology",
+                                "children": []
+                            },
+                            {
+                                "label": "Classical Philology",
+                                "children": []
+                            },
+                            {
+                                "label": "Ancient History",
+                                "children": []
+                            },
+                            {
+                                "label": "Classical Archaeology",
+                                "children": []
+                            },
+                            {
+                                "label": "Egyptology and Ancient Near Eastern Studies",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "History",
+                        "children": [
+                            {
+                                "label": "Medieval History",
+                                "children": []
+                            },
+                            {
+                                "label": "Early Modern History",
+                                "children": []
+                            },
+                            {
+                                "label": "Modern and Current History",
+                                "children": []
+                            },
+                            {
+                                "label": "History of Science",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Art History, Music, Theatre and Media Studies",
+                        "children": [
+                            {
+                                "label": "Art History",
+                                "children": []
+                            },
+                            {
+                                "label": "Musicology",
+                                "children": []
+                            },
+                            {
+                                "label": "Theatre and Media Studies",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Linguistics",
+                        "children": [
+                            {
+                                "label": "General and Comparative Linguistics, Typology, Non-European Languages",
+                                "children": []
+                            },
+                            {
+                                "label": "Individual Linguistics",
+                                "children": []
+                            },
+                            {
+                                "label": "Historical Linguistics",
+                                "children": []
+                            },
+                            {
+                                "label": "Applied Linguistics, Experimental Linguistics, Computational Linguistics",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Literary Studies",
+                        "children": [
+                            {
+                                "label": "Medieval German Literature",
+                                "children": []
+                            },
+                            {
+                                "label": "Modern German Literature",
+                                "children": []
+                            },
+                            {
+                                "label": "European and American Literature",
+                                "children": []
+                            },
+                            {
+                                "label": "General and Comparative Literature and Cultural Studies",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Social and Cultural Anthropology, Non-European Cultures, Jewish Studies and Religious Studies",
+                        "children": [
+                            {
+                                "label": "Social and Cultural Anthropology and Ethnology",
+                                "children": []
+                            },
+                            {
+                                "label": "Asian Studies",
+                                "children": []
+                            },
+                            {
+                                "label": "African, American and Oceania Studies",
+                                "children": []
+                            },
+                            {
+                                "label": "Islamic Studies, Arabian Studies, Semitic Studies",
+                                "children": []
+                            },
+                            {
+                                "label": "Religious Studies and Jewish Studies",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Theology",
+                        "children": [
+                            {
+                                "label": "Protestant Theology",
+                                "children": []
+                            },
+                            {
+                                "label": "Roman Catholic Theology",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Philosophy",
+                        "children": [
+                            {
+                                "label": "History of Philosophy",
+                                "children": []
+                            },
+                            {
+                                "label": "Theoretical Philosophy",
+                                "children": []
+                            },
+                            {
+                                "label": "Practical Philosophy",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "label": "Social and Behavioural Sciences",
+                "children": [
+                    {
+                        "label": "Educational Research",
+                        "children": [
+                            {
+                                "label": "General Education and History of Education",
+                                "children": []
+                            },
+                            {
+                                "label": "General and Domain-Specific Teaching and Learning",
+                                "children": []
+                            },
+                            {
+                                "label": "Education Systems and Educational Institutions",
+                                "children": []
+                            },
+                            {
+                                "label": "Educational Research on Socialisation, Welfare and Professionalism Research",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Psychology",
+                        "children": [
+                            {
+                                "label": "General, Cognitive and Mathematical Psychology",
+                                "children": []
+                            },
+                            {
+                                "label": "Biological Psychology and Cognitive Neuroscience",
+                                "children": []
+                            },
+                            {
+                                "label": "Developmental and Educational Psychology",
+                                "children": []
+                            },
+                            {
+                                "label": "Social Psychology, Industrial and Organisational Psychology",
+                                "children": []
+                            },
+                            {
+                                "label": "Differential, Clinical and Medical Psychology, Methodology",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Social Sciences",
+                        "children": [
+                            {
+                                "label": "Sociological Theory",
+                                "children": []
+                            },
+                            {
+                                "label": "Empirical Social Research",
+                                "children": []
+                            },
+                            {
+                                "label": "Communication Sciences",
+                                "children": []
+                            },
+                            {
+                                "label": "Political Science",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Economics",
+                        "children": [
+                            {
+                                "label": "Economic Theory",
+                                "children": []
+                            },
+                            {
+                                "label": "Economic Policy, Applied Economics",
+                                "children": []
+                            },
+                            {
+                                "label": "Business Administration",
+                                "children": []
+                            },
+                            {
+                                "label": "Statistics and Econometrics",
+                                "children": []
+                            },
+                            {
+                                "label": "Economic and Social History",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Jurisprudence",
+                        "children": [
+                            {
+                                "label": "Principles of Law and Jurisprudence",
+                                "children": []
+                            },
+                            {
+                                "label": "Private Law",
+                                "children": []
+                            },
+                            {
+                                "label": "Public Law",
+                                "children": []
+                            },
+                            {
+                                "label": "Criminal Law",
+                                "children": []
+                            },
+                            {
+                                "label": "Criminology",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "label": "Life Sciences",
+        "children": [
+            {
+                "label": "Biology",
+                "children": [
+                    {
+                        "label": "Basic Research in Biology and Medicine",
+                        "children": [
+                            {
+                                "label": "Biochemistry",
+                                "children": []
+                            },
+                            {
+                                "label": "Biophysics",
+                                "children": []
+                            },
+                            {
+                                "label": "Cell Biology",
+                                "children": []
+                            },
+                            {
+                                "label": "Structural Biology",
+                                "children": []
+                            },
+                            {
+                                "label": "General Genetics and Functional Genome Biology",
+                                "children": []
+                            },
+                            {
+                                "label": "Developmental Biology",
+                                "children": []
+                            },
+                            {
+                                "label": "Bioinformatics and Theoretical Biology",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Plant Sciences",
+                        "children": [
+                            {
+                                "label": "Evolution and Systematics of Plants and Fungi",
+                                "children": []
+                            },
+                            {
+                                "label": "Ecology and Biodiversity of Plants and Ecosystems",
+                                "children": []
+                            },
+                            {
+                                "label": "Organismic Interactions, Chemical Ecology and Microbiomes of Plant Systems",
+                                "children": []
+                            },
+                            {
+                                "label": "Plant Physiology",
+                                "children": []
+                            },
+                            {
+                                "label": "Plant Biochemistry and Biophysics",
+                                "children": []
+                            },
+                            {
+                                "label": "Plant Cell and Developmental Biology",
+                                "children": []
+                            },
+                            {
+                                "label": "Plant Genetics",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Zoology",
+                        "children": [
+                            {
+                                "label": "Systematics and Morphology (Zoology)",
+                                "children": []
+                            },
+                            {
+                                "label": "Evolution, Anthropology",
+                                "children": []
+                            },
+                            {
+                                "label": "Ecology and Biodiversity of Animals and Ecosystems, Organismic Interactions",
+                                "children": []
+                            },
+                            {
+                                "label": "Sensory and Behavioural Biology",
+                                "children": []
+                            },
+                            {
+                                "label": "Animal Physiology and Biochemistry",
+                                "children": []
+                            },
+                            {
+                                "label": "Evolutionary Cell and Developmental Biology (Zoology)",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "label": "Medicine",
+                "children": [
+                    {
+                        "label": " Microbiology, Virology and Immunology",
+                        "children": [
+                            {
+                                "label": "Metabolism, Biochemistry and Genetics of Microorganisms",
+                                "children": []
+                            },
+                            {
+                                "label": "Microbial Ecology and Applied Microbiology",
+                                "children": []
+                            },
+                            {
+                                "label": "Medical Microbiology and Mycology, Hygiene, Molecular Infection Biology",
+                                "children": []
+                            },
+                            {
+                                "label": "Virology",
+                                "children": []
+                            },
+                            {
+                                "label": "Immunology",
+                                "children": []
+                            },
+                            {
+                                "label": "Parasitology and Biology of Tropical Infectious Disease Pathogens",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Epidemiology and Medical Biometry/Statistics",
+                        "children": []
+                    },
+                    {
+                        "label": "Public Health, Health Services Research, Social Medicine",
+                        "children": []
+                    },
+                    {
+                        "label": "Human Genetics",
+                        "children": []
+                    },
+                    {
+                        "label": "Physiology",
+                        "children": []
+                    },
+                    {
+                        "label": "Nutritional Sciences",
+                        "children": []
+                    },
+                    {
+                        "label": "Pathology",
+                        "children": []
+                    },
+                    {
+                        "label": "Medical Informatics and Medical Bioinformatics",
+                        "children": []
+                    },
+                    {
+                        "label": "Pharmacy",
+                        "children": []
+                    },
+                    {
+                        "label": "Pharmacology",
+                        "children": []
+                    },
+                    {
+                        "label": "Toxicology, Occupational Medicine, Clinical Chemistry",
+                        "children": []
+                    },
+                    {
+                        "label": "Anaesthesiology",
+                        "children": []
+                    },
+                    {
+                        "label": "Cardiology, Angiology",
+                        "children": []
+                    },
+                    {
+                        "label": "Pneumology, Thoracic Surgery",
+                        "children": []
+                    },
+                    {
+                        "label": "Hematology, Oncology",
+                        "children": []
+                    },
+                    {
+                        "label": "Gastroenterology",
+                        "children": []
+                    },
+                    {
+                        "label": "Nephrology",
+                        "children": []
+                    },
+                    {
+                        "label": "Endocrinology, Diabetology, Metabolism",
+                        "children": []
+                    },
+                    {
+                        "label": "Rheumatology",
+                        "children": []
+                    },
+                    {
+                        "label": "Dermatology",
+                        "children": []
+                    },
+                    {
+                        "label": "Pediatric and Adolescent Medicine",
+                        "children": []
+                    },
+                    {
+                        "label": "Gynaecology and Obstetrics",
+                        "children": []
+                    },
+                    {
+                        "label": "Clinical Immunology and Allergology",
+                        "children": []
+                    },
+                    {
+                        "label": "Reproductive Medicine, Urology",
+                        "children": []
+                    },
+                    {
+                        "label": "Biogerontology and Geriatric Medicine",
+                        "children": []
+                    },
+                    {
+                        "label": "General and Visceral Surgery",
+                        "children": []
+                    },
+                    {
+                        "label": "Cardiac and Vascular Sugery",
+                        "children": []
+                    },
+                    {
+                        "label": "Orthopaedics, Traumatology, Reconstructive Surgery",
+                        "children": []
+                    },
+                    {
+                        "label": "Dentistry, Oral Surgery",
+                        "children": []
+                    },
+                    {
+                        "label": "Otolaryngology",
+                        "children": []
+                    },
+                    {
+                        "label": "Radiology, Nuclear Medicine, Radiotherapy, Radiobiology",
+                        "children": []
+                    },
+                    {
+                        "label": "Clinical Infectiology and Tropical Medicine",
+                        "children": []
+                    },
+                    {
+                        "label": "Medical Physics, Biomedical Technology",
+                        "children": []
+                    },
+                    {
+                        "label": "Anatomy",
+                        "children": []
+                    },
+                    {
+                        "label": "Neurosciences",
+                        "children": [
+                            {
+                                "label": "Developmental Neurobiology",
+                                "children": []
+                            },
+                            {
+                                "label": "Molecular Biology and Physiology of Neurons and Glial Cells",
+                                "children": []
+                            },
+                            {
+                                "label": "Experimental and Theoretical Network Neuroscience",
+                                "children": []
+                            },
+                            {
+                                "label": "Cognitive, Systems and Behavioural Neurobiology",
+                                "children": []
+                            },
+                            {
+                                "label": "Experimental Models for the Understanding of Nervous System Diseases",
+                                "children": []
+                            },
+                            {
+                                "label": "Molecular and Cellular Neurology and Neuropathology",
+                                "children": []
+                            },
+                            {
+                                "label": "Clinical Neurosciences; Neurosurgery and Neuroradiology",
+                                "children": []
+                            },
+                            {
+                                "label": "Human Cognitive and Systems Neuroscience",
+                                "children": []
+                            },
+                            {
+                                "label": "Biological Psychiatry",
+                                "children": []
+                            },
+                            {
+                                "label": "Clinical Psychiatry, Psychotherapy, Child and Adolescent Psychiatry",
+                                "children": []
+                            },
+                            {
+                                "label": "Ophthalmology",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "label": "Agriculture, Forestry and Veterinary Medicine",
+                "children": [
+                    {
+                        "label": "Soil Sciences",
+                        "children": []
+                    },
+                    {
+                        "label": "Plant Breeding and Plant Pathology",
+                        "children": []
+                    },
+                    {
+                        "label": "Plant Cultivation, Plant Nutrition, Agricultural Technology",
+                        "children": []
+                    },
+                    {
+                        "label": "Ecology of Land Use",
+                        "children": []
+                    },
+                    {
+                        "label": "Agricultural Economics, Agricultural Policy, Agricultural Sociology",
+                        "children": []
+                    },
+                    {
+                        "label": "Forestry",
+                        "children": []
+                    },
+                    {
+                        "label": "Animal Breeding, Animal Nutrition, Animal Husbandry",
+                        "children": []
+                    },
+                    {
+                        "label": "Veterinary Medical Science",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "label": "Natural Sciences",
+        "children": [
+            {
+                "label": "Chemistry",
+                "children": [
+                    {
+                        "label": "Molecular Chemistry",
+                        "children": [
+                            {
+                                "label": "Inorganic Molecular Chemistry - Synthesis and Characterisation",
+                                "children": []
+                            },
+                            {
+                                "label": "Organic Molecular Chemistry - Synthesis and Characterisation",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Chemical Solid State and Surface Research",
+                        "children": [
+                            {
+                                "label": "Solid State and Surface Chemistry, Material Synthesis",
+                                "children": []
+                            },
+                            {
+                                "label": "Physical Chemistry of Solids and Surfaces, Material Characterisation",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Physical Chemistry",
+                        "children": [
+                            {
+                                "label": "Physical Chemistry of Molecules, Liquids and Interfaces, Biophysical Chemistry",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Analytical Chemistry",
+                        "children": []
+                    },
+                    {
+                        "label": "Biological Chemistry and Food Chemistry",
+                        "children": [
+                            {
+                                "label": "Biological and Biomimetic Chemistry",
+                                "children": []
+                            },
+                            {
+                                "label": "Food Chemistry",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Polymer Research",
+                        "children": [
+                            {
+                                "label": "Preparatory and Physical Chemistry of Polymers",
+                                "children": []
+                            },
+                            {
+                                "label": "Experimental and Theoretical Physics of Polymers",
+                                "children": []
+                            },
+                            {
+                                "label": "Polymer Materials",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Theoretical Chemistry",
+                        "children": [
+                            {
+                                "label": "Electron Structure, Dynamics, Simulation",
+                                "children": []
+                            },
+                            {
+                                "label": "Molecules, Materials, Surfaces",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "label": "Physics",
+                "children": [
+                    {
+                        "label": "Condensed Matter Physics",
+                        "children": [
+                            {
+                                "label": "Experimental Condensed Matter Physics",
+                                "children": []
+                            },
+                            {
+                                "label": "Theoretical Condensed Matter Physics",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Optics, Quantum Optics and Physics of Atoms, Molecules and Plasmas",
+                        "children": [
+                            {
+                                "label": "Optics, Quantum Optics, Atoms, Molecules, Plasmas",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Particles, Nuclei and Fields",
+                        "children": [
+                            {
+                                "label": "Nuclear and Elementary Particle Physics, Quantum Mechanics, Relativity, Fields",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Statistical Physics, Soft Matter, Biological Physics, Nonlinear Dynamics",
+                        "children": []
+                    },
+                    {
+                        "label": "Astrophysics and Astronomy",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "label": "Mathematics",
+                "children": []
+            },
+            {
+                "label": "Geosciences",
+                "children": [
+                    {
+                        "label": "Atmospheric Science, Oceanography and Climate Research",
+                        "children": [
+                            {
+                                "label": "Atmospheric Science",
+                                "children": []
+                            },
+                            {
+                                "label": "Oceanography",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Geology and Palaeontology",
+                        "children": []
+                    },
+                    {
+                        "label": "Geophysics and Geodesy",
+                        "children": [
+                            {
+                                "label": "Geophysics",
+                                "children": []
+                            },
+                            {
+                                "label": "Geodesy, Photogrammetry, Remote Sensing, Geoinformatics, Cartography",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Mineralogy, Petrology and Geochemistry",
+                        "children": []
+                    },
+                    {
+                        "label": "Geography",
+                        "children": [
+                            {
+                                "label": "Physical Geography",
+                                "children": []
+                            },
+                            {
+                                "label": "Human Geography",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Water Research",
+                        "children": [
+                            {
+                                "label": "Hydrogeology, Hydrology, Limnology, Urban Water Management, Water Chemistry, Integrated Water Resources Management",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "label": "Engineering Sciences",
+        "children": [
+            {
+                "label": "Mechanical and Industrial Engineering",
+                "children": [
+                    {
+                        "label": "Production Technology",
+                        "children": [
+                            {
+                                "label": "Metal-Cutting and Abrasive Manufacturing Engineering",
+                                "children": []
+                            },
+                            {
+                                "label": "Primary Shaping and Reshaping Technology, Additive Manufacturing",
+                                "children": []
+                            },
+                            {
+                                "label": "Joining and Separation Technology",
+                                "children": []
+                            },
+                            {
+                                "label": "Plastics Engineering",
+                                "children": []
+                            },
+                            {
+                                "label": "Production Systems, Operations Management, Quality Management and Factory Planning",
+                                "children": []
+                            },
+                            {
+                                "label": "Production Automation",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Mechanics and Constructive Mechanical Engineering",
+                        "children": [
+                            {
+                                "label": "Engineering Design, Machine Elements, Product Development",
+                                "children": []
+                            },
+                            {
+                                "label": "Mechanics",
+                                "children": []
+                            },
+                            {
+                                "label": "Lightweight Construction, Textile Technology",
+                                "children": []
+                            },
+                            {
+                                "label": "Acoustics",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "label": "Thermal Engineering/ Process Engineering",
+                "children": [
+                    {
+                        "label": "Process Engineering, Technical Chemistry",
+                        "children": [
+                            {
+                                "label": "Chemical and Thermal Process Engineering",
+                                "children": []
+                            },
+                            {
+                                "label": "Technical Chemistry",
+                                "children": []
+                            },
+                            {
+                                "label": "Mechanical Process Engineering",
+                                "children": []
+                            },
+                            {
+                                "label": "Biological Process Engineering",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Fluid Mechanics, Technical Thermodynamics and Thermal Energy Engineering",
+                        "children": [
+                            {
+                                "label": "Energy Process Engineering",
+                                "children": []
+                            },
+                            {
+                                "label": "Technical Thermodynamics",
+                                "children": []
+                            },
+                            {
+                                "label": "Fluid Mechanics",
+                                "children": []
+                            },
+                            {
+                                "label": "Hydraulic and Turbo Engines and Piston Engines",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "label": "Materials Science and Engineering",
+                "children": [
+                    {
+                        "label": "Materials Engineering",
+                        "children": [
+                            {
+                                "label": "Metallurgical, Thermal and Thermomechanical Treatment of Materials",
+                                "children": []
+                            },
+                            {
+                                "label": "Materials in Sintering Processes and Generative Manufacturing Processes",
+                                "children": []
+                            },
+                            {
+                                "label": "Coating and Surface Technology",
+                                "children": []
+                            },
+                            {
+                                "label": "Mechanical Properties of Metallic Materials and their Microstructural Origins",
+                                "children": []
+                            },
+                            {
+                                "label": "Glass, Ceramics and Derived Composites",
+                                "children": []
+                            },
+                            {
+                                "label": "Polymeric and Biogenic Materials and Derived Composites",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Materials Science",
+                        "children": [
+                            {
+                                "label": "Synthesis and Properties of Functional Materials",
+                                "children": []
+                            },
+                            {
+                                "label": "Biomaterials",
+                                "children": []
+                            },
+                            {
+                                "label": "Thermodynamics and Kinetics as well as Properties of Phases and Microstructure of Materials",
+                                "children": []
+                            },
+                            {
+                                "label": "Computer-Aided Design of Materials and Simulation of Materials Behaviour from Atomic to Microscopic Scale",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "label": "Computer Science, Systems and Electrical Engineering",
+                "children": [
+                    {
+                        "label": "Systems Engineering",
+                        "children": [
+                            {
+                                "label": "Automation, Control Systems, Robotics, Mechatronics, Cyber Physical Systems",
+                                "children": []
+                            },
+                            {
+                                "label": "Measurement Systems",
+                                "children": []
+                            },
+                            {
+                                "label": "Microsystems",
+                                "children": []
+                            },
+                            {
+                                "label": "Traffic and Transport Systems, Logistics, Intelligent and Automated Traffic",
+                                "children": []
+                            },
+                            {
+                                "label": "Human Factors, Ergonomics, Human-Machine Systems",
+                                "children": []
+                            },
+                            {
+                                "label": "Biomedical Systems Technology",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Electrical Engineering and Information Technology",
+                        "children": [
+                            {
+                                "label": "Electronic Semiconductors, Components, Circuits, Systems",
+                                "children": []
+                            },
+                            {
+                                "label": "Communications, High-Frequency and Network Technology, Theoretical Electrical Engineering",
+                                "children": []
+                            },
+                            {
+                                "label": "Electrical Energy Generation, Distribution, Application",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "label": "Computer Science",
+                        "children": [
+                            {
+                                "label": "Theoretical Computer Science",
+                                "children": []
+                            },
+                            {
+                                "label": "Software Engineering and Programming Languages",
+                                "children": []
+                            },
+                            {
+                                "label": "Security and Dependability",
+                                "children": []
+                            },
+                            {
+                                "label": "Operating, Communication, Database and Distributed Systems",
+                                "children": []
+                            },
+                            {
+                                "label": "Interactive and Intelligent Systems, Image and Language Processing, Computer Graphics and Visualisation",
+                                "children": []
+                            },
+                            {
+                                "label": "Information Systems, Process and Knowledge Management",
+                                "children": []
+                            },
+                            {
+                                "label": "Computer Architecture and Embedded Systems",
+                                "children": []
+                            },
+                            {
+                                "label": "Massively Parallel and Data-Intensive Systems",
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "label": "Construction Engineering and Architecture",
+                "children": [
+                    {
+                        "label": "Architecture, Building and Construction History, Construction Research, Sustainable Building Technology",
+                        "children": []
+                    },
+                    {
+                        "label": "Urbanism, Spatial Planning, Transportation and Infrastructure Planning, Landscape Planning",
+                        "children": []
+                    },
+                    {
+                        "label": "Construction Material Sciences, Chemistry, Building Physics",
+                        "children": []
+                    },
+                    {
+                        "label": "Structural Engineering, Building Informatics and Construction Operation",
+                        "children": []
+                    },
+                    {
+                        "label": "Applied Mechanics, Statics and Dynamics",
+                        "children": []
+                    },
+                    {
+                        "label": "Geotechnics, Hydraulic Engineering",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    }
+]

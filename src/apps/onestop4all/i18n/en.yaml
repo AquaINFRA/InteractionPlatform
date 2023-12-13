@@ -1,12 +1,58 @@
 # at least one empty yaml file must exist for each supported language
 # (might be empty if all messages are defined in the packages used by this app)
 messages:
-  picker:
-    choose: "Please choose a language:"
   header:
     user-support: "User Support"
     login: "Login"
+    feedback: "The OneStop4All is a beta version. Do you have feedback?"
+    feedbackLink: "Tell us here!"
+  footer:
+    get-connected: Get connected
+    about: About us
+    partners: Partners
+    contact: Contact
+    legal-information: Legal information
+    privacy: Privacy
   search:
     search-bar:
       button-label: "Search"
       placeholder: "Search for data repositories, software tools, information or research data materials"
+      dropdownPlaceholder: "All resources"
+  start:
+    banner:
+      slogan: "Your One-Stop to FAIR, open and innovative Research Data Management in <bold>Earth System Sciences</bold>."
+    mission:
+      slogan: "The <bold>OneStop4All</bold> is the primary visual and user-friendly {NFDI4EarthLink} access point. It offers a coherent view on and points to all relevant Earth System Sciences (ESS) RDM resources provided by NFDI4Earth members and the ESS community, such as data repositories, software tools, information on Research Data Management (RDM), education and training materials. Learn more about our {MissionLink} and the {ResourcesLink}."
+      links:
+        NFDI4EarthLinkUrl: https://www.nfdi4earth.de/
+        NFDI4EarthLinkLabel: NFDI4Earth
+        MissionLinkUrl: https://www.nfdi4earth.de/about-us
+        MissionLinkLabel: Mission
+        ResourcesLinkUrl: /
+        ResourcesLinkLabel: Resources
+    how-to:
+      title: We provide guidance on Research Data Management in ESS
+      description: Here, you will find introductory articles to research data management in the ESS.
+      learn-more-button: Learn More
+    resources:
+      title: We provide a harmonized view on linked ESS resources
+      description: Here you will find easy access to relevant resources from the Earth System Sciences provided by the {MembersLink} and the {CommunityLink}.
+      links:
+        MembersLinkUrl: https://www.nfdi4earth.de/about-us/consortium
+        MembersLinkLabel: NFDI4Earth members
+        CommunityLinkUrl: https://www.nfdi4earth.de/2participate/pilots
+        CommunityLinkLabel: ESS community
+    graph:
+      title: We show how the resources are linked
+      description: Here you will get a graph-based overview on related resources to start exploration.
+    get-involved:
+      title: We welcome your participation
+      description: NFDI4Earth is a community-driven process. We welcome you to join our NFDI4Earth activities. Here you will find information on how to participate.
+  resourceType:
+    repos: "Repository / Archive"
+    articles: "Article"
+    tools: "Tool/Software"
+    orgas: "Organisation"
+    standards: "Standard"
+    lhbs: "Living Handbook Article"
+    learning-res: "Learning resource"

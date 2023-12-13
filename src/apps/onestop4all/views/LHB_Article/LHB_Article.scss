@@ -1,0 +1,58 @@
+h1 {
+    font-size: 2.125rem;
+}
+
+h2 {
+    font-size: 1.875rem;
+    margin-bottom: 1%;
+    margin-top: 1%;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1%;
+    margin-top: 1%;
+}
+
+h4 {
+    font-size: 1.25rem;
+    margin-bottom: 1%;
+    margin-top: 1%;
+}
+
+ul,
+ol {
+    margin-left: 3%;
+}
+
+a:link {
+    color: #05668d !important;
+    text-decoration: underline;
+}
+
+p {
+    margin-top: 1%;
+}
+
+table,
+th,
+td {
+    border: 1px solid;
+    padding: 1%;
+}
+
+table {
+    margin-top: 1%;
+}
+
+th {
+    //background-color: rgb(199, 199, 199);
+}
+
+tr {
+    //background-color: rgb(243, 243, 243);
+}
+
+.csl-entry {
+    margin-top: 0.5%;
+}

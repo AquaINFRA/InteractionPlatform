@@ -1,0 +1,102 @@
+.metadataBlock {
+    width: "50%";
+}
+
+.metadataSectionHeader {
+    color: #000;
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.metadataTag {
+    color: #666;
+    font-size: 16px;
+    font-weight: 700;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.metadataValue {
+    color: #000000;
+    font-size: 16px;
+    padding-top: 10px;
+    display: inline-flex;
+}
+
+.metadataSection {
+    margin-bottom: 10px;
+}
+
+.metadataKeyword {
+    border-radius: 50px;
+    background: rgba(34, 192, 210, 0.2);
+    padding: 0px 8px;
+    display: inline-block;
+    text-decoration: underline;
+    margin-right: 5px;
+    margin-top: 10px;
+}
+
+.metadataAuthors {
+    margin-bottom: 10px;
+}
+
+.metadataAuthor {
+    display: inline-block;
+    margin-right: 5px;
+    margin-top: 10px;
+}
+
+.metadataTheme {
+    border-radius: 50px;
+    background: rgba(5, 102, 141, 0.2);
+    padding: 0px 8px;
+    display: inline-block;
+    text-decoration: underline;
+    margin-right: 5px;
+    margin-top: 10px;
+}
+
+.metadataLink {
+    text-decoration: underline;
+    color: #05668d;
+}
+
+.metadataShowHide {
+    color: var(--grey-grey, #808080);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+}
+
+.orcid {
+    width: 20px;
+    height: 20px;
+    margin-right: 1px;
+    margin-left: 1px;
+}
+
+.lastUpdateKey {
+    opacity: 0.6;
+    color: #000;
+    //font-family: Open Sans;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 22px;
+    letter-spacing: 0.24px;
+    text-transform: uppercase;
+}
+
+.lastUpdateValue {
+    color: #000;
+    //font-family: Open Sans;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 22px; /* 183.333% */
+    letter-spacing: 0.24px;
+    text-transform: uppercase;
+}
