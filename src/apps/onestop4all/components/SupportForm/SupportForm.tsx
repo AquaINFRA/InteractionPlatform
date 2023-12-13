@@ -43,7 +43,7 @@ export const SupportForm = (props: SupportFormProps) => {
     const [isNameFilled, setIsNameFilled] = useState(true);
     const [isSubjectFilled, setIsSubjectFilled] = useState(true);
     const [isContentFilled, setIsContentFilled] = useState(true);
-    const [status, setStatus] = useState<string>("");
+    const [status, setStatus] = useState<string>("status");
 
     function validateEmail(email: string): boolean {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -144,8 +144,10 @@ export const SupportForm = (props: SupportFormProps) => {
                     </FormControl>
                     {status === "Message sent!" ? (
                         <b>The message was sent! You can close this form now.</b>
-                    ) : (
+                    ) : status !== "status" ? (
                         <b>The message could not be sent. Please contact the admin.</b>
+                    ) : (
+                        ""
                     )}
                 </ModalBody>
                 <ModalFooter>
