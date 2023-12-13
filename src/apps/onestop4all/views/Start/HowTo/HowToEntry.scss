@@ -1,7 +1,7 @@
 .how-to-entry {
     background-color: white;
     align-items: center;
-    border: 1px solid;
+    border: 5px solid;
     transition: all 300ms ease-out;
     display: flex;
     flex-direction: column;
@@ -13,8 +13,9 @@
         display: flex;
         flex-direction: column;
         gap: 16px;
-        padding: 0px 16px;
+        padding: 30px 16px;
         text-align: center;
+        height: 130px;
     }
 
     .heading {
@@ -33,7 +34,7 @@
     }
 
     &.default {
-        border-color: #cccccc;
+        border-color: #05668d80;
     }
 
     &.hover {
