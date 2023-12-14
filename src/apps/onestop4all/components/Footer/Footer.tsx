@@ -183,10 +183,7 @@ export const Footer = () => {
                 </Container>
             </div>
 
-            <SupportForm
-                openForm={openSupportForm}
-                menuClosed={() => setOpenSupportForm(false)}
-            ></SupportForm>
+            <SupportForm openForm={openSupportForm} menuClosed={() => setOpenSupportForm(false)} />
         </>
     );
 };
