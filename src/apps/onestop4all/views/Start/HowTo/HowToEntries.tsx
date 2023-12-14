@@ -51,7 +51,7 @@ export const HowToEntries = (props: { lang: string }) => {
                         {intl.formatMessage({ id: "start.how-to.description" })}
                     </Box>
                 </Box>
-                <SimpleGrid columns={3} spacing={10} padding={"0px 100px"} marginTop={"1%"}>
+                <SimpleGrid columns={[1, 2, 3]} spacing={10} padding={"0px 100px"} marginTop={"1%"}>
                     {howToEntries.slice(1, howToEntries.length).map((howToEntry, index) => (
                         <Flex key={index}>
                             <HowToEntry howToEntryTitle={howToEntry} key={index} />

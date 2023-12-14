@@ -52,7 +52,7 @@ export const HowToEntry = (props: { howToEntryTitle: string }) => {
     };
 
     return (
-        <div>
+        <div style={{ width: "100%" }}>
             {howToEntryYaml && howToEntryMarkdown ? (
                 <Box
                     className={`how-to-entry ${hovered ? "hover" : "default"}`}

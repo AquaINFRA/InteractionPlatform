@@ -1,21 +1,26 @@
 .how-to-entry {
+    position: relative;
+    display: flex;
     background-color: white;
     align-items: center;
     border: 5px solid;
     transition: all 300ms ease-out;
-    display: flex;
     flex-direction: column;
     gap: 16px;
-    padding: 15px 30px;
-    width: 415px;
+    //padding: 15px 30px;
+    max-width: 415px;
 
     .frame {
         display: flex;
+        justify-content: center;
         flex-direction: column;
+        align-items: center;
         gap: 16px;
         padding: 30px 16px;
         text-align: center;
-        height: 130px;
+        min-height: 150px;
+        min-width: 200;
+        max-height: fit-content;
     }
 
     .heading {
