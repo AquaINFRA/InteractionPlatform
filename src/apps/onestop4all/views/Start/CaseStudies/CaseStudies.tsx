@@ -10,44 +10,71 @@ export const CaseStudies = () => {
             chunks.map((chunk, i) => (<b key={`bold_${i}`}>{chunks[0]}</b>) as any)
     };
     const [currentIndex, setCurrentIndex] = useState(0);
-    const items = [
+    const itemsText = [
         intl.formatMessage(
             {
-                id: "start.caseStudy.one"
+                id: "start.caseStudy.oneText"
             },
             richTextIntl
         ),
         intl.formatMessage(
             {
-                id: "start.caseStudy.two"
+                id: "start.caseStudy.twoText"
             },
             richTextIntl
         ),
         intl.formatMessage(
             {
-                id: "start.caseStudy.three"
+                id: "start.caseStudy.threeText"
             },
             richTextIntl
         ),
         intl.formatMessage(
             {
-                id: "start.caseStudy.four"
+                id: "start.caseStudy.fourText"
+            },
+            richTextIntl
+        )
+    ];
+
+    const itemsTitle = [
+        intl.formatMessage(
+            {
+                id: "start.caseStudy.oneTitle"
+            },
+            richTextIntl
+        ),
+        intl.formatMessage(
+            {
+                id: "start.caseStudy.twoTitle"
+            },
+            richTextIntl
+        ),
+        intl.formatMessage(
+            {
+                id: "start.caseStudy.threeTitle"
+            },
+            richTextIntl
+        ),
+        intl.formatMessage(
+            {
+                id: "start.caseStudy.fourTitle"
             },
             richTextIntl
         )
     ];
 
     const handlePrev = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + items.length) % items.length);
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + itemsText.length) % itemsText.length);
     };
 
     const handleNext = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % itemsText.length);
     };
 
     return (
         <div>
-            <Box className="text-centered-box-header" marginBottom={"2%"}>
+            <Box className="text-centered-box-header" marginBottom={"4%"}>
                 Learn more about our use cases
             </Box>
             <div className="carousel-container">
@@ -77,7 +104,9 @@ export const CaseStudies = () => {
                     </Box>
                     <div className="carousel">
                         <div className="carousel-text" key={currentIndex}>
-                            {items[currentIndex]}
+                            {itemsTitle[currentIndex]}
+                            <br />
+                            {itemsText[currentIndex]}
                         </div>
                     </div>
                     <Box
