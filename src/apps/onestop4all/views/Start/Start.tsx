@@ -4,6 +4,7 @@ import { useIntl } from "open-pioneer:react-hooks";
 
 import NetworkGraph from "../../components/Graph/NetworkGraph";
 import { SearchBar } from "../../components/SearchBar";
+import { HowToEntries } from "./HowTo/HowToEntries";
 import { ParticipateEntries } from "./ParticipateEntries/ParticipateEntries";
 import { ResourceEntries } from "./ResourceEntries/ResourceEntries";
 import { CaseStudies } from "./CaseStudies/CaseStudies";
@@ -171,7 +172,9 @@ export function StartView() {
                 </Box>
 
                 <div className="seperator"></div>
+            </Container>
 
+            <Container maxW={{ base: "100%", custombreak: "80%" }}>
                 <Box className="mission">
                     <Box className="mission-text text-centered-box">
                         <Box className="text-centered-box-text">
@@ -182,6 +185,18 @@ export function StartView() {
             </Container>
 
             <Box className="resources" ref={resourcesSectionRef}>
+                <Container maxW={{ base: "100%" }}>
+                    <Box className="mission">
+                        <Box className="mission-text text-centered-box">
+                            <Box className="text-centered-box-text">
+                                <HowToEntries />
+                            </Box>
+                        </Box>
+                    </Box>
+                </Container>
+            </Box>
+
+            <Box ref={resourcesSectionRef}>
                 <Container maxW={{ base: "100%", custombreak: "80%" }}>
                     <Box className="text-centered-box">
                         <Box className="text-centered-box-header">
@@ -202,21 +217,6 @@ export function StartView() {
             </Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Box className="graph">
-                    <Box className="text-centered-box">
-                        <Box className="text-centered-box-header">
-                            {intl.formatMessage({ id: "start.graph.title" })}
-                        </Box>
-                        <Box className="text-centered-box-text">
-                            {intl.formatMessage({ id: "start.graph.description" })}
-                        </Box>
-                    </Box>
-                    <Box pt={"16px"}>
-                        <ParentSize>
-                            {(parent) => <NetworkGraph width={parent.width} height={500} />}
-                        </ParentSize>
-                    </Box>
-                </Box>
                 <ParticipateEntries lang={intl.locale} />
             </Container>
         </Box>
