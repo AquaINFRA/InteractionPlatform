@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useIntl } from "open-pioneer:react-hooks";
-import { Box } from "@open-pioneer/chakra-integration";
+import { Box, Button } from "@open-pioneer/chakra-integration";
+import { useNavigate } from "react-router-dom";
 
 export const CaseStudies = () => {
     const intl = useIntl();
+    const navigate = useNavigate();
     const richTextIntl = {
         bold: (chunks: string[]) =>
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -72,9 +74,14 @@ export const CaseStudies = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % itemsText.length);
     };
 
+    const handleClick = (index: number) => {
+        navigate(`/caseStudy/` + index);
+        //window.scroll(0, 0);
+    };
+
     return (
         <div>
-            <Box className="text-centered-box-header" marginBottom={"4%"}>
+            <Box className="text-centered-box-header" marginBottom={"5%"}>
                 Learn more about our use cases
             </Box>
             <div className="carousel-container">
@@ -108,6 +115,14 @@ export const CaseStudies = () => {
                             <br />
                             {itemsText[currentIndex]}
                         </div>
+                        <Button
+                            onClick={() => {
+                                handleClick(currentIndex);
+                            }}
+                            marginTop={"1%"}
+                        >
+                            More
+                        </Button>
                     </div>
                     <Box
                         flex="0 0 75px"
