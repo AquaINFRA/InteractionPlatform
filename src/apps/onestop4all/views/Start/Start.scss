@@ -18,27 +18,29 @@
         }*/
     }
 
+    .bg-icon {
+        //height: 258px;
+        left: 70%;
+        position: relative;
+        top: 8%;
+        bottom: 0;
+        opacity: 0.6;
+        width: 500px;
+
+        @media only screen and (max-width: $customBreakpoint) {
+            height: 193.5px;
+            right: 30px;
+            top: 0;
+            width: 241.5px;
+        }
+    }
+
     .mission {
         position: relative;
         padding: 80px 0;
 
         @media only screen and (max-width: $customBreakpoint) {
             padding: 40px 0;
-        }
-
-        .bg-icon {
-            height: 258px;
-            right: 100px;
-            position: absolute;
-            bottom: 0;
-            width: 322px;
-
-            @media only screen and (max-width: $customBreakpoint) {
-                height: 193.5px;
-                right: 30px;
-                top: 0;
-                width: 241.5px;
-            }
         }
     }
 
@@ -82,7 +84,7 @@
 
         .text-centered-box-header {
             color: #000;
-            font-family: Open Sans;
+            font-family: Arial, Helvetica, sans-serif;
             font-size: 24px;
             font-style: normal;
             font-weight: 400;
@@ -93,7 +95,7 @@
 
         .text-centered-box-text {
             color: #000;
-            font-family: Open Sans;
+            font-family: Arial, Helvetica, sans-serif;
             font-size: 16px;
             font-style: normal;
             font-weight: 400;

@@ -6,7 +6,7 @@ import NetworkGraph from "../../components/Graph/NetworkGraph";
 import { SearchBar } from "../../components/SearchBar";
 import { ParticipateEntries } from "./ParticipateEntries/ParticipateEntries";
 import { ResourceEntries } from "./ResourceEntries/ResourceEntries";
-import { HowToEntries } from "./HowTo/HowToEntries";
+import { CaseStudies } from "./CaseStudies/CaseStudies";
 import { useRef } from "react";
 
 export function StartView() {
@@ -72,6 +72,21 @@ export function StartView() {
                     id: "start.mission.links.ResourcesLinkLabel"
                 })}
             </a>
+        ),
+        TrainingLink: (
+            <a
+                className="link"
+                target="_blank"
+                rel="noreferrer"
+                key="4"
+                href={intl.formatMessage({
+                    id: "start.mission.links.TrainingLinkUrl"
+                })}
+            >
+                {intl.formatMessage({
+                    id: "start.mission.links.TrainingLinkLabel"
+                })}
+            </a>
         )
     };
 
@@ -118,7 +133,7 @@ export function StartView() {
                             <Box
                                 maxW={{ base: "70%", custombreak: "50%" }}
                                 fontSize={{ base: "16px", custombreak: "24px" }}
-                                color="black"
+                                color="#737373"
                             >
                                 {intl.formatMessage({ id: "start.banner.slogan" }, richTextIntl)}
                             </Box>
@@ -135,14 +150,14 @@ export function StartView() {
                 <Container maxW={{ base: "100%", custombreak: "80%" }}>
                     <SearchBar></SearchBar>
                 </Container>
+                <Image className="bg-icon" alt="Bg icon" src="/water-wheel.webp" />
             </Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
                 <Box height="80px"></Box>
 
                 <Box className="mission">
-                    <Image className="bg-icon" alt="Bg icon" src="/bg-icon.png" />
-                    <Box className="mission-text text-centered-box">
+                    <Box className="text-centered-box">
                         <Box className="text-centered-box-text">
                             {intl.formatMessage(
                                 { id: "start.mission.slogan" },
@@ -157,7 +172,13 @@ export function StartView() {
 
                 <div className="seperator"></div>
 
-                <HowToEntries lang={intl.locale} />
+                <Box className="mission">
+                    <Box className="mission-text text-centered-box">
+                        <Box className="text-centered-box-text">
+                            <CaseStudies />
+                        </Box>
+                    </Box>
+                </Box>
             </Container>
 
             <Box className="resources" ref={resourcesSectionRef}>
