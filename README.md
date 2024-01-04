@@ -1,7 +1,7 @@
 # AquaINFRA Interaction Platform
 The AquaINFRA Interaction Platform (AIP) will be the central gateway for scientific communities in the aquatic realm to interact with EOSC and access the AquaINFRA resources (harmonisation and processing services, research products, visualisation, virtual research environment and training platform).
 
-## Very quick installation guide
+## Installation guide
 
 ```bash
 $ git clone https://github.com/AquaINFRA/InteractionPlatform.git
