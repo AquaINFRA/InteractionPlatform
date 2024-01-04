@@ -81,53 +81,14 @@ export function BaseMenu() {
                 {createBlock(
                     "Get connected",
                     <>
-                        <Link
-                            href="https://www.nfdi4earth.de/about-us"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
+                        <Link href="https://aquainfra.eu/about" target="_blank" rel="noreferrer">
                             About us
                         </Link>
-                        <Link
-                            href="https://www.nfdi4earth.de/about-us/consortium"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
+                        <Link href="https://aquainfra.eu/partners" target="_blank" rel="noreferrer">
                             Partners
                         </Link>
-                        <Link
-                            href="https://www.nfdi4earth.de/2coordinate/coordination-office"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
+                        <Link href="https://aquainfra.eu/contact" target="_blank" rel="noreferrer">
                             Contact
-                        </Link>
-                    </>
-                )}
-                <div className="seperator"></div>
-                {createBlock(
-                    "Support",
-                    <>
-                        <UserSupportLink hideIcon={true} />
-                    </>
-                )}
-                <div className="seperator"></div>
-                {createBlock(
-                    "Legal information",
-                    <>
-                        <Link
-                            href="https://www.nfdi4earth.de/legal-notice"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            Legal information
-                        </Link>
-                        <Link
-                            href="https://www.nfdi4earth.de/privacy-policy"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            Privacy
                         </Link>
                     </>
                 )}

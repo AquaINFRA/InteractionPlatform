@@ -114,11 +114,11 @@ export function StartView() {
                 <Box className="header-image" />
                 <Box w="100%" position="absolute" top="0">
                     <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                        <Flex pt="60px" textAlign="center" justifyContent="flex-end">
+                        <Flex pt="120px" textAlign="center" justifyContent="flex-end">
                             <Box
                                 maxW={{ base: "70%", custombreak: "50%" }}
                                 fontSize={{ base: "16px", custombreak: "24px" }}
-                                color="white"
+                                color="black"
                             >
                                 {intl.formatMessage({ id: "start.banner.slogan" }, richTextIntl)}
                             </Box>
@@ -130,7 +130,7 @@ export function StartView() {
             <Box
                 position="absolute"
                 width="100%"
-                marginTop={{ base: "-40px", custombreak: "-70px" }}
+                marginTop={{ base: "-40px", custombreak: "-30px" }}
             >
                 <Container maxW={{ base: "100%", custombreak: "80%" }}>
                     <SearchBar></SearchBar>

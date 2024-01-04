@@ -16,20 +16,20 @@ messages:
   search:
     search-bar:
       button-label: "Search"
-      placeholder: "Search for data repositories, software tools, information or research data materials"
+      placeholder: "Search for research data, software or other digital research assets."
       dropdownPlaceholder: "All resources"
   start:
     banner:
-      slogan: "Your One-Stop to FAIR, open and innovative Research Data Management in <bold>Earth System Sciences</bold>."
+      slogan: "<bold>The central gateway for scientific communities to find, access, and reuse aquatic digital resources.</bold>"
     mission:
-      slogan: "The <bold>OneStop4All</bold> is the primary visual and user-friendly {NFDI4EarthLink} access point. It offers a coherent view on and points to all relevant Earth System Sciences (ESS) RDM resources provided by NFDI4Earth members and the ESS community, such as data repositories, software tools, information on Research Data Management (RDM), education and training materials. Learn more about our {MissionLink} and the {ResourcesLink}."
+      slogan: "The <bold>AquaINFRA Interaction Platform (AIP)</bold> is a user-friendly access point to resources from the aquatic realm, such as research data, software, and training materials. Learn more about the {MissionLink} project."
       links:
-        NFDI4EarthLinkUrl: https://www.nfdi4earth.de/
-        NFDI4EarthLinkLabel: NFDI4Earth
-        MissionLinkUrl: https://www.nfdi4earth.de/about-us
-        MissionLinkLabel: Mission
-        ResourcesLinkUrl: /
-        ResourcesLinkLabel: Resources
+        #NFDI4EarthLinkUrl: https://www.nfdi4earth.de/
+        #NFDI4EarthLinkLabel: NFDI4Earth
+        MissionLinkUrl: https://aquainfra.eu/
+        MissionLinkLabel: AquaINFRA
+        #ResourcesLinkUrl: /
+        #ResourcesLinkLabel: Resources
     how-to:
       title: We provide guidance on Research Data Management in ESS
       description: Here, you will find introductory articles to research data management in the ESS.
