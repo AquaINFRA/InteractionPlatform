@@ -1,11 +1,11 @@
 /* eslint-disable */
 import { Box, Flex, SimpleGrid } from "@open-pioneer/chakra-integration";
-import { HowToEntry } from "./HowToEntry";
+import { DemonstratorEntry } from "./DemonstratorEntry";
 
-export const HowToEntries = () => {
-    const howToEntries = ["Title 1", "Title 2", "Title 3"];
+export const DemonstratorEntries = () => {
+    const demonstratorEntries = ["Title 1", "Title 2", "Title 3"];
 
-    if (howToEntries.length > 2) {
+    if (demonstratorEntries.length > 2) {
         return (
             <Box className="how-to">
                 <Box className="text-centered-box">
@@ -18,9 +18,9 @@ export const HowToEntries = () => {
                     </Box>
                 </Box>
                 <SimpleGrid columns={[1, 2, 3]} spacing={10} padding={"0px 100px"} marginTop={"1%"}>
-                    {howToEntries.map((howToEntry, index) => (
+                    {demonstratorEntries.map((demonstrator, index) => (
                         <Flex key={index}>
-                            <HowToEntry howToEntryTitle={howToEntry} key={index} />
+                            <DemonstratorEntry demonstratorEntryTitle={demonstrator} key={index} />
                         </Flex>
                     ))}
                 </SimpleGrid>

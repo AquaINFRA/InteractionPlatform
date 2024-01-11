@@ -1,10 +1,9 @@
 import { Box, Container, Flex, Image } from "@open-pioneer/chakra-integration";
-import { ParentSize } from "@visx/responsive";
+//import { ParentSize } from "@visx/responsive";
 import { useIntl } from "open-pioneer:react-hooks";
 
-import NetworkGraph from "../../components/Graph/NetworkGraph";
 import { SearchBar } from "../../components/SearchBar";
-import { HowToEntries } from "./HowTo/HowToEntries";
+import { DemonstratorEntries } from "./Demonstrator/DemonstratorEntries";
 import { ParticipateEntries } from "./ParticipateEntries/ParticipateEntries";
 import { ResourceEntries } from "./ResourceEntries/ResourceEntries";
 import { CaseStudies } from "./CaseStudies/CaseStudies";
@@ -30,21 +29,6 @@ export function StartView() {
     };
 
     const missionLinksIntl = {
-        NFDI4EarthLink: (
-            <a
-                className="link"
-                target="_blank"
-                key="1"
-                rel="noreferrer"
-                href={intl.formatMessage({
-                    id: "start.mission.links.NFDI4EarthLinkUrl"
-                })}
-            >
-                {intl.formatMessage({
-                    id: "start.mission.links.NFDI4EarthLinkLabel"
-                })}
-            </a>
-        ),
         MissionLink: (
             <a
                 className="link"
@@ -57,20 +41,6 @@ export function StartView() {
             >
                 {intl.formatMessage({
                     id: "start.mission.links.MissionLinkLabel"
-                })}
-            </a>
-        ),
-        ResourcesLink: (
-            <a
-                className="link"
-                target="_blank"
-                rel="noreferrer"
-                key="3"
-                onClick={scrollToResources}
-                style={{ cursor: "pointer" }}
-            >
-                {intl.formatMessage({
-                    id: "start.mission.links.ResourcesLinkLabel"
                 })}
             </a>
         ),
@@ -128,11 +98,15 @@ export function StartView() {
         <Box className="start-view">
             <Box position="relative">
                 <Box className="header-image" />
-                <Box w="100%" position="absolute" top="0">
+                <Box
+                    position="absolute"
+                    width="100%"
+                    marginTop={{ base: "-40px", custombreak: "-170px" }}
+                >
                     <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                        <Flex pt="120px" textAlign="center" justifyContent="flex-end">
+                        <Flex pt="60px" textAlign="center" justifyContent="flex-end">
                             <Box
-                                maxW={{ base: "70%", custombreak: "50%" }}
+                                maxW={{ base: "70%", custombreak: "45%" }}
                                 fontSize={{ base: "16px", custombreak: "24px" }}
                                 color="#737373"
                             >
@@ -140,18 +114,10 @@ export function StartView() {
                             </Box>
                         </Flex>
                     </Container>
+                    <Container maxW={{ base: "100%", custombreak: "80%" }}>
+                        <SearchBar></SearchBar>
+                    </Container>
                 </Box>
-            </Box>
-
-            <Box
-                position="absolute"
-                width="100%"
-                marginTop={{ base: "-40px", custombreak: "-30px" }}
-            >
-                <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                    <SearchBar></SearchBar>
-                </Container>
-                <Image className="bg-icon" alt="Bg icon" src="/water-wheel.webp" />
             </Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
@@ -174,22 +140,24 @@ export function StartView() {
                 <div className="seperator"></div>
             </Container>
 
-            <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Box className="mission">
-                    <Box className="mission-text text-centered-box">
-                        <Box className="text-centered-box-text">
-                            <CaseStudies />
+            <Box className="caseStudies" ref={resourcesSectionRef}>
+                <Container maxW={{ base: "100%" }}>
+                    <Box className="mission">
+                        <Box className="mission-text text-centered-box">
+                            <Box className="text-centered-box-text">
+                                <CaseStudies />
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
-            </Container>
+                </Container>
+            </Box>
 
             <Box className="resources" ref={resourcesSectionRef}>
                 <Container maxW={{ base: "100%" }}>
                     <Box className="mission">
                         <Box className="mission-text text-centered-box">
                             <Box className="text-centered-box-text">
-                                <HowToEntries />
+                                <DemonstratorEntries />
                             </Box>
                         </Box>
                     </Box>

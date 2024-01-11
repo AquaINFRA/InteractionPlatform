@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useIntl } from "open-pioneer:react-hooks";
-import { Box, Button } from "@open-pioneer/chakra-integration";
+import { Box, Button, Flex } from "@open-pioneer/chakra-integration";
 import { useNavigate } from "react-router-dom";
 
 export const CaseStudies = () => {
@@ -76,28 +76,25 @@ export const CaseStudies = () => {
 
     const handleClick = (index: number) => {
         navigate(`/caseStudy/` + index);
-        //window.scroll(0, 0);
     };
 
     return (
-        <div>
-            <Box className="text-centered-box-header" marginBottom={"5%"}>
-                Learn more about our use cases
+        <Box className="how-to">
+            <Box className="text-centered-box">
+                <Box className="text-centered-box-header">Learn more about our use cases</Box>
+                <Box className="text-centered-box-text">
+                    The case studies showcase the benefit of doing research in an open and FAIR way.
+                </Box>
             </Box>
-            <div className="carousel-container">
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    height="75px" // Set a fixed height for the carousel container
-                >
+            <Box marginTop={"1%"} padding={"0px 200px"} w={"100%"}>
+                <Flex>
                     <Box
-                        flex="0 0 75px"
                         hideBelow="custombreak"
                         onClick={() => {
                             handlePrev();
                         }}
                         _hover={{ cursor: "pointer" }}
+                        marginTop={"4%"}
                     >
                         <svg
                             width="76"
@@ -131,6 +128,7 @@ export const CaseStudies = () => {
                             handleNext();
                         }}
                         _hover={{ cursor: "pointer" }}
+                        marginTop={"4%"}
                     >
                         <svg
                             width="76"
@@ -142,8 +140,8 @@ export const CaseStudies = () => {
                             <path d="M44 7.5L75 38L44 68.5" stroke="#05668D" />
                         </svg>
                     </Box>
-                </Box>
-            </div>
-        </div>
+                </Flex>
+            </Box>
+        </Box>
     );
 };
