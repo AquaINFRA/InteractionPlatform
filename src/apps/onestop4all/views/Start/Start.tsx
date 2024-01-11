@@ -163,30 +163,6 @@ export function StartView() {
                     </Box>
                 </Container>
             </Box>
-
-            <Box ref={resourcesSectionRef}>
-                <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                    <Box className="text-centered-box">
-                        <Box className="text-centered-box-header">
-                            {intl.formatMessage({ id: "start.resources.title" })}
-                        </Box>
-                        <Box className="text-centered-box-text">
-                            {intl.formatMessage(
-                                { id: "start.resources.description" },
-                                { ...richTextIntl, ...resourcesLinksIntl }
-                            )}
-                        </Box>
-                    </Box>
-
-                    <Box pt="32px" overflow="auto">
-                        <ResourceEntries></ResourceEntries>
-                    </Box>
-                </Container>
-            </Box>
-
-            <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <ParticipateEntries lang={intl.locale} />
-            </Container>
         </Box>
     );
 }

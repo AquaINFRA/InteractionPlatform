@@ -35,7 +35,7 @@ export const Footer = () => {
                             <Box display="flex" gap="8px">
                                 <span className="section-entry">
                                     <a
-                                        href="https://www.nfdi4earth.de/about-us"
+                                        href="https://aquainfra.eu/about"
                                         target="_blank"
                                         rel="noreferrer"
                                     >
@@ -47,7 +47,7 @@ export const Footer = () => {
                                 <span>|</span>
                                 <span className="section-entry">
                                     <a
-                                        href="https://www.nfdi4earth.de/about-us/consortium"
+                                        href="https://aquainfra.eu/partners"
                                         target="_blank"
                                         rel="noreferrer"
                                     >
@@ -59,7 +59,7 @@ export const Footer = () => {
                                 <span>|</span>
                                 <span className="section-entry">
                                     <a
-                                        href="https://www.nfdi4earth.de/2coordinate/coordination-office"
+                                        href="https://aquainfra.eu/contact"
                                         target="_blank"
                                         rel="noreferrer"
                                     >
@@ -68,31 +68,6 @@ export const Footer = () => {
                                         })}
                                     </a>
                                 </span>
-                            </Box>
-                        </Box>
-                        <Box
-                            className="section"
-                            gap={{ base: "column", custombreak: "10px" }}
-                            flexDirection={{ base: "column", custombreak: "row" }}
-                        >
-                            <Box className="section-header">Support:</Box>
-                            <Box display="flex" gap="8px" _hover={{ cursor: "pointer" }}>
-                                <a
-                                    onClick={() => {
-                                        navigate("/faq/FAQ.md");
-                                        window.scroll(0, 0);
-                                    }}
-                                >
-                                    <span className="section-entry">FAQ</span>
-                                </a>
-                                <span>|</span>
-                                <Box
-                                    className="section-entry"
-                                    onClick={() => setOpenSupportForm(true)}
-                                    _hover={{ cursor: "pointer" }}
-                                >
-                                    User Support
-                                </Box>
                             </Box>
                         </Box>
                         <Box
@@ -140,20 +115,18 @@ export const Footer = () => {
                         gap={{ base: "20px", custombreak: "52px" }}
                     >
                         <Box className="entry">
-                            <a
-                                href="https://git.rwth-aachen.de/nfdi4earth"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
+                            <a href="https://github.com/AquaINFRA" target="_blank" rel="noreferrer">
                                 <Flex gap="10px" alignItems="center">
-                                    <img src="/gitlab-logo.svg" />
-                                    <div className="label">GITLAB</div>
+                                    <Box w={"40px"}>
+                                        <img src="/github.png" />
+                                    </Box>
+                                    <div className="label">GITHUB</div>
                                 </Flex>
                             </a>
                         </Box>
                         <Box className="entry">
                             <a
-                                href="https://twitter.com/nfdi4earth"
+                                href="https://twitter.com/AquainfraEU"
                                 target="_blank"
                                 rel="noreferrer"
                             >
@@ -176,8 +149,9 @@ export const Footer = () => {
                             </a>
                         </Box>
                         <Box flex="1 1 50px"></Box>
-                        <Box>
-                            <img src="/dfg-logo.svg" />
+                        <Box w={"20%"}>
+                            <span className="entry">Funded by</span>
+                            <img src="/ec-logo.svg" />
                         </Box>
                     </Box>
                 </Container>
