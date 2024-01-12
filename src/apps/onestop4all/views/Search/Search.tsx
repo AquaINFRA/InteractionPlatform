@@ -10,6 +10,7 @@ import { MobileFilterMenu } from "./Facets/MobileFilterMenu/MobileFilterMenu";
 import { ResourceTypeFacet } from "./Facets/ResourceTypeFacet/ResourceTypeFacet";
 import { SpatialCoverageFacet } from "./Facets/SpatialCoverageFacet/SpatialCoverageFacet";
 import { SubjectFacet } from "./Facets/SubjectFacet/SubjectFacet";
+import { DataProviderFacet } from "./Facets/DataProviderFacet/DataProviderFacet";
 import { TemporalCoverageFacet } from "./Facets/TemporalCoverageFacet/TemporalCoverageFacet";
 import { ResultCountSelector } from "./ResultCountSelector/ResultCountSelector";
 import { ResultPaging } from "./ResultPaging/ResultPaging";
@@ -62,6 +63,10 @@ export function SearchView() {
             params[UrlSearchParameterType.SortingFilter] = `${searchState.sorting.term}`;
         }
 
+        if (searchState.selectedDataProvider.length > 0) {
+            params[UrlSearchParameterType.DataProvider] = searchState.selectedDataProvider;
+        }
+
         navigate({
             pathname: "/search",
             search: `?${createSearchParams({ ...params })}`
@@ -75,7 +80,8 @@ export function SearchView() {
         searchState.pageSize,
         searchState.pageStart,
         searchState.temporalFilter,
-        searchState.sorting
+        searchState.sorting,
+        searchState.selectedDataProvider
     ]);
 
     const [openMenu, setOpenMenu] = useState(false);
@@ -168,6 +174,9 @@ export function SearchView() {
                     <Flex flex="0 0 30%" hideBelow="custombreak" flexDirection="column">
                         <Box>
                             <ResultPaging />
+                        </Box>
+                        <Box padding={"32px 0px"}>
+                            <DataProviderFacet />
                         </Box>
                         <Box padding={"64px 0px 32px"} ref={menu}>
                             <ResourceTypeFacet></ResourceTypeFacet>

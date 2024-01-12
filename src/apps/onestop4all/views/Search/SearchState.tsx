@@ -18,7 +18,8 @@ export enum UrlSearchParameterType {
     PageSize = "pageSize",
     PageStart = "pageStart",
     TemporalFilter = "temporalfilter",
-    SortingFilter = "sort"
+    SortingFilter = "sort",
+    DataProvider = "dataProvider"
 }
 
 export interface UrlSearchParams {
@@ -30,6 +31,7 @@ export interface UrlSearchParams {
     [UrlSearchParameterType.PageStart]?: string;
     [UrlSearchParameterType.TemporalFilter]?: string;
     [UrlSearchParameterType.SortingFilter]?: string;
+    [UrlSearchParameterType.DataProvider]?: string[];
 }
 
 export const SpatialFilterEnableForResourceTypes = [ResourceType.Organisations];
@@ -54,6 +56,12 @@ export interface SelectableResourceType {
     selected: boolean;
 }
 
+export interface SelectableDataProvider {
+    id: string;
+    selected: boolean;
+    title: string;
+}
+
 export interface SelectableSubject {
     label: string;
     children: SelectableSubject[];
@@ -71,6 +79,9 @@ export interface ISearchState {
     setSearchTerm(searchTerm: string): void;
     selectedResourceTypes: string[];
     setSelectedResourceTypes(types: string[]): void;
+    selectedDataProvider: string[];
+    setSelectedDataProvider(dataProvider: string[]): void;
+    selectableDataProvider: SelectableDataProvider[];
     selectableResourceTypes: SelectableResourceType[];
     selectedSubjects: string[];
     setSelectedSubjects(subjects: string[]): void;
@@ -160,6 +171,15 @@ export const SearchState = (props: PropsWithChildren) => {
     }
     const [selectedSubjects, setSelectedSubjects] = useState<string[]>(subjects);
 
+    // init selected dataProvider
+    const [selectableDataProvider, setSelectableDataProvider] = useState<SelectableDataProvider[]>(
+        []
+    );
+
+    // init selected data provider
+    const dataProvider: string[] = [];
+    const [selectedDataProvider, setSelectedDataProvider] = useState<string[]>(dataProvider);
+
     // init spatial filter
     let sp: number[] = [];
     const coordString = searchParams.get(UrlSearchParameterType.SpatialFilter);
@@ -200,12 +220,14 @@ export const SearchState = (props: PropsWithChildren) => {
     const [sorting, setSorting] = useState<SortOption | undefined>(sort);
 
     function search() {
+        //console.log("bla");
         setIsLoaded(false);
         searchSrvc
             .doSearch({
                 searchTerm,
                 resourceTypes: selectedResourceTypes,
                 subjects: selectedSubjects,
+                dataProvider: selectedDataProvider,
                 spatialFilter,
                 pageSize,
                 pageStart,
@@ -243,6 +265,7 @@ export const SearchState = (props: PropsWithChildren) => {
             }
 
             function adjustEntry(entry: SubjectEntry, tree: SelectableSubject[]) {
+                //console.log(tree);
                 tree.find((e) => adjustEntry(entry, e.children));
                 const match = tree.find((e) => e.label === entry.label);
                 if (match) {
@@ -307,7 +330,10 @@ export const SearchState = (props: PropsWithChildren) => {
         search,
         selectedSubjects,
         setSelectedSubjects,
-        selectableSubjects
+        selectableSubjects,
+        setSelectedDataProvider,
+        selectedDataProvider,
+        selectableDataProvider
     };
 
     return (

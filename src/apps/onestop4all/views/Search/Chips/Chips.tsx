@@ -45,6 +45,16 @@ export function Chips() {
         });
     }
 
+    // data provider
+    const dataProvider = searchState.selectedDataProvider;
+    if (dataProvider.length) {
+        chips.push({
+            title: "Data provider",
+            values: dataProvider,
+            deleteCb: () => searchState.setSelectedDataProvider([])
+        });
+    }
+
     // spatial coverage
     const spatialFilter = searchState.spatialFilter;
     if (spatialFilter.length) {
