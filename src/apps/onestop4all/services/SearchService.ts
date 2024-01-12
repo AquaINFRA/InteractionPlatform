@@ -17,6 +17,9 @@ export interface SearchResultItem {
     locality?: string;
     abstract: string;
     url: string;
+    properties?: {
+        title?: string;
+    };
 }
 
 export interface SearchRequestParams {
@@ -88,7 +91,7 @@ export interface Facets {
 export interface SearchResult {
     count: number;
     results: SearchResultItem[];
-    facets: Facets;
+    //facets: Facets;
 }
 
 export interface SolrConfig {
@@ -151,26 +154,19 @@ export class SearchService {
         const url = `${baseUrl}/search?${queryParams.toString()}`;
         console.log("url", url);
         return fetch(url).then((response) =>
-            response
-                .json()
-                .then(
-                    (responseData: {
-                        response: SolrSearchResponse;
-                        facet_counts: SolrFacetResponse;
-                    }) => {
-                        const { response } = responseData;
-                        console.log("RESPONSE:", responseData);
-                        if (response.numFound !== undefined && response.docs !== undefined) {
-                            return {
-                                count: response.numFound,
-                                results: this.createResultEntries(response.docs),
-                                facets: this.createFacets(responseData.facet_counts)
-                            };
-                        } else {
-                            throw new Error("Unexpected response: " + JSON.stringify(responseData));
-                        }
-                    }
-                )
+            response.json().then((responseData) => {
+                const response = responseData;
+                console.log("RESPONSE:", responseData);
+                if (response.numberMatched !== undefined && response.features !== undefined) {
+                    return {
+                        count: response.numberMatched,
+                        results: response.features
+                        //facets: this.createFacets(responseData.facet_counts)
+                    };
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
         );
     }
 

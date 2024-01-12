@@ -10,7 +10,7 @@ export const ResourceEntries = () => {
     const [resources, setResources] = useState<ResourceEntryProps[]>([]);
 
     useEffect(() => {
-        searchSrvc.doSearch({ pageSize: 0 }).then((res) => {
+        /*searchSrvc.doSearch({ pageSize: 0 }).then((res) => {
             const entries: ResourceEntryProps[] = res.facets.resourceType
                 .map((r) => ({
                     resourceType: r.resourceType,
@@ -18,7 +18,7 @@ export const ResourceEntries = () => {
                 }))
                 .sort((a, b) => a.resourceType.localeCompare(b.resourceType));
             setResources(entries);
-        });
+        });*/
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

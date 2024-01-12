@@ -10,14 +10,14 @@ import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
 
 export function DataProviderFacet() {
     const searchState = useSearchState();
-    console.log(searchState.selectedDataProvider);
+    //console.log(searchState.selectedDataProvider);
     const [entries, setEntries] = useState<SelectableDataProvider[]>([]);
     const searchSrvc = useService("onestop4all.SearchService");
 
     useEffect(() => {
         searchSrvc.getDataProvider().then((res) => {
             setEntries(JSON.parse(res).collections);
-            console.log(entries);
+            //console.log(entries);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

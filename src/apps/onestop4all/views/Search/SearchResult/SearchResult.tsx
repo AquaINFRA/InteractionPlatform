@@ -14,7 +14,7 @@ export interface SearchResultProps {
 export function SearchResult(props: SearchResultProps) {
     const { item } = props;
     const navigate = useNavigate();
-
+    console.log(item);
     const searchState = useSearchState();
 
     const hoverStyle: SystemStyleObject = {
@@ -47,7 +47,7 @@ export function SearchResult(props: SearchResultProps) {
                         ></ResourceIcon>
                     </Box>
                     <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
-                    <Box className="title">{item.title}</Box>
+                    <Box className="title">{}</Box>
                 </Flex>
                 <Box className="abstract">{item.abstract}</Box>
             </Box>

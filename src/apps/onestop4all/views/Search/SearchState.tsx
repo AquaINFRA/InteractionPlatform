@@ -242,7 +242,7 @@ export const SearchState = (props: PropsWithChildren) => {
             .then((result) => {
                 setIsLoaded(true);
                 setSearchResults(result);
-                const resourceTypeFacet = result.facets.resourceType.map((e) => {
+                /*const resourceTypeFacet = result.facets.resourceType.map((e) => {
                     return {
                         resourceType: e.resourceType,
                         count: e.count,
@@ -251,7 +251,7 @@ export const SearchState = (props: PropsWithChildren) => {
                 });
                 setSelecteableResourceTypes(resourceTypeFacet);
                 handleSubjects(result.facets.subjects);
-                handleTemporalFacets(result.facets.temporal);
+                handleTemporalFacets(result.facets.temporal);*/
             })
             .catch((error) => {
                 setIsLoaded(true);
