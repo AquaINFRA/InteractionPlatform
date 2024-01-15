@@ -16,7 +16,7 @@ import { ResultCountSelector } from "./ResultCountSelector/ResultCountSelector";
 import { ResultPaging } from "./ResultPaging/ResultPaging";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "./SearchState";
-import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
+//import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
 
 export function SearchView() {
     const searchState = useSearchState();
@@ -87,7 +87,6 @@ export function SearchView() {
     const [openMenu, setOpenMenu] = useState(false);
 
     const menu = useRef(null);
-
     return (
         <Box className="search-view">
             <Box position="relative">
@@ -124,9 +123,9 @@ export function SearchView() {
                                     justifyContent="space-between"
                                     padding={{ base: "0 0 15px", custombreak: "0" }}
                                 >
-                                    <ResultCountSelector></ResultCountSelector>
+                                    <ResultCountSelector />
                                     <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
-                                    <SortedBySelector></SortedBySelector>
+                                    {/*<SortedBySelector />*/}
                                     <Box
                                         flex="0 0 1px"
                                         bgColor={BorderColor}
@@ -154,7 +153,7 @@ export function SearchView() {
                                         <Box key={e.id}>
                                             <Box className="seperator"></Box>
                                             <Box padding={{ base: "40px 0px" }}>
-                                                <SearchResult item={e}></SearchResult>
+                                                <SearchResult item={e} />
                                             </Box>
                                         </Box>
                                     );

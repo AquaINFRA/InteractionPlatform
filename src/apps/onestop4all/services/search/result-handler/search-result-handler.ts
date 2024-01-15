@@ -26,6 +26,10 @@ export abstract class SearchResultHandler {
             publishDate: item.datePublished ? new Date(item.datePublished) : undefined,
             updateDate: item.dateModified ? new Date(item.dateModified) : undefined,
             resourceType: this.resourceType,
+            properties: {
+                title: item.properties.title,
+                type: item.properties.type
+            },
             ...item,
             ...this.handleExplicit(item)
         };

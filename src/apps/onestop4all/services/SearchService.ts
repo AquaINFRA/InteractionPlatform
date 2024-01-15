@@ -17,8 +17,9 @@ export interface SearchResultItem {
     locality?: string;
     abstract: string;
     url: string;
-    properties?: {
-        title?: string;
+    properties: {
+        title: string;
+        type: string;
     };
 }
 
@@ -362,7 +363,7 @@ export class SearchService {
     private addDataProvider(dataProvider: string[] | undefined, queryParams: URLSearchParams) {
         console.log(dataProvider);
         if (dataProvider?.length) {
-            queryParams.set("collections", `${dataProvider.map((e) => `${e}`).join(" OR ")}`);
+            queryParams.set("collections", `${dataProvider.map((e) => `${e}`).join(",")}`);
         }
     }
 

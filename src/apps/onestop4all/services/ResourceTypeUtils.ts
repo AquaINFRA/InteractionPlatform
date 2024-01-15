@@ -18,7 +18,9 @@ export enum ResourceType {
     // Services = "Service",
     Standards = "Standard",
     LHB_Articles = "Living Handbook Article",
-    Learning_Resource = "Learning resource"
+    Learning_Resource = "Learning resource",
+    Dataset = "dataset",
+    Series = "series"
 }
 
 const mapping = [
@@ -49,6 +51,14 @@ const mapping = [
     {
         type: ResourceType.Learning_Resource,
         identifier: "http://schema.org/LearningResource"
+    },
+    {
+        type: ResourceType.Dataset,
+        identifier: "dataset"
+    },
+    {
+        type: ResourceType.Series,
+        identifier: "series"
     }
 ];
 

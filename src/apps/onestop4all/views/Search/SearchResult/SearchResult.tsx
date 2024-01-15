@@ -3,6 +3,7 @@ import { DateTime } from "luxon";
 import { useNavigate } from "react-router-dom";
 
 import { SearchResultItem } from "../../../services/SearchService";
+import { mapToResourceType, ResourceType } from "../../../services/ResourceTypeUtils";
 import { BorderColor, PrimaryColor } from "../../../Theme";
 import { ResourceIcon } from "../../Start/ResourceEntry/ResourceIcons";
 import { useSearchState } from "../SearchState";
@@ -14,7 +15,10 @@ export interface SearchResultProps {
 export function SearchResult(props: SearchResultProps) {
     const { item } = props;
     const navigate = useNavigate();
-    console.log(item);
+    const type = item.properties.type;
+    console.log(type);
+    const resType = type ? mapToResourceType(type) : undefined;
+    console.log(resType);
     const searchState = useSearchState();
 
     const hoverStyle: SystemStyleObject = {
@@ -34,20 +38,22 @@ export function SearchResult(props: SearchResultProps) {
         <Flex alignItems="center" _hover={hoverStyle} onClick={navigateTo}>
             <Box className="search-result" flex="1" overflow={"hidden"}>
                 <Flex gap="8px">
-                    <Box className="resource-type">{item.resourceType}</Box>
-                    {dateSection()}
-                    {locationSection()}
+                    <Box className="resource-type">{item.properties?.type}</Box>
+                    {/*dateSection()*/}
+                    {/*locationSection()*/}
                 </Flex>
                 <Flex gap="8px" padding="8px 0">
                     <Box>
-                        <ResourceIcon
-                            type={item.resourceType}
-                            size={24}
-                            color={PrimaryColor}
-                        ></ResourceIcon>
+                        {resType ? (
+                            <ResourceIcon
+                                type={resType}
+                                size={24}
+                                color={PrimaryColor}
+                            ></ResourceIcon>
+                        ) : null}
                     </Box>
                     <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
-                    <Box className="title">{}</Box>
+                    <Box className="title">{item.properties?.title}</Box>
                 </Flex>
                 <Box className="abstract">{item.abstract}</Box>
             </Box>
