@@ -116,7 +116,7 @@ export function SearchView() {
                                 <Box hideFrom="custombreak" padding="20px 0px">
                                     <ResultPaging />
                                 </Box>
-                                <Spacer></Spacer>
+                                <Spacer />
                                 <Flex
                                     gap="10px"
                                     alignItems="center"
@@ -177,12 +177,12 @@ export function SearchView() {
                         <Box padding={"32px 0px"}>
                             <DataProviderFacet />
                         </Box>
-                        <Box padding={"64px 0px 32px"} ref={menu}>
+                        {/*<Box padding={"64px 0px 32px"} ref={menu}>
                             <ResourceTypeFacet></ResourceTypeFacet>
                         </Box>
                         <Box padding={"32px 0px"}>
                             <SubjectFacet></SubjectFacet>
-                        </Box>
+                        </Box>*/}
                         <Box padding={"32px 0px"}>
                             <SpatialCoverageFacet mapId="spatial-filter-map"></SpatialCoverageFacet>
                         </Box>

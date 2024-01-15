@@ -7,6 +7,11 @@ import { SimpleGrid } from "@chakra-ui/react";
 import { SelectableDataProvider, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
+import { SearchResultItem } from "../../../../services/SearchService";
+
+export interface DataProvider {
+    title: string;
+}
 
 export function DataProviderFacet() {
     const searchState = useSearchState();
@@ -16,7 +21,11 @@ export function DataProviderFacet() {
 
     useEffect(() => {
         searchSrvc.getDataProvider().then((res) => {
-            setEntries(JSON.parse(res).collections);
+            setEntries(
+                JSON.parse(res).collections.sort((a: DataProvider, b: DataProvider) =>
+                    a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
+                )
+            );
             //console.log(entries);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
