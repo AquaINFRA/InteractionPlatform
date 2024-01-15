@@ -381,7 +381,7 @@ export class SearchService {
         queryParams: URLSearchParams
     ) {
         if (pageSize !== undefined) {
-            //queryParams.set("rows", pageSize.toString());
+            queryParams.set("limit", pageSize.toString());
             if (pageStart !== undefined) {
                 //queryParams.set("start", (pageStart * pageSize).toString());
             }

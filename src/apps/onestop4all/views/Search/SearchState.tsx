@@ -220,7 +220,7 @@ export const SearchState = (props: PropsWithChildren) => {
     const [sorting, setSorting] = useState<SortOption | undefined>(sort);
 
     function search() {
-        //console.log("bla");
+        //console.log(pageSize);
         setIsLoaded(false);
         searchSrvc
             .doSearch({
