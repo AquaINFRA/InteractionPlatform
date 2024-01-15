@@ -28,7 +28,8 @@ export abstract class SearchResultHandler {
             resourceType: this.resourceType,
             properties: {
                 title: item.properties.title,
-                type: item.properties.type
+                type: item.properties.type,
+                aicollection: item.properties.aicollection
             },
             ...item,
             ...this.handleExplicit(item)

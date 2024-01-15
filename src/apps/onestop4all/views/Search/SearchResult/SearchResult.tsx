@@ -17,7 +17,7 @@ export function SearchResult(props: SearchResultProps) {
     const navigate = useNavigate();
     const type = item.properties.type;
     //console.log(type);
-    const resType = type ? mapToResourceType(type) : undefined;
+    const resType = type ? mapToResourceType(type) : mapToResourceType("unknown");
     //console.log(resType);
     const searchState = useSearchState();
 
@@ -38,9 +38,12 @@ export function SearchResult(props: SearchResultProps) {
         <Flex alignItems="center" _hover={hoverStyle} onClick={navigateTo}>
             <Box className="search-result" flex="1" overflow={"hidden"}>
                 <Flex gap="8px">
-                    <Box className="resource-type">{item.properties?.type}</Box>
+                    <Box className="resource-type">
+                        {item.properties?.type ? item.properties?.type : "Resource"}
+                    </Box>
                     {/*dateSection()*/}
                     {/*locationSection()*/}
+                    {providerSection()}
                 </Flex>
                 <Flex gap="8px" padding="8px 0">
                     <Box>
@@ -100,6 +103,15 @@ export function SearchResult(props: SearchResultProps) {
             <>
                 <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
                 <Box className="date">{props.item.locality}</Box>
+            </>
+        ) : null;
+    }
+
+    function providerSection() {
+        return props.item.properties.aicollection ? (
+            <>
+                <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
+                <Box className="date">{props.item.properties.aicollection}</Box>
             </>
         ) : null;
     }

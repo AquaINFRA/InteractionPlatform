@@ -20,6 +20,7 @@ export interface SearchResultItem {
     properties: {
         title: string;
         type: string;
+        aicollection: string;
     };
 }
 

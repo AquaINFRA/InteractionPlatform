@@ -21,7 +21,8 @@ export enum ResourceType {
     Learning_Resource = "Learning resource",
     Dataset = "dataset",
     Series = "series",
-    Service = "service"
+    Service = "service",
+    Unknown = "unknown"
 }
 
 const mapping = [
@@ -64,6 +65,10 @@ const mapping = [
     {
         type: ResourceType.Service,
         identifier: "service"
+    },
+    {
+        type: ResourceType.Unknown,
+        identifier: "unknown"
     }
 ];
 
