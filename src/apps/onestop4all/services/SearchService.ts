@@ -136,7 +136,7 @@ export class SearchService {
 
         //this.addSubjects(searchParams.subjects, queryParams);
 
-        //this.addSpatialFilter(searchParams.spatialFilter, queryParams);
+        this.addSpatialFilter(searchParams.spatialFilter, queryParams);
 
         this.addDataProvider(searchParams.dataProvider, queryParams);
 
@@ -316,8 +316,8 @@ export class SearchService {
     private addSpatialFilter(spatialFilter: number[] | undefined, queryParams: URLSearchParams) {
         if (spatialFilter && spatialFilter.length > 0) {
             if (spatialFilter.length === 4) {
-                const [minLon, minLat, maxLon, maxLat] = spatialFilter;
-                queryParams.set("fq", `geometry:[${minLat},${minLon} TO ${maxLat},${maxLon}]`);
+                const [minLat, minLon, maxLat, maxLon] = spatialFilter;
+                queryParams.set("bbox", `${minLat},${minLon},${maxLat},${maxLon}`);
             }
         }
     }
@@ -383,7 +383,8 @@ export class SearchService {
         if (pageSize !== undefined) {
             queryParams.set("limit", pageSize.toString());
             if (pageStart !== undefined) {
-                //queryParams.set("start", (pageStart * pageSize).toString());
+                console.log(pageStart);
+                queryParams.set("offset", (pageStart * pageSize).toString());
             }
         }
     }
