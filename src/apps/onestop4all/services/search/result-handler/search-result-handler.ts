@@ -10,9 +10,10 @@ export type MinSearchResultItem = {
 export abstract class SearchResultHandler {
     public abstract readonly resourceType: ResourceType;
 
-    public canHandle(item: SolrSearchResultItem): boolean {
-        if (item.type.length) {
-            return item.type.findIndex((e) => e === mapFromResourceType(this.resourceType)) > -1;
+    public canHandle(item: string): boolean {
+        //console.log("hieeeer",item);
+        if (item) {
+            return item === (mapFromResourceType(this.resourceType) as string);
         }
         return false;
     }
@@ -26,11 +27,6 @@ export abstract class SearchResultHandler {
             publishDate: item.datePublished ? new Date(item.datePublished) : undefined,
             updateDate: item.dateModified ? new Date(item.dateModified) : undefined,
             resourceType: this.resourceType,
-            properties: {
-                title: item.properties.title,
-                type: item.properties.type,
-                aicollection: item.properties.aicollection
-            },
             ...item,
             ...this.handleExplicit(item)
         };

@@ -21,6 +21,7 @@ export interface SearchResultItem {
         title: string;
         type: string;
         aicollection: string;
+        description: string;
     };
 }
 
@@ -55,9 +56,16 @@ export interface TemporalFacet {
 
 export interface SolrSearchResultItem {
     id: string;
-    type: string[];
+    type: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
+    time: string;
+    properties: {
+        title: string;
+        type: string;
+        aicollection: string;
+        description: string;
+    };
 }
 
 interface SolrSearchResponse {
@@ -174,20 +182,20 @@ export class SearchService {
 
     getMetadata(resourceId: string) {
         console.log("Get metadata for the following resource ID " + resourceId);
+        const provider = resourceId.split(":")[0];
+        const id = resourceId.split(":")[1];
         const queryParams = this.createQueryParams();
         if (resourceId) {
             queryParams.set("ids", resourceId);
             this.addChildQueryParams(queryParams);
         }
-        const url = `${this.config.url}/${this.config.coreSelector}/get?${queryParams.toString()}`;
+        const baseUrl = proxy + "https://vm4412.kaj.pouta.csc.fi/pygeo/oapir/collections";
+        const url = `${baseUrl}/${provider}/items/${id}`;
         return fetch(url).then((response) =>
-            response.json().then((responseData: { response: SolrSearchResponse }) => {
-                const { response } = responseData;
-                if (response.numFound !== undefined && response.docs !== undefined) {
-                    return {
-                        count: response.numFound,
-                        results: response.docs
-                    };
+            response.json().then((responseData) => {
+                console.log("res data", responseData);
+                if (responseData) {
+                    return responseData;
                 } else {
                     throw new Error("Unexpected response: " + JSON.stringify(responseData));
                 }
@@ -470,9 +478,9 @@ export class SearchService {
         return entries;
     }
 
-    private createResultEntries(docs: SolrSearchResultItem[]): SearchResultItem[] {
+    /*private createResultEntries(docs: SolrSearchResultItem[]): SearchResultItem[] {
         return docs.map((item) => getHandler(item).handle(item));
-    }
+    }*/
 }
 
 declare module "@open-pioneer/runtime" {

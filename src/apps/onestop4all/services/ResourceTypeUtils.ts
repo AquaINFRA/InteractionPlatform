@@ -6,6 +6,7 @@ import { RepositorySearchHandler } from "./search/result-handler/repository-hand
 import { SearchResultHandler } from "./search/result-handler/search-result-handler";
 import { SoftwareSearchHandler } from "./search/result-handler/software-handler";
 import { StandardSearchHandler } from "./search/result-handler/standard-handler";
+import { DatasetHandler } from "./search/result-handler/dataset-handler";
 import { SolrSearchResultItem } from "./SearchService";
 
 export enum ResourceType {
@@ -100,10 +101,11 @@ const searchResultHandlers: SearchResultHandler[] = [
     new ArticleSearchHandler(),
     new StandardSearchHandler(),
     new SoftwareSearchHandler(),
-    new Learning_ResourceHandler()
+    new Learning_ResourceHandler(),
+    new DatasetHandler()
 ];
 
-export function getHandler(result: SolrSearchResultItem): SearchResultHandler {
+export function getHandler(result: string): SearchResultHandler {
     const match = searchResultHandlers.find((h) => h.canHandle(result));
     if (match) {
         return match;
@@ -114,6 +116,6 @@ export function getHandler(result: SolrSearchResultItem): SearchResultHandler {
     }
 }
 
-export function getResourceType(result: SolrSearchResultItem): ResourceType {
+export function getResourceType(result: string): ResourceType {
     return getHandler(result).resourceType;
 }

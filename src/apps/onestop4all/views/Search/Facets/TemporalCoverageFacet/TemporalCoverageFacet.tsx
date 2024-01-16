@@ -77,7 +77,7 @@ export function TemporalCoverageFacet() {
         <Box>
             <FacetBase title="Temporal Coverage" expanded>
                 <Box position="relative">
-                    <ParentSize>
+                    {/*<ParentSize>
                         {(parent) => (
                             <TemporalGraph
                                 width={parent.width}
@@ -86,7 +86,7 @@ export function TemporalCoverageFacet() {
                                 selected={selectPeriod}
                             ></TemporalGraph>
                         )}
-                    </ParentSize>
+                        </ParentSize>*/}
 
                     <Box padding="10px">
                         <RangeSlider

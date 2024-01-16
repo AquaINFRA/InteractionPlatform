@@ -10,6 +10,7 @@ import { SearchBar } from "../../components/SearchBar";
 import { getResourceType, ResourceType } from "../../services/ResourceTypeUtils";
 import { SolrSearchResultItem } from "../../services/SearchService";
 import { ArticleMetadataResponse, ArticleView } from "../Article/Article";
+import { DatasetMetadataResponse, DatasetView } from "../Dataset/Dataset";
 import {
     LearningResourceMetadataResponse,
     LearningResourceView
@@ -46,33 +47,13 @@ export function Result() {
     useEffect(() => {
         setLoading(true);
         searchSrvc.getMetadata(resultId).then((result) => {
-            if (result.results[0]) {
-                if (result.results[0].relatedContent?.length > 0) {
-                    const relatedResources = [] as object[];
-                    result.results[0].relatedContent.forEach((relatedResourceId: string) => {
-                        searchSrvc.getMetadata(relatedResourceId).then((res) => {
-                            const relResTmp = relatedResources;
-                            relResTmp.push(res.results);
-                            setRelatedResources(relResTmp);
-                            if (
-                                relatedResources?.length ===
-                                result?.results[0]?.relatedContent.length
-                            ) {
-                                result.results[0].relatedResources = relatedResources;
-                                setSearchResult(result.results[0]);
-                                setResourceType(getResourceType(result.results[0]));
-                                setLoading(false);
-                            }
-                        });
-                    });
-                } else {
-                    setSearchResult(result.results[0]);
-                    setResourceType(getResourceType(result.results[0]));
-                    setLoading(false);
-                }
-                console.log(result.results[0]);
+            //console.log("meta: ", result);
+            if (result) {
+                setSearchResult(result);
+                setResourceType(getResourceType(result.properties.type));
+                setLoading(false);
             } else {
-                // TODO: error handling
+                throw new Error("Unexpected response: " + JSON.stringify(result));
             }
         });
     }, [resultId, searchSrvc]);
@@ -85,6 +66,7 @@ export function Result() {
     }, []);
 
     function getResourceView(): import("react").ReactNode {
+        console.log("res type", resourceType);
         switch (resourceType) {
             case ResourceType.Repos: {
                 const item = searchResult as RepositoryMetadataResponse;
@@ -116,6 +98,10 @@ export function Result() {
             case ResourceType.Articles: {
                 const item = searchResult as ArticleMetadataResponse;
                 return <ArticleView item={item} />;
+            }
+            case ResourceType.Dataset: {
+                const item = searchResult as DatasetMetadataResponse;
+                return <DatasetView item={item} />;
             }
             default:
                 throw new Error(`Unknown resourceType: '${resourceType}'`);
@@ -226,13 +212,13 @@ export function Result() {
                 ) : (
                     <>
                         <Box>{getResourceView()}</Box>
-                        {searchResult?.relatedResources?.length > 0 ? (
+                        {/*searchResult?.relatedResources?.length > 0 ? (
                             <Box pt="80px">
                                 <RelatedContent
                                     relatedContentItems={searchResult?.relatedResources}
                                 />
                             </Box>
-                        ) : null}
+                        ) : null*/}
                     </>
                 )}
                 <Flex gap="10%" alignItems="center" pt="120px">
