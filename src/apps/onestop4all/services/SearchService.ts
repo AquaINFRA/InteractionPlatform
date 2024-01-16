@@ -143,11 +143,11 @@ export class SearchService {
 
         //this.addSorting(searchParams.sorting, queryParams);
 
-        /*this.addTemporalFilter(
+        this.addTemporalFilter(
             searchParams.temporalFilter,
             queryParams,
             searchParams.temporalConfig
-        );*/
+        );
 
         //console.log("config url: ",this.config.url);
         //console.log("core selector: ",this.config.coreSelector);
@@ -330,16 +330,16 @@ export class SearchService {
     ) {
         if (temporalFilter) {
             queryParams.set(
-                "fq",
-                `datePublished:[${temporalFilter.startYear} TO ${temporalFilter.endYear}]`
+                "datetime",
+                `${temporalFilter.startYear}-01-01T00:00:00Z/${temporalFilter.endYear}-01-01T00:00:00Z`
             );
         }
-        if (temporalConfig) {
+        /*if (temporalConfig) {
             queryParams.set("facet.range", SOLR_TEMPORAL_FACET_RANGE_FIELD);
             queryParams.set("facet.range.start", `${temporalConfig.startYear}-01-01T00:00:00Z`);
             queryParams.set("facet.range.end", `${temporalConfig.endYear + 1}-01-01T00:00:00Z`);
             queryParams.set("facet.range.gap", temporalConfig.gap);
-        }
+        }*/
     }
 
     private addResourceTypes(resourceTypes: string[] | undefined, queryParams: URLSearchParams) {
@@ -400,9 +400,9 @@ export class SearchService {
         if (searchTerm) {
             queryParams.set("q", searchTerm);
             //queryParams.set("df", "collector");
-        } else {
+        } /*else {
             queryParams.set("q", "*:*");
-        }
+        }*/
         //this.addChildQueryParams(queryParams);
     }
 
