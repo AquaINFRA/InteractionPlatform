@@ -22,6 +22,7 @@ export enum ResourceType {
     Dataset = "dataset",
     Series = "series",
     Service = "service",
+    NonGeoData = "nonGeographicDataset",
     Unknown = "unknown"
 }
 
@@ -65,6 +66,10 @@ const mapping = [
     {
         type: ResourceType.Service,
         identifier: "service"
+    },
+    {
+        type: ResourceType.NonGeoData,
+        identifier: "nonGeographicDataset"
     },
     {
         type: ResourceType.Unknown,
