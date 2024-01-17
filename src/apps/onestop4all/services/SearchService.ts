@@ -191,6 +191,7 @@ export class SearchService {
         }
         const baseUrl = proxy + "https://vm4412.kaj.pouta.csc.fi/pygeo/oapir/collections";
         const url = `${baseUrl}/${provider}/items/${id}`;
+        console.log("Get metadata via URL " + url);
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 console.log("res data", responseData);

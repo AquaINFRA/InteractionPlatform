@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { Identifier } from "../../components/ResourceType/Api_Identifier/Identifier";
-import { Contact } from "../../components/ResourceType/Contact/Contact";
+//import { Contact } from "../../components/ResourceType/Contact/Contact";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { SolrSearchResultItem } from "../../services/SearchService";
 import { MetadataSourceIcon } from "../../components/Icons";
@@ -189,7 +189,7 @@ export function OrganisationView(props: OrganisationViewProps) {
                     ) : null}
                 </Box>
             </Flex>
-            {metadata.geometry ? (
+            {/*metadata.geometry ? (
                 <Box pt="80px">
                     <Contact
                         address={{
@@ -199,7 +199,7 @@ export function OrganisationView(props: OrganisationViewProps) {
                         location={metadata.geometry}
                     />
                 </Box>
-            ) : null}
+                    ) : null*/}
         </Box>
     );
 }

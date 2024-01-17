@@ -9,6 +9,7 @@ import { MetadataSourceIcon } from "../../components/Icons";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ExternalResources } from "../../components/ResourceType/ExternalResources/ExternalResources";
 import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { Map } from "../../components/ResourceType/Map/Map";
 
 export interface LinkObject {
     href: string;
@@ -18,7 +19,7 @@ export interface LinkObject {
     type: string;
 }
 
-export interface Geometry {
+export interface ResourceGeometry {
     type: string;
     coordinates: number[][];
 }
@@ -37,7 +38,7 @@ export interface Properties {
 
 export interface DatasetMetadataResponse extends SolrSearchResultItem {
     properties: Properties;
-    geometry: Geometry[];
+    geometry: ResourceGeometry;
     id: string;
     time: string;
     type: string;
@@ -50,7 +51,7 @@ export interface DatasetViewProps {
 
 export function DatasetView(props: DatasetViewProps) {
     const metadata = props.item;
-    const doiBaseUrl = "https://www.doi.org/";
+    //const doiBaseUrl = "https://www.doi.org/";
     console.log(metadata);
 
     return (
@@ -114,13 +115,18 @@ export function DatasetView(props: DatasetViewProps) {
                             <Abstract abstractText={metadata.properties.description} />
                         </Box>
                     ) : null}
+                    {metadata.geometry ? (
+                        <Box pt="80px">
+                            <Map geometry={metadata.geometry} />
+                        </Box>
+                    ) : null}
                 </Box>
                 <Box w="25%">
-                    {metadata.properties.created ? (
+                    {/*metadata.properties.created ? (
                         <Box pt="33">
                             <LastUpdate date={metadata.properties.created} />
                         </Box>
-                    ) : null}
+                    ) : null*/}
                     {metadata.links ? (
                         <Box pt="8px">
                             <ExternalResources links={metadata.links} />
