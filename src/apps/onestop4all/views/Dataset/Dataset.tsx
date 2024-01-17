@@ -7,11 +7,15 @@ import { LastUpdate } from "../../components/ResourceType/Metadata/LastUpdate";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { MetadataSourceIcon } from "../../components/Icons";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
+import { ExternalResources } from "../../components/ResourceType/ExternalResources/ExternalResources";
 import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 
 export interface LinkObject {
     href: string;
     title: string;
+    description: string;
+    protocol: string;
+    type: string;
 }
 
 export interface Geometry {
@@ -112,41 +116,14 @@ export function DatasetView(props: DatasetViewProps) {
                     ) : null}
                 </Box>
                 <Box w="25%">
-                    {metadata.links.length > 0 ? (
-                        <Box className="actionButtonGroup" pt="74px">
-                            {metadata.links[0] ? (
-                                <Link
-                                    to={metadata.links[0].href as string}
-                                    className="actionButtonLink"
-                                    target="_blank"
-                                >
-                                    <ActionButton
-                                        label={metadata.links[0].title}
-                                        icon={<DownloadIcon color="white" />}
-                                        variant="solid"
-                                        fun={() => void 0}
-                                    />
-                                </Link>
-                            ) : null}
-                            {metadata.links[1] ? (
-                                <Link
-                                    to={metadata.links[1].href as string}
-                                    className="actionButtonLink"
-                                    target="_blank"
-                                >
-                                    <ActionButton
-                                        label={metadata.links[1].title}
-                                        icon={<ExternalLinkIcon color="#05668d" />}
-                                        variant="outline"
-                                        fun={() => void 0}
-                                    />
-                                </Link>
-                            ) : null}
-                        </Box>
-                    ) : null}
                     {metadata.properties.created ? (
                         <Box pt="33">
                             <LastUpdate date={metadata.properties.created} />
+                        </Box>
+                    ) : null}
+                    {metadata.links ? (
+                        <Box pt="8px">
+                            <ExternalResources links={metadata.links} />
                         </Box>
                     ) : null}
                 </Box>

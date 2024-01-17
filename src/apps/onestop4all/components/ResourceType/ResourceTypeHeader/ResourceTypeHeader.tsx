@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import {
     BackIcon,
+    DatasetIcon,
     DocumentsIcon,
     LearningResourceIcon,
     OrganisationsIcon,
@@ -65,8 +66,8 @@ export function ResourceTypeHeader(props: { resType: ResourceType | undefined; l
                 return <OrganisationsIcon />;
             // case ResourceType.Services:
             //     return <ServicesIcon />;
-            // case ResourceType.Datasets:
-            //     return <ResourceIcon type={resType} size={32} />
+            case ResourceType.Dataset:
+                return <DatasetIcon />;
             default:
                 return <></>;
         }

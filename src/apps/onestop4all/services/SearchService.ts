@@ -183,7 +183,7 @@ export class SearchService {
     getMetadata(resourceId: string) {
         console.log("Get metadata for the following resource ID " + resourceId);
         const provider = resourceId.split(":")[0];
-        const id = resourceId.split(":")[1];
+        const id = resourceId.substring(resourceId.indexOf(":") + 1);
         const queryParams = this.createQueryParams();
         if (resourceId) {
             queryParams.set("ids", resourceId);
