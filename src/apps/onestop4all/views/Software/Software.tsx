@@ -10,6 +10,7 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ExternalResources } from "../../components/ResourceType/ExternalResources/ExternalResources";
 import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { Map } from "../../components/ResourceType/Map/Map";
+import { CopyToClipboardButton } from "../../components/ResourceType/ActionButton/CopyToClipboardButton";
 
 export interface SoftwareViewProps {
     item: ZenodoResultItem;
@@ -77,16 +78,54 @@ export function SoftwareView(props: any) {
                     ) : null}
                 </Box>
                 <Box w="25%">
-                    {/*metadata.properties.created ? (
-                        <Box pt="33">
-                            <LastUpdate date={metadata.properties.created} />
+                    {metadata.identifier || metadata.codeRepository ? (
+                        <Box className="actionButtonGroup" pt="40px">
+                            <>
+                                {metadata.identifier ? <Link
+                                    to={(metadata.identifier["@id"]) as string}
+                                    className="actionButtonLink"
+                                    target="_blank"
+                                >
+                                    <ActionButton
+                                        label="Go to archive"
+                                        icon={<ExternalLinkIcon color="white" />}
+                                        variant="solid"
+                                        fun={() => void 0}
+                                    />
+                                </Link> : null}
+                                {metadata.codeRepository ? <Link
+                                    to={(metadata.codeRepository["@id"]) as string}
+                                    className="actionButtonLink"
+                                    target="_blank"
+                                >
+                                    <ActionButton
+                                        label="Go to repository"
+                                        icon={<ExternalLinkIcon color="white" />}
+                                        variant="solid"
+                                        fun={() => void 0}
+                                    />
+                                </Link> : null} 
+                                {metadata.identifier ?
+                                    <CopyToClipboardButton
+                                        label="Copy DOI"
+                                        data={metadata.identifier["@id"]}
+                                    /> 
+                                    : null}      
+                                {metadata.distribution ? <Link
+                                    to={(metadata.distribution["@id"]) as string}
+                                    className="actionButtonLink"
+                                    target="_blank"
+                                >
+                                    <ActionButton
+                                        label="Download"
+                                        icon={<DownloadIcon color="#05668D" />}
+                                        variant="outline"
+                                        fun={() => void 0}
+                                    />
+                                </Link> : null}                   
+                            </>
                         </Box>
-                    ) : null*/}
-                    {/*metadata.links ? (
-                        <Box pt="8px">
-                            <ExternalResources links={metadata.links} />
-                        </Box>
-                    ) : null*/}
+                    ) : null}
                 </Box>
             </Flex>
         </Box>

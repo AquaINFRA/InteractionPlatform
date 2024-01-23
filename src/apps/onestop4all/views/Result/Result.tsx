@@ -50,9 +50,8 @@ export function Result() {
         searchSrvc.getMetadata(resultId).then((result) => {
             if (result) {
                 if (result.provider === "zenodo") {
-                    //console.log(result.response);
-                    searchSrvc.fetchRoCrateFile(result.response.recid).then((crate) => {
-                        console.log(crate);
+                    searchSrvc.fetchRoCrateFile("10477880").then((crate) => { 
+                        //TO DO: implement handling for assets that don't have a ro-crate file. 
                         setSearchResult(crate["@graph"]);
                         setResourceType(
                             getResourceType(result.response.metadata.resource_type.type)
@@ -83,9 +82,6 @@ export function Result() {
                 const item = searchResult as RepositoryMetadataResponse;
                 return <RepositoryView item={item} />;
             }
-            // case ResourceType.Datasets:
-            //     // TODO: needs to be implemented
-            //     return <Box>Dataset</Box>;
             case ResourceType.Organisations: {
                 const item = searchResult as OrganisationMetadataResponse;
                 return <OrganisationView item={item} />;
@@ -111,6 +107,10 @@ export function Result() {
                 return <ArticleView item={item} />;
             }
             case ResourceType.Dataset: {
+                const item = searchResult as DatasetMetadataResponse;
+                return <DatasetView item={item} />;
+            }
+            case ResourceType.Series: {
                 const item = searchResult as DatasetMetadataResponse;
                 return <DatasetView item={item} />;
             }

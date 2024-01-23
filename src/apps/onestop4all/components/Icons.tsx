@@ -971,3 +971,14 @@ export const DatasetIcon = () => (
         </defs>
     </svg>
 );
+
+export const SeriesIcon = () => (
+    <svg width="33" height="32" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0.5" y="17.5" width="14" height="1" fill={"#808080"} />
+        <path
+            d="M1 13H5L7.5 4L12.5 20.5L17 9L19 13H23"
+            stroke={"#808080"}
+            strokeWidth="2"
+        />
+    </svg>
+);

@@ -7,6 +7,7 @@ import { SearchResultHandler } from "./search/result-handler/search-result-handl
 import { SoftwareSearchHandler } from "./search/result-handler/software-handler";
 import { StandardSearchHandler } from "./search/result-handler/standard-handler";
 import { DatasetHandler } from "./search/result-handler/dataset-handler";
+import { SeriesHandler } from "./search/result-handler/series-handler";
 import { SoftwareHandler } from "./search/result-handler/software-zenodo-handler";
 import { SolrSearchResultItem } from "./SearchService";
 
@@ -109,7 +110,8 @@ const searchResultHandlers: SearchResultHandler[] = [
     new SoftwareSearchHandler(),
     new Learning_ResourceHandler(),
     new DatasetHandler(),
-    new SoftwareHandler()
+    new SoftwareHandler(),
+    new SeriesHandler()
 ];
 
 export function getHandler(result: string): SearchResultHandler {
