@@ -8,6 +8,7 @@ import { SoftwareSearchHandler } from "./search/result-handler/software-handler"
 import { StandardSearchHandler } from "./search/result-handler/standard-handler";
 import { DatasetHandler } from "./search/result-handler/dataset-handler";
 import { SeriesHandler } from "./search/result-handler/series-handler";
+import { ModelHandler } from "./search/result-handler/model-handler";
 import { SoftwareHandler } from "./search/result-handler/software-zenodo-handler";
 import { SolrSearchResultItem } from "./SearchService";
 
@@ -27,7 +28,8 @@ export enum ResourceType {
     Service = "service",
     NonGeoData = "nonGeographicDataset",
     Unknown = "unknown",
-    Software = "software"
+    Software = "software",
+    Model = "model"
 }
 
 const mapping = [
@@ -72,6 +74,10 @@ const mapping = [
         identifier: "service"
     },
     {
+        type: ResourceType.Model,
+        identifier: "model"
+    },
+    {
         type: ResourceType.NonGeoData,
         identifier: "nonGeographicDataset"
     },
@@ -111,7 +117,8 @@ const searchResultHandlers: SearchResultHandler[] = [
     new Learning_ResourceHandler(),
     new DatasetHandler(),
     new SoftwareHandler(),
-    new SeriesHandler()
+    new SeriesHandler(),
+    new ModelHandler()
 ];
 
 export function getHandler(result: string): SearchResultHandler {

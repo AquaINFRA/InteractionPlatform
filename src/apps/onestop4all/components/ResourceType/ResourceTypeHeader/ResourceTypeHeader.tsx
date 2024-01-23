@@ -10,7 +10,8 @@ import {
     RepositoriesIcon,
     StandardIcon,
     ToolSoftwareIcon,
-    SeriesIcon
+    SeriesIcon,
+    ModelIcon
 } from "../../Icons";
 import { ResourceType } from "../../../services/ResourceTypeUtils";
 
@@ -73,6 +74,8 @@ export function ResourceTypeHeader(props: { resType: ResourceType | undefined; l
                 return <ToolSoftwareIcon />;
             case ResourceType.Series:
                 return <SeriesIcon />;
+            case ResourceType.Model:
+                return <ModelIcon />;
             default:
                 return <></>;
         }
