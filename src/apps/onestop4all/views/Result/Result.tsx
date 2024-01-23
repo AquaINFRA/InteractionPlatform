@@ -8,9 +8,10 @@ import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHe
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { SearchBar } from "../../components/SearchBar";
 import { getResourceType, ResourceType } from "../../services/ResourceTypeUtils";
-import { SolrSearchResultItem } from "../../services/SearchService";
+import { SolrSearchResultItem, ZenodoResultItem } from "../../services/SearchService";
 import { ArticleMetadataResponse, ArticleView } from "../Article/Article";
 import { DatasetMetadataResponse, DatasetView } from "../Dataset/Dataset";
+import { SoftwareView } from "../Software/Software";
 import {
     LearningResourceMetadataResponse,
     LearningResourceView
@@ -25,7 +26,7 @@ import { ToolsSoftwareMetadataResponse, ToolsSoftwareView } from "../ToolsSoftwa
 export function Result() {
     const resultId = useParams().id as string;
     const searchSrvc = useService("onestop4all.SearchService");
-    const [searchResult, setSearchResult] = useState<SolrSearchResultItem>();
+    const [searchResult, setSearchResult] = useState<SolrSearchResultItem | ZenodoResultItem>();
     const [resourceType, setResourceType] = useState<ResourceType>();
     const [loading, setLoading] = useState(true);
 
@@ -47,11 +48,22 @@ export function Result() {
     useEffect(() => {
         setLoading(true);
         searchSrvc.getMetadata(resultId).then((result) => {
-            //console.log("meta: ", result);
             if (result) {
-                setSearchResult(result);
-                setResourceType(getResourceType(result.properties.type));
-                setLoading(false);
+                if (result.provider === "zenodo") {
+                    //console.log(result.response);
+                    searchSrvc.fetchRoCrateFile(result.response.recid).then((crate) => {
+                        console.log(crate);
+                        setSearchResult(crate["@graph"]);
+                        setResourceType(
+                            getResourceType(result.response.metadata.resource_type.type)
+                        );
+                        setLoading(false);
+                    });
+                } else {
+                    setSearchResult(result.response);
+                    setResourceType(getResourceType(result.response.properties.type));
+                    setLoading(false);
+                }
             } else {
                 throw new Error("Unexpected response: " + JSON.stringify(result));
             }
@@ -66,7 +78,6 @@ export function Result() {
     }, []);
 
     function getResourceView(): import("react").ReactNode {
-        console.log("res type", resourceType);
         switch (resourceType) {
             case ResourceType.Repos: {
                 const item = searchResult as RepositoryMetadataResponse;
@@ -102,6 +113,10 @@ export function Result() {
             case ResourceType.Dataset: {
                 const item = searchResult as DatasetMetadataResponse;
                 return <DatasetView item={item} />;
+            }
+            case ResourceType.Software: {
+                const item = searchResult as ZenodoResultItem;
+                return <SoftwareView item={item} />;
             }
             default:
                 throw new Error(`Unknown resourceType: '${resourceType}'`);

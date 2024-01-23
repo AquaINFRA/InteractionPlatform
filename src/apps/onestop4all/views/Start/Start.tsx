@@ -8,6 +8,7 @@ import { ParticipateEntries } from "./ParticipateEntries/ParticipateEntries";
 import { ResourceEntries } from "./ResourceEntries/ResourceEntries";
 import { CaseStudies } from "./CaseStudies/CaseStudies";
 import { useRef } from "react";
+import { LatestAdditions } from "./LatestAdditions/LatestAdditions";
 
 export function StartView() {
     const intl = useIntl();
@@ -158,6 +159,18 @@ export function StartView() {
                         <Box className="mission-text text-centered-box">
                             <Box className="text-centered-box-text">
                                 <DemonstratorEntries />
+                            </Box>
+                        </Box>
+                    </Box>
+                </Container>
+            </Box>
+
+            <Box className="caseStudies" ref={resourcesSectionRef}>
+                <Container maxW={{ base: "100%" }}>
+                    <Box className="mission">
+                        <Box className="mission-text text-centered-box">
+                            <Box className="text-centered-box-text">
+                                <LatestAdditions />
                             </Box>
                         </Box>
                     </Box>

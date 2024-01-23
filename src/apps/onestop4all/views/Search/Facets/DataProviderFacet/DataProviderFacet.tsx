@@ -15,7 +15,6 @@ export interface DataProvider {
 
 export function DataProviderFacet() {
     const searchState = useSearchState();
-    //console.log(searchState.selectedDataProvider);
     const [entries, setEntries] = useState<SelectableDataProvider[]>([]);
     const searchSrvc = useService("onestop4all.SearchService");
 
@@ -26,13 +25,11 @@ export function DataProviderFacet() {
                     a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
                 )
             );
-            //console.log(entries);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function dataProviderToggled(checked: boolean, id: string) {
-        console.log(searchState.selectedDataProvider);
         if (checked) {
             searchState.setSelectedDataProvider([...searchState.selectedDataProvider, id]);
         } else {
@@ -44,12 +41,12 @@ export function DataProviderFacet() {
 
     return (
         <FacetBase title="Data provider" expanded>
-            <SimpleGrid column={3} spacing={2}>
+            <SimpleGrid columns={[1, 2]} spacing={3} marginTop={"1%"}>
                 {entries.map((entry, i) => (
                     <Flex key={i}>
                         <FacetCheckbox
                             label={entry.title}
-                            isChecked={entry.selected}
+                            isChecked={searchState.selectedDataProvider.includes(entry.id)}
                             onChange={(event) =>
                                 dataProviderToggled(event.target.checked, entry.id)
                             }

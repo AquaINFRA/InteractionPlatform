@@ -7,6 +7,7 @@ import {
     mapFromResourceType,
     mapToResourceType
 } from "./ResourceTypeUtils";
+import { DataProvider } from "../views/Search/Facets/DataProviderFacet/DataProviderFacet";
 
 export interface SearchResultItem {
     id: string;
@@ -68,20 +69,39 @@ export interface SolrSearchResultItem {
     };
 }
 
+export interface ZenodoResultItem {
+    title: string;
+    recid: string;
+    doi_url: string;
+    metadata: {
+        resource_type: {
+            title: string;
+            type: string;
+        };
+        description: string;
+        language: string;
+        publication_date: string;
+        license: {
+            id: string;
+        };
+        version: string;
+        creators: [
+            {
+                affiliation: string;
+                name: string;
+                orcid: string;
+            }
+        ];
+    };
+}
+
 interface SolrSearchResponse {
     numFound?: number;
     docs: SolrSearchResultItem[];
 }
 
 interface SolrFacetResponse {
-    facet_fields: {
-        [key: string]: [];
-    };
-    facet_ranges: {
-        [key: string]: {
-            counts: [];
-        };
-    };
+    provider?: string[];
 }
 
 export interface SubjectEntry {
@@ -96,6 +116,7 @@ export interface Facets {
         count: number;
     }[];
     temporal: TemporalFacet[];
+    provider: DataProvider[];
 }
 
 export interface SearchResult {
@@ -159,19 +180,20 @@ export class SearchService {
 
         //console.log("config url: ",this.config.url);
         //console.log("core selector: ",this.config.coreSelector);
-        console.log("query params: ", queryParams.toString());
+        //console.log("query params: ", queryParams.toString());
         const baseUrl = proxy + "https://vm4412.kaj.pouta.csc.fi/pygeo/oapir";
         const url = `${baseUrl}/search?${queryParams.toString()}`;
-        console.log("url", url);
+        console.log(searchParams.dataProvider);
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
+                console.log(responseData);
                 const response = responseData;
-                console.log("RESPONSE:", responseData);
+                //console.log("RESPONSE:", responseData);
                 if (response.numberMatched !== undefined && response.features !== undefined) {
                     return {
                         count: response.numberMatched,
-                        results: response.features
-                        //facets: this.createFacets(responseData.facet_counts)
+                        results: response.features,
+                        facets: { provider: searchParams.dataProvider }
                     };
                 } else {
                     throw new Error("Unexpected response: " + JSON.stringify(responseData));
@@ -181,20 +203,36 @@ export class SearchService {
     }
 
     getMetadata(resourceId: string) {
-        console.log("Get metadata for the following resource ID " + resourceId);
         const provider = resourceId.split(":")[0];
         const id = resourceId.substring(resourceId.indexOf(":") + 1);
         const queryParams = this.createQueryParams();
+        let url = "";
         if (resourceId) {
             queryParams.set("ids", resourceId);
             this.addChildQueryParams(queryParams);
         }
-        const baseUrl = proxy + "https://vm4412.kaj.pouta.csc.fi/pygeo/oapir/collections";
-        const url = `${baseUrl}/${provider}/items/${id}`;
-        console.log("Get metadata via URL " + url);
+        if (provider === "zenodo") {
+            const baseUrl = proxy + "https://zenodo.org/api/records";
+            url = `${baseUrl}/${id}`;
+        } else {
+            const baseUrl = proxy + "https://vm4412.kaj.pouta.csc.fi/pygeo/oapir/collections";
+            url = `${baseUrl}/${provider}/items/${id}`;
+        }
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
-                console.log("res data", responseData);
+                if (responseData) {
+                    return { response: responseData, provider: provider };
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
+    }
+
+    getLatestAdditionsFromZenodo() {
+        const url = proxy + `https://zenodo.org/api/records?communities=aquainfra`;
+        return fetch(url).then((response) =>
+            response.json().then((responseData: object) => {
                 if (responseData) {
                     return responseData;
                 } else {
@@ -234,6 +272,23 @@ export class SearchService {
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2fFAQ.md/raw`;
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
+    }
+
+    fetchRoCrateFile(id: string) {
+        const url =
+            proxy +
+            "https://zenodo.org/api/records/" +
+            id +
+            "/files/ro-crate-metadata.json/content";
+        return fetch(url).then((response) =>
+            response.json().then((responseData: object) => {
                 if (responseData) {
                     return responseData;
                 } else {
@@ -371,7 +426,7 @@ export class SearchService {
     }
 
     private addDataProvider(dataProvider: string[] | undefined, queryParams: URLSearchParams) {
-        console.log(dataProvider);
+        //console.log(dataProvider);
         if (dataProvider?.length) {
             queryParams.set("collections", `${dataProvider.map((e) => `${e}`).join(",")}`);
         }
@@ -393,7 +448,7 @@ export class SearchService {
         if (pageSize !== undefined) {
             queryParams.set("limit", pageSize.toString());
             if (pageStart !== undefined) {
-                console.log(pageStart);
+                //console.log(pageStart);
                 queryParams.set("offset", (pageStart * pageSize).toString());
             }
         }

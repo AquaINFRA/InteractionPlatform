@@ -1,5 +1,5 @@
 import { mapFromResourceType, ResourceType } from "../../ResourceTypeUtils";
-import { SearchResultItem, SolrSearchResultItem } from "../../SearchService";
+import { SearchResultItem, SolrSearchResultItem, ZenodoResultItem } from "../../SearchService";
 
 export type MinSearchResultItem = {
     title: string;
@@ -19,7 +19,7 @@ export abstract class SearchResultHandler {
     }
 
     protected abstract handleExplicit(
-        item: SolrSearchResultItem
+        item: SolrSearchResultItem | ZenodoResultItem
     ): Partial<SearchResultItem> & MinSearchResultItem;
 
     public handle(item: SolrSearchResultItem): SearchResultItem {

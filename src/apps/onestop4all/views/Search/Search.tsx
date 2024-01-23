@@ -22,7 +22,7 @@ export function SearchView() {
     const searchState = useSearchState();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-
+    //console.log(searchState.searchResults);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => searchState.search(), [searchParams]);
 
@@ -99,7 +99,7 @@ export function SearchView() {
                 marginTop={{ base: "-40px", custombreak: "-50px" }}
             >
                 <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                    <SearchBar></SearchBar>
+                    <SearchBar />
                 </Container>
             </Box>
 
@@ -145,7 +145,7 @@ export function SearchView() {
                                 </Flex>
                             </Flex>
                             <Box hideBelow="custombreak" padding={{ base: "40px 0px" }}>
-                                <Chips></Chips>
+                                <Chips />
                             </Box>
                             <Box>
                                 {searchState.searchResults?.results.map((e) => {
@@ -159,7 +159,7 @@ export function SearchView() {
                                     );
                                 })}
                             </Box>
-                            <Box className="seperator"></Box>
+                            <Box className="seperator" />
                             <Box hideFrom="custombreak" padding="40px 0px">
                                 <ResultPaging />
                             </Box>
@@ -184,12 +184,12 @@ export function SearchView() {
                             <SubjectFacet></SubjectFacet>
                         </Box>*/}
                         <Box padding={"32px 0px"}>
-                            <SpatialCoverageFacet mapId="spatial-filter-map"></SpatialCoverageFacet>
+                            <SpatialCoverageFacet mapId="spatial-filter-map" />
                         </Box>
-                        <Box padding={"32px 0px"}>
-                            <TemporalCoverageFacet></TemporalCoverageFacet>
-                        </Box>
-                        <Spacer></Spacer>
+                        {/*<Box padding={"32px 0px"}>
+                            <TemporalCoverageFacet />
+                    </Box>*/}
+                        <Spacer />
                         <Box>
                             <ResultPaging />
                         </Box>
