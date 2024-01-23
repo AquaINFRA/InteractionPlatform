@@ -66,7 +66,7 @@ export function SearchBar() {
             borderColor="rgb(5, 102, 141, 0.7)"
         >
             <HStack padding={{ base: "5px 10px", custombreak: "8px 15px" }} w="100%" bg="white">
-                <Select
+                {/*<Select
                     icon={<DropdownArrowIcon />}
                     iconSize="12"
                     variant="unstyled"
@@ -83,7 +83,7 @@ export function SearchBar() {
                 >
                     {createResourceTypeSelectOptions()}
                 </Select>
-                <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
+                <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />*/}
                 <Input
                     placeholder={intl.formatMessage({ id: "search.search-bar.placeholder" })}
                     value={searchTerm}

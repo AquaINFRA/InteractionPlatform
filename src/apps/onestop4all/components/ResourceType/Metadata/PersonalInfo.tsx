@@ -24,30 +24,12 @@ export const MetadataUrl = (props: { item: string; type: string }) => {
     );
 };
 
-export const PersonalInfo = (props: {
-    name: string;
-    orcid: string;
-    email: string;
-    affiliation: string;
-}) => {
-    const { name, orcid, email, affiliation } = props;
+export const PersonalInfo = (props: { name: string; orcid?: string; affiliation: string }) => {
+    const { name, orcid, affiliation } = props;
 
     return (
         <>
             {name ? name : ""}
-            {email ? (
-                isEmail(email) ? (
-                    <span>
-                        &nbsp;{"("}
-                        <MetadataUrl item={email} type="mail" />
-                        {")"}&nbsp;
-                    </span>
-                ) : (
-                    email
-                )
-            ) : (
-                ""
-            )}
             {orcid && orcid[0] !== "" ? (
                 <a
                     href={isUrl(orcid) ? orcid : "https://orcid.org/" + orcid}

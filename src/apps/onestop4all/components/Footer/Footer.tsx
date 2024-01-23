@@ -19,7 +19,7 @@ export const Footer = () => {
                 <Container maxW={{ base: "100%", custombreak: "80%" }} position="relative">
                     <Box
                         className="footer-navigation"
-                        padding={{ base: "50px 0px", custombreak: "84px 0px" }}
+                        padding={{ base: "50px 0px", custombreak: "28px 0px" }}
                     >
                         <Box
                             className="section"
@@ -151,7 +151,7 @@ export const Footer = () => {
                         <Box flex="1 1 50px"></Box>
                         <Box w={"20%"}>
                             <span className="entry">Funded by</span>
-                            <img src="/ec-logo.svg" />
+                            <img src="/ec-logo.svg" width={"80%"} />
                         </Box>
                     </Box>
                 </Container>
