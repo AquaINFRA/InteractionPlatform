@@ -73,6 +73,8 @@ export interface ZenodoResultItem {
     title: string;
     recid: string;
     doi_url: string;
+    identifier: string;
+    codeRepository: string;
     metadata: {
         resource_type: {
             title: string;
@@ -122,7 +124,7 @@ export interface Facets {
 export interface SearchResult {
     count: number;
     results: SearchResultItem[];
-    //facets: Facets;
+    facets: Facets;
 }
 
 export interface SolrConfig {
@@ -183,10 +185,10 @@ export class SearchService {
         //console.log("query params: ", queryParams.toString());
         const baseUrl = proxy + "https://vm4412.kaj.pouta.csc.fi/pygeo/oapir";
         const url = `${baseUrl}/search?${queryParams.toString()}`;
-        console.log(searchParams.dataProvider);
+        //console.log(searchParams.dataProvider);
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
-                console.log(responseData);
+                //console.log(responseData);
                 const response = responseData;
                 //console.log("RESPONSE:", responseData);
                 if (response.numberMatched !== undefined && response.features !== undefined) {
@@ -482,7 +484,7 @@ export class SearchService {
         return queryParams;
     }
 
-    private createFacets(facet_counts: SolrFacetResponse): Facets {
+    /*private createFacets(facet_counts: SolrFacetResponse): Facets {
         return {
             subjects: this.createSubjectFacets(facet_counts),
             resourceType: this.createResourceTypeFacet(facet_counts),
@@ -534,7 +536,7 @@ export class SearchService {
         return entries;
     }
 
-    /*private createResultEntries(docs: SolrSearchResultItem[]): SearchResultItem[] {
+    private createResultEntries(docs: SolrSearchResultItem[]): SearchResultItem[] {
         return docs.map((item) => getHandler(item).handle(item));
     }*/
 }

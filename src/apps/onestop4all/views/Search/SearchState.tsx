@@ -177,8 +177,12 @@ export const SearchState = (props: PropsWithChildren) => {
     );
 
     // init selected data provider
-    const dataProvider: string[] = [];
-    const [selectedDataProvider, setSelectedDataProvider] = useState<string[]>(dataProvider);
+    const dPr: string[] = [];
+    const urlDp = searchParams.getAll(UrlSearchParameterType.DataProvider);
+    if (urlDp?.length) {
+        urlDp.forEach((e) => e && dPr.push(e));
+    }
+    const [selectedDataProvider, setSelectedDataProvider] = useState<string[]>(dPr);
 
     // init spatial filter
     let sp: number[] = [];
@@ -242,16 +246,19 @@ export const SearchState = (props: PropsWithChildren) => {
             .then((result) => {
                 setIsLoaded(true);
                 setSearchResults(result);
-                /*const resourceTypeFacet = result.facets.resourceType.map((e) => {
-                    return {
-                        resourceType: e.resourceType,
-                        count: e.count,
-                        selected: selectedResourceTypes.findIndex((r) => r === e.resourceType) >= 0
-                    } as SelectableResourceType;
+                console.log(result);
+                result.results.map((e) => {
+                    console.log(e.properties.type);
                 });
-                setSelecteableResourceTypes(resourceTypeFacet);
-                handleSubjects(result.facets.subjects);
-                handleTemporalFacets(result.facets.temporal);*/
+                const dataProviderFacet = result.facets.provider.map((e) => {
+                    return {
+                        title: e,
+                        selected: selectableDataProvider.findIndex((r) => r === e) >= 0
+                    } as SelectableDataProvider;
+                });
+                setSelectableDataProvider(dataProviderFacet);
+                //handleSubjects(result.facets.subjects);
+                //handleTemporalFacets(result.facets.temporal);
             })
             .catch((error) => {
                 setIsLoaded(true);
