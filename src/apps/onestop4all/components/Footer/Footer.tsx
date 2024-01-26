@@ -33,41 +33,42 @@ export const Footer = () => {
                                 :
                             </Box>
                             <Box display="flex" gap="8px">
-                                <span className="section-entry">
-                                    <a
-                                        href="https://aquainfra.eu/about"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
+                                <a
+                                    href="https://aquainfra.eu/about"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="label"
+                                >
+                                    <div className="label">
                                         {intl.formatMessage({
                                             id: "footer.about"
                                         })}
-                                    </a>
-                                </span>
-                                <span>|</span>
-                                <span className="section-entry">
-                                    <a
-                                        href="https://aquainfra.eu/partners"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
+                                    </div>
+                                </a>
+                                <a
+                                    href="https://aquainfra.eu/partners"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="label"
+                                >
+                                    <div className="label">
                                         {intl.formatMessage({
                                             id: "footer.partners"
                                         })}
-                                    </a>
-                                </span>
-                                <span>|</span>
-                                <span className="section-entry">
-                                    <a
-                                        href="https://aquainfra.eu/contact"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
+                                    </div>
+                                </a>
+                                <a
+                                    href="https://aquainfra.eu/contact"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="label"
+                                >
+                                    <div className="label">
                                         {intl.formatMessage({
                                             id: "footer.contact"
                                         })}
-                                    </a>
-                                </span>
+                                    </div>
+                                </a>
                             </Box>
                         </Box>
                         <Box
@@ -82,29 +83,29 @@ export const Footer = () => {
                                 :
                             </Box>
                             <Box display="flex" gap="8px">
-                                <span className="section-entry">
-                                    <a
-                                        href="https://www.nfdi4earth.de/legal-notice"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
+                                <a
+                                    href="https://www.nfdi4earth.de/legal-notice"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="label"
+                                >
+                                    <div className="label">
                                         {intl.formatMessage({
                                             id: "footer.legal-information"
                                         })}
-                                    </a>
-                                </span>
-                                <span>|</span>
-                                <span className="section-entry">
-                                    <a
-                                        href="https://www.nfdi4earth.de/privacy-policy"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
+                                    </div>
+                                </a>
+                                <a
+                                    href="https://www.nfdi4earth.de/privacy-policy"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    <div className="label">
                                         {intl.formatMessage({
                                             id: "footer.privacy"
                                         })}
-                                    </a>
-                                </span>
+                                    </div>
+                                </a>
                             </Box>
                         </Box>
                     </Box>
@@ -150,8 +151,14 @@ export const Footer = () => {
                         </Box>
                         <Box flex="1 1 50px"></Box>
                         <Box w={"20%"}>
-                            <span className="entry">Funded by</span>
-                            <img src="/ec-logo.svg" width={"80%"} />
+                            <a
+                                href="https://cordis.europa.eu/project/id/101094434"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                <div className="label">Funded by</div>
+                                <img src="/ec-logo.svg" width={"80%"} />
+                            </a>
                         </Box>
                     </Box>
                 </Container>

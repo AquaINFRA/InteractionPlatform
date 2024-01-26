@@ -19,6 +19,11 @@ export const LatestAddition = (props: { aquaResource: ZenodoResultItem }) => {
         window.scroll(0, 0);
     };
 
+    const stripHtmlTags = (html: string) => {
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        return doc.body.textContent || "";
+    };
+
     return (
         <div style={{ width: "100%" }}>
             <Box
@@ -41,7 +46,12 @@ export const LatestAddition = (props: { aquaResource: ZenodoResultItem }) => {
                     <Box className="frame">
                         <div className="seperator"></div>
                         <Box className="heading">{aquaResource.title}</Box>
-                        <Box className="abstract">{aquaResource.metadata.description}</Box>
+                        <Box
+                            className="abstract"
+                            dangerouslySetInnerHTML={{
+                                __html: stripHtmlTags(aquaResource.metadata.description)
+                            }}
+                        ></Box>
                         <div className="seperator"></div>
                         <Authors authors={aquaResource.metadata.creators} />
                     </Box>

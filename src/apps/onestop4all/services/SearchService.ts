@@ -136,7 +136,7 @@ const SOLR_SUBJECT_FACET_FIELD = "theme_str";
 const SOLR_RESOURCE_TYPE_FACET_FIELD = "type";
 const SOLR_TEMPORAL_FACET_RANGE_FIELD = "datePublished";
 const SOLR_DATAPROVIDER_FACET_FIELD = "collections";
-export const proxy = "http://localhost:8080/";
+export const proxy = "http://localhost:8081/";
 export const supportForm = "http://localhost/html/nfdi/";
 
 export class SearchService {
