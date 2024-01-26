@@ -81,48 +81,68 @@ export function SoftwareView(props: any) {
                     {metadata.identifier || metadata.codeRepository ? (
                         <Box className="actionButtonGroup" pt="40px">
                             <>
-                                {metadata.identifier ? <Link
-                                    to={(metadata.identifier["@id"]) as string}
-                                    className="actionButtonLink"
-                                    target="_blank"
-                                >
-                                    <ActionButton
-                                        label="Go to archive"
-                                        icon={<ExternalLinkIcon color="white" />}
-                                        variant="solid"
-                                        fun={() => void 0}
-                                    />
-                                </Link> : null}
-                                {metadata.codeRepository ? <Link
-                                    to={(metadata.codeRepository["@id"]) as string}
-                                    className="actionButtonLink"
-                                    target="_blank"
-                                >
-                                    <ActionButton
-                                        label="Go to repository"
-                                        icon={<ExternalLinkIcon color="white" />}
-                                        variant="solid"
-                                        fun={() => void 0}
-                                    />
-                                </Link> : null} 
-                                {metadata.identifier ?
+                                {metadata.identifier ? (
+                                    <Link
+                                        to={metadata.identifier["@id"] as string}
+                                        className="actionButtonLink"
+                                        target="_blank"
+                                    >
+                                        <ActionButton
+                                            label="Go to archive"
+                                            icon={<ExternalLinkIcon color="white" />}
+                                            variant="solid"
+                                            fun={() => void 0}
+                                        />
+                                    </Link>
+                                ) : null}
+                                {metadata.codeRepository ? (
+                                    <Link
+                                        to={metadata.codeRepository["@id"] as string}
+                                        className="actionButtonLink"
+                                        target="_blank"
+                                    >
+                                        <ActionButton
+                                            label="Go to repository"
+                                            icon={<ExternalLinkIcon color="white" />}
+                                            variant="solid"
+                                            fun={() => void 0}
+                                        />
+                                    </Link>
+                                ) : null}
+                                {metadata.identifier ? (
                                     <CopyToClipboardButton
                                         label="Copy DOI"
                                         data={metadata.identifier["@id"]}
-                                    /> 
-                                    : null}      
-                                {metadata.distribution ? <Link
-                                    to={(metadata.distribution["@id"]) as string}
-                                    className="actionButtonLink"
-                                    target="_blank"
-                                >
-                                    <ActionButton
-                                        label="Download"
-                                        icon={<DownloadIcon color="#05668D" />}
-                                        variant="outline"
-                                        fun={() => void 0}
                                     />
-                                </Link> : null}                   
+                                ) : null}
+                                {metadata.distribution ? (
+                                    <Link
+                                        to={metadata.distribution["@id"] as string}
+                                        className="actionButtonLink"
+                                        target="_blank"
+                                    >
+                                        <ActionButton
+                                            label="Download"
+                                            icon={<DownloadIcon color="#05668D" />}
+                                            variant="outline"
+                                            fun={() => void 0}
+                                        />
+                                    </Link>
+                                ) : null}
+                                {metadata.distribution ? (
+                                    <Link
+                                        to={"http://127.0.0.1:8080/tool_runner?tool_id=aquainfra_ddas&URL=" + metadata.distribution["@id"] as string}
+                                        className="actionButtonLink"
+                                        target="_blank"
+                                    >
+                                        <ActionButton
+                                            label="Import to Galaxy"
+                                            icon={<DownloadIcon color="#05668D" />}
+                                            variant="outline"
+                                            fun={() => void 0}
+                                        />
+                                    </Link>
+                                ) : null}
                             </>
                         </Box>
                     ) : null}
