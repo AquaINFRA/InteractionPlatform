@@ -13,6 +13,7 @@ import { RectangleSelectIcon } from "../../../../components/Icons";
 import { ActiveControlColor, PrimaryColor } from "../../../../Theme";
 import { useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
+import PopupOverlay from "./PopupOverlay";
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
@@ -31,6 +32,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
 
     const [bboxActive, setBboxActive] = useState(false);
     const [disabled, setDisable] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     useEffect(() => {
         if (map) {
@@ -122,9 +124,17 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     <Button width="100%" onClick={() => setSearchArea()}>
                         set search area
                     </Button>
+                    <Button
+                        width="100%"
+                        onClick={() => setShowPopup(true)}
+                        marginTop="8px" // Fügt einen Abstand zwischen den Buttons hinzu
+                    >
+                        set catchment area
+                    </Button>
                     {disabled && (
                         <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
                     )}
+                    <PopupOverlay showPopup={showPopup} onClose={() => setShowPopup(false)} />
                 </Box>
             </FacetBase>
         </Box>
