@@ -1,17 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Button,
+    ButtonGroup,
     IconButton,
     Radio,
     RadioGroup,
     Stack
 } from "@open-pioneer/chakra-integration";
 import { CloseIcon } from "@chakra-ui/icons";
-import { MapContainer } from "@open-pioneer/experimental-ol-map";
-import { useEffect } from "react";
+import { MapContainer, useMap } from "@open-pioneer/experimental-ol-map";
+import Draw, { createBox } from "ol/interaction/Draw";
+import VectorLayer from "ol/layer/Vector";
+import VectorSource from "ol/source/Vector";
+import { Feature, View } from "ol";
+import { Polygon } from "ol/geom";
+import { fromExtent } from "ol/geom/Polygon";
+import { remove } from "ol/array";
+import { useRef } from "react";
+import { select } from "d3";
 import { useService } from "open-pioneer:react-hooks";
-import { useState } from "react";
+
 interface PopupOverlayProps {
     showPopup: boolean;
     onClose: () => void;
@@ -19,6 +28,16 @@ interface PopupOverlayProps {
 
 const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
     const mapId = "popup";
+    const { map } = useMap(mapId);
+    const [source] = useState(new VectorSource());
+    const [vector] = useState(new VectorLayer({ source: source }));
+    const [bboxActive, setBboxActive] = useState(false);
+    const draw = useRef<Draw>();
+    const [bgcolor, setbgcolor] = useState("grey");
+    const [hover, setHover] = useState({
+        bg: "grey"
+    });
+    const PrimaryColor = "#05668D";
     const olMapRegistry = useService("ol-map.MapRegistry");
     const [renderState, setRenderState] = useState(false);
 
@@ -45,6 +64,112 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
         fetchMap();
     }, [renderState]);
 
+    useEffect(() => {
+        if (map) {
+            map.addLayer(vector);
+        }
+    }, [map, vector]);
+
+    // function selectBbox(): void {
+    //     if (bboxActive) {
+    //         removeInteraction();
+    //         setBboxActive(false);
+    //     } else {
+    //         addInteraction(
+    //             new Draw({
+    //                 source: source,
+    //                 type: "Circle",
+    //                 geometryFunction: createBox()
+    //             })
+    //         );
+    //         setBboxActive(true);
+    //     }
+    // }
+
+    function addInteraction(newDraw: Draw) {
+        removeInteraction();
+        draw.current = newDraw;
+        newDraw.on("drawstart", () => source.clear());
+        newDraw.on("drawend", (event) => {
+            const feature = event.feature;
+            console.log("Fertig gezeichnet:", feature);
+        });
+        map?.addInteraction(newDraw);
+    }
+
+    function removeInteraction() {
+        if (draw.current) {
+            map?.removeInteraction(draw.current);
+        }
+    }
+
+    useEffect(() => {
+        if (showPopup) {
+            // addInteraction(
+            //     new Draw({
+            //         source: source,
+            //         type: "Circle",
+            //         geometryFunction: createBox()
+            //     })
+            // );
+        } else {
+            removeInteraction();
+        }
+    }, [showPopup]);
+
+    function handleClose(): void {
+        onClose();
+        source.clear(); // clears the map
+        setbgcolor("grey");
+        setHover({
+            bg: "grey"
+        });
+        removeInteraction();
+    }
+
+    function setSearchArea(): void {
+        const features = source.getFeatures();
+        const geom = features[0]?.getGeometry();
+        if (geom && map) {
+            const sourceEPSG = map.getView().getProjection().getCode();
+            const transformedGeom = geom.clone().transform(sourceEPSG, "EPSG:4326");
+            if (transformedGeom instanceof Polygon) {
+                const extent = transformedGeom.getExtent();
+                console.log("Selected extent:", extent);
+                // Hier kannst du den ausgewählten Bereich weiterverarbeiten
+            }
+        }
+    }
+    // Handler für das Hinzufügen von Polygonen
+    function addPolygon(): void {
+        addInteraction(
+            new Draw({
+                source: source,
+                type: "Polygon"
+            })
+        );
+        setbgcolor(PrimaryColor);
+        setHover({ bg: PrimaryColor });
+    }
+    // Handler für das Hinzufügen von Kreisen
+    function addCircle(): void {
+        addInteraction(
+            new Draw({
+                source: source,
+                type: "Circle"
+            })
+        );
+    }
+    // Handler für das Hinzufügen von Markern
+    function addMarker(): void {
+        addInteraction(
+            new Draw({
+                source: source,
+                type: "Point"
+            })
+        );
+    }
+
     if (!showPopup) return null;
     return (
         <Box
@@ -59,27 +184,24 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
             justifyContent="center"
             alignItems="center"
         >
-            {/* Hier kann der Inhalt des Pop-up-Overlays platziert werden */}
             <Box
-                width="60%"
-                height="60%"
+                width="80%"
+                height="80%"
                 backgroundColor="white"
                 padding="20px"
                 position="relative"
             >
                 <Box height="80%" width="100%">
-                    <MapContainer mapId="popup" />
+                    <MapContainer mapId={mapId} />
                 </Box>
-                {/* X zum Schließen oben rechts */}
                 <IconButton
                     position="absolute"
                     top="10px"
                     right="10px"
                     aria-label="Close"
-                    onClick={onClose}
+                    onClick={handleClose}
                     icon={<CloseIcon />}
                 />
-                {/* Radio-Buttons */}
                 <RadioGroup defaultValue="default" marginTop="20px">
                     <Stack spacing={5} direction="row">
                         <Radio value="option1">Option 1</Radio>
@@ -87,7 +209,29 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
                         <Radio value="default">Default</Radio>
                     </Stack>
                 </RadioGroup>
-                <Button onClick={onClose}>Close Popup</Button>
+                <ButtonGroup>
+                    <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={addMarker}>
+                        Add Marker
+                    </Button>
+                    <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={addPolygon}>
+                        Add Polygon
+                    </Button>
+                    <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={addCircle}>
+                        Add Circle
+                    </Button>
+                    <Button
+                        bg={bgcolor}
+                        _hover={hover}
+                        height="5vh"
+                        fontSize="0.7vw"
+                        onClick={setSearchArea}
+                    >
+                        Search for datasets that overlap with this area
+                    </Button>
+                    <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={handleClose}>
+                        Close Popup
+                    </Button>
+                </ButtonGroup>
             </Box>
         </Box>
     );
