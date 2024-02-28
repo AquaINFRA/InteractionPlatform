@@ -22,6 +22,7 @@ import { select } from "d3";
 import { useService } from "open-pioneer:react-hooks";
 import { defaults as defaultControls, Control } from "ol/control";
 import GeoJSON from "ol/format/GeoJSON";
+import data from "../../../../services/dummy.json";
 
 interface PopupOverlayProps {
     showPopup: boolean;
@@ -78,9 +79,10 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
 
     useEffect(() => {
         if (!map) return;
-
+        console.log("Data geojson");
+        console.log(data);
         // Fetch your GeoJSON file
-        fetch("src/apps/onestop4all/views/Search/Facets/SpatialCoverageFacet/dummy.geojson")
+        /*fetch("src/apps/onestop4all/views/Search/Facets/SpatialCoverageFacet/dummy.geojson")
             .then((response) => response.json())
             .then((data) => {
                 // Create a vector source
@@ -105,7 +107,7 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
             if (vectorLayer) {
                 map.removeLayer(vectorLayer);
             }
-        };
+        };*/
     }, [map]);
 
     const drawPolygonControl = new DrawPolygonControl(addPolygon);
