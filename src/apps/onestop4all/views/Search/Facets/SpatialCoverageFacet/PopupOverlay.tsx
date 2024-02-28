@@ -33,7 +33,6 @@ export class DrawPolygonControl extends Control {
 
     constructor(handle: () => void) {
         const button = document.createElement("button");
-        button.innerHTML = "P";
 
         const element = document.createElement("div");
         element.className = "draw-polygon ol-unselectable ol-control";

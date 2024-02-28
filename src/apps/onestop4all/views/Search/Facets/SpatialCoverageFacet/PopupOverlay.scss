@@ -1,7 +1,5 @@
 .draw-polygon {
-    display: none !important;
-    position: relative;
-    bottom: 200px; /* Adjust as needed */
-    left: 5%;
-    transform: translateX(-50%);
+    top: 65px;
+    left: 0.5em;
+    background: url(/polygon.svg);
 }
