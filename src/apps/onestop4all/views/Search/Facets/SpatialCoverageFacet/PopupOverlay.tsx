@@ -28,35 +28,19 @@ interface PopupOverlayProps {
     showPopup: boolean;
     onClose: () => void;
 }
-export class DrawPolygonControl extends Control {
-    private drawInteraction: Draw | null = null;
+export class DrawControl extends Control {
     private handle: () => void;
-
-    constructor(handle: () => void) {
+    constructor(handle: () => void, className: string) {
         const button = document.createElement("button");
-
         const element = document.createElement("div");
-        element.className = "draw-polygon ol-unselectable ol-control";
+        element.className = "ol-unselectable ol-control";
+        element.classList.add(className);
         element.appendChild(button);
-
         super({
             element: element
         });
         this.handle = handle;
         button.addEventListener("click", this.handle.bind(this), false);
-    }
-
-    handleDrawPolygon() {
-        if (this.getMap() && this.drawInteraction) {
-            this.getMap()?.addInteraction(this.drawInteraction);
-        }
-    }
-
-    setDrawInteraction(drawInteraction: Draw) {
-        this.drawInteraction = drawInteraction;
-    }
-    setHandle(handle: () => void) {
-        this.handle = handle;
     }
 }
 const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
@@ -80,6 +64,18 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
         if (!map) return;
         console.log("Data geojson");
         console.log(data);
+        const vectorSource = new VectorSource({
+            features: new GeoJSON().readFeatures(data)
+        });
+
+        // Create a vector layer
+        const newVectorLayer = new VectorLayer({
+            source: vectorSource
+        });
+
+        // Add the vector layer to the map
+        map.addLayer(newVectorLayer);
+        setVectorLayer(newVectorLayer);
         // Fetch your GeoJSON file
         /*fetch("src/apps/onestop4all/views/Search/Facets/SpatialCoverageFacet/dummy.geojson")
             .then((response) => response.json())
@@ -101,16 +97,20 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
             .catch((error) => {
                 console.error("Error loading GeoJSON file:", error);
             });
-
+ */
         return () => {
             if (vectorLayer) {
                 map.removeLayer(vectorLayer);
             }
-        };*/
+        };
     }, [map]);
 
-    const drawPolygonControl = new DrawPolygonControl(addPolygon);
+    const drawPolygonControl = new DrawControl(addPolygon, "draw-polygon");
     map?.addControl(drawPolygonControl);
+    const drawCircleControl = new DrawControl(addCircle, "draw-circle");
+    map?.addControl(drawCircleControl);
+    const drawMarkerControl = new DrawControl(addMarker, "draw-marker");
+    map?.addControl(drawMarkerControl);
 
     // fixes bug where the map is not displayed if the popup is opened for the second time
     function changeRenderState() {
