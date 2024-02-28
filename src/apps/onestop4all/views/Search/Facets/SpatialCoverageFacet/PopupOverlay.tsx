@@ -20,12 +20,45 @@ import { remove } from "ol/array";
 import { useRef } from "react";
 import { select } from "d3";
 import { useService } from "open-pioneer:react-hooks";
+import { defaults as defaultControls, Control } from "ol/control";
+import GeoJSON from "ol/format/GeoJSON";
 
 interface PopupOverlayProps {
     showPopup: boolean;
     onClose: () => void;
 }
+export class DrawPolygonControl extends Control {
+    private drawInteraction: Draw | null = null;
+    private handle: () => void;
 
+    constructor(handle: () => void) {
+        const button = document.createElement("button");
+        button.innerHTML = "P";
+
+        const element = document.createElement("div");
+        element.className = "draw-polygon ol-unselectable ol-control";
+        element.appendChild(button);
+
+        super({
+            element: element
+        });
+        this.handle = handle;
+        button.addEventListener("click", this.handle.bind(this), false);
+    }
+
+    handleDrawPolygon() {
+        if (this.getMap() && this.drawInteraction) {
+            this.getMap()?.addInteraction(this.drawInteraction);
+        }
+    }
+
+    setDrawInteraction(drawInteraction: Draw) {
+        this.drawInteraction = drawInteraction;
+    }
+    setHandle(handle: () => void) {
+        this.handle = handle;
+    }
+}
 const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
     const mapId = "popup";
     const { map } = useMap(mapId);
@@ -40,6 +73,43 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
     const PrimaryColor = "#05668D";
     const olMapRegistry = useService("ol-map.MapRegistry");
     const [renderState, setRenderState] = useState(false);
+
+    const [vectorLayer, setVectorLayer] = useState(new VectorLayer({ source: source }));
+
+    useEffect(() => {
+        if (!map) return;
+
+        // Fetch your GeoJSON file
+        fetch("src/apps/onestop4all/views/Search/Facets/SpatialCoverageFacet/dummy.geojson")
+            .then((response) => response.json())
+            .then((data) => {
+                // Create a vector source
+                const vectorSource = new VectorSource({
+                    features: new GeoJSON().readFeatures(data)
+                });
+
+                // Create a vector layer
+                const newVectorLayer = new VectorLayer({
+                    source: vectorSource
+                });
+
+                // Add the vector layer to the map
+                map.addLayer(newVectorLayer);
+                setVectorLayer(newVectorLayer);
+            })
+            .catch((error) => {
+                console.error("Error loading GeoJSON file:", error);
+            });
+
+        return () => {
+            if (vectorLayer) {
+                map.removeLayer(vectorLayer);
+            }
+        };
+    }, [map]);
+
+    const drawPolygonControl = new DrawPolygonControl(addPolygon);
+    map?.addControl(drawPolygonControl);
 
     // fixes bug where the map is not displayed if the popup is opened for the second time
     function changeRenderState() {
@@ -69,22 +139,6 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
             map.addLayer(vector);
         }
     }, [map, vector]);
-
-    // function selectBbox(): void {
-    //     if (bboxActive) {
-    //         removeInteraction();
-    //         setBboxActive(false);
-    //     } else {
-    //         addInteraction(
-    //             new Draw({
-    //                 source: source,
-    //                 type: "Circle",
-    //                 geometryFunction: createBox()
-    //             })
-    //         );
-    //         setBboxActive(true);
-    //     }
-    // }
 
     function addInteraction(newDraw: Draw) {
         removeInteraction();
@@ -136,7 +190,7 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
             if (transformedGeom instanceof Polygon) {
                 const extent = transformedGeom.getExtent();
                 console.log("Selected extent:", extent);
-                // Hier kannst du den ausgewählten Bereich weiterverarbeiten
+                // weiterverarbeitung
             }
         }
     }
