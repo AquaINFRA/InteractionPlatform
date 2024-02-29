@@ -60,22 +60,38 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
 
     const [vectorLayer, setVectorLayer] = useState(new VectorLayer({ source: source }));
 
+    const geoJSONFormat = new GeoJSON();
+    const features = geoJSONFormat.readFeatures(data, {
+        featureProjection: "EPSG:3857"
+    });
+
+    const vectorSource = new VectorSource({
+        features: features
+    });
+
+    const vectorLayer2 = new VectorLayer({
+        source: vectorSource
+    });
+
     useEffect(() => {
         if (!map) return;
-        console.log("Data geojson");
-        console.log(data);
-        const vectorSource = new VectorSource({
+        /*const vectorSource = new VectorSource({
             features: new GeoJSON().readFeatures(data)
         });
 
         // Create a vector layer
         const newVectorLayer = new VectorLayer({
             source: vectorSource
-        });
+        });*/
 
         // Add the vector layer to the map
-        map.addLayer(newVectorLayer);
-        setVectorLayer(newVectorLayer);
+        map.getLayers().forEach((layer) => {
+            if (layer instanceof VectorLayer) {
+                map.removeLayer(layer);
+            }
+        });
+        map.addLayer(vectorLayer2);
+        setVectorLayer(vectorLayer2);
         // Fetch your GeoJSON file
         /*fetch("src/apps/onestop4all/views/Search/Facets/SpatialCoverageFacet/dummy.geojson")
             .then((response) => response.json())
