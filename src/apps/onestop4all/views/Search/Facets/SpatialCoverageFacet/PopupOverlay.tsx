@@ -22,7 +22,8 @@ import { select } from "d3";
 import { useService } from "open-pioneer:react-hooks";
 import { defaults as defaultControls, Control } from "ol/control";
 import GeoJSON from "ol/format/GeoJSON";
-import data from "../../../../services/dummy.json";
+import data1 from "../../../../services/dummy.json";
+import data from "../../../../services/basins_eu_hydro_draft_100perc_orig.json";
 
 interface PopupOverlayProps {
     showPopup: boolean;
@@ -30,8 +31,9 @@ interface PopupOverlayProps {
 }
 export class DrawControl extends Control {
     private handle: () => void;
-    constructor(handle: () => void, className: string) {
+    constructor(handle: () => void, className: string, buttonText: string) {
         const button = document.createElement("button");
+        button.innerHTML = buttonText;
         const element = document.createElement("div");
         element.className = "ol-unselectable ol-control";
         element.classList.add(className);
@@ -59,6 +61,8 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
     const [renderState, setRenderState] = useState(false);
 
     const [vectorLayer, setVectorLayer] = useState(new VectorLayer({ source: source }));
+    map?.getView().setCenter([1169191, 6606967]);
+    map?.getView().setZoom(4);
 
     const geoJSONFormat = new GeoJSON();
     const features = geoJSONFormat.readFeatures(data, {
@@ -121,11 +125,11 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
         };
     }, [map]);
 
-    const drawPolygonControl = new DrawControl(addPolygon, "draw-polygon");
+    const drawPolygonControl = new DrawControl(addPolygon, "draw-polygon", "P");
     map?.addControl(drawPolygonControl);
-    const drawCircleControl = new DrawControl(addCircle, "draw-circle");
+    const drawCircleControl = new DrawControl(addCircle, "draw-circle", "C");
     map?.addControl(drawCircleControl);
-    const drawMarkerControl = new DrawControl(addMarker, "draw-marker");
+    const drawMarkerControl = new DrawControl(addMarker, "draw-marker", "M");
     map?.addControl(drawMarkerControl);
 
     // fixes bug where the map is not displayed if the popup is opened for the second time
@@ -203,6 +207,7 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
         const geom = features[0]?.getGeometry();
         if (geom && map) {
             const sourceEPSG = map.getView().getProjection().getCode();
+            console.log(sourceEPSG);
             const transformedGeom = geom.clone().transform(sourceEPSG, "EPSG:4326");
             if (transformedGeom instanceof Polygon) {
                 const extent = transformedGeom.getExtent();
@@ -281,7 +286,7 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
                     </Stack>
                 </RadioGroup>
                 <ButtonGroup>
-                    <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={addMarker}>
+                    {/* <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={addMarker}>
                         Add Marker
                     </Button>
                     <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={addPolygon}>
@@ -289,7 +294,7 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
                     </Button>
                     <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={addCircle}>
                         Add Circle
-                    </Button>
+                    </Button> */}
                     <Button
                         bg={bgcolor}
                         _hover={hover}
