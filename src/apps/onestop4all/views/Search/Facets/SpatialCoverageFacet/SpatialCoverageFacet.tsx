@@ -13,7 +13,7 @@ import { RectangleSelectIcon } from "../../../../components/Icons";
 import { ActiveControlColor, PrimaryColor } from "../../../../Theme";
 import { useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
-import PopupOverlay from "./PopupOverlay";
+import { PopupOverlay } from "./PopupOverlay";
 
 export interface SpatialCoverageFacetProps {
     mapId: string;

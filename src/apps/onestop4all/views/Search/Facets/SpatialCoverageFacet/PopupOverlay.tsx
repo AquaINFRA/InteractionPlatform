@@ -1,34 +1,26 @@
-import React, { useEffect, useState } from "react";
-import {
-    Box,
-    Button,
-    ButtonGroup,
-    IconButton,
-    Radio,
-    RadioGroup,
-    Stack
-} from "@open-pioneer/chakra-integration";
-import { CloseIcon } from "@chakra-ui/icons";
+// Import hooks
+import { useEffect, useState, useRef } from "react";
+import { useService } from "open-pioneer:react-hooks";
+// Import OpenLayers-Map
 import { MapContainer, useMap } from "@open-pioneer/experimental-ol-map";
-import Draw, { createBox } from "ol/interaction/Draw";
+import Draw from "ol/interaction/Draw";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
-import { Feature, View } from "ol";
 import { Polygon } from "ol/geom";
-import { fromExtent } from "ol/geom/Polygon";
-import { remove } from "ol/array";
-import { useRef } from "react";
-import { select } from "d3";
-import { useService } from "open-pioneer:react-hooks";
 import { defaults as defaultControls, Control } from "ol/control";
+// Import other components
+import { Box, ButtonGroup } from "@open-pioneer/chakra-integration";
+import { Legend } from "./Legend";
+import { XButton } from "./XButton";
+import { RadioButtons } from "./RadioButtons";
+import { SearchButton } from "./SearchButton";
+import { GetBboxButton } from "./GetBboxButton";
+// Import GeoJSON
 import GeoJSON from "ol/format/GeoJSON";
 import data1 from "../../../../services/dummy.json";
 import data from "../../../../services/basins_eu_hydro_draft_100perc_orig.json";
 
-interface PopupOverlayProps {
-    showPopup: boolean;
-    onClose: () => void;
-}
+// Custom OpenLayer-styled control class
 export class DrawControl extends Control {
     private handle: () => void;
     constructor(handle: () => void, className: string, buttonText: string) {
@@ -45,25 +37,30 @@ export class DrawControl extends Control {
         button.addEventListener("click", this.handle.bind(this), false);
     }
 }
-const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
+interface PopupOverlayProps {
+    showPopup: boolean;
+    onClose: () => void;
+}
+
+export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
+    /* *********************************Initializing***************************************/
+
+    // Initialize the map
     const mapId = "popup";
     const { map } = useMap(mapId);
     const [source] = useState(new VectorSource());
     const [vector] = useState(new VectorLayer({ source: source }));
-    const [bboxActive, setBboxActive] = useState(false);
-    const draw = useRef<Draw>();
-    const [bgcolor, setbgcolor] = useState("grey");
-    const [hover, setHover] = useState({
-        bg: "grey"
-    });
-    const PrimaryColor = "#05668D";
     const olMapRegistry = useService("ol-map.MapRegistry");
     const [renderState, setRenderState] = useState(false);
+    const draw = useRef<Draw>();
+    const PrimaryColor = "#05668D";
 
     const [vectorLayer, setVectorLayer] = useState(new VectorLayer({ source: source }));
+    // Center the Map in Europe
     map?.getView().setCenter([1169191, 6606967]);
     map?.getView().setZoom(4);
 
+    // Read the GeoJSON
     const geoJSONFormat = new GeoJSON();
     const features = geoJSONFormat.readFeatures(data, {
         featureProjection: "EPSG:3857"
@@ -77,18 +74,9 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
         source: vectorSource
     });
 
+    // Clear map and add layer with the geoJSON-features
     useEffect(() => {
         if (!map) return;
-        /*const vectorSource = new VectorSource({
-            features: new GeoJSON().readFeatures(data)
-        });
-
-        // Create a vector layer
-        const newVectorLayer = new VectorLayer({
-            source: vectorSource
-        });*/
-
-        // Add the vector layer to the map
         map.getLayers().forEach((layer) => {
             if (layer instanceof VectorLayer) {
                 map.removeLayer(layer);
@@ -96,28 +84,6 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
         });
         map.addLayer(vectorLayer2);
         setVectorLayer(vectorLayer2);
-        // Fetch your GeoJSON file
-        /*fetch("src/apps/onestop4all/views/Search/Facets/SpatialCoverageFacet/dummy.geojson")
-            .then((response) => response.json())
-            .then((data) => {
-                // Create a vector source
-                const vectorSource = new VectorSource({
-                    features: new GeoJSON().readFeatures(data)
-                });
-
-                // Create a vector layer
-                const newVectorLayer = new VectorLayer({
-                    source: vectorSource
-                });
-
-                // Add the vector layer to the map
-                map.addLayer(newVectorLayer);
-                setVectorLayer(newVectorLayer);
-            })
-            .catch((error) => {
-                console.error("Error loading GeoJSON file:", error);
-            });
- */
         return () => {
             if (vectorLayer) {
                 map.removeLayer(vectorLayer);
@@ -125,12 +91,15 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
         };
     }, [map]);
 
+    // add OpenLayer-styled control buttons for drawing
     const drawPolygonControl = new DrawControl(addPolygon, "draw-polygon", "P");
     map?.addControl(drawPolygonControl);
     const drawCircleControl = new DrawControl(addCircle, "draw-circle", "C");
     map?.addControl(drawCircleControl);
     const drawMarkerControl = new DrawControl(addMarker, "draw-marker", "M");
     map?.addControl(drawMarkerControl);
+
+    // **************************useEffect-hooks******************************************
 
     // fixes bug where the map is not displayed if the popup is opened for the second time
     function changeRenderState() {
@@ -153,14 +122,25 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
             }
         };
         fetchMap();
-    }, [renderState]);
+    }, [changeRenderState]);
 
+    // Adds new Layer to draw on
+    // useEffect(() => {
+    //     if (map) {
+    //         map.addLayer(vector);
+    //     }
+    // }, [map, vector]);
+
+    // Removes Interactions after closing the Popup
     useEffect(() => {
-        if (map) {
-            map.addLayer(vector);
+        if (!showPopup) {
+            removeInteraction();
         }
-    }, [map, vector]);
+    }, [showPopup]);
 
+    //*************************Drawing logic*********************************** */
+
+    //Adds Interaction-object for drawing
     function addInteraction(newDraw: Draw) {
         removeInteraction();
         draw.current = newDraw;
@@ -171,37 +151,22 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
         });
         map?.addInteraction(newDraw);
     }
-
+    //Removes Interaction-object
     function removeInteraction() {
         if (draw.current) {
             map?.removeInteraction(draw.current);
         }
     }
 
-    useEffect(() => {
-        if (showPopup) {
-            // addInteraction(
-            //     new Draw({
-            //         source: source,
-            //         type: "Circle",
-            //         geometryFunction: createBox()
-            //     })
-            // );
-        } else {
-            removeInteraction();
-        }
-    }, [showPopup]);
+    /**********************handler for buttons************************* */
 
+    // Handler for the close-buttons
     function handleClose(): void {
         onClose();
         source.clear(); // clears the map
-        setbgcolor("grey");
-        setHover({
-            bg: "grey"
-        });
         removeInteraction();
     }
-
+    // Handler for the search-button
     function setSearchArea(): void {
         const features = source.getFeatures();
         const geom = features[0]?.getGeometry();
@@ -216,7 +181,7 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
             }
         }
     }
-    // Handler für das Hinzufügen von Polygonen
+    // Handler for adding polygons
     function addPolygon(): void {
         addInteraction(
             new Draw({
@@ -224,10 +189,8 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
                 type: "Polygon"
             })
         );
-        setbgcolor(PrimaryColor);
-        setHover({ bg: PrimaryColor });
     }
-    // Handler für das Hinzufügen von Kreisen
+    // Handler for adding circles
     function addCircle(): void {
         addInteraction(
             new Draw({
@@ -236,7 +199,7 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
             })
         );
     }
-    // Handler für das Hinzufügen von Markern
+    // Handler for adding markers
     function addMarker(): void {
         addInteraction(
             new Draw({
@@ -246,71 +209,32 @@ const PopupOverlay: React.FC<PopupOverlayProps> = ({ showPopup, onClose }) => {
         );
     }
 
+    /*****************************return ************************************** */
+
     if (!showPopup) return null;
     return (
-        <Box
-            position="fixed"
-            top="0"
-            left="0"
-            width="100%"
-            height="100%"
-            backgroundColor="rgba(0, 0, 0, 0.6)"
-            zIndex="9999"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-        >
-            <Box
-                width="80%"
-                height="80%"
-                backgroundColor="white"
-                padding="20px"
-                position="relative"
-            >
+        <Box className="popup-background-transparent">
+            <Box className="popup-background">
                 <Box height="80%" width="100%">
                     <MapContainer mapId={mapId} />
                 </Box>
-                <IconButton
-                    position="absolute"
-                    top="10px"
-                    right="10px"
-                    aria-label="Close"
-                    onClick={handleClose}
-                    icon={<CloseIcon />}
-                />
-                <RadioGroup defaultValue="default" marginTop="20px">
-                    <Stack spacing={5} direction="row">
-                        <Radio value="option1">Option 1</Radio>
-                        <Radio value="option2">Option 2</Radio>
-                        <Radio value="default">Default</Radio>
-                    </Stack>
-                </RadioGroup>
-                <ButtonGroup>
-                    {/* <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={addMarker}>
-                        Add Marker
-                    </Button>
-                    <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={addPolygon}>
-                        Add Polygon
-                    </Button>
-                    <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={addCircle}>
-                        Add Circle
-                    </Button> */}
-                    <Button
-                        bg={bgcolor}
-                        _hover={hover}
-                        height="5vh"
-                        fontSize="0.7vw"
-                        onClick={setSearchArea}
-                    >
-                        Search for datasets that overlap with this area
-                    </Button>
-                    <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={handleClose}>
-                        Close Popup
-                    </Button>
-                </ButtonGroup>
+                <XButton handleClose={handleClose} />
+                <Box display="flex" justifyContent="space-around">
+                    <Box>
+                        <RadioButtons />
+                        <ButtonGroup>
+                            <GetBboxButton onClick={() => null} />
+                            <SearchButton onClick={setSearchArea} active={true} />
+                        </ButtonGroup>
+                    </Box>
+                    <Box marginTop="20px">
+                        <Legend />
+                        {/* <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={handleClose}>
+                            Close Popup
+                        </Button> */}
+                    </Box>
+                </Box>
             </Box>
         </Box>
     );
-};
-
-export default PopupOverlay;
+}
