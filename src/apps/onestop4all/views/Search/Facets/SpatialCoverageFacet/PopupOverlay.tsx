@@ -19,8 +19,7 @@ import { SearchButton } from "./SearchButton";
 import { GetBboxButton } from "./GetBboxButton";
 // Import GeoJSON
 import GeoJSON from "ol/format/GeoJSON";
-import data1 from "../../../../services/dummy.json";
-import data from "../../../../services/basins_eu_hydro_draft_100perc_orig.json";
+import data from "../../../../services/basins_eu_hydro_draft_10perc.json";
 
 // Custom OpenLayer-styled control class
 export class DrawControl extends Control {
