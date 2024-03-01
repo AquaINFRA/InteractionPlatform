@@ -10,6 +10,10 @@ import { Polygon } from "ol/geom";
 import { defaults as defaultControls, Control } from "ol/control";
 import { intersects } from "ol/extent";
 import View from "ol";
+
+import { Fill, Stroke, Style } from "ol/style.js";
+import { altKeyOnly, click, pointerMove } from "ol/events/condition.js";
+import Select from "ol/interaction/Select.js";
 // Import other components
 import { Box, ButtonGroup } from "@open-pioneer/chakra-integration";
 import { Legend } from "./Legend";
@@ -49,8 +53,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     // Initialize the map
     const mapId = "popup";
     const { map } = useMap(mapId);
-    const [source] = useState(new VectorSource());
-    const [vector] = useState(new VectorLayer({ source: source }));
+    const source = new VectorSource();
+    const vector = new VectorLayer({ source: source });
     const olMapRegistry = useService("ol-map.MapRegistry");
     const [renderState, setRenderState] = useState(false);
     const draw = useRef<Draw>();
@@ -64,7 +68,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             map.getView().setCenter([1169191, 6606967]);
             map.getView().setZoom(4);
         }
-    }, []);
+    }, [showPopup]);
 
     // Read the GeoJSON
     const geoJSONFormat = new GeoJSON();
@@ -74,6 +78,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
 
     // Create Array with only the Features that are within the maps extend
     function filterFeatures() {
+        console.log("filterFeatures");
         const visibleFeatures: any[] = [];
         if (map) {
             // Get map extent
@@ -113,9 +118,19 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         console.log("Reload");
     }
 
-    // Listen to "moveend" event
-    map?.on("moveend", (event) => {
-        reloadFeatures();
+    // // Listen to "moveend" event
+    // map?.on("moveend", (event) => {
+    //     reloadFeatures();
+    // });
+
+    const style = new Style({
+        fill: new Fill({
+            color: "#eeeeee"
+        }),
+        stroke: new Stroke({
+            color: "rgba(0, 176, 255, 0.8)",
+            width: 1
+        })
     });
 
     const vectorSource = new VectorSource({
@@ -123,7 +138,12 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     });
 
     const vectorLayer2 = new VectorLayer({
-        source: vectorSource
+        source: vectorSource,
+        style: function (feature) {
+            const color = feature.get("COLOR") || "#eeeeee";
+            style.getFill().setColor("rgba(0,0,0,0");
+            return style;
+        }
     });
 
     // Clear map and add layer with the geoJSON-features
@@ -142,6 +162,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             }
         };
     }, [map]);
+
+    /************************************************************************** */
 
     // add OpenLayer-styled control buttons for drawing
     const drawPolygonControl = new DrawControl(addPolygon, "draw-polygon", "P");
