@@ -8,6 +8,8 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { Polygon } from "ol/geom";
 import { defaults as defaultControls, Control } from "ol/control";
+import { intersects } from "ol/extent";
+import View from "ol";
 // Import other components
 import { Box, ButtonGroup } from "@open-pioneer/chakra-integration";
 import { Legend } from "./Legend";
@@ -57,13 +59,64 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
 
     const [vectorLayer, setVectorLayer] = useState(new VectorLayer({ source: source }));
     // Center the Map in Europe
-    map?.getView().setCenter([1169191, 6606967]);
-    map?.getView().setZoom(4);
+    useEffect(() => {
+        // useEffect to center the map just at the start
+        if (map) {
+            map.getView().setCenter([1169191, 6606967]);
+            map.getView().setZoom(4);
+        }
+    }, []);
 
     // Read the GeoJSON
     const geoJSONFormat = new GeoJSON();
     const features = geoJSONFormat.readFeatures(data, {
         featureProjection: "EPSG:3857"
+    });
+
+    // Create Array with only the Features that are within the maps extend
+    function filterFeatures() {
+        const visibleFeatures: any[] = [];
+        if (map) {
+            // Get map extent
+            const mapExtent = map.getView().calculateExtent(map.getSize());
+
+            // filter features
+
+            features.forEach((feature) => {
+                // Check if feature is within extent
+                const featureGeometry = feature.getGeometry()!;
+                if (intersects(mapExtent, featureGeometry.getExtent())) {
+                    visibleFeatures.push(feature);
+                }
+            });
+        }
+        //console.log("Angezeigte Features: " + visibleFeatures.length);
+
+        return visibleFeatures;
+    }
+    // Update the map
+    function reloadFeatures() {
+        if (!map) return;
+        map.getLayers().forEach((layer) => {
+            if (layer instanceof VectorLayer) {
+                map.removeLayer(layer);
+            }
+        });
+        const vectorSourceFilter = new VectorSource({
+            features: filterFeatures()
+        });
+
+        const vectorLayerFilter = new VectorLayer({
+            source: vectorSourceFilter
+        });
+        map.addLayer(vectorLayerFilter);
+        setVectorLayer(vectorLayerFilter);
+        console.log("Reload");
+    }
+
+    // Listen to "moveend" event
+    map?.on("moveend", (event) => {
+        reloadFeatures();
     });
 
     const vectorSource = new VectorSource({
@@ -172,7 +225,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         const geom = features[0]?.getGeometry();
         if (geom && map) {
             const sourceEPSG = map.getView().getProjection().getCode();
-            console.log(sourceEPSG);
+            console.log("sourceEPSG:" + sourceEPSG);
             const transformedGeom = geom.clone().transform(sourceEPSG, "EPSG:4326");
             if (transformedGeom instanceof Polygon) {
                 const extent = transformedGeom.getExtent();
@@ -223,7 +276,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                     <Box>
                         <RadioButtons />
                         <ButtonGroup>
-                            <GetBboxButton onClick={() => null} />
+                            <GetBboxButton onClick={filterFeatures} />
                             <SearchButton onClick={setSearchArea} active={true} />
                         </ButtonGroup>
                     </Box>
