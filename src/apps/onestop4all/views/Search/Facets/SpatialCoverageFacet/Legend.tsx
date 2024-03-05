@@ -1,4 +1,5 @@
 import { Box } from "@open-pioneer/chakra-integration";
+import { lineBlue } from "./PopupOverlay";
 
 export function Legend() {
     return (
@@ -8,7 +9,7 @@ export function Legend() {
                 style={{
                     width: "30px",
                     height: "3px",
-                    backgroundColor: "blue",
+                    backgroundColor: lineBlue,
                     display: "inline-block"
                 }}
             ></Box>{" "}

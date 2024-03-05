@@ -11,7 +11,7 @@ import { defaults as defaultControls, Control } from "ol/control";
 import { intersects } from "ol/extent";
 import View from "ol";
 
-import { Fill, Stroke, Style } from "ol/style.js";
+import { Fill, Stroke, Style, Circle } from "ol/style.js";
 import { altKeyOnly, click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
 // Import other components
@@ -20,11 +20,14 @@ import { Legend } from "./Legend";
 import { XButton } from "./XButton";
 import { RadioButtons } from "./RadioButtons";
 import { SearchButton } from "./SearchButton";
-import { GetBboxButton } from "./GetBboxButton";
+import { GetBBoxButton } from "./GetBBoxButton";
 // Import GeoJSON
-import GeoJSON from "ol/format/GeoJSON";
+import GeoJSON, { GeoJSONObject } from "ol/format/GeoJSON";
 import data from "../../../../services/basins_eu_hydro_draft_10perc.json";
+import { select } from "d3";
+import { toGeometry } from "ol/render/Feature";
 
+export const lineBlue = "rgba(0, 176, 255, 0.8)";
 // Custom OpenLayer-styled control class
 export class DrawControl extends Control {
     private handle: () => void;
@@ -61,6 +64,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     const PrimaryColor = "#05668D";
 
     const [vectorLayer, setVectorLayer] = useState(new VectorLayer({ source: source }));
+
+    const [selectedFeatures, setSelectedFeatures] = useState(false);
     // Center the Map in Europe
     useEffect(() => {
         // useEffect to center the map just at the start
@@ -128,7 +133,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             color: "#eeeeee"
         }),
         stroke: new Stroke({
-            color: "rgba(0, 176, 255, 0.8)",
+            color: lineBlue,
             width: 1
         })
     });
@@ -162,6 +167,41 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             }
         };
     }, [map]);
+
+    /************************************************************************* */
+    function getBBox() {
+        const bBox: GeoJSONObject = {
+            type: "FeatureCollection",
+            features: [
+                {
+                    type: "Feature",
+                    properties: {},
+                    geometry: {
+                        coordinates: [
+                            [
+                                [8.735599670457958, 52.62891991717626],
+                                [8.735599670457958, 49.473874845712004],
+                                [15.396136170854135, 49.473874845712004],
+                                [15.396136170854135, 52.62891991717626],
+                                [8.735599670457958, 52.62891991717626]
+                            ]
+                        ],
+                        type: "Polygon"
+                    }
+                }
+            ]
+        };
+        const features = new GeoJSON().readFeatures(bBox);
+        const vectorSourceBBox = new VectorSource({
+            features: features
+        });
+
+        const vectorLayerBBox = new VectorLayer({
+            source: vectorSourceBBox
+        });
+        map?.addLayer(vectorLayerBBox);
+        console.log("getBBox");
+    }
 
     /************************************************************************** */
 
@@ -255,15 +295,34 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             }
         }
     }
+    // Custom Style for Polygon-drawing
+    const fill = new Fill({
+        color: "rgba(255,255,255,0.4)"
+    });
+    const stroke = new Stroke({
+        color: "#3399CC",
+        width: 1.25
+    });
     // Handler for adding polygons
     function addPolygon(): void {
         addInteraction(
             new Draw({
                 source: source,
-                type: "Polygon"
+                type: "Polygon",
+                style: new Style({
+                    //Custom Style, including circle pointer
+                    image: new Circle({
+                        fill: fill,
+                        stroke: stroke,
+                        radius: 5
+                    }),
+                    fill: fill,
+                    stroke: stroke
+                })
             })
         );
     }
+
     // Handler for adding circles
     function addCircle(): void {
         addInteraction(
@@ -283,6 +342,41 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         );
     }
 
+    const hoverStyle = new Style({
+        fill: new Fill({
+            color: "rgba(0, 0, 255, 0.2)"
+        }),
+        stroke: new Stroke({
+            color: lineBlue,
+            width: 2
+        })
+    });
+
+    const selectHover = new Select({
+        condition: pointerMove,
+        style: hoverStyle
+    });
+
+    const selectClick = new Select({
+        condition: click,
+        style: hoverStyle
+    });
+
+    useEffect(() => {
+        if (map && showPopup) {
+            map.addInteraction(selectHover);
+            map.addInteraction(selectClick);
+            selectClick.on("select", (e) => setSelectedFeatures(true));
+        } else {
+            const selected = selectClick.getFeatures();
+            if (selected.getLength() > 0) selected.remove(selected.item(0));
+            console.log(selected.getLength());
+            map?.removeInteraction(selectHover);
+            map?.removeInteraction(selectClick);
+            setSelectedFeatures(false);
+        }
+    }, [map, showPopup]);
+
     /*****************************return ************************************** */
 
     if (!showPopup) return null;
@@ -296,9 +390,9 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 <Box display="flex" justifyContent="space-around">
                     <Box>
                         <RadioButtons />
-                        <ButtonGroup>
-                            <GetBboxButton onClick={filterFeatures} />
-                            <SearchButton onClick={setSearchArea} active={true} />
+                        <ButtonGroup orientation="vertical" marginTop="2px">
+                            <GetBBoxButton active={selectedFeatures} onClick={getBBox} />
+                            <SearchButton onClick={setSearchArea} active={false} />
                         </ButtonGroup>
                     </Box>
                     <Box marginTop="20px">
