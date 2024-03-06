@@ -10,7 +10,6 @@ import { DatasetHandler } from "./search/result-handler/dataset-handler";
 import { SeriesHandler } from "./search/result-handler/series-handler";
 import { ModelHandler } from "./search/result-handler/model-handler";
 import { SoftwareHandler } from "./search/result-handler/software-zenodo-handler";
-import { SolrSearchResultItem } from "./SearchService";
 
 export enum ResourceType {
     Repos = "Repository / Archive",

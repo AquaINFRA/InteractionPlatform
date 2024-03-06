@@ -1,14 +1,9 @@
 import { Box, Flex } from "@open-pioneer/chakra-integration";
-import { Link } from "react-router-dom";
 
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { SolrSearchResultItem } from "../../services/SearchService";
-import { LastUpdate } from "../../components/ResourceType/Metadata/LastUpdate";
-import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
-import { MetadataSourceIcon } from "../../components/Icons";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ExternalResources } from "../../components/ResourceType/ExternalResources/ExternalResources";
-import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { Map } from "../../components/ResourceType/Map/Map";
 
 export interface LinkObject {

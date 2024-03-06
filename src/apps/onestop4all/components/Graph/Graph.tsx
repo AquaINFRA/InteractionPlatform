@@ -2,7 +2,6 @@ import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 
 import { PrimaryColor } from "../../Theme";
-import { ResourceIcon } from "../../views/Start/ResourceEntry/ResourceIcons";
 
 interface GraphProps {
     data?: number[];

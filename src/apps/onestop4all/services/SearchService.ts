@@ -1,12 +1,7 @@
 import "@open-pioneer/runtime";
 
 import { ServiceOptions } from "@open-pioneer/runtime";
-import {
-    ResourceType,
-    getHandler,
-    mapFromResourceType,
-    mapToResourceType
-} from "./ResourceTypeUtils";
+import { ResourceType, mapFromResourceType } from "./ResourceTypeUtils";
 import { DataProvider } from "../views/Search/Facets/DataProviderFacet/DataProviderFacet";
 
 export interface SearchResultItem {
@@ -78,7 +73,7 @@ export interface ZenodoResultItem {
     metadata: {
         resource_type: {
             title: string;
-            type: string;
+            type: ResourceType;
         };
         description: string;
         language: string;
@@ -136,7 +131,7 @@ const SOLR_SUBJECT_FACET_FIELD = "theme_str";
 const SOLR_RESOURCE_TYPE_FACET_FIELD = "type";
 const SOLR_TEMPORAL_FACET_RANGE_FIELD = "datePublished";
 const SOLR_DATAPROVIDER_FACET_FIELD = "collections";
-export const proxy = "http://localhost:8081/";
+export const proxy = "http://localhost:8888/";
 export const supportForm = "http://localhost/html/nfdi/";
 
 export class SearchService {
@@ -195,8 +190,12 @@ export class SearchService {
                     return {
                         count: response.numberMatched,
                         results: response.features,
-                        facets: { provider: searchParams.dataProvider }
-                    };
+                        facets: {
+                            provider: searchParams.dataProvider?.map((dp) => {
+                                return { title: dp };
+                            })
+                        }
+                    } as SearchResult;
                 } else {
                     throw new Error("Unexpected response: " + JSON.stringify(responseData));
                 }
@@ -217,7 +216,7 @@ export class SearchService {
             const baseUrl = proxy + "https://zenodo.org/api/records";
             url = `${baseUrl}/${id}`;
         } else {
-            const baseUrl = proxy + "https://vm4412.kaj.pouta.csc.fi/pygeo/oapir/collections";
+            const baseUrl = proxy + "https://vm4072.kaj.pouta.csc.fi/ddas/oapir/collections";
             url = `${baseUrl}/${provider}/items/${id}`;
         }
         return fetch(url).then((response) =>
@@ -302,7 +301,7 @@ export class SearchService {
 
     getDataProvider() {
         const url =
-            proxy + `https://vm4412.kaj.pouta.csc.fi/pygeo/oapir/collections?f=json&lang=en-US`;
+            proxy + `https://vm4072.kaj.pouta.csc.fi/ddas/oapir/collections?f=json&lang=en-US`;
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {

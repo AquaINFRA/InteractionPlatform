@@ -1,4 +1,3 @@
-import React from "react";
 import { Box } from "@open-pioneer/chakra-integration";
 import { MapContainer, MapPadding } from "@open-pioneer/experimental-ol-map";
 import { useService } from "open-pioneer:react-hooks";
