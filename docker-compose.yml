@@ -10,8 +10,6 @@ services:
   proxy:
     image: yasinuslu/cors-anywhere:latest
     container_name: cors-proxy
-    environment:
-      - origin="*"
     ports:
       - 8888:80
 
