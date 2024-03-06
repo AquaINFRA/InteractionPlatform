@@ -183,7 +183,7 @@ export class SearchService {
         //console.log("config url: ",this.config.url);
         //console.log("core selector: ",this.config.coreSelector);
         //console.log("query params: ", queryParams.toString());
-        const baseUrl = proxy + "https://vm4412.kaj.pouta.csc.fi/pygeo/oapir";
+        const baseUrl = proxy + "https://vm4072.kaj.pouta.csc.fi/ddas/oapir";
         const url = `${baseUrl}/search?${queryParams.toString()}`;
         //console.log(searchParams.dataProvider);
         return fetch(url).then((response) =>

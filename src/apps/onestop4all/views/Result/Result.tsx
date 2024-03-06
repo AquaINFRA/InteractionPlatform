@@ -51,8 +51,9 @@ export function Result() {
             if (result) {
                 if (result.provider === "zenodo") {
                     searchSrvc.fetchRoCrateFile("10477880").then((crate) => { 
-                        //TO DO: implement handling for assets that don't have a ro-crate file. 
-                        setSearchResult(crate["@graph"]);
+                        //TO DO: implement handling for assets that don't have a ro-crate file.
+                        const roCrateFile = crate["@graph"];  
+                        setSearchResult(roCrateFile);
                         setResourceType(
                             getResourceType(result.response.metadata.resource_type.type)
                         );
