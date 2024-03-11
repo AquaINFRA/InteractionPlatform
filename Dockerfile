@@ -1,4 +1,4 @@
-ARG VITE_PROXY_URL="http://localhost:8888"
+ARG VITE_PROXY_URL="https://aquainfra.dev.52north.org/proxy/"
 ARG VITE_OAPIR_URL="https://vm4072.kaj.pouta.csc.fi/ddas/oapir"
 
 FROM node:20-slim AS base

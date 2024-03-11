@@ -4,9 +4,6 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    environment:
-      - VITE_PROXY_URL=${VITE_PROXY_URL}
-      - VITE_OAPIR_URL=${VITE_OAPIR_URL}
     ports:
       - 5173:80
 
