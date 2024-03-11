@@ -182,7 +182,7 @@ export class SearchService {
         const baseUrl = proxy + oapirUrl;
         const url = `${baseUrl}/search?${queryParams.toString()}`;
         //console.log(searchParams.dataProvider);
-        return fetch(url).then((response) =>
+        return fetch(url, { mode: 'cors' }).then((response) =>
             response.json().then((responseData) => {
                 //console.log(responseData);
                 const response = responseData;
@@ -220,7 +220,7 @@ export class SearchService {
             const baseUrl = proxy + oapirUrl + "/collections";
             url = `${baseUrl}/${provider}/items/${id}`;
         }
-        return fetch(url).then((response) =>
+        return fetch(url, { mode: 'cors' }).then((response) =>
             response.json().then((responseData) => {
                 if (responseData) {
                     return { response: responseData, provider: provider };
@@ -233,7 +233,7 @@ export class SearchService {
 
     getLatestAdditionsFromZenodo() {
         const url = proxy + `https://zenodo.org/api/records?communities=aquainfra`;
-        return fetch(url).then((response) =>
+        return fetch(url, { mode: 'cors' }).then((response) =>
             response.json().then((responseData: object) => {
                 if (responseData) {
                     return responseData;
@@ -257,7 +257,7 @@ export class SearchService {
             subject +
             `&message=` +
             content;
-        return fetch(url).then((response) =>
+        return fetch(url, { mode: 'cors' }).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
                     return responseData;
@@ -272,7 +272,7 @@ export class SearchService {
         const url =
             proxy +
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2fFAQ.md/raw`;
-        return fetch(url).then((response) =>
+        return fetch(url, { mode: 'cors' }).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
                     return responseData;
@@ -289,7 +289,7 @@ export class SearchService {
             "https://zenodo.org/api/records/" +
             id +
             "/files/ro-crate-metadata.json/content";
-        return fetch(url).then((response) =>
+        return fetch(url, { mode: 'cors' }).then((response) =>
             response.json().then((responseData: object) => {
                 if (responseData) {
                     return responseData;
@@ -303,7 +303,7 @@ export class SearchService {
     getDataProvider() {
         const url =
             proxy + oapirUrl + "/collections?f=json&lang=en-US";
-        return fetch(url).then((response) =>
+        return fetch(url, { mode: 'cors' }).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
                     return responseData;
@@ -320,7 +320,7 @@ export class SearchService {
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
             faqId +
             `/raw`;
-        return fetch(url).then((response) =>
+        return fetch(url, { mode: 'cors' }).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
                     return responseData;
@@ -338,7 +338,7 @@ export class SearchService {
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
             howToEntry +
             `/raw`;
-        return fetch(url).then((response) =>
+        return fetch(url, { mode: 'cors' }).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
                     return responseData;
@@ -353,7 +353,7 @@ export class SearchService {
         const url =
             proxy +
             `https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/mkdocs.yml`;
-        return fetch(url).then((response) =>
+        return fetch(url, { mode: 'cors' }).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
                     return responseData;
@@ -369,7 +369,7 @@ export class SearchService {
             `${this.config.url}/${this.config.coreSelector}/select?ident=true&q.op=OR&q=sourceSystem_id%3A"` +
             chapter +
             `"`;
-        return fetch(url).then((response) =>
+        return fetch(url, { mode: 'cors' }).then((response) =>
             response.json().then((responseData: { response: object }) => {
                 if (responseData) {
                     return responseData;
