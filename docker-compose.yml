@@ -8,8 +8,8 @@ services:
       - 5173:80
 
   proxy:
-    image: yasinuslu/cors-anywhere:latest
+    image: testcab/cors-anywhere:0.4.4
     container_name: cors-proxy
     ports:
-      - 8888:80
+      - 8888:8080
 
