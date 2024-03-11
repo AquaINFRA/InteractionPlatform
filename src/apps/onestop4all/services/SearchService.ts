@@ -131,7 +131,8 @@ const SOLR_SUBJECT_FACET_FIELD = "theme_str";
 const SOLR_RESOURCE_TYPE_FACET_FIELD = "type";
 const SOLR_TEMPORAL_FACET_RANGE_FIELD = "datePublished";
 const SOLR_DATAPROVIDER_FACET_FIELD = "collections";
-export const proxy = "http://localhost:8888/";
+const oapirUrl = import.meta.env.VITE_OAPIR_URL;
+export const proxy = import.meta.env.VITE_PROXY_URL;
 export const supportForm = "http://localhost/html/nfdi/";
 
 export class SearchService {
@@ -178,7 +179,7 @@ export class SearchService {
         //console.log("config url: ",this.config.url);
         //console.log("core selector: ",this.config.coreSelector);
         //console.log("query params: ", queryParams.toString());
-        const baseUrl = proxy + "https://vm4072.kaj.pouta.csc.fi/ddas/oapir";
+        const baseUrl = proxy + oapirUrl;
         const url = `${baseUrl}/search?${queryParams.toString()}`;
         //console.log(searchParams.dataProvider);
         return fetch(url).then((response) =>
@@ -216,7 +217,7 @@ export class SearchService {
             const baseUrl = proxy + "https://zenodo.org/api/records";
             url = `${baseUrl}/${id}`;
         } else {
-            const baseUrl = proxy + "https://vm4072.kaj.pouta.csc.fi/ddas/oapir/collections";
+            const baseUrl = proxy + oapirUrl + "/collections";
             url = `${baseUrl}/${provider}/items/${id}`;
         }
         return fetch(url).then((response) =>
@@ -301,7 +302,7 @@ export class SearchService {
 
     getDataProvider() {
         const url =
-            proxy + `https://vm4072.kaj.pouta.csc.fi/ddas/oapir/collections?f=json&lang=en-US`;
+            proxy + oapirUrl + "/collections?f=json&lang=en-US";
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {

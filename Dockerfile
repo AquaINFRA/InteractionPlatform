@@ -1,3 +1,6 @@
+ARG VITE_PROXY_URL="http://localhost:8888"
+ARG VITE_OAPIR_URL="https://vm4072.kaj.pouta.csc.fi/ddas/oapir"
+
 FROM node:20-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"

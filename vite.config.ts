@@ -5,7 +5,7 @@
 import { pioneer } from "@open-pioneer/vite-plugin-pioneer";
 import react from "@vitejs/plugin-react-swc";
 import { resolve } from "node:path";
-import { defineConfig, PluginOption } from "vite";
+import { loadEnv, defineConfig, PluginOption } from "vite";
 import eslint from "vite-plugin-eslint";
 import { visualizer } from "rollup-plugin-visualizer";
 
@@ -36,6 +36,7 @@ export default defineConfig(({ mode }) => {
 
     // Allowed values are "DEBUG", "INFO", "WARN", "ERROR"
     const logLevel = devMode ? "INFO": "WARN";
+    process.env = {...process.env, ...loadEnv(mode, process.cwd())};
 
     return {
         root: resolve(__dirname, "src"),
@@ -75,7 +76,9 @@ export default defineConfig(({ mode }) => {
         // define global constants
         // See also: https://vitejs.dev/config/shared-options.html#define
         define: {
-            __LOG_LEVEL__: JSON.stringify(logLevel)
+            __LOG_LEVEL__: JSON.stringify(logLevel),
+            VITE_PROXY_URL: JSON.stringify(process.env.VITE_PROXY_URL || "http://localhost:8888/"),
+            VITE_OAPIR_URL: JSON.stringify(process.env.VITE_OAPIR_URL || "https://vm4072.kaj.pouta.csc.fi/ddas/oapir")
         },
 
         // https://vitest.dev/config/
