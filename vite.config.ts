@@ -77,7 +77,6 @@ export default defineConfig(({ mode }) => {
         // See also: https://vitejs.dev/config/shared-options.html#define
         define: {
             __LOG_LEVEL__: JSON.stringify(logLevel),
-            VITE_PROXY_URL: JSON.stringify(process.env.VITE_PROXY_URL || "https://aquainfra.dev.52north.org/proxy/"),
             VITE_OAPIR_URL: JSON.stringify(process.env.VITE_OAPIR_URL || "https://vm4072.kaj.pouta.csc.fi/ddas/oapir")
         },
 

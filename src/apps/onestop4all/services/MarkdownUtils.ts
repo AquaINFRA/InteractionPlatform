@@ -1,9 +1,6 @@
 /* eslint-disable */
-import { proxy } from "./SearchService";
-
 //const bibliography = "https://raw.githubusercontent.com/MarkusKonk/test/main/ref.bib";
 const bibliography =
-    proxy +
     "https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/assets/references.bib";
 const citationFileFormat =
     "https://raw.githubusercontent.com/timlrx/rehype-citation/main/test/CITATION.cff";
