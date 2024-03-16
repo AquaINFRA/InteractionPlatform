@@ -26,6 +26,7 @@ import GeoJSON, { GeoJSONObject } from "ol/format/GeoJSON";
 import data from "../../../../services/basins_eu_hydro_draft_10perc.json";
 import { select } from "d3";
 import { toGeometry } from "ol/render/Feature";
+import { clearScreenDown } from "readline";
 
 export const lineBlue = "rgba(0, 176, 255, 0.8)";
 // Custom OpenLayer-styled control class
@@ -64,8 +65,10 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     const PrimaryColor = "#05668D";
 
     const [vectorLayer, setVectorLayer] = useState(new VectorLayer({ source: source }));
+    const [bBoxVectorLayer, setBBoxVectorLayer] = useState(new VectorLayer());
 
     const [selectedFeatures, setSelectedFeatures] = useState(false);
+    const [displayedBBox, setDisplayedBBox] = useState(false);
     // Center the Map in Europe
     useEffect(() => {
         // useEffect to center the map just at the start
@@ -81,7 +84,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         featureProjection: "EPSG:3857"
     });
 
-    // Create Array with only the Features that are within the maps extend
+    // Create Array with only the Features that are within the maps extent
     function filterFeatures() {
         console.log("filterFeatures");
         const visibleFeatures: any[] = [];
@@ -170,7 +173,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
 
     /************************************************************************* */
     function getBBox() {
-        const bBox: GeoJSONObject = {
+        /*Display BBOX */
+        const dummyBBox: GeoJSONObject = {
             type: "FeatureCollection",
             features: [
                 {
@@ -191,16 +195,30 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 }
             ]
         };
-        const features = new GeoJSON().readFeatures(bBox);
+        const geoJSONFormat = new GeoJSON();
+        const features = geoJSONFormat.readFeatures(dummyBBox, {
+            featureProjection: "EPSG:3857"
+        });
         const vectorSourceBBox = new VectorSource({
             features: features
         });
-
-        const vectorLayerBBox = new VectorLayer({
-            source: vectorSourceBBox
+        const bBoxStyle = new Style({
+            stroke: new Stroke({
+                color: "rgba(0, 19, 255, 1)",
+                width: 2,
+                lineDash: [4],
+                lineCap: "square"
+            })
         });
+        const vectorLayerBBox = new VectorLayer({
+            source: vectorSourceBBox,
+            style: bBoxStyle
+        });
+
         map?.addLayer(vectorLayerBBox);
-        console.log("getBBox");
+        setBBoxVectorLayer(vectorLayerBBox);
+        /*activate second button*/
+        setDisplayedBBox(true);
     }
 
     /************************************************************************** */
@@ -249,9 +267,10 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     useEffect(() => {
         if (!showPopup) {
             removeInteraction();
+            map?.removeLayer(bBoxVectorLayer);
+            clearSelectedFeatures();
         }
     }, [showPopup]);
-
     //*************************Drawing logic*********************************** */
 
     //Adds Interaction-object for drawing
@@ -294,6 +313,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 // weiterverarbeitung
             }
         }
+        console.log("setSearchArea() wurde aufgerufen!");
     }
     // Custom Style for Polygon-drawing
     const fill = new Fill({
@@ -361,6 +381,13 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         condition: click,
         style: hoverStyle
     });
+    // Entfernt ausgewählte Features aus den Select-Objekten
+    function clearSelectedFeatures() {
+        const selected = selectClick.getFeatures();
+        if (selected.getLength() > 0) selected.clear();
+        const hovered = selectHover.getFeatures();
+        if (hovered.getLength() > 0) hovered.clear();
+    }
 
     useEffect(() => {
         if (map && showPopup) {
@@ -370,7 +397,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         } else {
             const selected = selectClick.getFeatures();
             if (selected.getLength() > 0) selected.remove(selected.item(0));
-            console.log(selected.getLength());
             map?.removeInteraction(selectHover);
             map?.removeInteraction(selectClick);
             setSelectedFeatures(false);
@@ -392,7 +418,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                         <RadioButtons />
                         <ButtonGroup orientation="vertical" marginTop="2px">
                             <GetBBoxButton active={selectedFeatures} onClick={getBBox} />
-                            <SearchButton onClick={setSearchArea} active={false} />
+                            <SearchButton active={displayedBBox} onClick={setSearchArea} />
                         </ButtonGroup>
                     </Box>
                     <Box marginTop="20px">

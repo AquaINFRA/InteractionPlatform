@@ -18,7 +18,7 @@ export function Legend() {
                 style={{
                     width: "30px",
                     height: "3px",
-                    backgroundColor: "green",
+                    backgroundColor: "rgba(0, 19, 255, 1)",
                     display: "inline-block",
                     border: "2px dashed white"
                 }}

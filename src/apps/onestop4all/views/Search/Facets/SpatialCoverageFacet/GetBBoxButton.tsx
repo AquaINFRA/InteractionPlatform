@@ -10,8 +10,14 @@ export function GetBBoxButton(props: GetBBoxButtonProps) {
     const { onClick, active } = props;
     const bgcolor = active ? PrimaryColor : "grey";
     const hover = active ? { bg: lineBlue } : { bg: "grey" };
+    // remove onClick if button is deactivated
+    function handleClick() {
+        if (active) {
+            onClick();
+        }
+    }
     return (
-        <Button height="5vh" fontSize="0.7vw" onClick={onClick} bg={bgcolor} _hover={hover}>
+        <Button height="5vh" fontSize="0.7vw" onClick={handleClick} bg={bgcolor} _hover={hover}>
             Get Bounding Box
         </Button>
     );
