@@ -23,7 +23,10 @@ import { SearchButton } from "./SearchButton";
 import { GetBBoxButton } from "./GetBBoxButton";
 // Import GeoJSON
 import GeoJSON, { GeoJSONObject } from "ol/format/GeoJSON";
-import data from "../../../../services/basins_eu_hydro_draft_10perc.json";
+import dataOld from "../../../../services/basins_eu_hydro_draft_10perc.json";
+import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
+import dataNewTopo from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc_topo.json";
+
 import { select } from "d3";
 import { toGeometry } from "ol/render/Feature";
 import { clearScreenDown } from "readline";
@@ -80,7 +83,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
 
     // Read the GeoJSON
     const geoJSONFormat = new GeoJSON();
-    const features = geoJSONFormat.readFeatures(data, {
+    const features = geoJSONFormat.readFeatures(dataOld, {
         featureProjection: "EPSG:3857"
     });
 
@@ -173,6 +176,12 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
 
     /************************************************************************* */
     function getBBox() {
+        // selectHover.setMap(null);
+        // selectClick.setMap(null);
+        // map?.removeInteraction(selectHover);
+        // map?.removeInteraction(selectClick);
+        // setSelectedFeatures(false);
+
         /*Display BBOX */
         const dummyBBox: GeoJSONObject = {
             type: "FeatureCollection",
