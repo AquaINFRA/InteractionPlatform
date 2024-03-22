@@ -83,8 +83,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
 
     // Read the GeoJSON
     const geoJSONFormat = new GeoJSON();
-    const features = geoJSONFormat.readFeatures(dataOld, {
-        featureProjection: "EPSG:3857"
+    const features = geoJSONFormat.readFeatures(dataNew, {
+        featureProjection: "EPSG:4326"
     });
 
     // Create Array with only the Features that are within the maps extent
