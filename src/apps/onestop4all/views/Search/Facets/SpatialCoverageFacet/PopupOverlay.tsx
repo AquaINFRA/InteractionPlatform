@@ -8,11 +8,9 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { Polygon } from "ol/geom";
 import { defaults as defaultControls, Control } from "ol/control";
-import { intersects } from "ol/extent";
-import View from "ol";
 
 import { Fill, Stroke, Style, Circle } from "ol/style.js";
-import { altKeyOnly, click, pointerMove } from "ol/events/condition.js";
+import { click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
 // Import other components
 import { Box, ButtonGroup } from "@open-pioneer/chakra-integration";
@@ -27,12 +25,7 @@ import dataOld from "../../../../services/basins_eu_hydro_draft_10perc.json";
 import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
 import dataNewTopo from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc_topo.json";
 
-import { select } from "d3";
-import { toGeometry } from "ol/render/Feature";
-import { clearScreenDown } from "readline";
-
 export const lineBlue = "rgba(0, 176, 255, 0.8)";
-// Custom OpenLayer-styled control class
 export class DrawControl extends Control {
     private handle: () => void;
     constructor(handle: () => void, className: string, buttonText: string) {
@@ -55,9 +48,7 @@ interface PopupOverlayProps {
 }
 
 export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
-    /* *********************************Initializing***************************************/
 
-    // Initialize the map
     const mapId = "popup";
     const { map } = useMap(mapId);
     const source = new VectorSource();
@@ -72,67 +63,17 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
 
     const [selectedFeatures, setSelectedFeatures] = useState(false);
     const [displayedBBox, setDisplayedBBox] = useState(false);
-    // Center the Map in Europe
     useEffect(() => {
-        // useEffect to center the map just at the start
         if (map) {
             map.getView().setCenter([1169191, 6606967]);
             map.getView().setZoom(4);
         }
     }, [showPopup]);
 
-    // Read the GeoJSON
     const geoJSONFormat = new GeoJSON();
     const features = geoJSONFormat.readFeatures(dataNew, {
         featureProjection: "EPSG:4326"
     });
-
-    // Create Array with only the Features that are within the maps extent
-    function filterFeatures() {
-        console.log("filterFeatures");
-        const visibleFeatures: any[] = [];
-        if (map) {
-            // Get map extent
-            const mapExtent = map.getView().calculateExtent(map.getSize());
-
-            // filter features
-
-            features.forEach((feature) => {
-                // Check if feature is within extent
-                const featureGeometry = feature.getGeometry()!;
-                if (intersects(mapExtent, featureGeometry.getExtent())) {
-                    visibleFeatures.push(feature);
-                }
-            });
-        }
-        //console.log("Angezeigte Features: " + visibleFeatures.length);
-
-        return visibleFeatures;
-    }
-    // Update the map
-    function reloadFeatures() {
-        if (!map) return;
-        map.getLayers().forEach((layer) => {
-            if (layer instanceof VectorLayer) {
-                map.removeLayer(layer);
-            }
-        });
-        const vectorSourceFilter = new VectorSource({
-            features: filterFeatures()
-        });
-
-        const vectorLayerFilter = new VectorLayer({
-            source: vectorSourceFilter
-        });
-        map.addLayer(vectorLayerFilter);
-        setVectorLayer(vectorLayerFilter);
-        console.log("Reload");
-    }
-
-    // // Listen to "moveend" event
-    // map?.on("moveend", (event) => {
-    //     reloadFeatures();
-    // });
 
     const style = new Style({
         fill: new Fill({
@@ -157,7 +98,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         }
     });
 
-    // Clear map and add layer with the geoJSON-features
     useEffect(() => {
         if (!map) return;
         map.getLayers().forEach((layer) => {
@@ -174,15 +114,11 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         };
     }, [map]);
 
-    /************************************************************************* */
     function getBBox() {
-        // selectHover.setMap(null);
-        // selectClick.setMap(null);
-        // map?.removeInteraction(selectHover);
-        // map?.removeInteraction(selectClick);
-        // setSelectedFeatures(false);
 
-        /*Display BBOX */
+        const selectedFeatures = selectClick;
+        console.log("Selected features:", selectedFeatures);
+
         const dummyBBox: GeoJSONObject = {
             type: "FeatureCollection",
             features: [
@@ -230,19 +166,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         setDisplayedBBox(true);
     }
 
-    /************************************************************************** */
-
-    // add OpenLayer-styled control buttons for drawing
-    const drawPolygonControl = new DrawControl(addPolygon, "draw-polygon", "P");
-    map?.addControl(drawPolygonControl);
-    const drawCircleControl = new DrawControl(addCircle, "draw-circle", "C");
-    map?.addControl(drawCircleControl);
-    const drawMarkerControl = new DrawControl(addMarker, "draw-marker", "M");
-    map?.addControl(drawMarkerControl);
-
-    // **************************useEffect-hooks******************************************
-
-    // fixes bug where the map is not displayed if the popup is opened for the second time
     function changeRenderState() {
         if (renderState == true) setRenderState(false);
         else setRenderState(true);
@@ -252,7 +175,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             changeRenderState();
         }
     }, [showPopup]);
-    //re-renders the map everytime the popup is opened
+
     useEffect(() => {
         const fetchMap = async () => {
             try {
@@ -265,14 +188,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         fetchMap();
     }, [changeRenderState]);
 
-    // Adds new Layer to draw on
-    // useEffect(() => {
-    //     if (map) {
-    //         map.addLayer(vector);
-    //     }
-    // }, [map, vector]);
-
-    // Removes Interactions after closing the Popup
     useEffect(() => {
         if (!showPopup) {
             removeInteraction();
@@ -280,9 +195,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             clearSelectedFeatures();
         }
     }, [showPopup]);
-    //*************************Drawing logic*********************************** */
 
-    //Adds Interaction-object for drawing
     function addInteraction(newDraw: Draw) {
         removeInteraction();
         draw.current = newDraw;
@@ -293,22 +206,19 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         });
         map?.addInteraction(newDraw);
     }
-    //Removes Interaction-object
+
     function removeInteraction() {
         if (draw.current) {
             map?.removeInteraction(draw.current);
         }
     }
 
-    /**********************handler for buttons************************* */
-
-    // Handler for the close-buttons
     function handleClose(): void {
         onClose();
         source.clear(); // clears the map
         removeInteraction();
     }
-    // Handler for the search-button
+
     function setSearchArea(): void {
         const features = source.getFeatures();
         const geom = features[0]?.getGeometry();
@@ -324,7 +234,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         }
         console.log("setSearchArea() wurde aufgerufen!");
     }
-    // Custom Style for Polygon-drawing
+
     const fill = new Fill({
         color: "rgba(255,255,255,0.4)"
     });
@@ -332,14 +242,13 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         color: "#3399CC",
         width: 1.25
     });
-    // Handler for adding polygons
+
     function addPolygon(): void {
         addInteraction(
             new Draw({
                 source: source,
                 type: "Polygon",
                 style: new Style({
-                    //Custom Style, including circle pointer
                     image: new Circle({
                         fill: fill,
                         stroke: stroke,
@@ -348,25 +257,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                     fill: fill,
                     stroke: stroke
                 })
-            })
-        );
-    }
-
-    // Handler for adding circles
-    function addCircle(): void {
-        addInteraction(
-            new Draw({
-                source: source,
-                type: "Circle"
-            })
-        );
-    }
-    // Handler for adding markers
-    function addMarker(): void {
-        addInteraction(
-            new Draw({
-                source: source,
-                type: "Point"
             })
         );
     }
@@ -390,7 +280,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         condition: click,
         style: hoverStyle
     });
-    // Entfernt ausgewählte Features aus den Select-Objekten
+
     function clearSelectedFeatures() {
         const selected = selectClick.getFeatures();
         if (selected.getLength() > 0) selected.clear();
@@ -402,7 +292,10 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         if (map && showPopup) {
             map.addInteraction(selectHover);
             map.addInteraction(selectClick);
-            selectClick.on("select", (e) => setSelectedFeatures(true));
+            selectClick.on("select", (e) => {
+                setSelectedFeatures(true);
+                console.log(e.target.getFeatures());
+            });
         } else {
             const selected = selectClick.getFeatures();
             if (selected.getLength() > 0) selected.remove(selected.item(0));
@@ -411,8 +304,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             setSelectedFeatures(false);
         }
     }, [map, showPopup]);
-
-    /*****************************return ************************************** */
 
     if (!showPopup) return null;
     return (
@@ -432,9 +323,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                     </Box>
                     <Box marginTop="20px">
                         <Legend />
-                        {/* <Button height="5vh" width="10vw" fontSize="0.7vw" onClick={handleClose}>
-                            Close Popup
-                        </Button> */}
                     </Box>
                 </Box>
             </Box>
