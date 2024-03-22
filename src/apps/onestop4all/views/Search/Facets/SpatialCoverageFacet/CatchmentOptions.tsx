@@ -1,7 +1,8 @@
 import { RadioGroup } from "@open-pioneer/chakra-integration";
 import { Radio } from "@open-pioneer/chakra-integration";
 import { Stack } from "@open-pioneer/chakra-integration";
-export function RadioButtons() {
+
+export function CatchmentOptions() {
     return (
         <RadioGroup defaultValue="default" marginTop="20px">
             <Stack spacing={5} direction="row">

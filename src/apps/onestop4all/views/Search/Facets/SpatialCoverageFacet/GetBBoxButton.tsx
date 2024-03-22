@@ -1,6 +1,6 @@
 import { Button } from "@open-pioneer/chakra-integration";
 import { PrimaryColor } from "../../../../Theme";
-import { lineBlue } from "./PopupOverlay";
+import { lineBlue } from "./Styles";
 
 interface GetBBoxButtonProps {
     onClick: () => void;

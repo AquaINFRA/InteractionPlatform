@@ -1,5 +1,5 @@
 import { Box } from "@open-pioneer/chakra-integration";
-import { lineBlue } from "./PopupOverlay";
+import { lineBlue } from "./Styles";
 
 export function Legend() {
     return (

@@ -9,23 +9,23 @@ import VectorSource from "ol/source/Vector";
 import { Polygon } from "ol/geom";
 import { defaults as defaultControls, Control } from "ol/control";
 
-import { Fill, Stroke, Style, Circle } from "ol/style.js";
+import { Stroke, Style } from "ol/style.js";
 import { click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
 // Import other components
 import { Box, ButtonGroup } from "@open-pioneer/chakra-integration";
 import { Legend } from "./Legend";
 import { XButton } from "./XButton";
-import { RadioButtons } from "./RadioButtons";
+import { CatchmentOptions } from "./CatchmentOptions";
 import { SearchButton } from "./SearchButton";
 import { GetBBoxButton } from "./GetBBoxButton";
-// Import GeoJSON
-import GeoJSON, { GeoJSONObject } from "ol/format/GeoJSON";
-import dataOld from "../../../../services/basins_eu_hydro_draft_10perc.json";
+import GeoJSON from "ol/format/GeoJSON";
+//import dataOld from "../../../../services/basins_eu_hydro_draft_10perc.json";
 import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
-import dataNewTopo from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc_topo.json";
+//import dataNewTopo from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc_topo.json";
+import {hoverStyle, style, bBoxStyle } from "./Styles";
 
-export const lineBlue = "rgba(0, 176, 255, 0.8)";
+
 export class DrawControl extends Control {
     private handle: () => void;
     constructor(handle: () => void, className: string, buttonText: string) {
@@ -52,17 +52,17 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     const mapId = "popup";
     const { map } = useMap(mapId);
     const source = new VectorSource();
-    const vector = new VectorLayer({ source: source });
     const olMapRegistry = useService("ol-map.MapRegistry");
     const [renderState, setRenderState] = useState(false);
     const draw = useRef<Draw>();
-    const PrimaryColor = "#05668D";
 
     const [vectorLayer, setVectorLayer] = useState(new VectorLayer({ source: source }));
     const [bBoxVectorLayer, setBBoxVectorLayer] = useState(new VectorLayer());
 
     const [selectedFeatures, setSelectedFeatures] = useState(false);
+    const [selectedAreas, setSelectedAreas] = useState<any>([]);
     const [displayedBBox, setDisplayedBBox] = useState(false);
+
     useEffect(() => {
         if (map) {
             map.getView().setCenter([1169191, 6606967]);
@@ -73,16 +73,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     const geoJSONFormat = new GeoJSON();
     const features = geoJSONFormat.readFeatures(dataNew, {
         featureProjection: "EPSG:4326"
-    });
-
-    const style = new Style({
-        fill: new Fill({
-            color: "#eeeeee"
-        }),
-        stroke: new Stroke({
-            color: lineBlue,
-            width: 1
-        })
     });
 
     const vectorSource = new VectorSource({
@@ -115,46 +105,60 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     }, [map]);
 
     function getBBox() {
-
-        const selectedFeatures = selectClick;
-        console.log("Selected features:", selectedFeatures);
-
-        const dummyBBox: GeoJSONObject = {
-            type: "FeatureCollection",
-            features: [
-                {
-                    type: "Feature",
-                    properties: {},
-                    geometry: {
-                        coordinates: [
-                            [
-                                [8.735599670457958, 52.62891991717626],
-                                [8.735599670457958, 49.473874845712004],
-                                [15.396136170854135, 49.473874845712004],
-                                [15.396136170854135, 52.62891991717626],
-                                [8.735599670457958, 52.62891991717626]
-                            ]
-                        ],
-                        type: "Polygon"
+        const layers = map?.getAllLayers();
+        
+        if (map && layers && layers.length > 2) {
+            layers.forEach((layer, i) => {
+                if (i === 0 || i === 1) {
+                    //
+                } else {
+                    if (layer instanceof VectorLayer) {
+                        map.removeLayer(layer);
                     }
                 }
-            ]
+            });
+        }
+
+        let extentArrays = [] as any;
+        selectedAreas.forEach((area: any) => {
+            extentArrays = extentArrays.concat(area.geometry.extent_);
+        });
+
+        const xCoordinates = extentArrays.filter((_:any, index:any) => index % 2 === 0); // Even indices
+        const yCoordinates = extentArrays.filter((_:any, index:any) => index % 2 !== 0); // Odd indices
+
+        const minX = Math.min(...xCoordinates);
+        const maxX = Math.max(...xCoordinates);
+        const minY = Math.min(...yCoordinates);
+        const maxY = Math.max(...yCoordinates);
+
+        const bbox = [
+            [minX, minY], 
+            [minX, maxY], 
+            [maxX, maxY], 
+            [maxX, minY],  
+            [minX, minY],
+        ];
+
+        const coordinates = bbox;
+          
+        const geojson = {
+            type: "Feature",
+            properties: {},
+            geometry: {
+                type: "Polygon",
+                coordinates: [coordinates] // Wrap coordinates in an array to represent a polygon
+            }
         };
+        
         const geoJSONFormat = new GeoJSON();
-        const features = geoJSONFormat.readFeatures(dummyBBox, {
-            featureProjection: "EPSG:3857"
+        const features = geoJSONFormat.readFeatures(geojson, {
+            featureProjection: "EPSG:4326"
         });
         const vectorSourceBBox = new VectorSource({
             features: features
         });
-        const bBoxStyle = new Style({
-            stroke: new Stroke({
-                color: "rgba(0, 19, 255, 1)",
-                width: 2,
-                lineDash: [4],
-                lineCap: "square"
-            })
-        });
+        
         const vectorLayerBBox = new VectorLayer({
             source: vectorSourceBBox,
             style: bBoxStyle
@@ -162,7 +166,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
 
         map?.addLayer(vectorLayerBBox);
         setBBoxVectorLayer(vectorLayerBBox);
-        /*activate second button*/
         setDisplayedBBox(true);
     }
 
@@ -196,17 +199,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         }
     }, [showPopup]);
 
-    function addInteraction(newDraw: Draw) {
-        removeInteraction();
-        draw.current = newDraw;
-        newDraw.on("drawstart", () => source.clear());
-        newDraw.on("drawend", (event) => {
-            const feature = event.feature;
-            console.log("Fertig gezeichnet:", feature);
-        });
-        map?.addInteraction(newDraw);
-    }
-
     function removeInteraction() {
         if (draw.current) {
             map?.removeInteraction(draw.current);
@@ -235,42 +227,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         console.log("setSearchArea() wurde aufgerufen!");
     }
 
-    const fill = new Fill({
-        color: "rgba(255,255,255,0.4)"
-    });
-    const stroke = new Stroke({
-        color: "#3399CC",
-        width: 1.25
-    });
-
-    function addPolygon(): void {
-        addInteraction(
-            new Draw({
-                source: source,
-                type: "Polygon",
-                style: new Style({
-                    image: new Circle({
-                        fill: fill,
-                        stroke: stroke,
-                        radius: 5
-                    }),
-                    fill: fill,
-                    stroke: stroke
-                })
-            })
-        );
-    }
-
-    const hoverStyle = new Style({
-        fill: new Fill({
-            color: "rgba(0, 0, 255, 0.2)"
-        }),
-        stroke: new Stroke({
-            color: lineBlue,
-            width: 2
-        })
-    });
-
     const selectHover = new Select({
         condition: pointerMove,
         style: hoverStyle
@@ -294,7 +250,12 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             map.addInteraction(selectClick);
             selectClick.on("select", (e) => {
                 setSelectedFeatures(true);
-                console.log(e.target.getFeatures());
+                const tmp = [] as any;
+                e.target.getFeatures().getArray().forEach((area: any) => {
+                    tmp.push(area.values_);
+                });
+                //selectedAreas.push(selectedArea);
+                setSelectedAreas(tmp);
             });
         } else {
             const selected = selectClick.getFeatures();
@@ -315,7 +276,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 <XButton handleClose={handleClose} />
                 <Box display="flex" justifyContent="space-around">
                     <Box>
-                        <RadioButtons />
+                        <CatchmentOptions />
                         <ButtonGroup orientation="vertical" marginTop="2px">
                             <GetBBoxButton active={selectedFeatures} onClick={getBBox} />
                             <SearchButton active={displayedBBox} onClick={setSearchArea} />
