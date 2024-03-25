@@ -81,7 +81,7 @@ export const CaseStudies = () => {
     return (
         <Box className="how-to">
             <Box className="text-centered-box">
-                <Box className="text-centered-box-header">Learn more about our use cases</Box>
+                <Box className="text-centered-box-header">Learn more about our fantastic use cases</Box>
                 <Box className="text-centered-box-text">
                     The case studies showcase the benefit of doing research in an open and FAIR way.
                 </Box>
