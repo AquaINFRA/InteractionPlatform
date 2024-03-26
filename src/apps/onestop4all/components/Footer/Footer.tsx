@@ -3,8 +3,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useIntl } from "open-pioneer:react-hooks";
 
-import { SupportForm } from "../SupportForm/SupportForm";
-
 export const Footer = () => {
     const intl = useIntl();
     const [openSupportForm, setOpenSupportForm] = useState(false);
@@ -163,8 +161,6 @@ export const Footer = () => {
                     </Box>
                 </Container>
             </div>
-
-            <SupportForm openForm={openSupportForm} menuClosed={() => setOpenSupportForm(false)} />
         </>
     );
 };

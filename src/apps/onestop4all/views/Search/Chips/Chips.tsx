@@ -25,26 +25,6 @@ export function Chips() {
         });
     }
 
-    // resourceTypes
-    const resourceTypes = searchState.selectedResourceTypes;
-    if (resourceTypes.length) {
-        chips.push({
-            title: "Resource Type",
-            values: resourceTypes,
-            deleteCb: () => searchState.setSelectedResourceTypes([])
-        });
-    }
-
-    // subject
-    const subjects = searchState.selectedSubjects;
-    if (subjects.length) {
-        chips.push({
-            title: "Subject",
-            values: subjects,
-            deleteCb: () => searchState.setSelectedSubjects([])
-        });
-    }
-
     // data provider
     const dataProvider = searchState.selectedDataProvider;
     if (dataProvider.length) {
@@ -62,16 +42,6 @@ export function Chips() {
             title: "Spatial Coverage",
             values: spatialFilter.map((e) => `${e.toFixed(4)}`),
             deleteCb: () => searchState.setSpatialFilter([])
-        });
-    }
-
-    // temporal coverage
-    const temporalFilter = searchState.temporalFilter;
-    if (temporalFilter) {
-        chips.push({
-            title: "Temporal Coverage",
-            values: [`${temporalFilter.startYear} - ${temporalFilter.endYear}`],
-            deleteCb: () => searchState.setTemporalFilter(undefined)
         });
     }
 

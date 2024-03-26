@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import { PrimaryColor } from "../../Theme";
 import { UserSupportIcon } from "../Icons";
-import { SupportForm } from "../SupportForm/SupportForm";
 
 export interface UserSupportLinkProps {
     hideIcon?: boolean;
@@ -24,10 +23,6 @@ export function UserSupportLink({ hideIcon = false }: UserSupportLinkProps) {
                 )}
                 <Link whiteSpace="nowrap">{intl.formatMessage({ id: "header.user-support" })}</Link>
             </HStack>
-            <SupportForm
-                openForm={openSupportForm}
-                menuClosed={() => setOpenSupportForm(false)}
-            ></SupportForm>
         </>
     );
 }

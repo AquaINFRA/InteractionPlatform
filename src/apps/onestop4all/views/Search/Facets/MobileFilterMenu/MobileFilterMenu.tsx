@@ -14,7 +14,6 @@ import { MenuCloseIcon } from "../../../../components/Icons";
 import { ResourceTypeFacet } from "../ResourceTypeFacet/ResourceTypeFacet";
 import { SpatialCoverageFacet } from "../SpatialCoverageFacet/SpatialCoverageFacet";
 import { SubjectFacet } from "../SubjectFacet/SubjectFacet";
-import { TemporalCoverageFacet } from "../TemporalCoverageFacet/TemporalCoverageFacet";
 
 export interface MobileFilterMenuProps {
     openMenu: boolean;
@@ -66,9 +65,6 @@ export function MobileFilterMenu(props: MobileFilterMenuProps & ClassAttributes<
                     </Box>
                     <Box padding={"32px 0px"}>
                         <SpatialCoverageFacet mapId="spatial-filter-mobile-map"></SpatialCoverageFacet>
-                    </Box>
-                    <Box padding={"32px 0px"}>
-                        <TemporalCoverageFacet></TemporalCoverageFacet>
                     </Box>
                 </Box>
             </DrawerContent>

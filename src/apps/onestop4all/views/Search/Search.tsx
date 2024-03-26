@@ -19,7 +19,6 @@ export function SearchView() {
     const searchState = useSearchState();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    //console.log(searchState.searchResults);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => searchState.search(), [searchParams]);
 
@@ -28,14 +27,6 @@ export function SearchView() {
 
         if (searchState.searchTerm) {
             params[UrlSearchParameterType.Searchterm] = searchState.searchTerm;
-        }
-
-        if (searchState.selectedResourceTypes.length > 0) {
-            params[UrlSearchParameterType.ResourceType] = searchState.selectedResourceTypes;
-        }
-
-        if (searchState.selectedSubjects.length > 0) {
-            params[UrlSearchParameterType.Subjects] = searchState.selectedSubjects;
         }
 
         if (searchState.spatialFilter.length === 4) {
@@ -48,12 +39,6 @@ export function SearchView() {
 
         if (searchState.pageStart && searchState.pageStart !== 0) {
             params[UrlSearchParameterType.PageStart] = `${searchState.pageStart}`;
-        }
-
-        if (searchState.temporalFilter) {
-            params[
-                UrlSearchParameterType.TemporalFilter
-            ] = `${searchState.temporalFilter.startYear},${searchState.temporalFilter.endYear}`;
         }
 
         if (searchState.sorting) {
@@ -71,12 +56,9 @@ export function SearchView() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         searchState.searchTerm,
-        searchState.selectedResourceTypes,
-        searchState.selectedSubjects,
         searchState.spatialFilter,
         searchState.pageSize,
         searchState.pageStart,
-        searchState.temporalFilter,
         searchState.sorting,
         searchState.selectedDataProvider
     ]);
@@ -108,7 +90,14 @@ export function SearchView() {
                         <Box flex="1 1 100%" overflow="hidden">
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
                                 <Box className="results-count">
-                                    {searchState.searchResults?.count} Results for your search
+                                    {searchState.selectedDataProvider.length > 0 &&
+                                    !searchState.searchResults?.count
+                                        ? "0"
+                                        : searchState.searchResults?.count}{" "}
+                                    {searchState.searchResults?.count ||
+                                    searchState.selectedDataProvider.length > 0
+                                        ? "Results for your search"
+                                        : "Select a data provider on the right"}
                                 </Box>
                                 <Box hideFrom="custombreak" padding="20px 0px">
                                     <ResultPaging />

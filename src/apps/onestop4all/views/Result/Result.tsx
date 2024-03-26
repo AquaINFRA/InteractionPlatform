@@ -156,8 +156,6 @@ export function Result() {
             .doSearch({
                 pageSize: 1,
                 pageStart: result - 1,
-                resourceTypes: searchState.selectedResourceTypes,
-                subjects: searchState.selectedSubjects,
                 searchTerm: searchState.searchTerm,
                 spatialFilter: searchState.spatialFilter
             })
@@ -231,13 +229,6 @@ export function Result() {
                 ) : (
                     <>
                         <Box>{getResourceView()}</Box>
-                        {/*searchResult?.relatedResources?.length > 0 ? (
-                            <Box pt="80px">
-                                <RelatedContent
-                                    relatedContentItems={searchResult?.relatedResources}
-                                />
-                            </Box>
-                        ) : null*/}
                     </>
                 )}
                 <Flex gap="10%" alignItems="center" pt="120px">

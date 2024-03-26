@@ -14,7 +14,6 @@ import { SearchIcon } from "./Icons";
 export function SearchBar() {
     const [searchTerm, setSearchTerm] = useState<string>("");
     const intl = useIntl();
-    const [selectedResource, setSelectResource] = useState("");
     const resourceTypes = Object.values(ResourceType).sort((a, b) => a.localeCompare(b));
     const searchState = useSearchState();
     const navigate = useNavigate();
@@ -22,30 +21,11 @@ export function SearchBar() {
 
     useEffect(() => setSearchTerm(searchState.searchTerm), [searchState.searchTerm]);
 
-    useEffect(() => {
-        if (
-            searchState.selectedResourceTypes.length === 1 &&
-            searchState.selectedResourceTypes[0]
-        ) {
-            setSelectResource(searchState.selectedResourceTypes[0]);
-        } else {
-            setSelectResource("");
-        }
-    }, [searchState.selectedResourceTypes]);
-
     function startSearch(): void {
         searchState.setSearchTerm(searchTerm);
-        if (selectedResource === "") {
-            searchState.setSelectedResourceTypes([]);
-        } else {
-            searchState.setSelectedResourceTypes([selectedResource]);
-        }
         if (!location.pathname.endsWith("search")) {
             const params: UrlSearchParams = {};
             params[UrlSearchParameterType.Searchterm] = searchTerm;
-            if (!selectedResource) {
-                searchState.setSelectedResourceTypes([]);
-            }
             navigate({
                 pathname: "/search",
                 search: `?${createSearchParams({ ...params })}`
@@ -108,12 +88,4 @@ export function SearchBar() {
             </HStack>
         </Box>
     );
-
-    function createResourceTypeSelectOptions() {
-        return resourceTypes.map((e, i) => (
-            <option value={e} key={i}>
-                {e}
-            </option>
-        ));
-    }
 }

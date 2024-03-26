@@ -2,7 +2,6 @@ import { Box } from "@open-pioneer/chakra-integration";
 import { ActionButton } from "../ActionButton/ActionButton";
 import { UserSupportIconWhite } from "../../Icons";
 import { useState } from "react";
-import { SupportForm } from "../../SupportForm/SupportForm";
 
 export const Support = () => {
     const [openSupportForm, setOpenSupportForm] = useState(false);
@@ -22,7 +21,6 @@ export const Support = () => {
                     fun={() => setOpenSupportForm(true)}
                 />
             </Box>
-            <SupportForm openForm={openSupportForm} menuClosed={() => setOpenSupportForm(false)} />
         </>
     );
 };
