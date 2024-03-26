@@ -21,3 +21,11 @@ export const style = new Style({
         width: 1
     })
 });
+export const bBoxStyle = new Style({
+    stroke: new Stroke({
+        color: "rgba(0, 19, 255, 1)",
+        width: 2,
+        lineDash: [4],
+        lineCap: "square"
+    })
+});

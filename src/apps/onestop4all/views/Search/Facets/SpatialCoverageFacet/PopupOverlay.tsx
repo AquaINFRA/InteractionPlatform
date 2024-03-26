@@ -1,15 +1,13 @@
 // Import hooks
 import { useEffect, useState, useRef } from "react";
 import { useService } from "open-pioneer:react-hooks";
-// Import OpenLayers-Map
+// Import OpenLayers-Map-Stuff
 import { MapContainer, useMap } from "@open-pioneer/experimental-ol-map";
 import Draw from "ol/interaction/Draw";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { Polygon } from "ol/geom";
 import { defaults as defaultControls, Control } from "ol/control";
-
-import { Stroke, Style } from "ol/style.js";
 import { click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
 // Import other components
@@ -19,13 +17,16 @@ import { XButton } from "./XButton";
 import { CatchmentOptions } from "./CatchmentOptions";
 import { SearchButton } from "./SearchButton";
 import { GetBBoxButton } from "./GetBBoxButton";
+import { DeselectButton } from "./DeselectButton";
+// Import Styles
+import { hoverStyle, style, bBoxStyle } from "./Styles";
+// Import GeoJSON
 import GeoJSON from "ol/format/GeoJSON";
 //import dataOld from "../../../../services/basins_eu_hydro_draft_10perc.json";
 import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
 //import dataNewTopo from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc_topo.json";
-import {hoverStyle, style, bBoxStyle } from "./Styles";
 
-
+// Custom Control Buttons (not used currently)
 export class DrawControl extends Control {
     private handle: () => void;
     constructor(handle: () => void, className: string, buttonText: string) {
@@ -48,7 +49,8 @@ interface PopupOverlayProps {
 }
 
 export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
-
+    console.log("Reloaded the page!");
+    // Initialize the map
     const mapId = "popup";
     const { map } = useMap(mapId);
     const source = new VectorSource();
@@ -63,6 +65,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     const [selectedAreas, setSelectedAreas] = useState<any>([]);
     const [displayedBBox, setDisplayedBBox] = useState(false);
 
+    // Center the map in Europe everytime the Popup gets opened
     useEffect(() => {
         if (map) {
             map.getView().setCenter([1169191, 6606967]);
@@ -70,6 +73,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         }
     }, [showPopup]);
 
+    // Display the Catchment areas
     const geoJSONFormat = new GeoJSON();
     const features = geoJSONFormat.readFeatures(dataNew, {
         featureProjection: "EPSG:4326"
@@ -104,9 +108,10 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         };
     }, [map]);
 
+    // Computes BBox containing all selected areas
     function getBBox() {
         const layers = map?.getAllLayers();
-        
+
         if (map && layers && layers.length > 2) {
             layers.forEach((layer, i) => {
                 if (i === 0 || i === 1) {
@@ -124,8 +129,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             extentArrays = extentArrays.concat(area.geometry.extent_);
         });
 
-        const xCoordinates = extentArrays.filter((_:any, index:any) => index % 2 === 0); // Even indices
-        const yCoordinates = extentArrays.filter((_:any, index:any) => index % 2 !== 0); // Odd indices
+        const xCoordinates = extentArrays.filter((_: any, index: any) => index % 2 === 0); // Even indices
+        const yCoordinates = extentArrays.filter((_: any, index: any) => index % 2 !== 0); // Odd indices
 
         const minX = Math.min(...xCoordinates);
         const maxX = Math.max(...xCoordinates);
@@ -133,15 +138,15 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         const maxY = Math.max(...yCoordinates);
 
         const bbox = [
-            [minX, minY], 
-            [minX, maxY], 
-            [maxX, maxY], 
-            [maxX, minY],  
             [minX, minY],
+            [minX, maxY],
+            [maxX, maxY],
+            [maxX, minY],
+            [minX, minY]
         ];
 
         const coordinates = bbox;
-          
+
         const geojson = {
             type: "Feature",
             properties: {},
@@ -150,7 +155,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 coordinates: [coordinates] // Wrap coordinates in an array to represent a polygon
             }
         };
-        
+
         const geoJSONFormat = new GeoJSON();
         const features = geoJSONFormat.readFeatures(geojson, {
             featureProjection: "EPSG:4326"
@@ -158,17 +163,17 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         const vectorSourceBBox = new VectorSource({
             features: features
         });
-        
+
         const vectorLayerBBox = new VectorLayer({
             source: vectorSourceBBox,
             style: bBoxStyle
         });
-
         map?.addLayer(vectorLayerBBox);
         setBBoxVectorLayer(vectorLayerBBox);
         setDisplayedBBox(true);
     }
 
+    // Re-Renders Map if you re-open the popup
     function changeRenderState() {
         if (renderState == true) setRenderState(false);
         else setRenderState(true);
@@ -191,10 +196,11 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         fetchMap();
     }, [changeRenderState]);
 
+    // Clean up the map after closing
     useEffect(() => {
         if (!showPopup) {
             removeInteraction();
-            map?.removeLayer(bBoxVectorLayer);
+            // map?.removeLayer(bBoxVectorLayer);
             clearSelectedFeatures();
         }
     }, [showPopup]);
@@ -227,15 +233,28 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         console.log("setSearchArea() wurde aufgerufen!");
     }
 
+    function deselectAll(): void {
+        const selected = selectClick.getFeatures();
+        if (selected.getLength() > 0) selected.clear();
+        map?.removeLayer(bBoxVectorLayer);
+        setBBoxVectorLayer(new VectorLayer());
+        setDisplayedBBox(false);
+        setSelectedFeatures(false);
+    }
+    /***********************************Selectable Catchment areas ********************/
     const selectHover = new Select({
         condition: pointerMove,
-        style: hoverStyle
+        style: hoverStyle,
+        toggleCondition: undefined,
+        layers: [vectorLayer]
     });
 
-    const selectClick = new Select({
-        condition: click,
-        style: hoverStyle
-    });
+    const [selectClick, setSelectClick] = useState<Select>(
+        new Select({
+            condition: click,
+            style: hoverStyle
+        })
+    );
 
     function clearSelectedFeatures() {
         const selected = selectClick.getFeatures();
@@ -251,11 +270,19 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             selectClick.on("select", (e) => {
                 setSelectedFeatures(true);
                 const tmp = [] as any;
-                e.target.getFeatures().getArray().forEach((area: any) => {
-                    tmp.push(area.values_);
-                });
+                e.target
+                    .getFeatures()
+                    .getArray()
+                    .forEach((area: any) => {
+                        tmp.push(area.values_);
+                    });
                 //selectedAreas.push(selectedArea);
                 setSelectedAreas(tmp);
+                let l = 0;
+                selectClick.getFeatures().forEach((e, index, array) => {
+                    l = l + 1;
+                });
+                console.log("Laenge angeblich: " + selectClick.getFeatures().getLength());
             });
         } else {
             const selected = selectClick.getFeatures();
@@ -265,20 +292,21 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             setSelectedFeatures(false);
         }
     }, [map, showPopup]);
-
+    /**********************************Return***************************************** */
     if (!showPopup) return null;
     return (
         <Box className="popup-background-transparent">
             <Box className="popup-background">
-                <Box height="80%" width="100%">
+                <Box height="70%" width="100%">
                     <MapContainer mapId={mapId} />
                 </Box>
                 <XButton handleClose={handleClose} />
                 <Box display="flex" justifyContent="space-around">
                     <Box>
                         <CatchmentOptions />
-                        <ButtonGroup orientation="vertical" marginTop="2px">
+                        <ButtonGroup orientation="vertical" marginTop="2px" spacing="1">
                             <GetBBoxButton active={selectedFeatures} onClick={getBBox} />
+                            <DeselectButton active={selectedFeatures} onClick={deselectAll} />
                             <SearchButton active={displayedBBox} onClick={setSearchArea} />
                         </ButtonGroup>
                     </Box>

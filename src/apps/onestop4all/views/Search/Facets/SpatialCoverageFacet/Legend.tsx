@@ -4,26 +4,44 @@ import { lineBlue } from "./Styles";
 export function Legend() {
     return (
         <Box>
-            <h4> Legend: </h4>
-            <Box
-                style={{
-                    width: "30px",
-                    height: "3px",
-                    backgroundColor: lineBlue,
-                    display: "inline-block"
-                }}
-            ></Box>{" "}
-            Catchment area
-            <Box
-                style={{
-                    width: "30px",
-                    height: "3px",
-                    backgroundColor: "rgba(0, 19, 255, 1)",
-                    display: "inline-block",
-                    border: "2px dashed white"
-                }}
-            ></Box>{" "}
-            Bounding Box
+            <h4 style={{ fontWeight: "bold" }}> Legend </h4>
+            <Box style={{ marginBottom: "5px" }}>
+                <Box
+                    style={{
+                        display: "inline-block",
+                        verticalAlign: "middle",
+                        marginRight: "5px"
+                    }}
+                >
+                    <Box
+                        style={{
+                            width: "30px",
+                            height: "3px",
+                            backgroundColor: lineBlue
+                        }}
+                    ></Box>
+                </Box>
+                Catchment area
+            </Box>
+            <Box style={{ marginBottom: "5px" }}>
+                <Box
+                    style={{
+                        display: "inline-block",
+                        verticalAlign: "middle",
+                        marginRight: "5px"
+                    }}
+                >
+                    <Box
+                        style={{
+                            width: "30px",
+                            height: "3px",
+                            backgroundColor: "rgba(0, 19, 255, 1)",
+                            border: "2px dashed white"
+                        }}
+                    ></Box>
+                </Box>
+                Bounding Box
+            </Box>
         </Box>
     );
 }
