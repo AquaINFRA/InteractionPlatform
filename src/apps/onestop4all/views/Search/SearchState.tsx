@@ -134,7 +134,7 @@ export const SearchState = (props: PropsWithChildren) => {
             ? searchSrvc
                 .doSearch({
                     searchTerm,
-                    dataProvider: selectedDataProvider,
+                    dataProvider: selectedDataProvider.map((e:any) => e.id),
                     spatialFilter,
                     pageSize,
                     pageStart,

@@ -28,12 +28,12 @@ export function DataProviderFacet() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    function dataProviderToggled(checked: boolean, id: string) {
+    function dataProviderToggled(checked: boolean, entry: any) {
         if (checked) {
-            searchState.setSelectedDataProvider([...searchState.selectedDataProvider, id]);
+            searchState.setSelectedDataProvider([...searchState.selectedDataProvider, entry]);
         } else {
             searchState.setSelectedDataProvider(
-                searchState.selectedDataProvider.filter((e) => e !== id)
+                searchState.selectedDataProvider.filter((e:any) => e.id !== entry.id)
             );
         }
     }
@@ -41,13 +41,13 @@ export function DataProviderFacet() {
     return (
         <FacetBase title="Data provider" expanded>
             <SimpleGrid columns={[1, 2]} spacing={3} marginTop={"1%"}>
-                {entries.map((entry, i) => (
+                {entries.map((entry:any, i) => (
                     <Flex key={i}>
                         <FacetCheckbox
                             label={entry.title}
-                            isChecked={searchState.selectedDataProvider.includes(entry.id)}
+                            isChecked={searchState.selectedDataProvider.includes(entry)}
                             onChange={(event) =>
-                                dataProviderToggled(event.target.checked, entry.id)
+                                dataProviderToggled(event.target.checked, entry)
                             }
                         />
                     </Flex>
