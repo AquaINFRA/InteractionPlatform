@@ -25,7 +25,10 @@ import GeoJSON from "ol/format/GeoJSON";
 //import dataOld from "../../../../services/basins_eu_hydro_draft_10perc.json";
 import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
 //import dataNewTopo from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc_topo.json";
-
+// Search
+import { useSearchState } from "../../SearchState";
+import { Feature } from "ol";
+import Geometry from "ol/geom";
 // Custom Control Buttons (not used currently)
 export class DrawControl extends Control {
     private handle: () => void;
@@ -61,9 +64,12 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     const [vectorLayer, setVectorLayer] = useState(new VectorLayer({ source: source }));
     const [bBoxVectorLayer, setBBoxVectorLayer] = useState(new VectorLayer());
 
-    const [selectedFeatures, setSelectedFeatures] = useState(false);
+    const [areFeaturesSelected, setAreFeaturesSelected] = useState(false);
     const [selectedAreas, setSelectedAreas] = useState<any>([]);
-    const [displayedBBox, setDisplayedBBox] = useState(false);
+    const [isBBoxDisplayed, setisBBoxDisplayed] = useState(false);
+
+    const searchState = useSearchState();
+    const [bBox, setBBox] = useState<Feature<any>[]>();
 
     // Center the map in Europe everytime the Popup gets opened
     useEffect(() => {
@@ -170,7 +176,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         });
         map?.addLayer(vectorLayerBBox);
         setBBoxVectorLayer(vectorLayerBBox);
-        setDisplayedBBox(true);
+        setisBBoxDisplayed(true);
+        setBBox(features);
     }
 
     // Re-Renders Map if you re-open the popup
@@ -218,19 +225,20 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     }
 
     function setSearchArea(): void {
-        const features = source.getFeatures();
-        const geom = features[0]?.getGeometry();
-        if (geom && map) {
-            const sourceEPSG = map.getView().getProjection().getCode();
-            console.log("sourceEPSG:" + sourceEPSG);
-            const transformedGeom = geom.clone().transform(sourceEPSG, "EPSG:4326");
-            if (transformedGeom instanceof Polygon) {
-                const extent = transformedGeom.getExtent();
-                console.log("Selected extent:", extent);
-                // weiterverarbeitung
+        const features = bBox;
+        if (features) {
+            const geom = features[0]?.getGeometry();
+            if (geom && map) {
+                const sourceEPSG = map.getView().getProjection().getCode();
+                const transformedGeom = geom.clone().transform(sourceEPSG, "EPSG:4326");
+                if (transformedGeom instanceof Polygon) {
+                    const extent = transformedGeom.getExtent();
+                    handleClose();
+                    searchState.setSpatialFilter(extent);
+                }
             }
+            console.log("setSearchArea() wurde aufgerufen!");
         }
-        console.log("setSearchArea() wurde aufgerufen!");
     }
 
     function deselectAll(): void {
@@ -238,8 +246,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         if (selected.getLength() > 0) selected.clear();
         map?.removeLayer(bBoxVectorLayer);
         setBBoxVectorLayer(new VectorLayer());
-        setDisplayedBBox(false);
-        setSelectedFeatures(false);
+        setisBBoxDisplayed(false);
+        setAreFeaturesSelected(false);
     }
     /***********************************Selectable Catchment areas ********************/
     const selectHover = new Select({
@@ -268,7 +276,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             map.addInteraction(selectHover);
             map.addInteraction(selectClick);
             selectClick.on("select", (e) => {
-                setSelectedFeatures(true);
+                setAreFeaturesSelected(true);
                 const tmp = [] as any;
                 e.target
                     .getFeatures()
@@ -289,7 +297,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             if (selected.getLength() > 0) selected.remove(selected.item(0));
             map?.removeInteraction(selectHover);
             map?.removeInteraction(selectClick);
-            setSelectedFeatures(false);
+            setAreFeaturesSelected(false);
         }
     }, [map, showPopup]);
     /**********************************Return***************************************** */
@@ -305,9 +313,9 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                     <Box>
                         <CatchmentOptions />
                         <ButtonGroup orientation="vertical" marginTop="2px" spacing="1">
-                            <GetBBoxButton active={selectedFeatures} onClick={getBBox} />
-                            <DeselectButton active={selectedFeatures} onClick={deselectAll} />
-                            <SearchButton active={displayedBBox} onClick={setSearchArea} />
+                            <GetBBoxButton active={areFeaturesSelected} onClick={getBBox} />
+                            <DeselectButton active={isBBoxDisplayed} onClick={deselectAll} />
+                            <SearchButton active={isBBoxDisplayed} onClick={setSearchArea} />
                         </ButtonGroup>
                     </Box>
                     <Box marginTop="20px">
