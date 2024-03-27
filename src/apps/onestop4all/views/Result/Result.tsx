@@ -15,7 +15,6 @@ import {
     LearningResourceMetadataResponse,
     LearningResourceView
 } from "../LearningResource/LearningResource";
-import { LHB_ArticleMetadataResponse, LHB_ArticleView } from "../LHB_Article/LHB_Article";
 import { OrganisationMetadataResponse, OrganisationView } from "../Organisation/Organisation";
 import { RepositoryMetadataResponse, RepositoryView } from "../Repository/Repository";
 import { useSearchState } from "../Search/SearchState";
@@ -85,10 +84,6 @@ export function Result() {
             case ResourceType.Organisations: {
                 const item = searchResult as OrganisationMetadataResponse;
                 return <OrganisationView item={item} />;
-            }
-            case ResourceType.LHB_Articles: {
-                const item = searchResult as LHB_ArticleMetadataResponse;
-                return <LHB_ArticleView item={item} />;
             }
             case ResourceType.Tools: {
                 const item = searchResult as ToolsSoftwareMetadataResponse;
