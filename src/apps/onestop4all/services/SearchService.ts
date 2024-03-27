@@ -98,12 +98,6 @@ export interface SubjectEntry {
 }
 
 export interface Facets {
-    subjects: SubjectEntry[];
-    resourceType: {
-        resourceType: ResourceType;
-        count: number;
-    }[];
-    temporal: TemporalFacet[];
     provider: DataProvider[];
 }
 

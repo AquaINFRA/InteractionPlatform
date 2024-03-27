@@ -30,10 +30,10 @@ export function DataProviderFacet() {
 
     function dataProviderToggled(checked: boolean, entry: any) {
         if (checked) {
-            searchState.setSelectedDataProvider([...searchState.selectedDataProvider, entry]);
+            searchState.setSelectedDataProvider([...searchState.selectedDataProvider, entry.id]);
         } else {
             searchState.setSelectedDataProvider(
-                searchState.selectedDataProvider.filter((e:any) => e.id !== entry.id)
+                searchState.selectedDataProvider.filter((e: any) => e !== entry.id)
             );
         }
     }
@@ -41,14 +41,12 @@ export function DataProviderFacet() {
     return (
         <FacetBase title="Data provider" expanded>
             <SimpleGrid columns={[1, 2]} spacing={3} marginTop={"1%"}>
-                {entries.map((entry:any, i) => (
+                {entries.map((entry: any, i) => (
                     <Flex key={i}>
                         <FacetCheckbox
                             label={entry.title}
-                            isChecked={searchState.selectedDataProvider.includes(entry)}
-                            onChange={(event) =>
-                                dataProviderToggled(event.target.checked, entry)
-                            }
+                            isChecked={searchState.selectedDataProvider.includes(entry.id)}
+                            onChange={(event) => dataProviderToggled(event.target.checked, entry)}
                         />
                     </Flex>
                 ))}

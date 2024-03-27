@@ -11,9 +11,7 @@ import {
 import { ClassAttributes, useEffect } from "react";
 
 import { MenuCloseIcon } from "../../../../components/Icons";
-import { ResourceTypeFacet } from "../ResourceTypeFacet/ResourceTypeFacet";
 import { SpatialCoverageFacet } from "../SpatialCoverageFacet/SpatialCoverageFacet";
-import { SubjectFacet } from "../SubjectFacet/SubjectFacet";
 
 export interface MobileFilterMenuProps {
     openMenu: boolean;
@@ -57,12 +55,6 @@ export function MobileFilterMenu(props: MobileFilterMenuProps & ClassAttributes<
                     />
                 </HStack>
                 <Box padding="0px 16px" overflow="auto">
-                    <Box padding={"64px 0px 32px"}>
-                        <ResourceTypeFacet></ResourceTypeFacet>
-                    </Box>
-                    <Box padding={"32px 0px"}>
-                        <SubjectFacet></SubjectFacet>
-                    </Box>
                     <Box padding={"32px 0px"}>
                         <SpatialCoverageFacet mapId="spatial-filter-mobile-map"></SpatialCoverageFacet>
                     </Box>

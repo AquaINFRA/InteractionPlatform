@@ -28,10 +28,9 @@ export function Chips() {
     // data provider
     const dataProvider = searchState.selectedDataProvider;
     if (dataProvider.length) {
-        console.log(dataProvider);
         chips.push({
             title: "Data provider",
-            values: dataProvider.map((e:any) => e.title),
+            values: dataProvider.map((e: any) => e),
             deleteCb: () => searchState.setSelectedDataProvider([])
         });
     }
