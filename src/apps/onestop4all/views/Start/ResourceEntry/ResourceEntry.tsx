@@ -15,7 +15,6 @@ export const ResourceEntry = ({ resultCount, resourceType }: ResourceEntryProps)
     const searchState = useSearchState();
 
     function navigateTo(): void {
-        searchState.setSelectedResourceTypes([resourceType]);
         navigate({ pathname: "/search" });
         window.scrollTo(0, 0);
     }

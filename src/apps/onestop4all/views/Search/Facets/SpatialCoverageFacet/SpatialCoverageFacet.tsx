@@ -30,7 +30,6 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     const draw = useRef<Draw>();
 
     const [bboxActive, setBboxActive] = useState(false);
-    const [disabled, setDisable] = useState(false);
 
     useEffect(() => {
         if (map) {
@@ -51,13 +50,11 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                 source.addFeature(bboxFeature);
             }
 
-            setDisable(searchState.spatialFilterDisabled);
-
             if (searchState.spatialFilter.length === 0) {
                 source.clear();
             }
         }
-    }, [map, searchState.spatialFilter, searchState.spatialFilterDisabled, source]);
+    }, [map, searchState.spatialFilter, source]);
 
     function setSearchArea(): void {
         const features = source.getFeatures();
@@ -122,9 +119,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     <Button width="100%" onClick={() => setSearchArea()}>
                         set search area
                     </Button>
-                    {disabled && (
-                        <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
-                    )}
+                    <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
                 </Box>
             </FacetBase>
         </Box>
