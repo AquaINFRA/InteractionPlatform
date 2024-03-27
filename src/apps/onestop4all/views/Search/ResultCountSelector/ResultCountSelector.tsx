@@ -14,9 +14,9 @@ import { PrimaryColor } from "../../../Theme";
 import { useSearchState } from "../SearchState";
 
 export function ResultCountSelector() {
-    const [currentPageSize, setCurrentPageSize] = useState(10);
+    const [currentPageSize, setCurrentPageSize] = useState(20);
     const searchState = useSearchState();
-    const pageOptions = [10, 50, 100, 200, 500];
+    const pageOptions = [20, 50, 100];
 
     useEffect(() => setCurrentPageSize(searchState.pageSize), [searchState.pageSize]);
 

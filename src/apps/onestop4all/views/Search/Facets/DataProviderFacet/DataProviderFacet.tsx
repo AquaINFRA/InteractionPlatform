@@ -19,11 +19,17 @@ export function DataProviderFacet() {
 
     useEffect(() => {
         searchSrvc.getDataProvider().then((res) => {
-            setEntries(
-                JSON.parse(res).collections.sort((a: DataProvider, b: DataProvider) =>
-                    a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
-                )
-            );
+            if (res) {
+                const sortedEntries = JSON.parse(res).collections.sort(
+                    (a: DataProvider, b: DataProvider) =>
+                        a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
+                );
+                setEntries(sortedEntries);
+                const providerTitles = sortedEntries.map((se: any) => {
+                    return { title: se.title, id: se.id };
+                });
+                searchState.setDataProviderTitles(providerTitles);
+            }
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

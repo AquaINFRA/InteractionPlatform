@@ -12,7 +12,6 @@ interface ChipsEntry {
 
 export function Chips() {
     const searchState = useSearchState();
-
     const chips: ChipsEntry[] = [];
 
     // TODO: remove later searchterm
@@ -28,9 +27,18 @@ export function Chips() {
     // data provider
     const dataProvider = searchState.selectedDataProvider;
     if (dataProvider.length) {
+        const titles = [] as string[];
+
+        dataProvider.forEach((dp) => {
+            searchState.dataProviderTitles.forEach((dpt: any) => {
+                if (dp === dpt.id) {
+                    titles.push(dpt.title);
+                }
+            });
+        });
         chips.push({
             title: "Data provider",
-            values: dataProvider.map((e: any) => e),
+            values: titles,
             deleteCb: () => searchState.setSelectedDataProvider([])
         });
     }
@@ -74,7 +82,7 @@ export function Chips() {
                 gap={"8px"}
                 border={"1px solid"}
                 borderColor={PrimaryColor}
-                borderRadius="50px"
+                borderRadius="30px"
                 padding="6px 8px 6px 12px;"
             >
                 <Box __css={titleStyles}>{title}: </Box>

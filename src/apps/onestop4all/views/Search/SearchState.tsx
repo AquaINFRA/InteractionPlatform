@@ -47,6 +47,8 @@ export interface ISearchState {
     setSearchTerm(searchTerm: string): void;
     selectedDataProvider: string[];
     setSelectedDataProvider(dataProvider: string[]): void;
+    dataProviderTitles: string[];
+    setDataProviderTitles(dataProviderTitles: string[]): void;
     selectableDataProvider: SelectableDataProvider[];
     spatialFilter: number[];
     setSpatialFilter(sf: number[]): void;
@@ -91,7 +93,7 @@ export const SearchState = (props: PropsWithChildren) => {
     );
 
     // init page size
-    const pSize = parseInt(searchParams.get(UrlSearchParameterType.PageSize) || "10");
+    const pSize = parseInt(searchParams.get(UrlSearchParameterType.PageSize) || "20");
     const [pageSize, setPageSize] = useState<number>(pSize);
 
     // init page start
@@ -121,6 +123,7 @@ export const SearchState = (props: PropsWithChildren) => {
         }
     }
     const [spatialFilter, setSpatialFilter] = useState(sp);
+    const [dataProviderTitles, setDataProviderTitles] = useState<string[]>([]);
 
     // sorting
     const sortString = searchParams.get(UrlSearchParameterType.SortingFilter);
@@ -192,7 +195,9 @@ export const SearchState = (props: PropsWithChildren) => {
         search,
         setSelectedDataProvider,
         selectedDataProvider,
-        selectableDataProvider
+        selectableDataProvider,
+        setDataProviderTitles,
+        dataProviderTitles
     };
 
     return (

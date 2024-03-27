@@ -92,11 +92,6 @@ export interface ZenodoResultItem {
     };
 }
 
-export interface SubjectEntry {
-    label: string;
-    count: number;
-}
-
 export interface Facets {
     provider: DataProvider[];
 }

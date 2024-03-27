@@ -119,7 +119,6 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     <Button width="100%" onClick={() => setSearchArea()}>
                         set search area
                     </Button>
-                    <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
                 </Box>
             </FacetBase>
         </Box>
