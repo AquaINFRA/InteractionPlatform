@@ -250,13 +250,22 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         setAreFeaturesSelected(false);
     }
     /***********************************Selectable Catchment areas ********************/
+    // SelectHover
+    let selectedFeatures: any[] = [];
     const selectHover = new Select({
         condition: pointerMove,
         style: hoverStyle,
-        toggleCondition: undefined,
+        toggleCondition: function (event) {
+            const isSelected = selectedFeatures.length > 0;
+            return !isSelected;
+        },
         layers: [vectorLayer]
     });
+    selectHover.on("select", function (event) {
+        selectedFeatures = event.target.getFeatures().getArray();
+    });
 
+    // SelectClick
     const [selectClick, setSelectClick] = useState<Select>(
         new Select({
             condition: click,
