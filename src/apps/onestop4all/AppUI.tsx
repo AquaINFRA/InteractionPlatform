@@ -1,5 +1,5 @@
 import { Box, ChakraProvider, Container, Flex } from "@open-pioneer/chakra-integration";
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import { BaseMenu } from "./components/BaseMenu/BaseMenu";
 import { Footer } from "./components/Footer/Footer";

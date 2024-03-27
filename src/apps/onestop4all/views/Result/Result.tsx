@@ -3,7 +3,6 @@ import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { RelatedContent } from "../../components/ResourceType/RelatedContent/RelatedContent";
 import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { SearchBar } from "../../components/SearchBar";
@@ -50,9 +49,10 @@ export function Result() {
         searchSrvc.getMetadata(resultId).then((result) => {
             if (result) {
                 if (result.provider === "zenodo") {
-                    searchSrvc.fetchRoCrateFile("10477880").then((crate) => { 
-                        //TO DO: implement handling for assets that don't have a ro-crate file. 
-                        setSearchResult(crate["@graph"]);
+                    searchSrvc.fetchRoCrateFile("10477880").then((crate: any) => {
+                        //TO DO: implement handling for assets that don't have a ro-crate file.
+                        const roCrateFile = crate["@graph"];
+                        setSearchResult(roCrateFile);
                         setResourceType(
                             getResourceType(result.response.metadata.resource_type.type)
                         );
@@ -161,7 +161,7 @@ export function Result() {
                 searchTerm: searchState.searchTerm,
                 spatialFilter: searchState.spatialFilter
             })
-            .then((res) => {
+            .then((res: any) => {
                 if (res.results[0]) {
                     navigate(`/result/${res.results[0].id}`, { state: { resultPage: result } });
                     setResult(result);

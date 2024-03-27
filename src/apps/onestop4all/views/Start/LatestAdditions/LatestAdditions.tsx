@@ -3,15 +3,16 @@ import { useEffect, useState } from "react";
 
 import { Box, Flex, SimpleGrid } from "@open-pioneer/chakra-integration";
 import { LatestAddition } from "./LatestAddition";
+import { ZenodoResultItem } from "../../../services/SearchService";
 
 export const LatestAdditions = () => {
     const searchSrvc = useService("onestop4all.SearchService");
     //const [aquaResources, setAquaResources] = useState<AquaResources>();
-    const [aquaResources, setAquaResources] = useState<object[]>();
+    const [aquaResources, setAquaResources] = useState<ZenodoResultItem[]>();
 
     useEffect(() => {
         //setLoading(true);
-        searchSrvc.getLatestAdditionsFromZenodo().then((result) => {
+        searchSrvc.getLatestAdditionsFromZenodo().then((result: any) => {
             //console.log("meta: ", result);
             if (result) {
                 console.log(result);

@@ -1,4 +1,4 @@
-import { Box, Flex } from "@open-pioneer/chakra-integration";
+import { Flex } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 
@@ -7,7 +7,6 @@ import { SimpleGrid } from "@chakra-ui/react";
 import { SelectableDataProvider, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
-import { SearchResultItem } from "../../../../services/SearchService";
 
 export interface DataProvider {
     title: string;

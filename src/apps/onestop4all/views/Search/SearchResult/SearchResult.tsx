@@ -3,7 +3,7 @@ import { DateTime } from "luxon";
 import { useNavigate } from "react-router-dom";
 
 import { SearchResultItem } from "../../../services/SearchService";
-import { mapToResourceType, ResourceType } from "../../../services/ResourceTypeUtils";
+import { mapToResourceType } from "../../../services/ResourceTypeUtils";
 import { BorderColor, PrimaryColor } from "../../../Theme";
 import { ResourceIcon } from "../../Start/ResourceEntry/ResourceIcons";
 import { useSearchState } from "../SearchState";

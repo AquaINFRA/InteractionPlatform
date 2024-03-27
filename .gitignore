@@ -28,4 +28,6 @@ node_modules
 *.sw?
 *.local
 
+.env
+
 src/apps/onestop4all/services/basins_eu_hydro_draft_100perc_orig.json

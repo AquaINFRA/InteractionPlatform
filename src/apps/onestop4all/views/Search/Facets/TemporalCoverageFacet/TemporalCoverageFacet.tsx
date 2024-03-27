@@ -12,7 +12,6 @@ import {
     RangeSliderThumb,
     RangeSliderTrack
 } from "@open-pioneer/chakra-integration";
-import { ParentSize } from "@visx/responsive";
 import { useEffect, useState } from "react";
 
 import { DisableOverlay } from "../../../../components/DisableOverlay/DisableOverlay";
@@ -20,7 +19,6 @@ import { TemporalFacet } from "../../../../services/SearchService";
 import { ActiveControlColor } from "../../../../Theme";
 import { TemporalFacetEndYear, TemporalFacetStartYear, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
-import TemporalGraph from "./TemporalGraph";
 
 export function TemporalCoverageFacet() {
     const searchState = useSearchState();

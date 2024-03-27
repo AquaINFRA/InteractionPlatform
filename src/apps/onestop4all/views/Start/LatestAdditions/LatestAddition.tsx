@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PersonalInfo } from "../../../components/ResourceType/Metadata/PersonalInfo";
 import { Authors } from "../../../components/ResourceType/Metadata/Authors";
 import { ResourceIcon } from "../ResourceEntry/ResourceIcons";
 import { Flex } from "@open-pioneer/chakra-integration";

@@ -1,12 +1,7 @@
 import "@open-pioneer/runtime";
 
 import { ServiceOptions } from "@open-pioneer/runtime";
-import {
-    ResourceType,
-    getHandler,
-    mapFromResourceType,
-    mapToResourceType
-} from "./ResourceTypeUtils";
+import { ResourceType, mapFromResourceType } from "./ResourceTypeUtils";
 import { DataProvider } from "../views/Search/Facets/DataProviderFacet/DataProviderFacet";
 
 export interface SearchResultItem {
@@ -78,7 +73,7 @@ export interface ZenodoResultItem {
     metadata: {
         resource_type: {
             title: string;
-            type: string;
+            type: ResourceType;
         };
         description: string;
         language: string;
@@ -136,7 +131,7 @@ const SOLR_SUBJECT_FACET_FIELD = "theme_str";
 const SOLR_RESOURCE_TYPE_FACET_FIELD = "type";
 const SOLR_TEMPORAL_FACET_RANGE_FIELD = "datePublished";
 const SOLR_DATAPROVIDER_FACET_FIELD = "collections";
-export const proxy = "http://localhost:8081/";
+const oapirUrl = import.meta.env.VITE_OAPIR_URL;
 export const supportForm = "http://localhost/html/nfdi/";
 
 export class SearchService {
@@ -183,8 +178,7 @@ export class SearchService {
         //console.log("config url: ",this.config.url);
         //console.log("core selector: ",this.config.coreSelector);
         //console.log("query params: ", queryParams.toString());
-        const baseUrl = proxy + "https://vm4412.kaj.pouta.csc.fi/pygeo/oapir";
-        const url = `${baseUrl}/search?${queryParams.toString()}`;
+        const url = `${oapirUrl}/search?${queryParams.toString()}`;
         //console.log(searchParams.dataProvider);
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
@@ -195,8 +189,12 @@ export class SearchService {
                     return {
                         count: response.numberMatched,
                         results: response.features,
-                        facets: { provider: searchParams.dataProvider }
-                    };
+                        facets: {
+                            provider: searchParams.dataProvider?.map((dp) => {
+                                return { title: dp };
+                            })
+                        }
+                    } as SearchResult;
                 } else {
                     throw new Error("Unexpected response: " + JSON.stringify(responseData));
                 }
@@ -214,10 +212,10 @@ export class SearchService {
             this.addChildQueryParams(queryParams);
         }
         if (provider === "zenodo") {
-            const baseUrl = proxy + "https://zenodo.org/api/records";
+            const baseUrl = "https://zenodo.org/api/records";
             url = `${baseUrl}/${id}`;
         } else {
-            const baseUrl = proxy + "https://vm4412.kaj.pouta.csc.fi/pygeo/oapir/collections";
+            const baseUrl = oapirUrl + "/collections";
             url = `${baseUrl}/${provider}/items/${id}`;
         }
         return fetch(url).then((response) =>
@@ -232,7 +230,7 @@ export class SearchService {
     }
 
     getLatestAdditionsFromZenodo() {
-        const url = proxy + `https://zenodo.org/api/records?communities=aquainfra`;
+        const url = `https://zenodo.org/api/records?communities=aquainfra`;
         return fetch(url).then((response) =>
             response.json().then((responseData: object) => {
                 if (responseData) {
@@ -247,7 +245,6 @@ export class SearchService {
     sendSupportRequest(name: string, email: string, subject: string, content: string) {
         console.log("Send support form request");
         const url =
-            proxy +
             supportForm +
             `?name=` +
             name +
@@ -270,7 +267,6 @@ export class SearchService {
 
     getFaqList() {
         const url =
-            proxy +
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2fFAQ.md/raw`;
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
@@ -285,7 +281,6 @@ export class SearchService {
 
     fetchRoCrateFile(id: string) {
         const url =
-            proxy +
             "https://zenodo.org/api/records/" +
             id +
             "/files/ro-crate-metadata.json/content";
@@ -302,7 +297,7 @@ export class SearchService {
 
     getDataProvider() {
         const url =
-            proxy + `https://vm4412.kaj.pouta.csc.fi/pygeo/oapir/collections?f=json&lang=en-US`;
+            oapirUrl + "/collections?f=json&lang=en-US";
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
@@ -316,7 +311,6 @@ export class SearchService {
 
     getFaq(faqId: string) {
         const url =
-            proxy +
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
             faqId +
             `/raw`;
@@ -334,7 +328,6 @@ export class SearchService {
     getHowToEntry(howToEntry: string) {
         //console.log("start fetching entry point for id: " + howToEntry);
         const url =
-            proxy +
             `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
             howToEntry +
             `/raw`;
@@ -351,7 +344,6 @@ export class SearchService {
 
     getLhbStructure() {
         const url =
-            proxy +
             `https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/mkdocs.yml`;
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {

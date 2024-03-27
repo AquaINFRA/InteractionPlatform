@@ -2,14 +2,10 @@ import { Box, Flex } from "@open-pioneer/chakra-integration";
 import { Link } from "react-router-dom";
 
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
-import { SolrSearchResultItem, ZenodoResultItem } from "../../services/SearchService";
-import { LastUpdate } from "../../components/ResourceType/Metadata/LastUpdate";
+import { ZenodoResultItem } from "../../services/SearchService";
 import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
-import { MetadataSourceIcon } from "../../components/Icons";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
-import { ExternalResources } from "../../components/ResourceType/ExternalResources/ExternalResources";
 import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-import { Map } from "../../components/ResourceType/Map/Map";
 import { CopyToClipboardButton } from "../../components/ResourceType/ActionButton/CopyToClipboardButton";
 
 export interface SoftwareViewProps {
@@ -131,7 +127,10 @@ export function SoftwareView(props: any) {
                                 ) : null}
                                 {metadata.distribution ? (
                                     <Link
-                                        to={"http://127.0.0.1:8080/tool_runner?tool_id=aquainfra_ddas&URL=" + metadata.distribution["@id"] as string}
+                                        to={
+                                            ("http://127.0.0.1:8080/tool_runner?tool_id=aquainfra_ddas&URL=" +
+                                                metadata.distribution["@id"]) as string
+                                        }
                                         className="actionButtonLink"
                                         target="_blank"
                                     >

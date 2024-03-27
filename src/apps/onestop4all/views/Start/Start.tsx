@@ -1,11 +1,9 @@
-import { Box, Container, Flex, Image } from "@open-pioneer/chakra-integration";
+import { Box, Container, Flex } from "@open-pioneer/chakra-integration";
 //import { ParentSize } from "@visx/responsive";
 import { useIntl } from "open-pioneer:react-hooks";
 
 import { SearchBar } from "../../components/SearchBar";
 import { DemonstratorEntries } from "./Demonstrator/DemonstratorEntries";
-import { ParticipateEntries } from "./ParticipateEntries/ParticipateEntries";
-import { ResourceEntries } from "./ResourceEntries/ResourceEntries";
 import { CaseStudies } from "./CaseStudies/CaseStudies";
 import { useRef } from "react";
 import { LatestAdditions } from "./LatestAdditions/LatestAdditions";

@@ -1,5 +1,4 @@
 import { Flex, Box } from "@open-pioneer/chakra-integration";
-import { Map } from "../Map/Map";
 import { Misc } from "../Metadata/Misc";
 
 export const SpatialInformation = (props: { metadataElements: object; bbox: string }) => {

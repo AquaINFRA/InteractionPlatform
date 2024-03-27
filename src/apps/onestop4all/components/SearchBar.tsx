@@ -1,16 +1,15 @@
-import { Box, Button, HStack, IconButton, Input, Select } from "@open-pioneer/chakra-integration";
+import { Box, Button, HStack, IconButton, Input } from "@open-pioneer/chakra-integration";
 import { useIntl } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 
 import { ResourceType } from "../services/ResourceTypeUtils";
-import { BorderColor, PrimaryColor } from "../Theme";
 import {
     UrlSearchParameterType,
     UrlSearchParams,
     useSearchState
 } from "../views/Search/SearchState";
-import { DropdownArrowIcon, SearchIcon } from "./Icons";
+import { SearchIcon } from "./Icons";
 
 export function SearchBar() {
     const [searchTerm, setSearchTerm] = useState<string>("");

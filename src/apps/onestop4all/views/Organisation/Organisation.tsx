@@ -46,12 +46,6 @@ export function OrganisationView(props: OrganisationViewProps) {
     const email = metadata.nfdi4EarthContactPerson_email;
     const orcid = metadata.nfdi4EarthContactPerson_orcidId;
     const affiliation = metadata.nfdi4EarthContactPerson_affiliation;
-    const nfdiContact = {
-        name: name ? name : undefined,
-        orcid: orcid ? orcid : undefined,
-        email: email ? email : undefined,
-        affiliation: affiliation ? affiliation : undefined
-    };
 
     return (
         <Box>
@@ -121,17 +115,6 @@ export function OrganisationView(props: OrganisationViewProps) {
                                     element: "subOrganizationOf",
                                     tag: "Suborganisation of",
                                     val: metadata.subOrganizationOf
-                                },
-                                {
-                                    element: "nfdi",
-                                    tag: "NFDI contact",
-                                    val:
-                                        nfdiContact.name ||
-                                        nfdiContact.email ||
-                                        nfdiContact.orcid ||
-                                        nfdiContact.affiliation
-                                            ? nfdiContact
-                                            : undefined
                                 }
                             ]}
                             visibleElements={2}

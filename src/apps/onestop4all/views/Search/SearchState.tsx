@@ -250,11 +250,16 @@ export const SearchState = (props: PropsWithChildren) => {
                 result.results.map((e) => {
                     console.log(e.properties.type);
                 });
-                const dataProviderFacet = result.facets.provider.map((e) => {
+                const dataProviderFacet = result.facets.provider.map((dataprovider) => {
                     return {
-                        title: e,
-                        selected: selectableDataProvider.findIndex((r) => r === e) >= 0
-                    } as SelectableDataProvider;
+                        id: dataprovider.title,
+                        title: dataprovider.title,
+                        selected:
+                            selectableDataProvider.findIndex(
+                                (selectabledataprovider) =>
+                                    selectabledataprovider.title === dataprovider.title
+                            ) >= 0
+                    };
                 });
                 setSelectableDataProvider(dataProviderFacet);
                 //handleSubjects(result.facets.subjects);
