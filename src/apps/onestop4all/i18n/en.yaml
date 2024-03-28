@@ -16,7 +16,7 @@ messages:
   search:
     search-bar:
       button-label: "Search"
-      placeholder: "Search for research data, software or other digital research assets."
+      placeholder: "Search for research data"
       dropdownPlaceholder: "All resources"
   start:
     banner:

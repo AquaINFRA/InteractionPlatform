@@ -143,9 +143,7 @@ export function StartView() {
                 <Container maxW={{ base: "100%" }}>
                     <Box className="mission">
                         <Box className="mission-text text-centered-box">
-                            <Box className="text-centered-box-text">
-                                <CaseStudies />
-                            </Box>
+                            <Box className="text-centered-box-text">{/*<CaseStudies />*/}</Box>
                         </Box>
                     </Box>
                 </Container>
@@ -155,9 +153,7 @@ export function StartView() {
                 <Container maxW={{ base: "100%" }}>
                     <Box className="mission">
                         <Box className="mission-text text-centered-box">
-                            <Box className="text-centered-box-text">
-                                <DemonstratorEntries />
-                            </Box>
+                            <Box className="text-centered-box-text">{<DemonstratorEntries />}</Box>
                         </Box>
                     </Box>
                 </Container>
@@ -167,9 +163,7 @@ export function StartView() {
                 <Container maxW={{ base: "100%" }}>
                     <Box className="mission">
                         <Box className="mission-text text-centered-box">
-                            <Box className="text-centered-box-text">
-                                <LatestAdditions />
-                            </Box>
+                            <Box className="text-centered-box-text">{/*<LatestAdditions />*/}</Box>
                         </Box>
                     </Box>
                 </Container>

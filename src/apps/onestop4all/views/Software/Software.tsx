@@ -125,7 +125,7 @@ export function SoftwareView(props: any) {
                                         />
                                     </Link>
                                 ) : null}
-                                {metadata.distribution ? (
+                                {/*metadata.distribution ? (
                                     <Link
                                         to={
                                             ("http://127.0.0.1:8080/tool_runner?tool_id=aquainfra_ddas&URL=" +
@@ -141,7 +141,7 @@ export function SoftwareView(props: any) {
                                             fun={() => void 0}
                                         />
                                     </Link>
-                                ) : null}
+                                    ) : null*/}
                             </>
                         </Box>
                     ) : null}

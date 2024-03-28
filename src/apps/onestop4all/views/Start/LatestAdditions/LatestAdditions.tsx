@@ -15,7 +15,7 @@ export const LatestAdditions = () => {
         searchSrvc.getLatestAdditionsFromZenodo().then((result: any) => {
             //console.log("meta: ", result);
             if (result) {
-                console.log(result);
+                //console.log(result);
                 setAquaResources(result.hits.hits);
                 //setResourceType(getResourceType(result.properties.type));
                 //setLoading(false);
