@@ -41,18 +41,21 @@ export function SearchBar() {
 
     function startSearch(): void {
         searchState.setSearchTerm(searchTerm);
-        console.log(provider);
-        console.log(selectedProvider);
         if (selectedProvider === "") {
-            searchState.setSelectedDataProvider([]);
+            searchState.setSelectedDataProvider([...searchState.selectedDataProvider]);
         } else {
-            searchState.setSelectedDataProvider([selectedProvider]);
+            if (!searchState.selectedDataProvider.includes(selectedProvider)) {
+                searchState.setSelectedDataProvider([
+                    ...searchState.selectedDataProvider,
+                    selectedProvider
+                ]);
+            }
         }
         if (!location.pathname.endsWith("search")) {
             const params: UrlSearchParams = {};
             params[UrlSearchParameterType.Searchterm] = searchTerm;
             if (!selectedProvider) {
-                searchState.setSelectedDataProvider([]);
+                searchState.setSelectedDataProvider([...searchState.selectedDataProvider]);
             }
             navigate({
                 pathname: "/search",
@@ -62,11 +65,17 @@ export function SearchBar() {
     }
 
     function addProvider(p: any) {
+        console.log("add provider");
         setSelectProvider(p);
         const pr = provider.find((e) => e.id === p) as any;
-        console.log(pr);
-        if (pr) {
-            searchState.setSelectedDataProvider([pr.id]);
+        console.log(
+            pr,
+            searchState.selectedDataProvider,
+            searchState.selectedDataProvider.includes(pr.id),
+            pr.id
+        );
+        if (pr && !searchState.selectedDataProvider.includes(pr.id)) {
+            searchState.setSelectedDataProvider([...searchState.selectedDataProvider, pr.id]);
         }
     }
 
