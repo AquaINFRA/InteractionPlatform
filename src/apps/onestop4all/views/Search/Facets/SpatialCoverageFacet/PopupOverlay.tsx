@@ -19,7 +19,7 @@ import { SearchButton } from "./SearchButton";
 import { GetBBoxButton } from "./GetBBoxButton";
 import { DeselectButton } from "./DeselectButton";
 // Import Styles
-import { hoverStyle, style, bBoxStyle } from "./Styles";
+import { hoverStyle, style, selectStyle, bBoxStyle } from "./Styles";
 // Import GeoJSON
 import GeoJSON from "ol/format/GeoJSON";
 //import dataOld from "../../../../services/basins_eu_hydro_draft_10perc.json";
@@ -269,7 +269,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     const [selectClick, setSelectClick] = useState<Select>(
         new Select({
             condition: click,
-            style: hoverStyle
+            style: selectStyle
         })
     );
 

@@ -1,5 +1,6 @@
 import { Box } from "@open-pioneer/chakra-integration";
 import { lineBlue } from "./Styles";
+import { Flex } from "@open-pioneer/chakra-integration";
 
 export function Legend() {
     return (
@@ -13,13 +14,10 @@ export function Legend() {
                         marginRight: "5px"
                     }}
                 >
-                    <Box
-                        style={{
-                            width: "30px",
-                            height: "3px",
-                            backgroundColor: lineBlue
-                        }}
-                    ></Box>
+                    <Flex gap="10px" alignItems="center">
+                        <img src="/area.svg" />
+                        <div className="label">legend</div>
+                    </Flex>
                 </Box>
                 Catchment area
             </Box>
@@ -31,14 +29,25 @@ export function Legend() {
                         marginRight: "5px"
                     }}
                 >
-                    <Box
-                        style={{
-                            width: "30px",
-                            height: "3px",
-                            backgroundColor: "rgba(0, 19, 255, 1)",
-                            border: "2px dashed white"
-                        }}
-                    ></Box>
+                    <Flex gap="10px" alignItems="center">
+                        <img src="/areaSelected.svg" />
+                        <div className="label">legend</div>
+                    </Flex>
+                </Box>
+                Selected area
+            </Box>
+            <Box style={{ marginBottom: "5px" }}>
+                <Box
+                    style={{
+                        display: "inline-block",
+                        verticalAlign: "middle",
+                        marginRight: "5px"
+                    }}
+                >
+                    <Flex gap="10px" alignItems="center">
+                        <img src="/bbox.svg" />
+                        <div className="label">legend</div>
+                    </Flex>
                 </Box>
                 Bounding Box
             </Box>
