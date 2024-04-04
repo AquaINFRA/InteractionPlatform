@@ -9,6 +9,7 @@ import { StandardSearchHandler } from "./search/result-handler/standard-handler"
 import { DatasetHandler } from "./search/result-handler/dataset-handler";
 import { SeriesHandler } from "./search/result-handler/series-handler";
 import { ModelHandler } from "./search/result-handler/model-handler";
+import { ServiceHandler } from "./search/result-handler/service-handler";
 import { SoftwareHandler } from "./search/result-handler/software-zenodo-handler";
 
 export enum ResourceType {
@@ -117,7 +118,8 @@ const searchResultHandlers: SearchResultHandler[] = [
     new DatasetHandler(),
     new SoftwareHandler(),
     new SeriesHandler(),
-    new ModelHandler()
+    new ModelHandler(),
+    new ServiceHandler()
 ];
 
 export function getHandler(result: string): SearchResultHandler {

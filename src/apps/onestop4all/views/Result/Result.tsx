@@ -113,6 +113,10 @@ export function Result() {
                 const item = searchResult as DatasetMetadataResponse;
                 return <DatasetView item={item} />;
             }
+            case ResourceType.Service: {
+                const item = searchResult as DatasetMetadataResponse;
+                return <DatasetView item={item} />;
+            }
             case ResourceType.Software: {
                 const item = searchResult as ZenodoResultItem;
                 return <SoftwareView item={item} />;
