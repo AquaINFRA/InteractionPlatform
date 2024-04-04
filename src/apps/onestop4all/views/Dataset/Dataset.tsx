@@ -46,8 +46,6 @@ export interface DatasetViewProps {
 
 export function DatasetView(props: DatasetViewProps) {
     const metadata = props.item;
-    //const doiBaseUrl = "https://www.doi.org/";
-    console.log(metadata);
 
     return (
         <Box>

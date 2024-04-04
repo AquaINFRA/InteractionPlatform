@@ -28,7 +28,7 @@ export const Header = () => {
             </Box>
             <Box w="100%"></Box>
             <Hide below="custombreak">
-                <Login />
+                {/*<Login />*/}
             </Hide>
             <MenuButton />
         </HStack>

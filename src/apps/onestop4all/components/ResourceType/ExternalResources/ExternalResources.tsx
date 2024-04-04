@@ -7,7 +7,6 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 export const ExternalResources = (props: { links: LinkObject[] }) => {
     const { links } = props;
-    console.log(links);
     return (
         <Box>
             <div className="abstractSectionHeader">External Resources</div>

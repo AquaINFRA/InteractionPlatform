@@ -16,9 +16,7 @@ export function SearchResult(props: SearchResultProps) {
     const { item } = props;
     const navigate = useNavigate();
     const type = item.properties.type;
-    //console.log(type);
     const resType = type ? mapToResourceType(type) : mapToResourceType("unknown");
-    //console.log(resType);
     const searchState = useSearchState();
 
     const hoverStyle: SystemStyleObject = {
