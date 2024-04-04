@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useService } from "open-pioneer:react-hooks";
 // Import OpenLayers-Map-Stuff
 import { MapContainer, useMap } from "@open-pioneer/experimental-ol-map";
-import Draw from "ol/interaction/Draw";
+import Draw, { createBox } from "ol/interaction/Draw";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { Polygon } from "ol/geom";
@@ -27,8 +27,10 @@ import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercato
 //import dataNewTopo from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc_topo.json";
 // Search
 import { useSearchState } from "../../SearchState";
-import { Feature } from "ol";
+import { Feature, MapBrowserEvent } from "ol";
 import Geometry from "ol/geom";
+import { Button } from "@open-pioneer/chakra-integration";
+import DragBox from "ol/interaction/DragBox";
 // Custom Control Buttons (not used currently)
 export class DrawControl extends Control {
     private handle: () => void;
@@ -208,7 +210,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         if (!showPopup) {
             removeInteraction();
             // map?.removeLayer(bBoxVectorLayer);
-            clearSelectedFeatures();
+            // clearSelectedFeatures();
         }
     }, [showPopup]);
 
@@ -244,6 +246,9 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     function deselectAll(): void {
         const selected = selectClick.getFeatures();
         if (selected.getLength() > 0) selected.clear();
+        const selectedHover = selectHover.getFeatures();
+        if (selectedHover.getLength() > 0) selectedHover.clear();
+
         map?.removeLayer(bBoxVectorLayer);
         setBBoxVectorLayer(new VectorLayer());
         setisBBoxDisplayed(false);
@@ -272,12 +277,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             style: selectStyle
         })
     );
-
-    function clearSelectedFeatures() {
-        const selected = selectClick.getFeatures();
-        if (selected.getLength() > 0) selected.clear();
-        const hovered = selectHover.getFeatures();
-        if (hovered.getLength() > 0) hovered.clear();
+    function handleSelectBox() {
+        return null;
     }
 
     useEffect(() => {
@@ -295,11 +296,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                     });
                 //selectedAreas.push(selectedArea);
                 setSelectedAreas(tmp);
-                let l = 0;
-                selectClick.getFeatures().forEach((e, index, array) => {
-                    l = l + 1;
-                });
-                console.log("Laenge angeblich: " + selectClick.getFeatures().getLength());
             });
         } else {
             const selected = selectClick.getFeatures();
@@ -314,7 +310,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     return (
         <Box className="popup-background-transparent">
             <Box className="popup-background">
-                <Box height="70%" width="100%">
+                <Box height="65%" width="100%">
                     <MapContainer mapId={mapId} />
                 </Box>
                 <XButton handleClose={handleClose} />
@@ -323,8 +319,11 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                         <CatchmentOptions />
                         <ButtonGroup orientation="vertical" marginTop="2px" spacing="1">
                             <GetBBoxButton active={areFeaturesSelected} onClick={getBBox} />
-                            <DeselectButton active={isBBoxDisplayed} onClick={deselectAll} />
+                            <DeselectButton active={areFeaturesSelected} onClick={deselectAll} />
                             <SearchButton active={isBBoxDisplayed} onClick={setSearchArea} />
+                            <Button height="5vh" fontSize="0.7vw" onClick={() => handleSelectBox()}>
+                                Draw Box
+                            </Button>
                         </ButtonGroup>
                     </Box>
                     <Box marginTop="20px">
