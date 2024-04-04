@@ -48,13 +48,14 @@ export function DataProviderFacet() {
         <FacetBase title="Data provider" expanded>
             <SimpleGrid columns={[1, 2]} spacing={3} marginTop={"1%"}>
                 {entries.map((entry: any, i) => (
-                    <Flex key={i}>
-                        <FacetCheckbox
-                            label={entry.title}
-                            isChecked={searchState.selectedDataProvider.includes(entry.id)}
-                            onChange={(event) => dataProviderToggled(event.target.checked, entry)}
-                        />
-                    </Flex>
+                    entry.id !== "dataeurope" ? 
+                        <Flex key={i}>
+                            <FacetCheckbox
+                                label={entry.title}
+                                isChecked={searchState.selectedDataProvider.includes(entry.id)}
+                                onChange={(event) => dataProviderToggled(event.target.checked, entry)}
+                            />
+                        </Flex> : null
                 ))}
             </SimpleGrid>
         </FacetBase>

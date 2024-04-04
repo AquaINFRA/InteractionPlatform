@@ -109,7 +109,7 @@ export function SearchView() {
                                     justifyContent="space-between"
                                     padding={{ base: "0 0 15px", custombreak: "0" }}
                                 >
-                                    <ResultCountSelector />
+                                    {/*<ResultCountSelector />*/}
                                     <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
                                     {/*<SortedBySelector />*/}
                                     <Box
