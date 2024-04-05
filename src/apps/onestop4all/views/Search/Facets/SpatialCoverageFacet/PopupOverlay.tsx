@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useService } from "open-pioneer:react-hooks";
 // Import OpenLayers-Map-Stuff
 import { MapContainer, useMap } from "@open-pioneer/experimental-ol-map";
-import Draw, { createBox } from "ol/interaction/Draw";
+import Draw, { DrawEvent, createBox } from "ol/interaction/Draw";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { Polygon } from "ol/geom";
@@ -31,7 +31,7 @@ import { Feature, MapBrowserEvent } from "ol";
 import Geometry from "ol/geom";
 import { Button } from "@open-pioneer/chakra-integration";
 import DragBox from "ol/interaction/DragBox";
-import Collection from "ol";
+import { Collection } from "ol";
 import Interaction from "ol/interaction/Interaction";
 // Custom Control Buttons (not used currently)
 export class DrawControl extends Control {
@@ -152,6 +152,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         // 2. Compute BBox
         let extentArrays = [] as number[];
         const selectedFeatures = selectClick.getFeatures().getArray();
+        console.log(JSON.stringify(selectedFeatures));
         selectedFeatures.forEach((area: any) => {
             extentArrays = extentArrays.concat(area.getGeometry().getExtent());
         });
@@ -291,18 +292,61 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     /************************Feature: Draw a box to select multiple areas************************** */
     // HANDLER: draw a box
     function handleSelectBox() {
-        toggleDrawing();
+        selectBox();
     }
     function toggleDrawing(): void {
         if (drawing) setDrawing(false);
         else setDrawing(true);
+    }
+    const boxFeatures: Collection<Feature> = new Collection([]);
+    function selectBox() {
+        addDraw(
+            new Draw({
+                source: source,
+                type: "Circle",
+                geometryFunction: createBox(),
+                features: boxFeatures
+            })
+        );
+    }
+    function addDraw(newDraw: Draw) {
+        draw.current = newDraw;
+        newDraw.on("drawstart", () => source.clear());
+        newDraw.on("drawend", (e: DrawEvent) => {
+            const box = e.feature;
+            computeSelectedAreas(box);
+        });
+        map?.addInteraction(newDraw);
+    }
+    function computeSelectedAreas(box: Feature) {
+        const boxGeometry = box.getGeometry();
+        if (!boxGeometry) return; // Sicherstellen, dass die Box eine Geometrie hat
+
+        const selectedFeatures = [] as Feature[];
+        let i = 0;
+        // Durch alle Features der GeoJSON iterieren
+        debugger;
+        vectorSource.getFeatures().forEach((feature) => {
+            const featureGeometry = feature.getGeometry();
+
+            if (featureGeometry && featureGeometry.intersectsExtent(boxGeometry.getExtent())) {
+                // Wenn die Geometrie des Features den Extent der gezeichneten Box schneidet
+                selectedFeatures.push(feature);
+                i = i + 1;
+            }
+        });
+
+        // Ausgewählte Features zur selectClick-Auswahl hinzufügen
+        selectClick.getFeatures().extend(selectedFeatures);
+        //selectClick.getFeatures().insertAt(0, selectedFeatures[0]!);
+        console.log("Anzahl ausgewählter: " + i);
     }
 
     useEffect(() => {
         if (map && showPopup) {
             map.addInteraction(selectHover);
             map.addInteraction(selectClick);
-            selectClick.on("select", () => setAreFeaturesSelected(true));
+            selectClick.on("select", () => setAreFeaturesSelected(true)); // komisch
         } else {
             const selected = selectClick.getFeatures();
             if (selected.getLength() > 0) selected.remove(selected.item(0));
