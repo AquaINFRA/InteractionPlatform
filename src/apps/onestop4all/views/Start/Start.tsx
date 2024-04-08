@@ -109,7 +109,7 @@ export function StartView() {
                                 fontSize={{ base: "16px", custombreak: "24px" }}
                                 color="#737373"
                             >
-                                test{intl.formatMessage({ id: "start.banner.slogan" }, richTextIntl)}
+                                {intl.formatMessage({ id: "start.banner.slogan" }, richTextIntl)}
                             </Box>
                         </Flex>
                     </Container>
