@@ -172,7 +172,8 @@ export function Result() {
                 <ResultsNavigation
                     result={result}
                     of={resultCount}
-                    label="result"
+                    label_result="result"
+                    label_of="of"
                     stepBack={stepBack}
                     stepFoward={stepForward}
                     stepToEnd={stepToEnd}
