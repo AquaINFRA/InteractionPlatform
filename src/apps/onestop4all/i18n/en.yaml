@@ -22,7 +22,7 @@ messages:
     banner:
       slogan: "<bold>The central gateway for scientific communities to find, access, and reuse aquatic digital resources.</bold>"
     mission:
-      slogan: "The <bold>AquaINFRA Interaction Platform (AIP)</bold> is a user-friendly access point to resources from the aquatic realm, such as research data, software, and training materials. Learn more about the {MissionLink} project and how to use the platform by studying our fantastic {TrainingLink} materials."
+      slogan: "The <bold>AquaINFRA Interaction Platform (AIP)</bold> is a user-friendly access point to resources from the aquatic realm, such as research data, software, and training materials."
       links:
         #NFDI4EarthLinkUrl: https://www.nfdi4earth.de/
         #NFDI4EarthLinkLabel: NFDI4Earth
