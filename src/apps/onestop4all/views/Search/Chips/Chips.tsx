@@ -18,7 +18,7 @@ export function Chips() {
     const st = searchState.searchTerm;
     if (st) {
         chips.push({
-            title: "SearchTerm",
+            title: "Search term",
             values: [st],
             deleteCb: () => searchState.setSearchTerm("")
         });
