@@ -8,8 +8,8 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { Polygon } from "ol/geom";
 import { defaults as defaultControls, Control } from "ol/control";
-import { click, pointerMove } from "ol/events/condition.js";
-import Select from "ol/interaction/Select.js";
+import { always, click, pointerMove } from "ol/events/condition.js";
+import Select, { SelectEvent } from "ol/interaction/Select.js";
 // Import other components
 import { Box, ButtonGroup } from "@open-pioneer/chakra-integration";
 import { Legend } from "./Legend";
@@ -27,7 +27,7 @@ import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercato
 //import dataNewTopo from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc_topo.json";
 // Search
 import { useSearchState } from "../../SearchState";
-import { Feature, MapBrowserEvent } from "ol";
+import { Feature, MapBrowserEvent, getUid } from "ol";
 import Geometry from "ol/geom";
 import { Button } from "@open-pioneer/chakra-integration";
 import DragBox from "ol/interaction/DragBox";
@@ -152,7 +152,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         // 2. Compute BBox
         let extentArrays = [] as number[];
         const selectedFeatures = selectClick.getFeatures().getArray();
-        console.log(JSON.stringify(selectedFeatures));
+        console.log(toString(selectClick.getFeatures()));
         selectedFeatures.forEach((area: any) => {
             extentArrays = extentArrays.concat(area.getGeometry().getExtent());
         });
@@ -272,6 +272,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     let condition = pointerMove;
     if (drawing) condition = falsef;
 
+    const fiveFeatures = new Collection(features.slice(0, 5));
+
     // SelectHover
     const selectHover = new Select({
         condition: condition,
@@ -281,7 +283,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         },
         layers: [vectorLayer]
     });
-
     // SelectClick
     const [selectClick, setSelectClick] = useState<Select>(
         new Select({
@@ -325,7 +326,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         const selectedFeatures = [] as Feature[];
         let i = 0;
         // Durch alle Features der GeoJSON iterieren
-        debugger;
+        //debugger;
         vectorSource.getFeatures().forEach((feature) => {
             const featureGeometry = feature.getGeometry();
 
@@ -339,14 +340,35 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         // Ausgewählte Features zur selectClick-Auswahl hinzufügen
         selectClick.getFeatures().extend(selectedFeatures);
         //selectClick.getFeatures().insertAt(0, selectedFeatures[0]!);
-        console.log("Anzahl ausgewählter: " + i);
+        console.log("Anzahl selectedFeatures: " + i);
+        console.log("getFeatures: " + toString(selectClick.getFeatures()));
+        console.log("fiveFeatures: " + toString(fiveFeatures));
+        // selectClick.dispatchEvent(
+        //     new SelectEvent(
+        //       type = Select,
+        //       selected = selected,
+        //       deselected = ,
+        //       mapBrowserEvent,
+        //     ),
+        //   );
     }
-
+    function toString(collection: Collection<Feature>) {
+        const result = [] as any[];
+        collection.forEach((feature: Feature) => {
+            const uid = getUid(feature);
+            const name = feature.getProperties().rb_name;
+            result.push(uid + ":" + name);
+        });
+        return JSON.stringify(result);
+    }
     useEffect(() => {
         if (map && showPopup) {
             map.addInteraction(selectHover);
             map.addInteraction(selectClick);
             selectClick.on("select", () => setAreFeaturesSelected(true)); // komisch
+            selectClick.on("select", () => {
+                console.log("Onclick select: " + toString(selectClick.getFeatures()));
+            });
         } else {
             const selected = selectClick.getFeatures();
             if (selected.getLength() > 0) selected.remove(selected.item(0));
