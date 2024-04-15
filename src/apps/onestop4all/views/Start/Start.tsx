@@ -97,7 +97,7 @@ export function StartView() {
         <Box className="start-view">
             <Box position="relative">
                 <Box className="header-image" />
-                <Box position="absolute" w="100%" top="0" >
+                <Box position="absolute" w="100%" top="0">
                     <Container maxW={{ base: "100%", custombreak: "80%" }}>
                         <Flex
                             pt={{ base: "10px", custombreak: "60px" }}
@@ -153,8 +153,6 @@ export function StartView() {
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
                 <Box minH={{ base: "500px", custombreak: "700px" }}></Box>
-
-               
 
                 <div className="seperator"></div>
             </Container>

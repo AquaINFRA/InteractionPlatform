@@ -246,10 +246,23 @@ export function Result() {
                         <Box>{getResourceView()}</Box>
                     </>
                 )}
-                <Flex gap="10%" alignItems="center" pt="120px">
+                {/* Desktop footer */}
+                <Flex gap="10%" alignItems="center" pt="120px" hideBelow="custombreak">
                     <Divider className="seperator" w="65%" />
                     <Box w="25%">{renderPaging()}</Box>
                 </Flex>
+
+                {/* Mobile footer */}
+                <Box hideFrom="custombreak">
+                    <Box pt={"10"}>{renderPaging()}</Box>
+                    <Flex alignItems="center" gap="12px" pt="25px">
+                        <Divider />
+                        <BackToSearchLink
+                            visible={result !== undefined && resultCount !== undefined}
+                        />
+                        <Divider />
+                    </Flex>
+                </Box>
             </Container>
         </Box>
     );

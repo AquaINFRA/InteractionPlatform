@@ -46,11 +46,7 @@ export function SearchResult(props: SearchResultProps) {
                 <Flex gap="8px" padding="8px 0">
                     <Box>
                         {resType ? (
-                            <ResourceIcon
-                                type={resType}
-                                size={24}
-                                color={PrimaryColor}
-                            ></ResourceIcon>
+                            <ResourceIcon type={resType} size={24} color={PrimaryColor} />
                         ) : null}
                     </Box>
                     <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />

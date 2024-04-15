@@ -65,7 +65,7 @@ export function DatasetView(props: DatasetViewProps) {
                     ) : null}
                     {metadata.geometry ? (
                         <Box pt="80px">
-                            <Map geometry={metadata.geometry} mapId="desktop"/>
+                            <Map geometry={metadata.geometry} mapId="desktop" />
                         </Box>
                     ) : null}
                 </Box>
@@ -91,22 +91,22 @@ export function DatasetView(props: DatasetViewProps) {
                 ) : null}
                 <Box pt="30px">{getMetadata()}</Box>
                 {metadata.properties.description ? (
-                    <Box pt="80px">
+                    <Box pt="40px">
                         <Abstract abstractText={metadata.properties.description} />
                     </Box>
                 ) : null}
                 {metadata.geometry ? (
-                    <Box pt="80px">
-                        <Map geometry={metadata.geometry} mapId="mobile"/>
+                    <Box pt="40px">
+                        <Map geometry={metadata.geometry} mapId="mobile" />
                     </Box>
                 ) : null}
                 {metadata.description ? (
-                    <Box pt="80px">
+                    <Box pt="40px">
                         <Abstract abstractText={metadata.description} />
                     </Box>
                 ) : null}
                 {metadata.links ? (
-                    <Box pt="8px">
+                    <Box pt="40px">
                         <ExternalResources links={metadata.links} />
                     </Box>
                 ) : null}
@@ -120,18 +120,12 @@ export function DatasetView(props: DatasetViewProps) {
                 metadataElements={[
                     {
                         element: "keyword",
-                        tag:
-                            metadata.properties.keywords?.length > 1
-                                ? "Keywords"
-                                : "Keyword",
+                        tag: metadata.properties.keywords?.length > 1 ? "Keywords" : "Keyword",
                         val: metadata.properties.keywords
                     },
                     {
                         element: "language",
-                        tag:
-                            metadata.properties.language?.length > 1
-                                ? "Languages"
-                                : "Language",
+                        tag: metadata.properties.language?.length > 1 ? "Languages" : "Language",
                         val: metadata.properties.language
                     },
                     {
@@ -151,10 +145,7 @@ export function DatasetView(props: DatasetViewProps) {
                     },
                     {
                         element: "Formats",
-                        tag:
-                            metadata.properties.formats?.length > 1
-                                ? "Formats"
-                                : "Format",
+                        tag: metadata.properties.formats?.length > 1 ? "Formats" : "Format",
                         val: metadata.properties.formats
                     }
                 ]}

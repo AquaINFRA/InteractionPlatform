@@ -145,7 +145,11 @@ export function SearchView() {
                             </Box>
                         </Box>
                     ) : (
-                        <Box flex="1 1 100%" overflow="hidden" paddingTop={{ base: "7%", custombreak: "0%" }}>
+                        <Box
+                            flex="1 1 100%"
+                            overflow="hidden"
+                            paddingTop={{ base: "7%", custombreak: "0%" }}
+                        >
                             Loading...
                         </Box>
                     )}

@@ -8,6 +8,8 @@ import {
     LearningResourceIcon,
     OrganisationsIcon,
     RepositoriesIcon,
+    SeriesIcon,
+    ServicesIcon,
     StandardIcon,
     ToolSoftwareIcon
 } from "../Icons";
@@ -63,6 +65,10 @@ export function ResourceTypeLabel(props: {
             //     return <ServicesIcon />;
             case ResourceType.Dataset:
                 return <DatasetIcon />;
+            case ResourceType.Service:
+                return <ServicesIcon />;
+            case ResourceType.Series:
+                return <SeriesIcon />;
             default:
                 return <></>;
         }

@@ -13,7 +13,7 @@ import { Feature } from "ol";
 import { ResourceGeometry } from "../../../views/Dataset/Dataset";
 import { Geometry } from "ol/geom";
 
-export function Map(props: { geometry: ResourceGeometry, mapId: string; }) {
+export function Map(props: { geometry: ResourceGeometry; mapId: string }) {
     const [viewPadding, setViewPadding] = useState<MapPadding>();
     const { geometry, mapId } = props;
     const height = "45vh";
