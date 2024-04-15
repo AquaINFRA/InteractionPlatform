@@ -114,7 +114,11 @@ export const Footer = () => {
                         gap={{ base: "20px", custombreak: "52px" }}
                     >
                         <Box className="entry">
-                            <a href="https://github.com/AquaINFRA" target="_blank" rel="noreferrer">
+                            <a 
+                                href="https://github.com/AquaINFRA" 
+                                target="_blank" 
+                                rel="noreferrer"
+                            >
                                 <Flex gap="10px" alignItems="center">
                                     <Box w={"40px"}>
                                         <img src="/github.png" />
@@ -147,15 +151,15 @@ export const Footer = () => {
                                 </Flex>
                             </a>
                         </Box>
-                        <Box flex="1 1 50px"></Box>
-                        <Box w={"20%"}>
+                        <Box flex="1 1 20px"></Box>
+                        <Box w={{ base: "40%", custombreak: "20%" }}>
                             <a
                                 href="https://cordis.europa.eu/project/id/101094434"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <div className="label">Funded by</div>
-                                <img src="/ec-logo.svg" width={"80%"} />
+                                <div className="label" style={{marginBottom:"5px"}}>Funded by:</div>
+                                <img src="/ec-logo.svg" width={"100%"} />
                             </a>
                         </Box>
                     </Box>
