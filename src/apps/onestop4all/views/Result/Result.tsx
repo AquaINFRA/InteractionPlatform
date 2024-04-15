@@ -20,7 +20,8 @@ import { RepositoryMetadataResponse, RepositoryView } from "../Repository/Reposi
 import { useSearchState } from "../Search/SearchState";
 import { StandardMetadataResponse, StandardView } from "../Standard/Standard";
 import { ToolsSoftwareMetadataResponse, ToolsSoftwareView } from "../ToolsSoftware/ToolsSoftware";
-import { ResultPaging } from "../Search/ResultPaging/ResultPaging";
+import { BackToSearchLink } from "../../components/BackToSearchLink/BackToSearchLink";
+import { ResourceTypeLabel } from "../../components/ResourceTypeLabel/ResourceTypeLabel";
 
 export function Result() {
     const resultId = useParams().id as string;
@@ -202,31 +203,42 @@ export function Result() {
                 </Container>
             </Box>
 
-            <Box height={{ base: "50px", custombreak: "80px" }}></Box>
+            <Box height={{ base: "50px", custombreak: "80px" }} />
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Flex gap="10%" paddingTop={{ base: "7%", custombreak: "0%" }}>
+                {/* Desktop Header */}
+                <Flex gap="10%" hideBelow="custombreak">
                     <Box w="65%">
-                        <ResourceTypeHeader resType={resourceType} loading={loading} />
-                        {loading ? (
-                            <Box pt="30px">
-                                <Box pb="40px">
-                                    <Skeleton height="30px" />
-                                </Box>
-                                <Stack>
-                                    <Skeleton height="20px" />
-                                    <Skeleton height="20px" />
-                                    <Skeleton height="20px" />
-                                </Stack>
-                            </Box>
-                        ) : (
-                            <></>
-                        )}
+                        <Flex alignItems="center" gap="12px">
+                            <BackToSearchLink
+                                visible={result !== undefined && resultCount !== undefined}
+                            />
+                            <Divider className="resTypeHeaderLine" />
+                            <ResourceTypeLabel
+                                resType={resourceType}
+                                loading={loading}
+                                iconAlign="right"
+                            />
+                        </Flex>
+                        {loading ? <Skeleton /> : <></>}
                     </Box>
-                    <Box hideFrom="custombreak">
-                        <ResultPaging />
-                    </Box>
+                    <Box w="25%">{renderPaging()}</Box>
                 </Flex>
+
+                {/* Mobile Header */}
+                <Box hideFrom="custombreak">
+                    <Box pt="50px">{renderPaging()}</Box>
+                    <Flex alignItems="center" gap="12px" pt={"20px"}>
+                        <ResourceTypeLabel
+                            resType={resourceType}
+                            loading={loading}
+                            iconAlign="left"
+                        />
+                        <Divider />
+                    </Flex>
+                </Box>
+
+                {/* Content */}
                 {loading ? (
                     <></>
                 ) : (

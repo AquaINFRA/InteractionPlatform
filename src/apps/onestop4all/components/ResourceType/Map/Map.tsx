@@ -13,9 +13,9 @@ import { Feature } from "ol";
 import { ResourceGeometry } from "../../../views/Dataset/Dataset";
 import { Geometry } from "ol/geom";
 
-export function Map(props: { geometry: ResourceGeometry }) {
+export function Map(props: { geometry: ResourceGeometry, mapId: string; }) {
     const [viewPadding, setViewPadding] = useState<MapPadding>();
-    const { geometry } = props;
+    const { geometry, mapId } = props;
     const height = "45vh";
 
     const geoJSONFormat = new GeoJSON();
@@ -32,7 +32,7 @@ export function Map(props: { geometry: ResourceGeometry }) {
     });
 
     const olMapRegistry = useService("ol-map.MapRegistry");
-    const mapState = useAsync(async () => await olMapRegistry.getMap(MAP_ID));
+    const mapState = useAsync(async () => await olMapRegistry.getMap(mapId));
 
     useEffect(() => {
         if (mapState.value) {
@@ -86,7 +86,7 @@ export function Map(props: { geometry: ResourceGeometry }) {
 
     return (
         <Box w="100%" h={height} overflow="hidden" position="relative" flex="1">
-            <MapContainer mapId={MAP_ID} viewPadding={viewPadding} />
+            <MapContainer mapId={mapId} viewPadding={viewPadding} />
         </Box>
     );
 }
