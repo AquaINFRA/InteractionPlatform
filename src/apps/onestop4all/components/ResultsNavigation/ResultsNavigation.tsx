@@ -19,16 +19,8 @@ export interface ResultsNavigationProps {
 }
 
 export const ResultsNavigation = (props: ResultsNavigationProps) => {
-    const {
-        result,
-        of,
-        label_result,
-        label_of,
-        stepBack,
-        stepFoward,
-        stepToEnd,
-        stepToStart
-    } = props;
+    const { result, of, label_result, label_of, stepBack, stepFoward, stepToEnd, stepToStart } =
+        props;
     const ofText = "of";
 
     const canStepBack = result > 1;

@@ -16,11 +16,11 @@ export const Header = () => {
 
     return (
         <>
-            <HStack 
+            <HStack
                 justifyContent="space-between"
-                alignItems="center" 
-                margin="6px 0px" 
-                padding={{ base: "6px 1px 0px", custombreak: "36px 1px 10px" }} 
+                alignItems="center"
+                margin="6px 0px"
+                padding={{ base: "6px 1px 0px", custombreak: "36px 1px 10px" }}
             >
                 <Box _hover={{ cursor: "pointer" }} onClick={backToStart}>
                     <Logo />

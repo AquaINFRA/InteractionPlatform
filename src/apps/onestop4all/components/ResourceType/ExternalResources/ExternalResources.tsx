@@ -63,7 +63,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                                     fun={() => void 0}
                                 />
                             </Link>
-                        ): null}
+                        ) : null}
                     </Flex>
                 </Box>
             ))}

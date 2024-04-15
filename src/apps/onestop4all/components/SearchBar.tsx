@@ -3,7 +3,15 @@ import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 
-import { Box, Button, Flex, HStack, IconButton, Input, Select } from "@open-pioneer/chakra-integration";
+import {
+    Box,
+    Button,
+    Flex,
+    HStack,
+    IconButton,
+    Input,
+    Select
+} from "@open-pioneer/chakra-integration";
 
 import { BorderColor, PrimaryColor } from "../Theme";
 import {
@@ -148,6 +156,7 @@ export function SearchBar() {
                         _hover={{ cursor: "pointer" }}
                         margin={"2% 0% 0% 3%"}
                         w={"max-content"}
+                        maxWidth={"250px"}
                     >
                         {createResourceTypeSelectOptions()}
                     </Select>
