@@ -97,7 +97,7 @@ export function StartView() {
         <Box className="start-view">
             <Box position="relative">
                 <Box className="header-image" />
-                <Box position="absolute" w="100%" top="0">
+                <Box position="absolute" w="100%" top="0" >
                     <Container maxW={{ base: "100%", custombreak: "80%" }}>
                         <Flex
                             pt={{ base: "10px", custombreak: "60px" }}
@@ -116,44 +116,45 @@ export function StartView() {
                     </Container>
                     <Container maxW={{ base: "100%", custombreak: "80%" }}>
                         <SearchBar />
+                        <Box className="mission">
+                            <Box className="text-centered-box">
+                                <Box className="text-centered-box-text">
+                                    {intl.formatMessage(
+                                        { id: "start.mission.slogan" },
+                                        {
+                                            ...richTextIntl,
+                                            ...missionLinksIntl
+                                        }
+                                    )}
+                                </Box>
+                                <Box paddingTop={10} id="introVideo1">
+                                    <iframe
+                                        width="760"
+                                        height="409"
+                                        src="https://www.youtube.com/embed/-SRh9k44IRo?si=5VsH34-Qs6RZdvGc"
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    />
+                                </Box>
+                                <Box paddingTop={10} id="introVideo2">
+                                    <iframe
+                                        width="330"
+                                        height="190"
+                                        src="https://www.youtube.com/embed/-SRh9k44IRo?si=5VsH34-Qs6RZdvGc"
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    />
+                                </Box>
+                            </Box>
+                        </Box>
                     </Container>
                 </Box>
             </Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Box height="80px"></Box>
+                <Box minH={{ base: "500px", custombreak: "700px" }}></Box>
 
-                <Box className="mission">
-                    <Box className="text-centered-box">
-                        <Box className="text-centered-box-text">
-                            {intl.formatMessage(
-                                { id: "start.mission.slogan" },
-                                {
-                                    ...richTextIntl,
-                                    ...missionLinksIntl
-                                }
-                            )}
-                        </Box>
-                        <Box paddingTop={10} id="introVideo1">
-                            <iframe
-                                width="760"
-                                height="409"
-                                src="https://www.youtube.com/embed/-SRh9k44IRo?si=5VsH34-Qs6RZdvGc"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                        </Box>
-                        <Box paddingTop={10} id="introVideo2">
-                            <iframe
-                                width="330"
-                                height="190"
-                                src="https://www.youtube.com/embed/-SRh9k44IRo?si=5VsH34-Qs6RZdvGc"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                        </Box>
-                    </Box>
-                </Box>
+               
 
                 <div className="seperator"></div>
             </Container>
