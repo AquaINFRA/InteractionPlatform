@@ -136,3 +136,24 @@
         }
     }
 }
+
+#introVideo1 {
+    display: block;
+}
+
+#introVideo2 {
+    display: none;
+}
+
+/* Adjust for small screens */
+@media only screen and (max-width: $customBreakpoint) {
+
+    #introVideo1 {
+        display: none;
+    }
+
+    #introVideo2 {
+        display: block;
+    }
+
+}

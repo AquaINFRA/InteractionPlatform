@@ -133,10 +133,19 @@ export function StartView() {
                                 }
                             )}
                         </Box>
-                        <Box paddingTop={10}>
+                        <Box paddingTop={10} id="introVideo1">
                             <iframe 
                                 width="760" 
                                 height="409" 
+                                src="https://www.youtube.com/embed/-SRh9k44IRo?si=5VsH34-Qs6RZdvGc" 
+                                title="YouTube video player" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            />
+                        </Box>
+                        <Box paddingTop={10} id="introVideo2">
+                            <iframe 
+                                width="330" 
+                                height="190" 
                                 src="https://www.youtube.com/embed/-SRh9k44IRo?si=5VsH34-Qs6RZdvGc" 
                                 title="YouTube video player" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
