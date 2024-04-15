@@ -99,22 +99,23 @@ export function StartView() {
                 <Box className="header-image" />
                 <Box
                     position="absolute"
-                    width="100%"
-                    marginTop={{ base: "-40px", custombreak: "-170px" }}
+                    w="100%"
+                    top="0"
                 >
                     <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                        <Flex pt="60px" textAlign="center" justifyContent="flex-end">
+                        <Flex pt={{ base: "10px", custombreak: "60px" }} textAlign="center" justifyContent="flex-end">
                             <Box
-                                maxW={{ base: "70%", custombreak: "45%" }}
+                                maxW={{ base: "80%", custombreak: "45%" }}
                                 fontSize={{ base: "16px", custombreak: "24px" }}
-                                color="#737373"
+                                //top={"50px"}
+                                color="#4f4f4f"
                             >
                                 {intl.formatMessage({ id: "start.banner.slogan" }, richTextIntl)}
                             </Box>
                         </Flex>
                     </Container>
                     <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                        <SearchBar></SearchBar>
+                        <SearchBar />
                     </Container>
                 </Box>
             </Box>

@@ -12,10 +12,10 @@
         background-size: cover;
         opacity: 0.5;
 
-        /*@media only screen and (max-width: $customBreakpoint) {
-            height: 300px;
+        @media only screen and (max-width: $customBreakpoint) {
+            height: 100px;
             background-image: url("/background.png");
-        }*/
+        }
     }
 
     .bg-icon {
