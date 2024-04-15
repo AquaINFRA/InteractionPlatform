@@ -20,6 +20,7 @@ import { RepositoryMetadataResponse, RepositoryView } from "../Repository/Reposi
 import { useSearchState } from "../Search/SearchState";
 import { StandardMetadataResponse, StandardView } from "../Standard/Standard";
 import { ToolsSoftwareMetadataResponse, ToolsSoftwareView } from "../ToolsSoftware/ToolsSoftware";
+import { ResultPaging } from "../Search/ResultPaging/ResultPaging";
 
 export function Result() {
     const resultId = useParams().id as string;
@@ -204,7 +205,7 @@ export function Result() {
             <Box height={{ base: "50px", custombreak: "80px" }}></Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Flex gap="10%">
+                <Flex gap="10%" paddingTop={{ base: "7%", custombreak: "0%" }}>
                     <Box w="65%">
                         <ResourceTypeHeader resType={resourceType} loading={loading} />
                         {loading ? (
@@ -222,7 +223,9 @@ export function Result() {
                             <></>
                         )}
                     </Box>
-                    <Box w="25%">{renderPaging()}</Box>
+                    <Box hideFrom="custombreak">
+                        <ResultPaging />
+                    </Box>
                 </Flex>
                 {loading ? (
                     <></>

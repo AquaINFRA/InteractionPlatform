@@ -110,14 +110,8 @@ export function SearchView() {
                                     padding={{ base: "0 0 15px", custombreak: "0" }}
                                 >
                                     {/*<ResultCountSelector />*/}
-                                    <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
+                                    <Box bgColor={BorderColor} alignSelf="stretch" />
                                     {/*<SortedBySelector />*/}
-                                    <Box
-                                        flex="0 0 1px"
-                                        bgColor={BorderColor}
-                                        alignSelf="stretch"
-                                        hideFrom="custombreak"
-                                    />
                                     <Box hideFrom="custombreak">
                                         <Button
                                             leftIcon={<FilterIcon />}
@@ -151,7 +145,7 @@ export function SearchView() {
                             </Box>
                         </Box>
                     ) : (
-                        <Box flex="1 1 100%" overflow="hidden">
+                        <Box flex="1 1 100%" overflow="hidden" paddingTop={{ base: "7%", custombreak: "0%" }}>
                             Loading...
                         </Box>
                     )}
