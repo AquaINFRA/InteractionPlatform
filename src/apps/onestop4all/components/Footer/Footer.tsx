@@ -43,6 +43,7 @@ export const Footer = () => {
                                         })}
                                     </div>
                                 </a>
+                                <span>|</span>
                                 <a
                                     href="https://aquainfra.eu/partners"
                                     target="_blank"
@@ -55,6 +56,7 @@ export const Footer = () => {
                                         })}
                                     </div>
                                 </a>
+                                <span>|</span>
                                 <a
                                     href="https://aquainfra.eu/contact"
                                     target="_blank"
@@ -93,6 +95,7 @@ export const Footer = () => {
                                         })}
                                     </div>
                                 </a>
+                                <span>|</span>
                                 <a
                                     href="https://www.nfdi4earth.de/privacy-policy"
                                     target="_blank"

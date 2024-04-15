@@ -143,7 +143,7 @@ export function StartView() {
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                             />
                         </Box>
-                        <Box paddingTop={10} id="introVideo2">
+                        <Box paddingTop={10} id="introVideo2" >
                             <iframe 
                                 width="330" 
                                 height="190" 
@@ -158,11 +158,11 @@ export function StartView() {
                 <div className="seperator"></div>
             </Container>
 
-            <Box className="caseStudies" ref={resourcesSectionRef}>
+            {/*<Box className="caseStudies" ref={resourcesSectionRef}>
                 <Container maxW={{ base: "100%" }}>
                     <Box className="mission">
                         <Box className="mission-text text-centered-box">
-                            <Box className="text-centered-box-text">{/*<CaseStudies />*/}</Box>
+                            <Box className="text-centered-box-text"><CaseStudies /></Box>
                         </Box>
                     </Box>
                 </Container>
@@ -172,21 +172,22 @@ export function StartView() {
                 <Container maxW={{ base: "100%" }}>
                     <Box className="mission">
                         <Box className="mission-text text-centered-box">
-                            <Box className="text-centered-box-text">{<DemonstratorEntries />}</Box>
+                            <Box className="text-centered-box-text"><DemonstratorEntries /></Box>
                         </Box>
                     </Box>
                 </Container>
-            </Box>
+            </Box>}
 
-            <Box className="caseStudies" ref={resourcesSectionRef}>
+            {<Box className="caseStudies" ref={resourcesSectionRef}>
                 <Container maxW={{ base: "100%" }}>
                     <Box className="mission">
                         <Box className="mission-text text-centered-box">
-                            <Box className="text-centered-box-text">{/*<LatestAdditions />*/}</Box>
+                            <Box className="text-centered-box-text"><LatestAdditions /></Box>
                         </Box>
                     </Box>
                 </Container>
-            </Box>
+            </Box>*/}
+
         </Box>
     );
 }
