@@ -65,18 +65,6 @@ export function BaseMenu() {
                         onClick={onClose}
                     />
                 </HStack>
-                <Hide above="custombreak">
-                    <Box
-                        className="initial-block"
-                        padding={{ base: "0 70px 40px", custombreak: "0 70px 40px" }}
-                        marginTop={{ base: "-20px", custombreak: "0px" }}
-                        lineHeight="36px"
-                    >
-                        <UserSupportLink></UserSupportLink>
-                        <Login></Login>
-                        <LanguageToggler></LanguageToggler>
-                    </Box>
-                </Hide>
                 <div className="seperator"></div>
                 {createBlock(
                     "Get connected",

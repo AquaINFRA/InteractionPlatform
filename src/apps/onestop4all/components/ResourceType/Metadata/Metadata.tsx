@@ -56,11 +56,11 @@ export const Metadata = (props: {
                                             <Box>
                                                 <UpIcon />
                                             </Box>
-                                            <Box className="metadataShowHide">Hide metadata</Box>
+                                            <Box className="metadataShowHide">Show less</Box>
                                         </>
                                     ) : (
                                         <>
-                                            <Box className="metadataShowHide">Show full list</Box>
+                                            <Box className="metadataShowHide">All metadata</Box>
                                             <Box>
                                                 <DownIcon />
                                             </Box>

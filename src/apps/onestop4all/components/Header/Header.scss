@@ -1,0 +1,59 @@
+#svg1 {
+    display: block;
+}
+
+#svg2 {
+    display: none;
+}
+
+#feedback1 {
+    display: block;
+    margin-left: 10%;
+}
+
+#feedback2 {
+    display: none;
+}
+
+#searchbar {
+    display: block;
+}
+
+#searchbarResponsive {
+    display: none;
+}
+
+/* Adjust for small screens */
+@media only screen and (max-width: $customBreakpoint) {
+    #svg1 {
+        display: none;
+    }
+
+    #svg2 {
+        display: block;
+    }
+
+    #feedback1 {
+        display: none;
+    }
+
+    #feedback2 {
+        display: block;
+        margin-bottom: 2%;
+        margin-right: 2%;
+        margin-left: 2%;
+    }
+
+    .feedbackText {
+        margin-top: 3%;
+        margin-bottom: 3%;
+    }
+
+    #searchbar {
+        display: none;
+    }
+
+    #searchbarResponsive {
+        display: block;
+    }
+}

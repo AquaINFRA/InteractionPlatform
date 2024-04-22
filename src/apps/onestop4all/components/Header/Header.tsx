@@ -1,8 +1,7 @@
-import { Box, Flex, Hide, HStack } from "@open-pioneer/chakra-integration";
+import { Box, Divider, Flex, Hide, HStack } from "@open-pioneer/chakra-integration";
 import { useNavigate } from "react-router-dom";
 import { useIntl } from "open-pioneer:react-hooks";
 
-import { BorderColor } from "../../Theme";
 import { Logo } from "./Logo";
 import { MenuButton } from "./MenuButton";
 import { Feedback } from "./Feedback";
@@ -16,17 +15,30 @@ export const Header = () => {
     };
 
     return (
-        <Flex alignItems="center" justifyContent="space-between" margin="6px 0px" padding="36px 0px" borderBottom="1px solid" borderBottomColor={BorderColor}>
-            <Box _hover={{ cursor: "pointer" }} onClick={backToStart}>
-                <Logo />
-            </Box>
-            <Flex alignItems="center">
-                <Box id="feedback1" marginRight="50px">
-                    <Feedback fontSize="16pt" />
+        <>
+            <HStack
+                justifyContent="space-between"
+                alignItems="center"
+                margin="6px 0px"
+                padding={{ base: "6px 1px 0px", custombreak: "36px 1px 10px" }}
+            >
+                <Box _hover={{ cursor: "pointer" }} onClick={backToStart}>
+                    <Logo />
                 </Box>
-                <Hide below="custombreak" />
-                <MenuButton />
-            </Flex>
-        </Flex>
+                <div id="feedback1">
+                    <Feedback fontSize="16pt" />
+                </div>
+                <Flex gap={{ base: "10px", custombreak: "30px" }}>
+                    <MenuButton />
+                </Flex>
+            </HStack>
+            <Divider className="separator" />
+            <div id="feedback2">
+                <div className="feedbackText">
+                    <Feedback fontSize="12pt" />
+                </div>
+                <Divider className="separator" />
+            </div>
+        </>
     );
 };
