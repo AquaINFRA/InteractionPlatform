@@ -13,6 +13,7 @@ import { ResultCountSelector } from "./ResultCountSelector/ResultCountSelector";
 import { ResultPaging } from "./ResultPaging/ResultPaging";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "./SearchState";
+import { DownloadOptionFacet } from "./Facets/DownloadOptionFacet/DownloadOptionFacet";
 //import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
 
 export function SearchView() {
@@ -49,6 +50,10 @@ export function SearchView() {
             params[UrlSearchParameterType.DataProvider] = searchState.selectedDataProvider;
         }
 
+        if (searchState.downloadOption) {
+            params[UrlSearchParameterType.DownloadOption] = searchState.downloadOption;
+        }
+
         navigate({
             pathname: "/search",
             search: `?${createSearchParams({ ...params })}`
@@ -60,7 +65,8 @@ export function SearchView() {
         searchState.pageSize,
         searchState.pageStart,
         searchState.sorting,
-        searchState.selectedDataProvider
+        searchState.selectedDataProvider,
+        searchState.downloadOption
     ]);
 
     const [openMenu, setOpenMenu] = useState(false);
@@ -163,6 +169,9 @@ export function SearchView() {
                         <Box padding={"32px 0px"}>
                             <DataProviderFacet />
                         </Box>
+                        {/*<Box>
+                            <DownloadOptionFacet />
+                        </Box>*/}
                         {/*<Box padding={"64px 0px 32px"} ref={menu}>
                             <ResourceTypeFacet></ResourceTypeFacet>
                         </Box>

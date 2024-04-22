@@ -11,7 +11,8 @@ export enum UrlSearchParameterType {
     PageSize = "pageSize",
     PageStart = "pageStart",
     SortingFilter = "sort",
-    DataProvider = "dataProvider"
+    DataProvider = "dataProvider",
+    DownloadOption = "rdl"
 }
 
 export interface UrlSearchParams {
@@ -21,6 +22,7 @@ export interface UrlSearchParams {
     [UrlSearchParameterType.PageStart]?: string;
     [UrlSearchParameterType.SortingFilter]?: string;
     [UrlSearchParameterType.DataProvider]?: string[];
+    [UrlSearchParameterType.DownloadOption]?: string;
 }
 
 export const SpatialFilterEnableForResourceTypes = [ResourceType.Organisations];
@@ -45,6 +47,8 @@ export interface SortOption {
 export interface ISearchState {
     searchTerm: string;
     setSearchTerm(searchTerm: string): void;
+    downloadOption: string;
+    setDownloadOption(downloadOption: string): void;
     selectedDataProvider: string[];
     setSelectedDataProvider(dataProvider: string[]): void;
     dataProviderTitles: string[];
@@ -112,6 +116,9 @@ export const SearchState = (props: PropsWithChildren) => {
         urlDp.forEach((e) => e && dPr.push(e));
     }
     const [selectedDataProvider, setSelectedDataProvider] = useState<string[]>(dPr);
+
+    //init download option
+    const [downloadOption, setDownloadOption] = useState<string>("");
 
     // init spatial filter
     let sp: number[] = [];
@@ -197,7 +204,9 @@ export const SearchState = (props: PropsWithChildren) => {
         selectedDataProvider,
         selectableDataProvider,
         setDataProviderTitles,
-        dataProviderTitles
+        dataProviderTitles,
+        downloadOption,
+        setDownloadOption
     };
 
     return (
