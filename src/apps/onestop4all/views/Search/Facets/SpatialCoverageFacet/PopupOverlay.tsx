@@ -56,7 +56,7 @@ interface PopupOverlayProps {
 }
 
 export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
-    console.log("Page reloaded!");
+    // console.log("Page reloaded!");
     /********************************Initialization******************************* */
     // Initialize the map
     const mapId = "popup";
@@ -79,15 +79,15 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
 
     const [drawing, setDrawing] = useState(false);
 
-    console.log(
-        "Current states: drawing = " +
-            drawing +
-            ", areFeaturesSelected = " +
-            areFeaturesSelected +
-            ", isBBoxDisplayed =" +
-            isBBoxDisplayed +
-            ", selectedAreas = "
-    );
+    // console.log(
+    //     "Current states: drawing = " +
+    //         drawing +
+    //         ", areFeaturesSelected = " +
+    //         areFeaturesSelected +
+    //         ", isBBoxDisplayed =" +
+    //         isBBoxDisplayed +
+    //         ", selectedAreas = "
+    // );
 
     // Center the map in Europe everytime the Popup gets opened
     useEffect(() => {
@@ -210,7 +210,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                     searchState.setSpatialFilter(extent);
                 }
             }
-            console.log("setSearchArea() wurde aufgerufen!");
+            // console.log("setSearchArea() wurde aufgerufen!");
         }
     }
 
@@ -291,11 +291,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     /************************Feature: Draw a box to select multiple areas************************** */
     // HANDLER: draw a box
     function handleSelectBox() {
-        toggleDrawing();
-    }
-    function toggleDrawing(): void {
-        if (drawing) setDrawing(false);
-        else setDrawing(true);
+        return;
     }
 
     useEffect(() => {
@@ -327,9 +323,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                             <GetBBoxButton active={areFeaturesSelected} onClick={getBBox} />
                             <DeselectButton active={areFeaturesSelected} onClick={deselectAll} />
                             <SearchButton active={isBBoxDisplayed} onClick={setSearchArea} />
-                            <Button height="5vh" fontSize="0.7vw" onClick={() => handleSelectBox()}>
-                                Draw Box
-                            </Button>
                         </ButtonGroup>
                     </Box>
                     <Box marginTop="20px">
