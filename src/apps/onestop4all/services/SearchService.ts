@@ -266,8 +266,7 @@ export class SearchService {
     }
 
     getFaqList() {
-        const url =
-            `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2fFAQ.md/raw`;
+        const url = `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2fFAQ.md/raw`;
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
@@ -281,9 +280,7 @@ export class SearchService {
 
     fetchRoCrateFile(id: string) {
         const url =
-            "https://zenodo.org/api/records/" +
-            id +
-            "/files/ro-crate-metadata.json/content";
+            "https://zenodo.org/api/records/" + id + "/files/ro-crate-metadata.json/content";
         return fetch(url).then((response) =>
             response.json().then((responseData: object) => {
                 if (responseData) {
@@ -296,8 +293,19 @@ export class SearchService {
     }
 
     getDataProvider() {
-        const url =
-            oapirUrl + "/collections?f=json&lang=en-US";
+        const url = oapirUrl + "/collections?f=json&lang=en-US";
+        return fetch(url).then((response) =>
+            response.text().then((responseData: string) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
+    }
+    getRelatedSearchterms() {
+        const url = `http://vm2558.kaj.pouta.csc.fi/rcsearch?keyword=rivers&broader=true&narrower=true&related=true`;
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
@@ -343,8 +351,7 @@ export class SearchService {
     }
 
     getLhbStructure() {
-        const url =
-            `https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/mkdocs.yml`;
+        const url = `https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/mkdocs.yml`;
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {

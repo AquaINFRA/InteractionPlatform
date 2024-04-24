@@ -2,7 +2,7 @@ import { Flex } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 
-import { SimpleGrid } from "@chakra-ui/react";
+import { Button, SimpleGrid } from "@chakra-ui/react";
 
 import { SelectableDataProvider, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
@@ -16,6 +16,7 @@ export function DataProviderFacet() {
     const searchState = useSearchState();
     const [entries, setEntries] = useState<SelectableDataProvider[]>([]);
     const searchSrvc = useService("onestop4all.SearchService");
+    const [related, setRelated] = useState<any>();
 
     useEffect(() => {
         searchSrvc.getDataProvider().then((res) => {
@@ -24,7 +25,16 @@ export function DataProviderFacet() {
                     a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
                 )
             );
+            // searchSrvc.getRelatedSearchterms().then((res) => {
+            //     setRelated(res);
+            //     const json: JSON = JSON.parse(res);
+            //     Object.entries(json).forEach((entry) => {
+            //         const [key, object] = entry;
+            //         console.log(`${key}: ${object.value}`);
+            //     });
+            // });
         });
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
