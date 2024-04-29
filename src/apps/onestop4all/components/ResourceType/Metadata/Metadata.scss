@@ -37,6 +37,33 @@
     margin-right: 5px;
     margin-top: 10px;
 }
+.metadataKeywordNarrower {
+    border-radius: 50px;
+    background: rgb(255, 222, 173);
+    padding: 0px 8px;
+    display: inline-block;
+    text-decoration: underline;
+    margin-right: 5px;
+    margin-top: 10px;
+}
+.metadataKeywordBroader {
+    border-radius: 50px;
+    background: rgb(230, 230, 250);
+    padding: 0px 8px;
+    display: inline-block;
+    text-decoration: underline;
+    margin-right: 5px;
+    margin-top: 10px;
+}
+.metadataKeywordRelated {
+    border-radius: 50px;
+    background: rgb(210, 180, 140);
+    padding: 0px 8px;
+    display: inline-block;
+    text-decoration: underline;
+    margin-right: 5px;
+    margin-top: 10px;
+}
 
 .metadataAuthors {
     margin-bottom: 10px;

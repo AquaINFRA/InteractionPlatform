@@ -13,6 +13,7 @@ import { ResultCountSelector } from "./ResultCountSelector/ResultCountSelector";
 import { ResultPaging } from "./ResultPaging/ResultPaging";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "./SearchState";
+import { RelatedTerms } from "./Facets/RelatedTerms/RelatedTerms";
 //import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
 
 export function SearchView() {
@@ -103,6 +104,7 @@ export function SearchView() {
             <Box height={{ base: "50px", custombreak: "80px" }}></Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
+                <RelatedTerms></RelatedTerms>
                 <Flex gap="5vw">
                     {searchState.isLoaded ? (
                         <Box flex="1 1 100%" overflow="hidden">
