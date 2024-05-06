@@ -46,7 +46,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     useEffect(() => {
         if (map && searchState.spatialFilter !== undefined) {
             const mapEPSG = map.getView().getProjection().getCode();
-
+            source.clear();
             if (searchState.spatialFilter.length === 4) {
                 const bbox = fromExtent(searchState.spatialFilter).transform(usedEPSGCode, mapEPSG);
                 const bboxFeature = new Feature<Polygon>(bbox);

@@ -300,8 +300,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             map.addInteraction(selectClick);
             selectClick.on("select", () => setAreFeaturesSelected(true));
         } else {
-            const selected = selectClick.getFeatures();
-            if (selected.getLength() > 0) selected.remove(selected.item(0));
+            // const selected = selectClick.getFeatures();
+            // if (selected.getLength() > 0) selected.remove(selected.item(0));
             map?.removeInteraction(selectHover);
             map?.removeInteraction(selectClick);
             setAreFeaturesSelected(false);
@@ -321,7 +321,10 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                         <CatchmentOptions />
                         <ButtonGroup orientation="vertical" marginTop="2px" spacing="1">
                             <GetBBoxButton active={areFeaturesSelected} onClick={getBBox} />
-                            <DeselectButton active={areFeaturesSelected} onClick={deselectAll} />
+                            <DeselectButton
+                                active={areFeaturesSelected || isBBoxDisplayed}
+                                onClick={deselectAll}
+                            />
                             <SearchButton active={isBBoxDisplayed} onClick={setSearchArea} />
                         </ButtonGroup>
                     </Box>
