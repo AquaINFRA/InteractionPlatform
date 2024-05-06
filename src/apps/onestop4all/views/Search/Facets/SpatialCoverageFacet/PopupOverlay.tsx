@@ -318,8 +318,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 <XButton handleClose={handleClose} />
                 <Box display="flex" justifyContent="space-around">
                     <Box>
-                        <CatchmentOptions />
-                        <ButtonGroup orientation="vertical" marginTop="2px" spacing="1">
+                        {/* <CatchmentOptions /> */}
+                        <ButtonGroup orientation="vertical" marginTop="28px" spacing="1">
                             <GetBBoxButton active={areFeaturesSelected} onClick={getBBox} />
                             <DeselectButton
                                 active={areFeaturesSelected || isBBoxDisplayed}
