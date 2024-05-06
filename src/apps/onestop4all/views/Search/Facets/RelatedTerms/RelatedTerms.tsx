@@ -26,7 +26,7 @@ export const RelatedTerms = () => {
 
             setMyArray(tmpArray);
             setMyJson(tmpJson);
-            console.log(myJson);
+            // console.log(myJson);
         });
     });
     return <RelatedKeywords list={myJson} tag={"Related terms"} element={"keyword"} />;

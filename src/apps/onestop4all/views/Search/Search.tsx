@@ -101,13 +101,18 @@ export function SearchView() {
                 </Container>
             </Box>
 
-            <Box height={{ base: "50px", custombreak: "80px" }}></Box>
+            <Box height={{ base: "50px", custombreak: "60px" }}></Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <RelatedTerms></RelatedTerms>
                 <Flex gap="5vw">
                     {searchState.isLoaded ? (
                         <Box flex="1 1 100%" overflow="hidden">
+                            {searchState.searchTerm != "" ? (
+                                <Box width="100%">
+                                    <RelatedTerms></RelatedTerms>
+                                </Box>
+                            ) : null}
+
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
                                 <Box className="results-count">
                                     {searchState.searchResults?.count} Results for your search
@@ -169,7 +174,7 @@ export function SearchView() {
                         </Box>
                     )}
 
-                    <Flex flex="0 0 30%" hideBelow="custombreak" flexDirection="column">
+                    <Flex flex="0 0 25%" hideBelow="custombreak" flexDirection="column">
                         <Box>
                             <ResultPaging />
                         </Box>

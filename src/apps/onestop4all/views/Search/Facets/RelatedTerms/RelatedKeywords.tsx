@@ -1,4 +1,15 @@
-import { Box } from "@open-pioneer/chakra-integration";
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    Checkbox,
+    HStack,
+    Stack,
+    VStack,
+    extendTheme
+} from "@open-pioneer/chakra-integration";
+import { checkboxAnatomy } from "@chakra-ui/anatomy";
+import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 
 interface Item {
     value?: string;
@@ -26,9 +37,9 @@ export const RelatedKeywords = (props: {
     };
 
     function getClassName(item: Item) {
-        console.log(item);
+        // console.log(item);
         if (item.type != null) {
-            console.log("TYPE: " + item.type);
+            // console.log("TYPE: " + item.type);
             switch (item.type) {
                 case "originalMatch":
                     return "metadataKeyword";
@@ -68,16 +79,40 @@ export const RelatedKeywords = (props: {
 
     return (
         <Box className="metadataSection">
-            <div className="seperator"></div>
-            <span className="metadataTag">
-                {tag}
-                :&nbsp;
-            </span>
+            <Stack spacing={3} direction="row" wrap="wrap">
+                <span className="metadataTag">{tag}:</span>
+                <Checkbox defaultChecked>
+                    <Box borderRadius="50px" background={"rgba(34, 192, 210, 0.2)"} padding="3px">
+                        Original Match
+                    </Box>
+                </Checkbox>
+                <Checkbox defaultChecked>
+                    <Box borderRadius="50px" background={"rgb(255, 222, 173)"} padding="3px">
+                        Narrower
+                    </Box>
+                </Checkbox>
+                <Checkbox defaultChecked>
+                    <Box borderRadius="50px" background={"rgb(230, 230, 250)"} padding="3px">
+                        Broader
+                    </Box>
+                </Checkbox>
+                <Checkbox defaultChecked>
+                    <Box borderRadius="50px" background={"rgb(210, 180, 140)"} padding="3px">
+                        Related
+                    </Box>
+                </Checkbox>
+                <HStack spacing="3px">
+                    <Button height="3vh" width="200px" fontSize="0.7vw">
+                        Search for selected terms
+                    </Button>
+                </HStack>
+            </Stack>
             {shortList.map((item: Item, j: number) => (
                 <a href={createQuery(element, item.value!)} className={getClassName(item)} key={j}>
                     {item.value}
                 </a>
             ))}
+            <div className="seperator" style={{ marginTop: "10px" }}></div>
         </Box>
     );
 };
