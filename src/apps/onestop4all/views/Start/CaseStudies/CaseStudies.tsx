@@ -40,38 +40,16 @@ export const CaseStudies = () => {
     ];
 
     const itemsTitle = [
-        intl.formatMessage(
-            {
-                id: "start.caseStudy.oneTitle"
-            },
-            richTextIntl
-        ),
-        intl.formatMessage(
-            {
-                id: "start.caseStudy.twoTitle"
-            },
-            richTextIntl
-        ),
-        intl.formatMessage(
-            {
-                id: "start.caseStudy.threeTitle"
-            },
-            richTextIntl
-        ),
-        intl.formatMessage(
-            {
-                id: "start.caseStudy.fourTitle"
-            },
-            richTextIntl
-        )
+        "https://www.youtube.com/embed/-SRh9k44IRo?si=5VsH34-Qs6RZdvGc",
+        "https://www.youtube.com/embed/92VtJhJZA_Q?si=MRtW7d3cONcLDDrq"
     ];
 
     const handlePrev = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + itemsText.length) % itemsText.length);
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + itemsTitle.length) % itemsTitle.length);
     };
 
     const handleNext = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % itemsText.length);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % itemsTitle.length);
     };
 
     const handleClick = (index: number) => {
@@ -108,18 +86,16 @@ export const CaseStudies = () => {
                     </Box>
                     <div className="carousel">
                         <div className="carousel-text" key={currentIndex}>
-                            {itemsTitle[currentIndex]}
-                            <br />
-                            {itemsText[currentIndex]}
+                            <Box paddingTop={10} id="introVideo1">
+                                <iframe
+                                    width="760"
+                                    height="409"
+                                    src={itemsTitle[currentIndex]}
+                                    title="YouTube video player"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                />
+                            </Box>
                         </div>
-                        <Button
-                            onClick={() => {
-                                handleClick(currentIndex);
-                            }}
-                            marginTop={"1%"}
-                        >
-                            More
-                        </Button>
                     </div>
                     <Box
                         flex="0 0 75px"
