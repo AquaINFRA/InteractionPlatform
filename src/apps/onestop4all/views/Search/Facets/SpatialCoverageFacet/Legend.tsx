@@ -9,24 +9,21 @@ export function Legend() {
             <Flex direction={"column"} gap={"1vh"}>
                 <Flex style={{ marginBottom: "5px", fontSize: "2vh" }}>
                     <Flex marginTop={"-0.3vh"} width="7vh">
-                        <img src="/area.svg" />
-                        <div className="label">legend</div>
+                        <img src="/area.svg" alt="Catchment area" />
                     </Flex>
                     Catchment area
                 </Flex>
                 <Flex style={{ marginBottom: "5px", fontSize: "2vh" }}>
                     <Flex marginTop={"-0.3vh"} width="7vh">
-                        <img src="/areaSelected.svg" />
-                        <div className="label">legend</div>
+                        <img src="/areaSelected.svg" alt="Selected area" />
                     </Flex>
                     Selected area
                 </Flex>
                 <Flex style={{ marginBottom: "5px", fontSize: "2vh" }}>
                     <Flex marginTop={"-0.3vh"} width="7vh">
-                        <img src="/bbox.svg" />
-                        <div className="label">legend</div>
+                        <img src="/bbox.svg" alt="Bounding box" />
                     </Flex>
-                    Bounding Box
+                    Bounding box
                 </Flex>
             </Flex>
         </Box>

@@ -10,6 +10,7 @@ import {
 } from "@open-pioneer/chakra-integration";
 import { checkboxAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
+import { useSearchState } from "../../SearchState";
 
 interface Item {
     value?: string;
@@ -23,6 +24,8 @@ export const RelatedKeywords = (props: {
     type?: string;
 }) => {
     const { list, tag, element, type } = props;
+
+    const searchState = useSearchState();
 
     const createQuery = (element: string, elem: string) => {
         if (element == "keyword") {
@@ -102,7 +105,12 @@ export const RelatedKeywords = (props: {
                     </Box>
                 </Checkbox>
                 <HStack spacing="3px">
-                    <Button height="3vh" width="12vw" fontSize="0.7vw">
+                    <Button
+                        height="3vh"
+                        width="12vw"
+                        fontSize="0.7vw"
+                        onClick={() => searchState.setSearchTerm("Test")}
+                    >
                         Search for selected terms
                     </Button>
                 </HStack>
