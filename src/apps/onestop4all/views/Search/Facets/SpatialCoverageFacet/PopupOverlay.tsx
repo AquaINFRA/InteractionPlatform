@@ -311,9 +311,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     return (
         <Box className="popup-background-transparent">
             <Box className="popup-background">
-                <Box>
-                    <h1>Select catchment areas</h1>
-                </Box>
+                <Box fontSize={20}><b>Select catchment areas</b></Box>
                 <Box height="85%" width="100%">
                     <MapContainer mapId={mapId} />
                     <Box position="absolute" bottom="16%" left="4%">
