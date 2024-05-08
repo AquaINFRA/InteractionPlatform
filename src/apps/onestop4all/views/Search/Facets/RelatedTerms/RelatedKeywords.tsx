@@ -11,6 +11,7 @@ import {
 import { checkboxAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 import { useSearchState } from "../../SearchState";
+import { useState } from "react";
 
 interface Item {
     value?: string;
@@ -26,6 +27,7 @@ export const RelatedKeywords = (props: {
     const { list, tag, element, type } = props;
 
     const searchState = useSearchState();
+    const [isSelected, setIsSelected] = useState("none");
 
     const createQuery = (element: string, elem: string) => {
         if (element == "keyword") {
@@ -116,9 +118,14 @@ export const RelatedKeywords = (props: {
                 </HStack>
             </Stack>
             {shortList.map((item: Item, j: number) => (
-                <a href={createQuery(element, item.value!)} className={getClassName(item)} key={j}>
+                <button
+                    className={getClassName(item)}
+                    style={{ border: isSelected }}
+                    key={j}
+                    onClick={() => setIsSelected("2px solid black")}
+                >
                     {item.value}
-                </a>
+                </button>
             ))}
             <div className="seperator" style={{ marginTop: "10px" }}></div>
         </Box>
