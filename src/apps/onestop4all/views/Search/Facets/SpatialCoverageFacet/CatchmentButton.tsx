@@ -1,13 +1,13 @@
 import { Button } from "@open-pioneer/chakra-integration";
 import { PrimaryColor } from "../../../../Theme";
 import { lineBlue } from "./Styles";
-
-interface DeselectButtonProps {
+interface CatchmentButtonProps {
     onClick: () => void;
     active: boolean;
+    text: string;
 }
-export function DeselectButton(props: DeselectButtonProps) {
-    const { onClick, active } = props;
+export function CatchmentButton(props: CatchmentButtonProps) {
+    const { onClick, active, text } = props;
     const bgcolor = active ? PrimaryColor : "grey";
     const hover = active ? { bg: lineBlue } : { bg: "grey" };
     // remove onClick if button is deactivated
@@ -26,7 +26,7 @@ export function DeselectButton(props: DeselectButtonProps) {
             fontSize="0.7vw"
             onClick={handleClick}
         >
-            Deselect catchment areas
+            {text}
         </Button>
     );
 }
