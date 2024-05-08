@@ -20,10 +20,7 @@ export function CatchmentButton(props: CatchmentButtonProps) {
         <Button
             bg={bgcolor}
             _hover={hover}
-            paddingLeft={"0.5vw"}
-            paddingRight={"0.5vw"}
-            height="5vh"
-            fontSize="0.7vw"
+            w={"250px"}
             onClick={handleClick}
         >
             {text}
