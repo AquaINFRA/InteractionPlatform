@@ -312,14 +312,14 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     return (
         <Box className="popup-background-transparent">
             <Box className="popup-background">
-                <Box height="65%" width="100%">
+                <Box height="70%" width="100%">
                     <MapContainer mapId={mapId} />
                 </Box>
                 <XButton handleClose={handleClose} />
                 <Box display="flex" justifyContent="space-around">
                     <Box>
                         {/* <CatchmentOptions /> */}
-                        <ButtonGroup orientation="vertical" marginTop="28px" spacing="1">
+                        <ButtonGroup orientation="vertical" marginTop="28px" spacing="2vh">
                             <GetBBoxButton active={areFeaturesSelected} onClick={getBBox} />
                             <DeselectButton
                                 active={areFeaturesSelected || isBBoxDisplayed}
