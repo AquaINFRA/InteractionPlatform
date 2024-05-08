@@ -121,9 +121,11 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         />
                         <MapContainer mapId={mapId} />
                     </Box>
-                    <Button width="100%" onClick={() => setSearchArea()}>
-                        set search area
-                    </Button>
+                    <Box id="popupOverlay1">
+                        <Button width="100%" onClick={() => setSearchArea()}>
+                            set search area
+                        </Button>
+                    </Box>
                     <Button
                         width="100%"
                         onClick={() => setShowPopup(true)}
