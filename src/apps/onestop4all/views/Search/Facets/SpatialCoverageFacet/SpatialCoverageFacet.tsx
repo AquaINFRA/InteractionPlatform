@@ -119,9 +119,11 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         />
                         <MapContainer mapId={mapId} />
                     </Box>
-                    <Button width="100%" onClick={() => setSearchArea()}>
-                        set search area
-                    </Button>
+                    <Box id="popupOverlay1">
+                        <Button width="100%" onClick={() => setSearchArea()}>
+                            set search area
+                        </Button>
+                    </Box>
                     <Button
                         width="100%"
                         onClick={() => setShowPopup(true)}
@@ -132,7 +134,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     {disabled && (
                         <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
                     )}
-                    <PopupOverlay showPopup={showPopup} onClose={() => setShowPopup(false)} />
+                    <PopupOverlay showPopup={showPopup} onClose={() => setShowPopup(false)}/>
                 </Box>
             </FacetBase>
         </Box>

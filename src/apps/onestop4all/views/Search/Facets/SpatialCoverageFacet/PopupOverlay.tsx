@@ -16,8 +16,7 @@ import { Legend } from "./Legend";
 import { XButton } from "./XButton";
 import { CatchmentOptions } from "./CatchmentOptions";
 import { SearchButton } from "./SearchButton";
-import { GetBBoxButton } from "./GetBBoxButton";
-import { DeselectButton } from "./DeselectButton";
+import { CatchmentButton } from "./CatchmentButton";
 // Import Styles
 import { hoverStyle, style, selectStyle, bBoxStyle } from "./Styles";
 // Import GeoJSON
@@ -320,10 +319,11 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                     <Box>
                         {/* <CatchmentOptions /> */}
                         <ButtonGroup orientation="vertical" marginTop="28px" spacing="1">
-                            <GetBBoxButton active={areFeaturesSelected} onClick={getBBox} />
-                            <DeselectButton
+                            <CatchmentButton active={areFeaturesSelected} onClick={getBBox} text="Get Bounding Box" />
+                            <CatchmentButton
                                 active={areFeaturesSelected || isBBoxDisplayed}
                                 onClick={deselectAll}
+                                text="Deselect Catchment Areas"
                             />
                             <SearchButton active={isBBoxDisplayed} onClick={setSearchArea} />
                         </ButtonGroup>

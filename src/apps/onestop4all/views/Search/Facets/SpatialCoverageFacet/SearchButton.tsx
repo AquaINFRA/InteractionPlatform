@@ -16,7 +16,7 @@ export function SearchButton(props: SearchButtonProps) {
         }
     }
     return (
-        <Button bg={bgcolor} _hover={hover} height="5vh" fontSize="0.7vw" onClick={handleClick}>
+        <Button bg={bgcolor} _hover={hover} onClick={handleClick}>
             Search for datasets that overlap with this area
         </Button>
     );

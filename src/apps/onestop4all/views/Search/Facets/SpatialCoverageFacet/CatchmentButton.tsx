@@ -2,12 +2,13 @@ import { Button } from "@open-pioneer/chakra-integration";
 import { PrimaryColor } from "../../../../Theme";
 import { lineBlue } from "./Styles";
 
-interface GetBBoxButtonProps {
+interface DeselectButtonProps {
     onClick: () => void;
     active: boolean;
+    text: string;
 }
-export function GetBBoxButton(props: GetBBoxButtonProps) {
-    const { onClick, active } = props;
+export function CatchmentButton(props: DeselectButtonProps) {
+    const { onClick, active, text } = props;
     const bgcolor = active ? PrimaryColor : "grey";
     const hover = active ? { bg: lineBlue } : { bg: "grey" };
     // remove onClick if button is deactivated
@@ -17,8 +18,8 @@ export function GetBBoxButton(props: GetBBoxButtonProps) {
         }
     }
     return (
-        <Button height="5vh" fontSize="0.7vw" onClick={handleClick} bg={bgcolor} _hover={hover}>
-            Get Bounding Box
+        <Button bg={bgcolor} _hover={hover} onClick={handleClick}>
+            {text}
         </Button>
     );
 }
