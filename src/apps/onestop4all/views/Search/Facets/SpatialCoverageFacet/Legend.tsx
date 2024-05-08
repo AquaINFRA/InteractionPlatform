@@ -4,53 +4,34 @@ import { Flex } from "@open-pioneer/chakra-integration";
 
 export function Legend() {
     return (
-        <Box>
-            <h4 style={{ fontWeight: "bold" }}> Legend </h4>
-            <Box style={{ marginBottom: "5px" }}>
-                <Box
-                    style={{
-                        display: "inline-block",
-                        verticalAlign: "middle",
-                        marginRight: "5px"
-                    }}
-                >
-                    <Flex gap="10px" alignItems="center">
-                        <img src="/area.svg" />
-                        <div className="label">legend</div>
+        <Box
+            background={"rgba(255,255,255,0.7)"}
+            borderRadius={"2%"}
+            padding={"5"}
+            paddingTop={"2"}
+            paddingBottom={"2"}
+        >
+            <p style={{ fontWeight: "bold", fontSize: "20px", marginBottom: "5%" }}> Legend </p>
+            <Flex direction={"column"} gap={"1vh"}>
+                <Flex style={{ fontSize: "16px", fontWeight: "700" }}>
+                    <Flex marginTop={"-0.3vh"} width="5vh">
+                        <img src="/area.svg" alt="Catchment area" />
                     </Flex>
-                </Box>
-                Catchment area
-            </Box>
-            <Box style={{ marginBottom: "5px" }}>
-                <Box
-                    style={{
-                        display: "inline-block",
-                        verticalAlign: "middle",
-                        marginRight: "5px"
-                    }}
-                >
-                    <Flex gap="10px" alignItems="center">
-                        <img src="/areaSelected.svg" />
-                        <div className="label">legend</div>
+                    Catchment area
+                </Flex>
+                <Flex style={{ fontSize: "16px", fontWeight: "700" }}>
+                    <Flex marginTop={"-0.3vh"} width="5vh">
+                        <img src="/areaSelected.svg" alt="Selected area" />
                     </Flex>
-                </Box>
-                Selected area
-            </Box>
-            <Box style={{ marginBottom: "5px" }}>
-                <Box
-                    style={{
-                        display: "inline-block",
-                        verticalAlign: "middle",
-                        marginRight: "5px"
-                    }}
-                >
-                    <Flex gap="10px" alignItems="center">
-                        <img src="/bbox.svg" />
-                        <div className="label">legend</div>
+                    Selected area
+                </Flex>
+                <Flex style={{ fontSize: "16px", fontWeight: "700" }}>
+                    <Flex marginTop={"-0.3vh"} width="5vh">
+                        <img src="/bbox.svg" alt="Bounding box" />
                     </Flex>
-                </Box>
-                Bounding Box
-            </Box>
+                    Bounding box
+                </Flex>
+            </Flex>
         </Box>
     );
 }

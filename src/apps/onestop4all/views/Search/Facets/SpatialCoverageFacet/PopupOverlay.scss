@@ -17,6 +17,25 @@
     }
 }
 
+#popupOverlay1 {
+    display: block;
+}
+
+#popupOverlay2 {
+    display: none;
+}
+
+/* Adjust for small screens */
+@media only screen and (max-width: $customBreakpoint) {
+    #popupOverlay1 {
+        display: none;
+    }
+
+    #popupOverlay2 {
+        display: block;
+    }
+}
+
 .draw-polygon {
     top: 65px;
     left: 0.5em;
@@ -44,6 +63,8 @@
     align-items: center;
 }
 .popup-background {
+    width: 45%;
+    height: 80%;
     width: 45%;
     height: 70%;
     background-color: white;

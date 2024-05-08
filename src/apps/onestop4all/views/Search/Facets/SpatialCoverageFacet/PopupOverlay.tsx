@@ -11,12 +11,12 @@ import { defaults as defaultControls, Control } from "ol/control";
 import { click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
 // Import other components
-import { Box, ButtonGroup } from "@open-pioneer/chakra-integration";
+import { Box, ButtonGroup, Flex } from "@open-pioneer/chakra-integration";
 import { Legend } from "./Legend";
 import { XButton } from "./XButton";
 import { CatchmentOptions } from "./CatchmentOptions";
-import { SearchButton } from "./SearchButton";
 import { CatchmentButton } from "./CatchmentButton";
+import { SearchButton } from "./SearchButton";
 // Import Styles
 import { hoverStyle, style, selectStyle, bBoxStyle } from "./Styles";
 // Import GeoJSON
@@ -311,25 +311,35 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     return (
         <Box className="popup-background-transparent">
             <Box className="popup-background">
-                <Box height="65%" width="100%">
+                <Box>
+                    <h1>Select catchment areas</h1>
+                </Box>
+                <Box height="85%" width="100%">
                     <MapContainer mapId={mapId} />
+                    <Box position="absolute" bottom="16%" left="4%">
+                        <Legend />
+                    </Box>
                 </Box>
                 <XButton handleClose={handleClose} />
-                <Box display="flex" justifyContent="space-around">
+                <Box display="flex" justifyContent="space-around" overflow="hidden">
                     <Box>
-                        {/* <CatchmentOptions /> */}
-                        <ButtonGroup orientation="vertical" marginTop="28px" spacing="1">
-                            <CatchmentButton active={areFeaturesSelected} onClick={getBBox} text="Get Bounding Box" />
+                        <Flex marginTop="2%" gap="1vh" flexWrap="wrap">
+                            <CatchmentButton
+                                active={areFeaturesSelected}
+                                onClick={getBBox}
+                                text="Generate bounding box"
+                            />
                             <CatchmentButton
                                 active={areFeaturesSelected || isBBoxDisplayed}
                                 onClick={deselectAll}
-                                text="Deselect Catchment Areas"
+                                text="Delete selection"
                             />
-                            <SearchButton active={isBBoxDisplayed} onClick={setSearchArea} />
-                        </ButtonGroup>
-                    </Box>
-                    <Box marginTop="20px">
-                        <Legend />
+                            <CatchmentButton
+                                active={isBBoxDisplayed}
+                                onClick={setSearchArea}
+                                text="Apply bounding box"
+                            />
+                        </Flex>
                     </Box>
                 </Box>
             </Box>
