@@ -102,7 +102,7 @@ export const RelatedKeywords = (props: {
                     </Box>
                 </Checkbox>
                 <HStack spacing="3px">
-                    <Button height="3vh" width="200px" fontSize="0.7vw">
+                    <Button height="3vh" width="12vw" fontSize="0.7vw">
                         Search for selected terms
                     </Button>
                 </HStack>
