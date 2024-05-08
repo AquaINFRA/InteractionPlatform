@@ -17,7 +17,15 @@ export function DeselectButton(props: DeselectButtonProps) {
         }
     }
     return (
-        <Button bg={bgcolor} _hover={hover} height="5vh" fontSize="0.7vw" onClick={handleClick}>
+        <Button
+            bg={bgcolor}
+            _hover={hover}
+            paddingLeft={"0.5vw"}
+            paddingRight={"0.5vw"}
+            height="5vh"
+            fontSize="0.7vw"
+            onClick={handleClick}
+        >
             Deselect catchment areas
         </Button>
     );

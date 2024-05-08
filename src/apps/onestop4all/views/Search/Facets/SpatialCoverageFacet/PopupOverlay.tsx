@@ -11,7 +11,7 @@ import { defaults as defaultControls, Control } from "ol/control";
 import { click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
 // Import other components
-import { Box, ButtonGroup } from "@open-pioneer/chakra-integration";
+import { Box, ButtonGroup, Flex } from "@open-pioneer/chakra-integration";
 import { Legend } from "./Legend";
 import { XButton } from "./XButton";
 import { CatchmentOptions } from "./CatchmentOptions";
@@ -312,24 +312,24 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     return (
         <Box className="popup-background-transparent">
             <Box className="popup-background">
-                <Box height="70%" width="100%">
+                <Box height="90%" width="100%">
                     <MapContainer mapId={mapId} />
+                    <Box position="absolute" bottom="13%" left="5%">
+                        <Legend />
+                    </Box>
                 </Box>
                 <XButton handleClose={handleClose} />
-                <Box display="flex" justifyContent="space-around">
+                <Box display="flex" justifyContent="space-around" overflow="hidden">
                     <Box>
                         {/* <CatchmentOptions /> */}
-                        <ButtonGroup orientation="vertical" marginTop="28px" spacing="2vh">
+                        <Flex marginTop="2%" gap="1vh">
                             <GetBBoxButton active={areFeaturesSelected} onClick={getBBox} />
                             <DeselectButton
                                 active={areFeaturesSelected || isBBoxDisplayed}
                                 onClick={deselectAll}
                             />
                             <SearchButton active={isBBoxDisplayed} onClick={setSearchArea} />
-                        </ButtonGroup>
-                    </Box>
-                    <Box marginTop="20px">
-                        <Legend />
+                        </Flex>
                     </Box>
                 </Box>
             </Box>

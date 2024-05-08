@@ -17,7 +17,15 @@ export function GetBBoxButton(props: GetBBoxButtonProps) {
         }
     }
     return (
-        <Button height="5vh" fontSize="0.7vw" onClick={handleClick} bg={bgcolor} _hover={hover}>
+        <Button
+            height="5vh"
+            fontSize="0.7vw"
+            paddingLeft={"0.5vw"}
+            paddingRight={"0.5vw"}
+            onClick={handleClick}
+            bg={bgcolor}
+            _hover={hover}
+        >
             Get Bounding Box
         </Button>
     );
