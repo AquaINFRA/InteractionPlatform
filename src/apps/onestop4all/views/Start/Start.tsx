@@ -128,7 +128,15 @@ export function StartView() {
                                     )}
                                 </Box>
                                 <Box paddingTop={10} id="introVideo1">
-                                    <Box marginBottom={2}><b>Video 2: Importing data to Galaxy</b></Box>
+                                    <Box marginBottom={2} marginTop={10}><b>Video 3: Searching with the help of catchment areas</b></Box>
+                                    <iframe
+                                        width="760"
+                                        height="409"
+                                        src="https://www.youtube.com/embed/fpaEtw35MoI?si=9Wikv8JGvH0BgM4M"
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    />
+                                    <Box marginBottom={2} marginTop={10}><b>Video 2: Importing data to Galaxy</b></Box>
                                     <iframe
                                         width="760"
                                         height="409"
@@ -146,7 +154,15 @@ export function StartView() {
                                     />
                                 </Box>
                                 <Box paddingTop={10} id="introVideo2">
-                                    <Box marginBottom={2}><b>Video 2: Importing data to Galaxy</b></Box>
+                                    <Box marginBottom={2}><b>Video 3: Searching with the help of catchment areas</b></Box>
+                                    <iframe
+                                        width="330"
+                                        height="190"
+                                        src="https://www.youtube.com/embed/fpaEtw35MoI?si=9Wikv8JGvH0BgM4M"
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    />
+                                    <Box marginBottom={2} marginTop={10}><b>Video 2: Importing data to Galaxy</b></Box>
                                     <iframe
                                         width="330"
                                         height="190"
@@ -170,7 +186,7 @@ export function StartView() {
             </Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Box minH={{ base: "800px", custombreak: "1200px" }}></Box>
+                <Box minH={{ base: "1100px", custombreak: "1600px" }}></Box>
 
                 <div className="seperator"></div>
             </Container>
