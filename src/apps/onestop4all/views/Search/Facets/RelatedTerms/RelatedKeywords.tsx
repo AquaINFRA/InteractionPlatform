@@ -11,7 +11,7 @@ import {
 import { checkboxAnatomy } from "@chakra-ui/anatomy";
 import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 import { useSearchState } from "../../SearchState";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 interface Item {
     value?: string;
@@ -27,7 +27,23 @@ export const RelatedKeywords = (props: {
     const { list, tag, element, type } = props;
 
     const searchState = useSearchState();
-    const [isSelected, setIsSelected] = useState("none");
+    const [selectedItems, setSelectedItems] = useState([] as string[]);
+    const [refresh, setRefresh] = useState(false);
+
+    const contains = (array: string[], item: string) => {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i] == item) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    const itemBorder = (item: Item) => {
+        if (item.value) {
+            if (contains(selectedItems, item.value)) return "2px solid black";
+        } else return "";
+    };
 
     const createQuery = (element: string, elem: string) => {
         if (element == "keyword") {
@@ -82,6 +98,14 @@ export const RelatedKeywords = (props: {
         }
     });
 
+    const makeSearchterm = (array: string[]) => {
+        let tmp = searchState.searchTerm + " ";
+        for (let i = 0; i < array.length; i++) {
+            tmp = tmp + array[i] + " ";
+        }
+        return tmp;
+    };
+
     return (
         <Box className="metadataSection">
             <Stack spacing={3} direction="row" wrap="wrap">
@@ -111,7 +135,7 @@ export const RelatedKeywords = (props: {
                         height="3vh"
                         width="12vw"
                         fontSize="0.7vw"
-                        onClick={() => searchState.setSearchTerm("Test")}
+                        onClick={() => searchState.setSearchTerm(makeSearchterm(selectedItems))}
                     >
                         Search for selected terms
                     </Button>
@@ -120,9 +144,14 @@ export const RelatedKeywords = (props: {
             {shortList.map((item: Item, j: number) => (
                 <button
                     className={getClassName(item)}
-                    style={{ border: isSelected }}
+                    style={{ border: itemBorder(item) }}
                     key={j}
-                    onClick={() => setIsSelected("2px solid black")}
+                    onClick={() => {
+                        const tmp = selectedItems.slice();
+                        if (item.value && !contains(tmp, item.value)) tmp.push(item.value);
+                        setSelectedItems(tmp);
+                        console.log(selectedItems);
+                    }}
                 >
                     {item.value}
                 </button>

@@ -28,6 +28,6 @@ export const RelatedTerms = () => {
             setMyJson(tmpJson);
             // console.log(myJson);
         });
-    });
+    }, [searchState]);
     return <RelatedKeywords list={myJson} tag={"Related terms"} element={"keyword"} />;
 };
