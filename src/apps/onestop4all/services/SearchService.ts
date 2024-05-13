@@ -220,6 +220,19 @@ export class SearchService {
             })
         );
     }
+    getRelatedSearchterms(keyword: string) {
+        const baseUrl = "http://vm2558.kaj.pouta.csc.fi/rcsearch?keyword=";
+        const url = baseUrl + keyword + "&broader=true&narrower=true&related=true";
+        return fetch(url).then((response) =>
+            response.text().then((responseData: string) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
+    }
 
     private addSpatialFilter(spatialFilter: number[] | undefined, queryParams: URLSearchParams) {
         if (spatialFilter && spatialFilter.length > 0) {
