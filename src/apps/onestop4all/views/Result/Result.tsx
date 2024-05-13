@@ -15,12 +15,13 @@ import {
     LearningResourceMetadataResponse,
     LearningResourceView
 } from "../LearningResource/LearningResource";
-import { LHB_ArticleMetadataResponse, LHB_ArticleView } from "../LHB_Article/LHB_Article";
 import { OrganisationMetadataResponse, OrganisationView } from "../Organisation/Organisation";
 import { RepositoryMetadataResponse, RepositoryView } from "../Repository/Repository";
 import { useSearchState } from "../Search/SearchState";
 import { StandardMetadataResponse, StandardView } from "../Standard/Standard";
 import { ToolsSoftwareMetadataResponse, ToolsSoftwareView } from "../ToolsSoftware/ToolsSoftware";
+import { BackToSearchLink } from "../../components/BackToSearchLink/BackToSearchLink";
+import { ResourceTypeLabel } from "../../components/ResourceTypeLabel/ResourceTypeLabel";
 
 export function Result() {
     const resultId = useParams().id as string;
@@ -86,10 +87,6 @@ export function Result() {
                 const item = searchResult as OrganisationMetadataResponse;
                 return <OrganisationView item={item} />;
             }
-            case ResourceType.LHB_Articles: {
-                const item = searchResult as LHB_ArticleMetadataResponse;
-                return <LHB_ArticleView item={item} />;
-            }
             case ResourceType.Tools: {
                 const item = searchResult as ToolsSoftwareMetadataResponse;
                 return <ToolsSoftwareView item={item} />;
@@ -115,6 +112,22 @@ export function Result() {
                 return <DatasetView item={item} />;
             }
             case ResourceType.Model: {
+                const item = searchResult as DatasetMetadataResponse;
+                return <DatasetView item={item} />;
+            }
+            case ResourceType.Service: {
+                const item = searchResult as DatasetMetadataResponse;
+                return <DatasetView item={item} />;
+            }
+            case ResourceType.DownloadableData: {
+                const item = searchResult as DatasetMetadataResponse;
+                return <DatasetView item={item} />;
+            }
+            case ResourceType.OfflineData: {
+                const item = searchResult as DatasetMetadataResponse;
+                return <DatasetView item={item} />;
+            }
+            case ResourceType.LiveData: {
                 const item = searchResult as DatasetMetadataResponse;
                 return <DatasetView item={item} />;
             }
@@ -156,8 +169,6 @@ export function Result() {
             .doSearch({
                 pageSize: 1,
                 pageStart: result - 1,
-                resourceTypes: searchState.selectedResourceTypes,
-                subjects: searchState.selectedSubjects,
                 searchTerm: searchState.searchTerm,
                 spatialFilter: searchState.spatialFilter
             })
@@ -175,7 +186,8 @@ export function Result() {
                 <ResultsNavigation
                     result={result}
                     of={resultCount}
-                    label="result"
+                    label_result="result"
+                    label_of="of"
                     stepBack={stepBack}
                     stepFoward={stepForward}
                     stepToEnd={stepToEnd}
@@ -203,47 +215,66 @@ export function Result() {
                 </Container>
             </Box>
 
-            <Box height={{ base: "50px", custombreak: "80px" }}></Box>
+            <Box height={{ base: "50px", custombreak: "80px" }} />
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Flex gap="10%">
+                {/* Desktop Header */}
+                <Flex gap="10%" hideBelow="custombreak">
                     <Box w="65%">
-                        <ResourceTypeHeader resType={resourceType} loading={loading} />
-                        {loading ? (
-                            <Box pt="30px">
-                                <Box pb="40px">
-                                    <Skeleton height="30px" />
-                                </Box>
-                                <Stack>
-                                    <Skeleton height="20px" />
-                                    <Skeleton height="20px" />
-                                    <Skeleton height="20px" />
-                                </Stack>
-                            </Box>
-                        ) : (
-                            <></>
-                        )}
+                        <Flex alignItems="center" gap="12px">
+                            <BackToSearchLink
+                                visible={result !== undefined && resultCount !== undefined}
+                            />
+                            <Divider className="resTypeHeaderLine" />
+                            <ResourceTypeLabel
+                                resType={resourceType}
+                                loading={loading}
+                                iconAlign="right"
+                            />
+                        </Flex>
+                        {loading ? <Skeleton /> : <></>}
                     </Box>
                     <Box w="25%">{renderPaging()}</Box>
                 </Flex>
+
+                {/* Mobile Header */}
+                <Box hideFrom="custombreak">
+                    <Box pt="50px">{renderPaging()}</Box>
+                    <Flex alignItems="center" gap="12px" pt={"20px"}>
+                        <ResourceTypeLabel
+                            resType={resourceType}
+                            loading={loading}
+                            iconAlign="left"
+                        />
+                        <Divider />
+                    </Flex>
+                </Box>
+
+                {/* Content */}
                 {loading ? (
                     <></>
                 ) : (
                     <>
                         <Box>{getResourceView()}</Box>
-                        {/*searchResult?.relatedResources?.length > 0 ? (
-                            <Box pt="80px">
-                                <RelatedContent
-                                    relatedContentItems={searchResult?.relatedResources}
-                                />
-                            </Box>
-                        ) : null*/}
                     </>
                 )}
-                <Flex gap="10%" alignItems="center" pt="120px">
+                {/* Desktop footer */}
+                <Flex gap="10%" alignItems="center" pt="120px" hideBelow="custombreak">
                     <Divider className="seperator" w="65%" />
                     <Box w="25%">{renderPaging()}</Box>
                 </Flex>
+
+                {/* Mobile footer */}
+                <Box hideFrom="custombreak">
+                    <Box pt={"10"}>{renderPaging()}</Box>
+                    <Flex alignItems="center" gap="12px" pt="25px">
+                        <Divider />
+                        <BackToSearchLink
+                            visible={result !== undefined && resultCount !== undefined}
+                        />
+                        <Divider />
+                    </Flex>
+                </Box>
             </Container>
         </Box>
     );

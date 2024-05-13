@@ -12,7 +12,7 @@ export function MenuButton() {
                 aria-label="Search database"
                 variant="ghost"
                 colorScheme="teal"
-                icon={<MenuIcon boxSize={12} />}
+                icon={<MenuIcon boxSize={14} />}
                 onClick={() => menuHandler.open()}
             />
         </HStack>

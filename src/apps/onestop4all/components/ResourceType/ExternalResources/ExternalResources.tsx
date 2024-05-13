@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
-import { Box } from "@open-pioneer/chakra-integration";
+import { Box, Flex } from "@open-pioneer/chakra-integration";
 import { LinkObject } from "../../../views/Dataset/Dataset";
 import { ActionButton } from "../ActionButton/ActionButton";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 
 export const ExternalResources = (props: { links: LinkObject[] }) => {
     const { links } = props;
@@ -38,14 +38,33 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                             <span className="metadataValue">{link.type}</span>
                         </div>
                     ) : null}
-                    <Link to={link.href as string} target="_blank">
-                        <ActionButton
-                            label="Visit"
-                            icon={<ExternalLinkIcon color="white" />}
-                            variant="solid"
-                            fun={() => void 0}
-                        />
-                    </Link>
+                    <Flex flexDirection="column">
+                        <Link to={link.href as string} target="_blank">
+                            <ActionButton
+                                label="Visit"
+                                icon={<ExternalLinkIcon color="white" />}
+                                variant="solid"
+                                fun={() => void 0}
+                            />
+                        </Link>
+                        {link.type === "application/zip" ? (
+                            <Link
+                                to={
+                                    ("https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=" +
+                                        link.href) as string
+                                }
+                                //className="actionButtonLink"
+                                target="_blank"
+                            >
+                                <ActionButton
+                                    label="Import to Galaxy"
+                                    icon={<DownloadIcon color="white" />}
+                                    variant="solid"
+                                    fun={() => void 0}
+                                />
+                            </Link>
+                        ) : null}
+                    </Flex>
                 </Box>
             ))}
         </Box>

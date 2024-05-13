@@ -3,8 +3,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useIntl } from "open-pioneer:react-hooks";
 
-import { SupportForm } from "../SupportForm/SupportForm";
-
 export const Footer = () => {
     const intl = useIntl();
     const [openSupportForm, setOpenSupportForm] = useState(false);
@@ -45,6 +43,7 @@ export const Footer = () => {
                                         })}
                                     </div>
                                 </a>
+                                <span>|</span>
                                 <a
                                     href="https://aquainfra.eu/partners"
                                     target="_blank"
@@ -57,6 +56,7 @@ export const Footer = () => {
                                         })}
                                     </div>
                                 </a>
+                                <span>|</span>
                                 <a
                                     href="https://aquainfra.eu/contact"
                                     target="_blank"
@@ -95,6 +95,7 @@ export const Footer = () => {
                                         })}
                                     </div>
                                 </a>
+                                <span>|</span>
                                 <a
                                     href="https://www.nfdi4earth.de/privacy-policy"
                                     target="_blank"
@@ -149,22 +150,22 @@ export const Footer = () => {
                                 </Flex>
                             </a>
                         </Box>
-                        <Box flex="1 1 50px"></Box>
-                        <Box w={"20%"}>
+                        <Box flex="1 1 20px"></Box>
+                        <Box w={{ base: "40%", custombreak: "20%" }}>
                             <a
                                 href="https://cordis.europa.eu/project/id/101094434"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <div className="label">Funded by</div>
-                                <img src="/ec-logo.svg" width={"80%"} />
+                                <div className="label" style={{ marginBottom: "5px" }}>
+                                    Funded by:
+                                </div>
+                                <img src="/ec-logo.svg" width={"100%"} />
                             </a>
                         </Box>
                     </Box>
                 </Container>
             </div>
-
-            <SupportForm openForm={openSupportForm} menuClosed={() => setOpenSupportForm(false)} />
         </>
     );
 };

@@ -10,7 +10,8 @@ import {
 export interface ResultsNavigationProps {
     result: number;
     of: number;
-    label?: string;
+    label_result: string;
+    label_of: string;
     stepBack?: () => void;
     stepToStart?: () => void;
     stepFoward?: () => void;
@@ -18,7 +19,9 @@ export interface ResultsNavigationProps {
 }
 
 export const ResultsNavigation = (props: ResultsNavigationProps) => {
-    const { result, of, label = "result", stepBack, stepFoward, stepToEnd, stepToStart } = props;
+    const { result, of, label_result, label_of, stepBack, stepFoward, stepToEnd, stepToStart } =
+        props;
+    const ofText = "of";
 
     const canStepBack = result > 1;
     const canStepForward = result < of;
@@ -39,6 +42,8 @@ export const ResultsNavigation = (props: ResultsNavigationProps) => {
                 <ResultsNavigationLeftLeft />
             </Box>
 
+            <Box className="resultsNavigationLine seperator" mr="16px" />
+
             <Box
                 _hover={canStepBack ? navigationHoverStyle : {}}
                 onClick={() => {
@@ -52,7 +57,7 @@ export const ResultsNavigation = (props: ResultsNavigationProps) => {
             <Box className="resultsNavigationLine seperator" mr="16px" />
 
             <Box className="resultsNavigationText">
-                {label} <span className="resultHit">{result}</span> of{" "}
+                {label_result} <span className="resultHit">{result}</span> {label_of}{" "}
                 <span className="resultHit">{of}</span>
             </Box>
 
@@ -67,6 +72,8 @@ export const ResultsNavigation = (props: ResultsNavigationProps) => {
             >
                 <ResultsNavigationRight />
             </Box>
+
+            <Box className="resultsNavigationLine seperator" ml="16px" />
 
             <Box
                 _hover={canStepForward ? navigationHoverStyle : {}}

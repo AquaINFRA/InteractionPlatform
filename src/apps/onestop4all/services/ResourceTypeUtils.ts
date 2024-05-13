@@ -9,7 +9,12 @@ import { StandardSearchHandler } from "./search/result-handler/standard-handler"
 import { DatasetHandler } from "./search/result-handler/dataset-handler";
 import { SeriesHandler } from "./search/result-handler/series-handler";
 import { ModelHandler } from "./search/result-handler/model-handler";
+import { ServiceHandler } from "./search/result-handler/service-handler";
 import { SoftwareHandler } from "./search/result-handler/software-zenodo-handler";
+
+import { OfflineDataHandler } from "./search/result-handler/offlineData-handler";
+import { LiveDataHandler } from "./search/result-handler/liveData-handler";
+import { DownloadableDataHandler } from "./search/result-handler/downloadableData-handler";
 
 export enum ResourceType {
     Repos = "Repository / Archive",
@@ -28,7 +33,10 @@ export enum ResourceType {
     NonGeoData = "nonGeographicDataset",
     Unknown = "unknown",
     Software = "software",
-    Model = "model"
+    Model = "model",
+    LiveData = "liveData",
+    OfflineData = "offlineData",
+    DownloadableData = "downloadableData"
 }
 
 const mapping = [
@@ -63,6 +71,18 @@ const mapping = [
     {
         type: ResourceType.Dataset,
         identifier: "dataset"
+    },
+    {
+        type: ResourceType.OfflineData,
+        identifier: "offlineData"
+    },
+    {
+        type: ResourceType.LiveData,
+        identifier: "liveData"
+    },
+    {
+        type: ResourceType.DownloadableData,
+        identifier: "downloadableData"
     },
     {
         type: ResourceType.Series,
@@ -117,10 +137,15 @@ const searchResultHandlers: SearchResultHandler[] = [
     new DatasetHandler(),
     new SoftwareHandler(),
     new SeriesHandler(),
-    new ModelHandler()
+    new ModelHandler(),
+    new ServiceHandler(),
+    new DownloadableDataHandler(),
+    new OfflineDataHandler(),
+    new LiveDataHandler()
 ];
 
 export function getHandler(result: string): SearchResultHandler {
+    console.log(result);
     const match = searchResultHandlers.find((h) => h.canHandle(result));
     if (match) {
         return match;

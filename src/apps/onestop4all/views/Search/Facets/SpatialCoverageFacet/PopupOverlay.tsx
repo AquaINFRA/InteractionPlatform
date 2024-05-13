@@ -16,6 +16,7 @@ import { Legend } from "./Legend";
 import { XButton } from "./XButton";
 import { CatchmentOptions } from "./CatchmentOptions";
 import { CatchmentButton } from "./CatchmentButton";
+import { SearchButton } from "./SearchButton";
 // Import Styles
 import { hoverStyle, style, selectStyle, bBoxStyle } from "./Styles";
 // Import GeoJSON
@@ -310,31 +311,31 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     return (
         <Box className="popup-background-transparent">
             <Box className="popup-background">
-                <Box height="90%" width="100%">
+                <Box fontSize={20}><b>Select catchment areas</b></Box>
+                <Box height="85%" width="100%">
                     <MapContainer mapId={mapId} />
-                    <Box position="absolute" bottom="13%" left="5%">
+                    <Box position="absolute" bottom="16%" left="4%">
                         <Legend />
                     </Box>
                 </Box>
                 <XButton handleClose={handleClose} />
                 <Box display="flex" justifyContent="space-around" overflow="hidden">
                     <Box>
-                        {/* <CatchmentOptions /> */}
-                        <Flex marginTop="2%" gap="1vh">
+                        <Flex marginTop="2%" gap="1vh" flexWrap="wrap">
                             <CatchmentButton
                                 active={areFeaturesSelected}
                                 onClick={getBBox}
-                                text="Get bounding box"
+                                text="Generate bounding box"
                             />
                             <CatchmentButton
                                 active={areFeaturesSelected || isBBoxDisplayed}
                                 onClick={deselectAll}
-                                text="Deselect catchment areas"
+                                text="Delete selection"
                             />
                             <CatchmentButton
                                 active={isBBoxDisplayed}
                                 onClick={setSearchArea}
-                                text="Search for datasets that overlap with this area"
+                                text="Apply bounding box"
                             />
                         </Flex>
                     </Box>

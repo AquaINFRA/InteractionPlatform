@@ -1,14 +1,12 @@
 import { Button } from "@open-pioneer/chakra-integration";
 import { PrimaryColor } from "../../../../Theme";
 import { lineBlue } from "./Styles";
-
-interface DeselectButtonProps {
+interface SearchButtonProps {
     onClick: () => void;
     active: boolean;
-    text: string;
 }
-export function CatchmentButton(props: DeselectButtonProps) {
-    const { onClick, active, text } = props;
+export function SearchButton(props: SearchButtonProps) {
+    const { onClick, active } = props;
     const bgcolor = active ? PrimaryColor : "grey";
     const hover = active ? { bg: lineBlue } : { bg: "grey" };
     // remove onClick if button is deactivated
@@ -18,8 +16,8 @@ export function CatchmentButton(props: DeselectButtonProps) {
         }
     }
     return (
-        <Button bg={bgcolor} _hover={hover} onClick={handleClick} w={"250px"}>
-            {text}
+        <Button bg={bgcolor} _hover={hover} onClick={handleClick}>
+            Search for datasets that overlap with this area
         </Button>
     );
 }

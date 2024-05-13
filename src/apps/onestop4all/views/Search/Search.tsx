@@ -14,13 +14,13 @@ import { ResultPaging } from "./ResultPaging/ResultPaging";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "./SearchState";
 import { RelatedTerms } from "./Facets/RelatedTerms/RelatedTerms";
+import { DownloadOptionFacet } from "./Facets/DownloadOptionFacet/DownloadOptionFacet";
 //import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
 
 export function SearchView() {
     const searchState = useSearchState();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    //console.log(searchState.searchResults);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => searchState.search(), [searchParams]);
 
@@ -29,14 +29,6 @@ export function SearchView() {
 
         if (searchState.searchTerm) {
             params[UrlSearchParameterType.Searchterm] = searchState.searchTerm;
-        }
-
-        if (searchState.selectedResourceTypes.length > 0) {
-            params[UrlSearchParameterType.ResourceType] = searchState.selectedResourceTypes;
-        }
-
-        if (searchState.selectedSubjects.length > 0) {
-            params[UrlSearchParameterType.Subjects] = searchState.selectedSubjects;
         }
 
         if (searchState.spatialFilter.length === 4) {
@@ -51,18 +43,16 @@ export function SearchView() {
             params[UrlSearchParameterType.PageStart] = `${searchState.pageStart}`;
         }
 
-        if (searchState.temporalFilter) {
-            params[
-                UrlSearchParameterType.TemporalFilter
-            ] = `${searchState.temporalFilter.startYear},${searchState.temporalFilter.endYear}`;
-        }
-
         if (searchState.sorting) {
             params[UrlSearchParameterType.SortingFilter] = `${searchState.sorting.term}`;
         }
 
         if (searchState.selectedDataProvider.length > 0) {
             params[UrlSearchParameterType.DataProvider] = searchState.selectedDataProvider;
+        }
+
+        if (searchState.downloadOption) {
+            params[UrlSearchParameterType.DownloadOption] = searchState.downloadOption;
         }
 
         navigate({
@@ -72,14 +62,12 @@ export function SearchView() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         searchState.searchTerm,
-        searchState.selectedResourceTypes,
-        searchState.selectedSubjects,
         searchState.spatialFilter,
         searchState.pageSize,
         searchState.pageStart,
-        searchState.temporalFilter,
         searchState.sorting,
-        searchState.selectedDataProvider
+        searchState.selectedDataProvider,
+        searchState.downloadOption
     ]);
 
     const [openMenu, setOpenMenu] = useState(false);
@@ -115,7 +103,14 @@ export function SearchView() {
 
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
                                 <Box className="results-count">
-                                    {searchState.searchResults?.count} Results for your search
+                                    {searchState.selectedDataProvider.length > 0 &&
+                                    !searchState.searchResults?.count
+                                        ? "0"
+                                        : searchState.searchResults?.count}{" "}
+                                    {searchState.searchResults?.count ||
+                                    searchState.selectedDataProvider.length > 0
+                                        ? "Results for your search"
+                                        : "Select a data provider on the right"}
                                 </Box>
                                 <Box hideFrom="custombreak" padding="20px 0px">
                                     <ResultPaging />
@@ -127,15 +122,9 @@ export function SearchView() {
                                     justifyContent="space-between"
                                     padding={{ base: "0 0 15px", custombreak: "0" }}
                                 >
-                                    <ResultCountSelector />
-                                    <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
+                                    {/*<ResultCountSelector />*/}
+                                    <Box bgColor={BorderColor} alignSelf="stretch" />
                                     {/*<SortedBySelector />*/}
-                                    <Box
-                                        flex="0 0 1px"
-                                        bgColor={BorderColor}
-                                        alignSelf="stretch"
-                                        hideFrom="custombreak"
-                                    />
                                     <Box hideFrom="custombreak">
                                         <Button
                                             leftIcon={<FilterIcon />}
@@ -169,7 +158,11 @@ export function SearchView() {
                             </Box>
                         </Box>
                     ) : (
-                        <Box flex="1 1 100%" overflow="hidden">
+                        <Box
+                            flex="1 1 100%"
+                            overflow="hidden"
+                            paddingTop={{ base: "7%", custombreak: "0%" }}
+                        >
                             Loading...
                         </Box>
                     )}
@@ -181,6 +174,9 @@ export function SearchView() {
                         <Box padding={"32px 0px"}>
                             <DataProviderFacet />
                         </Box>
+                        {/*<Box>
+                            <DownloadOptionFacet />
+                        </Box>*/}
                         {/*<Box padding={"64px 0px 32px"} ref={menu}>
                             <ResourceTypeFacet></ResourceTypeFacet>
                         </Box>

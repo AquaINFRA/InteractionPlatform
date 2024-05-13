@@ -10,20 +10,23 @@ export const DemonstratorEntries = () => {
             <Box className="how-to">
                 <Box className="text-centered-box">
                     <Box className="text-centered-box-header">
+                        Here you will find more content in the upcoming weeks.
+                    </Box>
+                    {/*<Box className="text-centered-box-header">
                         Browse through our ready-to-use demonstrators
                     </Box>
                     <Box className="text-centered-box-text">
                         The demonstrators showcase the features provided by the Virtual Research
                         Environment and can be combined with a training.
-                    </Box>
+                    </Box>*/}
                 </Box>
-                <SimpleGrid columns={[1, 2, 3]} spacing={10} padding={"0px 100px"} marginTop={"1%"}>
+                {/*<SimpleGrid columns={[1, 2, 3]} spacing={10} padding={"0px 100px"} marginTop={"1%"}>
                     {demonstratorEntries.map((demonstrator, index) => (
                         <Flex key={index}>
                             <DemonstratorEntry demonstratorEntryTitle={demonstrator} key={index} />
                         </Flex>
                     ))}
-                </SimpleGrid>
+                    </SimpleGrid>*/}
             </Box>
         );
     } else {

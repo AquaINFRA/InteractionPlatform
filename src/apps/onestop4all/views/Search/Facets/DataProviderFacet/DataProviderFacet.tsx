@@ -19,22 +19,28 @@ export function DataProviderFacet() {
 
     useEffect(() => {
         searchSrvc.getDataProvider().then((res) => {
-            setEntries(
-                JSON.parse(res).collections.sort((a: DataProvider, b: DataProvider) =>
-                    a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
-                )
-            );
+            if (res) {
+                const sortedEntries = JSON.parse(res).collections.sort(
+                    (a: DataProvider, b: DataProvider) =>
+                        a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
+                );
+                setEntries(sortedEntries);
+                const providerTitles = sortedEntries.map((se: any) => {
+                    return { title: se.title, id: se.id };
+                });
+                searchState.setDataProviderTitles(providerTitles);
+            }
         });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    function dataProviderToggled(checked: boolean, id: string) {
+    function dataProviderToggled(checked: boolean, entry: any) {
         if (checked) {
-            searchState.setSelectedDataProvider([...searchState.selectedDataProvider, id]);
+            searchState.setSelectedDataProvider([...searchState.selectedDataProvider, entry.id]);
         } else {
             searchState.setSelectedDataProvider(
-                searchState.selectedDataProvider.filter((e) => e !== id)
+                searchState.selectedDataProvider.filter((e: any) => e !== entry.id)
             );
         }
     }
@@ -42,17 +48,19 @@ export function DataProviderFacet() {
     return (
         <FacetBase title="Data provider" expanded>
             <SimpleGrid columns={[1, 2]} spacing={3} marginTop={"1%"}>
-                {entries.map((entry, i) => (
-                    <Flex key={i}>
-                        <FacetCheckbox
-                            label={entry.title}
-                            isChecked={searchState.selectedDataProvider.includes(entry.id)}
-                            onChange={(event) =>
-                                dataProviderToggled(event.target.checked, entry.id)
-                            }
-                        />
-                    </Flex>
-                ))}
+                {entries.map((entry: any, i) =>
+                    entry.id !== "dataeurope" ? (
+                        <Flex key={i}>
+                            <FacetCheckbox
+                                label={entry.title}
+                                isChecked={searchState.selectedDataProvider.includes(entry.id)}
+                                onChange={(event) =>
+                                    dataProviderToggled(event.target.checked, entry)
+                                }
+                            />
+                        </Flex>
+                    ) : null
+                )}
             </SimpleGrid>
         </FacetBase>
     );

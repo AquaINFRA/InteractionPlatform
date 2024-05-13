@@ -46,65 +46,18 @@ export interface DatasetViewProps {
 
 export function DatasetView(props: DatasetViewProps) {
     const metadata = props.item;
-    //const doiBaseUrl = "https://www.doi.org/";
-    console.log(metadata);
 
     return (
         <Box>
-            <Flex gap="10%">
+            {/* Desktop view */}
+            <Flex gap="10%" hideBelow="custombreak">
                 <Box w="65%">
                     {metadata.properties.title ? (
                         <Box className="title" pt="15px">
                             {metadata.properties.title}
                         </Box>
                     ) : null}
-                    <Box pt="36px">
-                        <Metadata
-                            metadataElements={[
-                                {
-                                    element: "keyword",
-                                    tag:
-                                        metadata.properties.keywords?.length > 1
-                                            ? "Keywords"
-                                            : "Keyword",
-                                    val: metadata.properties.keywords
-                                },
-                                {
-                                    element: "language",
-                                    tag:
-                                        metadata.properties.language?.length > 1
-                                            ? "Languages"
-                                            : "Language",
-                                    val: metadata.properties.language
-                                },
-                                {
-                                    element: "type",
-                                    tag: "Type",
-                                    val: metadata.properties.type
-                                },
-                                {
-                                    element: "datePublished",
-                                    tag: "Published",
-                                    val: new Date(metadata.properties.created).toLocaleDateString()
-                                },
-                                {
-                                    element: "Rights",
-                                    tag: "Rights",
-                                    val: metadata.properties.rights
-                                },
-                                {
-                                    element: "Formats",
-                                    tag:
-                                        metadata.properties.formats?.length > 1
-                                            ? "Formats"
-                                            : "Format",
-                                    val: metadata.properties.formats
-                                }
-                            ]}
-                            visibleElements={2}
-                            expandedByDefault={false}
-                        />
-                    </Box>
+                    <Box pt="30px">{getMetadata()}</Box>
                     {metadata.properties.description ? (
                         <Box pt="80px">
                             <Abstract abstractText={metadata.properties.description} />
@@ -112,7 +65,7 @@ export function DatasetView(props: DatasetViewProps) {
                     ) : null}
                     {metadata.geometry ? (
                         <Box pt="80px">
-                            <Map geometry={metadata.geometry} />
+                            <Map geometry={metadata.geometry} mapId="desktop" />
                         </Box>
                     ) : null}
                 </Box>
@@ -129,6 +82,76 @@ export function DatasetView(props: DatasetViewProps) {
                     ) : null}
                 </Box>
             </Flex>
+            {/* Mobile view */}
+            <Box hideFrom="custombreak">
+                {metadata.properties.title ? (
+                    <Box className="title" pt="15px">
+                        {metadata.properties.title}
+                    </Box>
+                ) : null}
+                <Box pt="30px">{getMetadata()}</Box>
+                {metadata.properties.description ? (
+                    <Box pt="40px">
+                        <Abstract abstractText={metadata.properties.description} />
+                    </Box>
+                ) : null}
+                {metadata.geometry ? (
+                    <Box pt="40px">
+                        <Map geometry={metadata.geometry} mapId="mobile" />
+                    </Box>
+                ) : null}
+                {metadata.description ? (
+                    <Box pt="40px">
+                        <Abstract abstractText={metadata.description} />
+                    </Box>
+                ) : null}
+                {metadata.links ? (
+                    <Box pt="40px">
+                        <ExternalResources links={metadata.links} />
+                    </Box>
+                ) : null}
+            </Box>
         </Box>
     );
+
+    function getMetadata() {
+        return (
+            <Metadata
+                metadataElements={[
+                    {
+                        element: "keyword",
+                        tag: metadata.properties.keywords?.length > 1 ? "Keywords" : "Keyword",
+                        val: metadata.properties.keywords
+                    },
+                    {
+                        element: "language",
+                        tag: metadata.properties.language?.length > 1 ? "Languages" : "Language",
+                        val: metadata.properties.language
+                    },
+                    {
+                        element: "type",
+                        tag: "Type",
+                        val: metadata.properties.type
+                    },
+                    {
+                        element: "datePublished",
+                        tag: "Published",
+                        val: new Date(metadata.properties.created).toLocaleDateString()
+                    },
+                    {
+                        element: "Rights",
+                        tag: "Rights",
+                        val: metadata.properties.rights
+                    },
+                    {
+                        element: "Formats",
+                        tag: metadata.properties.formats?.length > 1 ? "Formats" : "Format",
+                        val: metadata.properties.formats
+                    }
+                ]}
+                visibleElements={2}
+                expandedByDefault={false}
+            />
+        );
+    }
 }

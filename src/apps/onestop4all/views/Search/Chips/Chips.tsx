@@ -12,45 +12,33 @@ interface ChipsEntry {
 
 export function Chips() {
     const searchState = useSearchState();
-
     const chips: ChipsEntry[] = [];
 
     // TODO: remove later searchterm
     const st = searchState.searchTerm;
     if (st) {
         chips.push({
-            title: "SearchTerm",
+            title: "Search term",
             values: [st],
             deleteCb: () => searchState.setSearchTerm("")
-        });
-    }
-
-    // resourceTypes
-    const resourceTypes = searchState.selectedResourceTypes;
-    if (resourceTypes.length) {
-        chips.push({
-            title: "Resource Type",
-            values: resourceTypes,
-            deleteCb: () => searchState.setSelectedResourceTypes([])
-        });
-    }
-
-    // subject
-    const subjects = searchState.selectedSubjects;
-    if (subjects.length) {
-        chips.push({
-            title: "Subject",
-            values: subjects,
-            deleteCb: () => searchState.setSelectedSubjects([])
         });
     }
 
     // data provider
     const dataProvider = searchState.selectedDataProvider;
     if (dataProvider.length) {
+        const titles = [] as string[];
+
+        dataProvider.forEach((dp) => {
+            searchState.dataProviderTitles.forEach((dpt: any) => {
+                if (dp === dpt.id) {
+                    titles.push(dpt.title);
+                }
+            });
+        });
         chips.push({
             title: "Data provider",
-            values: dataProvider,
+            values: titles,
             deleteCb: () => searchState.setSelectedDataProvider([])
         });
     }
@@ -62,16 +50,6 @@ export function Chips() {
             title: "Spatial Coverage",
             values: spatialFilter.map((e) => `${e.toFixed(4)}`),
             deleteCb: () => searchState.setSpatialFilter([])
-        });
-    }
-
-    // temporal coverage
-    const temporalFilter = searchState.temporalFilter;
-    if (temporalFilter) {
-        chips.push({
-            title: "Temporal Coverage",
-            values: [`${temporalFilter.startYear} - ${temporalFilter.endYear}`],
-            deleteCb: () => searchState.setTemporalFilter(undefined)
         });
     }
 
@@ -104,7 +82,7 @@ export function Chips() {
                 gap={"8px"}
                 border={"1px solid"}
                 borderColor={PrimaryColor}
-                borderRadius="50px"
+                borderRadius="30px"
                 padding="6px 8px 6px 12px;"
             >
                 <Box __css={titleStyles}>{title}: </Box>

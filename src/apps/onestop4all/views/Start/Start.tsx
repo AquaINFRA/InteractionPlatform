@@ -97,55 +97,105 @@ export function StartView() {
         <Box className="start-view">
             <Box position="relative">
                 <Box className="header-image" />
-                <Box
-                    position="absolute"
-                    width="100%"
-                    marginTop={{ base: "-40px", custombreak: "-170px" }}
-                >
+                <Box position="absolute" w="100%" top="0">
                     <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                        <Flex pt="60px" textAlign="center" justifyContent="flex-end">
+                        <Flex
+                            pt={{ base: "10px", custombreak: "60px" }}
+                            textAlign="center"
+                            justifyContent="flex-end"
+                        >
                             <Box
-                                maxW={{ base: "70%", custombreak: "45%" }}
+                                maxW={{ base: "80%", custombreak: "45%" }}
                                 fontSize={{ base: "16px", custombreak: "24px" }}
-                                color="#737373"
+                                //top={"50px"}
+                                color="#4f4f4f"
                             >
                                 {intl.formatMessage({ id: "start.banner.slogan" }, richTextIntl)}
                             </Box>
                         </Flex>
                     </Container>
                     <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                        <SearchBar></SearchBar>
+                        <SearchBar />
+                        <Box className="mission">
+                            <Box className="text-centered-box">
+                                <Box className="text-centered-box-text">
+                                    {intl.formatMessage(
+                                        { id: "start.mission.slogan" },
+                                        {
+                                            ...richTextIntl,
+                                            ...missionLinksIntl
+                                        }
+                                    )}
+                                </Box>
+                                <Box paddingTop={10} id="introVideo1">
+                                    <Box marginBottom={2} marginTop={10}><b>Video 3: Searching with the help of catchment areas</b></Box>
+                                    <iframe
+                                        width="760"
+                                        height="409"
+                                        src="https://www.youtube.com/embed/fpaEtw35MoI?si=9Wikv8JGvH0BgM4M"
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    />
+                                    <Box marginBottom={2} marginTop={10}><b>Video 2: Importing data to Galaxy</b></Box>
+                                    <iframe
+                                        width="760"
+                                        height="409"
+                                        src="https://www.youtube.com/embed/92VtJhJZA_Q?si=6SKcccEVXYdfuPhQ"
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    />
+                                    <Box marginBottom={2} marginTop={10}><b>Video 1: Searching for datasets</b></Box>
+                                    <iframe
+                                        width="760"
+                                        height="409"
+                                        src="https://www.youtube.com/embed/-SRh9k44IRo?si=5VsH34-Qs6RZdvGc"
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    />
+                                </Box>
+                                <Box paddingTop={10} id="introVideo2">
+                                    <Box marginBottom={2}><b>Video 3: Searching with the help of catchment areas</b></Box>
+                                    <iframe
+                                        width="330"
+                                        height="190"
+                                        src="https://www.youtube.com/embed/fpaEtw35MoI?si=9Wikv8JGvH0BgM4M"
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    />
+                                    <Box marginBottom={2} marginTop={10}><b>Video 2: Importing data to Galaxy</b></Box>
+                                    <iframe
+                                        width="330"
+                                        height="190"
+                                        src="https://www.youtube.com/embed/92VtJhJZA_Q?si=6SKcccEVXYdfuPhQ"
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    />
+                                    <Box marginBottom={2} marginTop={10}><b>Video 1: Searching for datasets</b></Box>
+                                    <iframe
+                                        width="330"
+                                        height="190"
+                                        src="https://www.youtube.com/embed/-SRh9k44IRo?si=5VsH34-Qs6RZdvGc"
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    />
+                                </Box>
+                            </Box>
+                        </Box>
                     </Container>
                 </Box>
             </Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Box height="80px"></Box>
-
-                <Box className="mission">
-                    <Box className="text-centered-box">
-                        <Box className="text-centered-box-text">
-                            {intl.formatMessage(
-                                { id: "start.mission.slogan" },
-                                {
-                                    ...richTextIntl,
-                                    ...missionLinksIntl
-                                }
-                            )}
-                        </Box>
-                    </Box>
-                </Box>
+                <Box minH={{ base: "1100px", custombreak: "1600px" }}></Box>
 
                 <div className="seperator"></div>
             </Container>
 
-            <Box className="caseStudies" ref={resourcesSectionRef}>
+            {/*<Box className="caseStudies" ref={resourcesSectionRef}>
                 <Container maxW={{ base: "100%" }}>
                     <Box className="mission">
                         <Box className="mission-text text-centered-box">
-                            <Box className="text-centered-box-text">
-                                <CaseStudies />
-                            </Box>
+                            <Box className="text-centered-box-text"><CaseStudies /></Box>
                         </Box>
                     </Box>
                 </Container>
@@ -155,25 +205,21 @@ export function StartView() {
                 <Container maxW={{ base: "100%" }}>
                     <Box className="mission">
                         <Box className="mission-text text-centered-box">
-                            <Box className="text-centered-box-text">
-                                <DemonstratorEntries />
-                            </Box>
+                            <Box className="text-centered-box-text"><DemonstratorEntries /></Box>
                         </Box>
                     </Box>
                 </Container>
-            </Box>
+            </Box>}
 
-            <Box className="caseStudies" ref={resourcesSectionRef}>
+            {<Box className="caseStudies" ref={resourcesSectionRef}>
                 <Container maxW={{ base: "100%" }}>
                     <Box className="mission">
                         <Box className="mission-text text-centered-box">
-                            <Box className="text-centered-box-text">
-                                <LatestAdditions />
-                            </Box>
+                            <Box className="text-centered-box-text"><LatestAdditions /></Box>
                         </Box>
                     </Box>
                 </Container>
-            </Box>
+            </Box>*/}
         </Box>
     );
 }

@@ -53,13 +53,11 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                 source.addFeature(bboxFeature);
             }
 
-            setDisable(searchState.spatialFilterDisabled);
-
             if (searchState.spatialFilter.length === 0) {
                 source.clear();
             }
         }
-    }, [map, searchState.spatialFilter, searchState.spatialFilterDisabled, source]);
+    }, [map, searchState.spatialFilter, source]);
 
     function setSearchArea(): void {
         const features = source.getFeatures();
@@ -136,7 +134,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     {disabled && (
                         <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
                     )}
-                    <PopupOverlay showPopup={showPopup} onClose={() => setShowPopup(false)} />
+                    <PopupOverlay showPopup={showPopup} onClose={() => setShowPopup(false)}/>
                 </Box>
             </FacetBase>
         </Box>
