@@ -8,8 +8,6 @@ import {
     VStack,
     extendTheme
 } from "@open-pioneer/chakra-integration";
-import { checkboxAnatomy } from "@chakra-ui/anatomy";
-import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 import { useSearchState } from "../../SearchState";
 import { useRef, useState } from "react";
 
@@ -28,7 +26,12 @@ export const RelatedKeywords = (props: {
 
     const searchState = useSearchState();
     const [selectedItems, setSelectedItems] = useState([] as string[]);
-    const [refresh, setRefresh] = useState(false);
+    const [filterCategories, setFilterCategories] = useState([
+        "originalMatch",
+        "narrower",
+        "broader",
+        "related"
+    ] as string[]);
 
     const contains = (array: string[], item: string) => {
         for (let i = 0; i < array.length; i++) {
@@ -105,31 +108,77 @@ export const RelatedKeywords = (props: {
         }
         return tmp;
     };
+    const updateFilter = (isChecked: boolean, type: string) => {
+        if (isChecked) {
+            if (!contains(filterCategories, type)) {
+                const tmp = filterCategories.slice();
+                tmp.push(type);
+                setFilterCategories(tmp);
+            }
+        } else {
+            if (contains(filterCategories, type)) {
+                setFilterCategories(filterCategories.filter((item) => item != type));
+            }
+        }
+    };
+
+    const updateSelectedItems = (itemValue: string) => {
+        let tmp = selectedItems.slice();
+        if (itemValue) {
+            if (contains(tmp, itemValue)) {
+                tmp = tmp.filter((i) => itemValue != i);
+            } else {
+                tmp.push(itemValue);
+            }
+        }
+        setSelectedItems(tmp);
+    };
 
     return (
         <Box className="metadataSection">
             <Stack spacing={3} direction="row" wrap="wrap">
                 <span className="metadataTag">{tag}:</span>
-                <Checkbox defaultChecked>
+                <Checkbox
+                    defaultChecked
+                    onChange={(e) => {
+                        updateFilter(e.target.checked, "originalMatch");
+                    }}
+                >
                     <Box borderRadius="50px" background={"rgba(34, 192, 210, 0.2)"} padding="3px">
                         Original Match
                     </Box>
                 </Checkbox>
-                <Checkbox defaultChecked>
+                <Checkbox
+                    defaultChecked
+                    onChange={(e) => {
+                        updateFilter(e.target.checked, "narrower");
+                    }}
+                >
                     <Box borderRadius="50px" background={"rgb(255, 222, 173)"} padding="3px">
                         Narrower
                     </Box>
                 </Checkbox>
-                <Checkbox defaultChecked>
+                <Checkbox
+                    defaultChecked
+                    onChange={(e) => {
+                        updateFilter(e.target.checked, "broader");
+                    }}
+                >
                     <Box borderRadius="50px" background={"rgb(230, 230, 250)"} padding="3px">
                         Broader
                     </Box>
                 </Checkbox>
-                <Checkbox defaultChecked>
+                <Checkbox
+                    defaultChecked
+                    onChange={(e) => {
+                        updateFilter(e.target.checked, "related");
+                    }}
+                >
                     <Box borderRadius="50px" background={"rgb(210, 180, 140)"} padding="3px">
                         Related
                     </Box>
                 </Checkbox>
+
                 <HStack spacing="3px">
                     <Button
                         height="3vh"
@@ -141,21 +190,22 @@ export const RelatedKeywords = (props: {
                     </Button>
                 </HStack>
             </Stack>
-            {shortList.map((item: Item, j: number) => (
-                <button
-                    className={getClassName(item)}
-                    style={{ border: itemBorder(item) }}
-                    key={j}
-                    onClick={() => {
-                        const tmp = selectedItems.slice();
-                        if (item.value && !contains(tmp, item.value)) tmp.push(item.value);
-                        setSelectedItems(tmp);
-                        console.log(selectedItems);
-                    }}
-                >
-                    {item.value}
-                </button>
-            ))}
+            {shortList
+                .filter((item) => {
+                    return contains(filterCategories, item.type!);
+                })
+                .map((item: Item, j: number) => (
+                    <button
+                        className={getClassName(item)}
+                        style={{ border: itemBorder(item) }}
+                        key={j}
+                        onClick={() => {
+                            updateSelectedItems(item.value!);
+                        }}
+                    >
+                        {item.value}
+                    </button>
+                ))}
             <div className="seperator" style={{ marginTop: "10px" }}></div>
         </Box>
     );
