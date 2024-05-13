@@ -185,6 +185,7 @@ export const RelatedKeywords = (props: {
                         width="12vw"
                         fontSize="0.7vw"
                         onClick={() => searchState.setSearchTerm(makeSearchterm(selectedItems))}
+                        isDisabled={selectedItems.length == 0}
                     >
                         Search for selected terms
                     </Button>
