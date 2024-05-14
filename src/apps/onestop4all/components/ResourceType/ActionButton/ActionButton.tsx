@@ -9,6 +9,7 @@ export const ActionButton = (props: { label: string; icon: any; variant: string;
             onClick={() => fun()}
             variant={variant}
             border="3px solid #05668D"
+            w={{ base: "200px", custombreak: "100%" }}
         >
             <Icon boxSize={6} color={PrimaryColor}>
                 {icon}

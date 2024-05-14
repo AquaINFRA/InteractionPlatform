@@ -38,7 +38,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                             <span className="metadataValue">{link.type}</span>
                         </div>
                     ) : null}
-                    <Flex flexDirection="column">
+                    <Flex flexDirection="column"> 
                         <Link to={link.href as string} target="_blank">
                             <ActionButton
                                 label="Visit"
@@ -47,7 +47,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                                 fun={() => void 0}
                             />
                         </Link>
-                        {link.type === "application/zip" ? (
+                        {link.type === "application/zip" || link.type === "ZIP" || link.type === "OGC API - Features" ? (
                             <Link
                                 to={
                                     ("https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=" +
