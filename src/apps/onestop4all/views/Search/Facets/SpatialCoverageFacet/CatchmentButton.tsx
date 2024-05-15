@@ -18,7 +18,7 @@ export function CatchmentButton(props: DeselectButtonProps) {
         }
     }
     return (
-        <Button bg={bgcolor} _hover={hover} onClick={handleClick} w={"250px"}>
+        <Button bg={bgcolor} _hover={hover} onClick={handleClick} className="catchment-button">
             {text}
         </Button>
     );

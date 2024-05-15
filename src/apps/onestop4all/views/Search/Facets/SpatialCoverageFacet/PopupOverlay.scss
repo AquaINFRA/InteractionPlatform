@@ -7,34 +7,6 @@
 }
 
 /* Adjust for small screens */
-@media only screen and (max-width: $customBreakpoint) {
-    #popupOverlay1 {
-        display: none;
-    }
-
-    #popupOverlay2 {
-        display: block;
-    }
-}
-
-#popupOverlay1 {
-    display: block;
-}
-
-#popupOverlay2 {
-    display: none;
-}
-
-/* Adjust for small screens */
-@media only screen and (max-width: $customBreakpoint) {
-    #popupOverlay1 {
-        display: none;
-    }
-
-    #popupOverlay2 {
-        display: block;
-    }
-}
 
 .draw-polygon {
     top: 65px;
@@ -64,16 +36,88 @@
 }
 .popup-background {
     width: 45%;
-    height: 80%;
-    width: 45%;
     height: 70%;
     background-color: white;
     padding: 20px;
     position: relative;
 }
+
 .active-button {
     background-color: PrimaryColor;
 }
 .inactive-button {
     background-color: "grey";
+}
+.map-container {
+    height: 85%;
+    width: 100%;
+}
+.legend {
+    position: absolute;
+    bottom: 16%;
+    left: 4%;
+}
+.legend-box {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 2%;
+    padding: 1.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.legend-header {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 5%;
+}
+.legend-entry {
+    font-size: 16px;
+    font-weight: 700;
+}
+.catchment-button {
+    width: 250px;
+}
+@media only screen and (max-width: $customBreakpoint) {
+    #popupOverlay1 {
+        display: none;
+    }
+
+    #popupOverlay2 {
+        display: block;
+    }
+    .popup-background {
+        width: 90%;
+        height: 70%;
+        background-color: white;
+        padding: 10px;
+        position: relative;
+    }
+    .map-container {
+        height: 65%;
+        width: 100%;
+    }
+    .legend {
+        position: absolute;
+        bottom: 31%;
+        left: 4%;
+    }
+    .legend-box {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 2%;
+        padding: 0.5rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+    }
+    .legend-header {
+        font-weight: bold;
+        font-size: 15px;
+        margin-bottom: 0%;
+    }
+    .legend-entry {
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .catchment-button {
+        width: 250px;
+        font-size: 12px !important;
+    }
 }
