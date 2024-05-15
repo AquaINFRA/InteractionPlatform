@@ -167,13 +167,19 @@ export function Result() {
     function fetchResultId(result: number) {
         searchSrvc
             .doSearch({
+                //pageSize: 1,
+                //pageStart: result - 1,
                 pageSize: 1,
                 pageStart: result - 1,
                 searchTerm: searchState.searchTerm,
-                spatialFilter: searchState.spatialFilter
+                spatialFilter: searchState.spatialFilter,
+                dataProvider: searchState.selectedDataProvider
             })
             .then((res: any) => {
+                //console.log(res.results);
+                //console.log(res.results[result-1].id);
                 if (res.results[0]) {
+                    //navigate(`/result/${res.results[result-1].id}`, { state: { resultPage: result } });
                     navigate(`/result/${res.results[0].id}`, { state: { resultPage: result } });
                     setResult(result);
                 }

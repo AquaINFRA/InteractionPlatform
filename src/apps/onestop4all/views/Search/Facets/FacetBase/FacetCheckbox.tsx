@@ -5,11 +5,12 @@ import { PrimaryColor } from "../../../../Theme";
 export interface FacetCheckboxProps {
     label: string;
     count?: number;
+    description: string;
 }
 
 export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
     const { state, getInputProps, getLabelProps, htmlProps } = useCheckbox(props);
-    const { label, count } = props;
+    const { label, count, description } = props;
 
     const countStyles = {
         color: PrimaryColor,
@@ -29,6 +30,7 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
             cursor="pointer"
             onClick={(event) => event.stopPropagation()}
             {...htmlProps}
+            title={description}
         >
             <input {...getInputProps()} hidden />
             <Box width="19px">

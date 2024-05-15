@@ -137,6 +137,7 @@ export class SearchService {
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 const response = responseData;
+                console.log(url);
                 if (response.numberMatched !== undefined && response.features !== undefined) {
                     return {
                         count: response.numberMatched,
@@ -213,6 +214,7 @@ export class SearchService {
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
+                    console.log(responseData);
                     return responseData;
                 } else {
                     throw new Error("Unexpected response: " + JSON.stringify(responseData));

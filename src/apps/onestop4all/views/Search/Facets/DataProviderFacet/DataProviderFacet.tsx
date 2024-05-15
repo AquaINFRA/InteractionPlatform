@@ -26,7 +26,7 @@ export function DataProviderFacet() {
                 );
                 setEntries(sortedEntries);
                 const providerTitles = sortedEntries.map((se: any) => {
-                    return { title: se.title, id: se.id };
+                    return { title: se.title, id: se.id, description: se.description };
                 });
                 searchState.setDataProviderTitles(providerTitles);
             }
@@ -52,6 +52,7 @@ export function DataProviderFacet() {
                         <Flex key={i}>
                             <FacetCheckbox
                                 label={entry.title}
+                                description={entry.description}
                                 isChecked={searchState.selectedDataProvider.includes(entry.id)}
                                 onChange={(event) =>
                                     dataProviderToggled(event.target.checked, entry)
