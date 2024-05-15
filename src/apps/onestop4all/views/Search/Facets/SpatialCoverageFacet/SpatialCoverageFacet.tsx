@@ -108,11 +108,13 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     <Box height="300px" marginBottom="16px" position="relative">
                         <IconButton
                             aria-label="rectangle select"
-                            size="xs"
+                            size="lg"
                             position="absolute"
                             zIndex="1000"
                             right="10px"
                             bottom="45px"
+                            rounded={"lg"}
+                            title="Click here to draw a bounding box"
                             bg={bboxActive ? ActiveControlColor : PrimaryColor}
                             onClick={() => selectBbox()}
                             icon={<RectangleSelectIcon />}
