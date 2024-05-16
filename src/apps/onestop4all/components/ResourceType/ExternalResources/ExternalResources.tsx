@@ -73,7 +73,8 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                             />
                         </Link>
                         {link.type === "application/zip" || 
-                            link.type === "ZIP" || 
+                            link.type === "ZIP" ||
+                            link.type === "SHAPE-ZIP" || 
                             link.type === "OGC API - Features" ||
                             link.type === "image/png" ||
                             link.type === "image/tif" ||
