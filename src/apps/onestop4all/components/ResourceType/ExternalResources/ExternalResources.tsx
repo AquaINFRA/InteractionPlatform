@@ -4,13 +4,39 @@ import { Box, Flex } from "@open-pioneer/chakra-integration";
 import { LinkObject } from "../../../views/Dataset/Dataset";
 import { ActionButton } from "../ActionButton/ActionButton";
 import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
+
+interface ExternalLink {
+    href: string;
+    title: string;
+    type: string;
+    description: string;
+    protocol: string;
+}
 
 export const ExternalResources = (props: { links: LinkObject[] }) => {
     const { links } = props;
+    console.log(links);
+    const [externalLinks, setExternalLinks] = useState<ExternalLink[]>();
+
+    useEffect(() => {
+        const newLinks = new Array<ExternalLink>();
+        links.forEach((link) => {
+            link.title !== "The landing page of this server as HTML" && 
+            link.title !== "This document as GeoJSON" && 
+            link.title !== "This document as RDF (JSON-LD)" &&
+            link.title !== "The landing page of this server as JSON" &&
+            link.title !== "This document as HTML" ?
+                newLinks.push(link) :
+                null;
+        });
+        setExternalLinks(newLinks);
+    }, []);
+
     return (
         <Box>
             <div className="abstractSectionHeader">External Resources</div>
-            {links.map((link: LinkObject, i: number) => (
+            {externalLinks ? externalLinks.map((link: ExternalLink, i: number) => (
                 <Box key={i} pt={3}>
                     <div className="seperator" />
                     {link.title !== "" && link.title !== null ? (
@@ -65,7 +91,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                         ) : null}
                     </Flex>
                 </Box>
-            ))}
+            )) : null}
         </Box>
     );
 };
