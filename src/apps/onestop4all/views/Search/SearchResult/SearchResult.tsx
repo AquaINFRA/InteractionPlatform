@@ -27,7 +27,7 @@ export function SearchResult(props: SearchResultProps) {
     function navigateTo(): void {
         // calculate result page
         const idx = searchState.searchResults?.results.findIndex((r) => r.id === item.id) || 0;
-        const resultPage = idx + 1 + searchState.pageSize * searchState.pageStart;
+        const resultPage = idx + 1; //+ searchState.pageSize * searchState.pageStart;
         navigate(`/result/${item.id}`, { state: { resultPage } });
         window.scrollTo(0, 0);
     }

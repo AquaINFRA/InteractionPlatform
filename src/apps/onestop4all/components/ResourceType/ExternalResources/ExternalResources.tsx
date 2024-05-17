@@ -16,7 +16,6 @@ interface ExternalLink {
 
 export const ExternalResources = (props: { links: LinkObject[] }) => {
     const { links } = props;
-    console.log(links);
     const [externalLinks, setExternalLinks] = useState<ExternalLink[]>();
 
     useEffect(() => {

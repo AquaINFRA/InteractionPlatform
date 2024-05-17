@@ -146,8 +146,8 @@ export const SearchState = (props: PropsWithChildren) => {
                     searchTerm,
                     dataProvider: selectedDataProvider.map((e:any) => e.id ? e.id : e),
                     spatialFilter,
-                    pageSize,
-                    pageStart,
+                    //pageSize,
+                    //pageStart,
                     sorting: sorting?.term
                 })
                 .then((result) => {
