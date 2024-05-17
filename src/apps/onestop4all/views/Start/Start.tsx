@@ -186,7 +186,7 @@ export function StartView() {
             </Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Box minH={{ base: "1100px", custombreak: "1600px" }}></Box>
+                <Box minH={{ base: "1100px", custombreak: "1700px" }}></Box>
 
                 <div className="seperator"></div>
             </Container>
