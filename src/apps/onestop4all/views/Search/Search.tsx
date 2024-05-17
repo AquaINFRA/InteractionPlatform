@@ -62,8 +62,8 @@ export function SearchView() {
     }, [
         searchState.searchTerm,
         searchState.spatialFilter,
-        searchState.pageSize,
-        searchState.pageStart,
+        //searchState.pageSize,
+        //searchState.pageStart,
         searchState.sorting,
         searchState.selectedDataProvider,
         searchState.downloadOption
@@ -134,7 +134,8 @@ export function SearchView() {
                                 <Chips />
                             </Box>
                             <Box>
-                                {searchState.searchResults?.results.map((e) => {
+                                {searchState.searchResults?.results.slice(searchState.pageStart * searchState.pageSize, 
+                                    (searchState.pageStart+1) * searchState.pageSize).map((e) => {
                                     return (
                                         <Box key={e.id}>
                                             <Box className="seperator"></Box>

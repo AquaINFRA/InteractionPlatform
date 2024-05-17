@@ -26,8 +26,8 @@ export interface SearchRequestParams {
     resourceTypes?: string[];
     subjects?: string[];
     dataProvider?: string[];
-    pageSize?: number;
-    pageStart?: number;
+    //pageSize?: number;
+    //pageStart?: number;
     spatialFilter?: number[];
     temporalFilter?: TemporalFilter;
     temporalConfig?: TemporalConfig;
@@ -125,8 +125,8 @@ export class SearchService {
         const queryParams = this.createQueryParams();
 
         this.addSearchterm(searchParams.searchTerm, queryParams);
-
-        this.addPaging(searchParams.pageSize, searchParams.pageStart, queryParams);
+        
+        this.addSearchResultsLimit(queryParams);
 
         this.addSpatialFilter(searchParams.spatialFilter, queryParams);
 
@@ -137,10 +137,10 @@ export class SearchService {
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 const response = responseData;
-                console.log(url);
+                console.log(response);
                 if (response.numberMatched !== undefined && response.features !== undefined) {
                     return {
-                        count: response.numberMatched,
+                        count: response.features.length,
                         results: response.features,
                         facets: {
                             provider: searchParams.dataProvider?.map((dp) => {
@@ -214,7 +214,6 @@ export class SearchService {
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
-                    console.log(responseData);
                     return responseData;
                 } else {
                     throw new Error("Unexpected response: " + JSON.stringify(responseData));
@@ -238,17 +237,18 @@ export class SearchService {
         }
     }
 
-    private addPaging(
-        pageSize: number | undefined,
-        pageStart: number | undefined,
+    private addSearchResultsLimit(
+        /*pageSize: number | undefined,
+        pageStart: number | undefined,*/
         queryParams: URLSearchParams
     ) {
-        if (pageSize !== undefined) {
+        queryParams.set("limit", "100");
+        /*if (pageSize !== undefined) {
             queryParams.set("limit", pageSize.toString());
             if (pageStart !== undefined) {
                 queryParams.set("offset", (pageStart * pageSize).toString());
             }
-        }
+        }*/
     }
 
     private addSearchterm(searchTerm: string | undefined, queryParams: URLSearchParams) {
