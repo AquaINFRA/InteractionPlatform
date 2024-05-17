@@ -2,7 +2,7 @@ import { Group } from "@visx/group";
 import { Graph } from "@visx/network";
 import { LinkProvidedProps } from "@visx/network/lib/types";
 
-import { ResourceType } from "../../services/ResourceTypeUtils";
+import { ResourceType } from "../../services/ils";
 import { Node } from "./Node";
 
 export interface NetworkGraphProps {
