@@ -71,23 +71,39 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                                 fun={() => void 0}
                             />
                         </Link>
-                        {link.type === "application/zip" || link.type === "ZIP" || link.type === "OGC API - Features" ? (
-                            <Link
-                                to={
-                                    ("https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=" +
-                                        link.href) as string
-                                }
-                                //className="actionButtonLink"
-                                target="_blank"
-                            >
-                                <ActionButton
-                                    label="Import to Galaxy"
-                                    icon={<DownloadIcon color="white" />}
-                                    variant="solid"
-                                    fun={() => void 0}
-                                />
-                            </Link>
-                        ) : null}
+                        {link.type === "application/zip" || 
+                            link.type === "ZIP" ||
+                            link.type === "SHAPE-ZIP" || 
+                            link.type === "OGC API - Features" ||
+                            link.type === "image/png" ||
+                            link.type === "image/tif" ||
+                            link.type === "image/tiff" ||
+                            link.type === "image/bmp" ||
+                            link.type === "image/gif" ||
+                            link.type === "image/svg" ||
+                            link.type === "image/eps" ||
+                            link.type === "image/xcf" || 
+                            link.type === "image/jpg" ||
+                            link.type === "image/jpeg" ||
+                            (link.type === "application/json" && link.href.endsWith(".json")) ||
+                            (link.type === "application/octet-stream" && link.href.includes("/rest/")) ||
+                            (link.type === "application/octet-stream" && link.href.includes("api.") && link.href.includes("getData")) ? (
+                                <Link
+                                    to={
+                                        ("https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=" +
+                                            link.href) as string
+                                    }
+                                    //className="actionButtonLink"
+                                    target="_blank"
+                                >
+                                    <ActionButton
+                                        label="Import to Galaxy"
+                                        icon={<DownloadIcon color="white" />}
+                                        variant="solid"
+                                        fun={() => void 0}
+                                    />
+                                </Link>
+                            ) : null}
                     </Flex>
                 </Box>
             )) : null}
