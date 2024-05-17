@@ -145,14 +145,23 @@ const searchResultHandlers: SearchResultHandler[] = [
 ];
 
 export function getHandler(result: string): SearchResultHandler {
-    const match = searchResultHandlers.find((h) => h.canHandle(result));
-    if (match) {
-        return match;
+    if (result) {
+        const match = searchResultHandlers.find((h) => h.canHandle(result));
+        if (match) {
+            return match;
+        } else {
+            throw new Error(
+                "Unknown search item, please implement a handler: " + JSON.stringify(result)
+            );
+        }
     } else {
-        throw new Error(
-            "Unknown search item, please implement a handler: " + JSON.stringify(result)
-        );
+        result = "dataset";
+        const match = searchResultHandlers.find((h) => h.canHandle(result));
+        if (match) {
+            return match;
+        }
     }
+
 }
 
 export function getResourceType(result: string): ResourceType {
