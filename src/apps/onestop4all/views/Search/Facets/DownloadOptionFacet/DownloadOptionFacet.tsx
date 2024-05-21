@@ -13,7 +13,7 @@ export interface DownloadOption {
 export function DownloadOptionFacet() {
 
     const searchState = useSearchState();
-    console.log(searchState);
+    //console.log(searchState);
 
     // useEffect to react to changes in showDownloadLinks
     useEffect(() => {

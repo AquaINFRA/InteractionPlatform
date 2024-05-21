@@ -133,11 +133,11 @@ export class SearchService {
         this.addDataProvider(searchParams.dataProvider, queryParams);
 
         const url = `${oapirUrl}/search?${queryParams.toString()}`;
-
+        console.log(url);
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 const response = responseData;
-                console.log(response);
+                //console.log(response);
                 if (response.numberMatched !== undefined && response.features !== undefined) {
                     return {
                         count: response.features.length,

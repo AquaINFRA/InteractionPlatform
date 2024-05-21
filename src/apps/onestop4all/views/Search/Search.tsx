@@ -175,9 +175,9 @@ export function SearchView() {
                         <Box padding={"32px 0px"}>
                             <DataProviderFacet />
                         </Box>
-                        {/*<Box>
+                        {<Box>
                             <DownloadOptionFacet />
-                        </Box>*/}
+                        </Box>}
                         {/*<Box padding={"64px 0px 32px"} ref={menu}>
                             <ResourceTypeFacet></ResourceTypeFacet>
                         </Box>
