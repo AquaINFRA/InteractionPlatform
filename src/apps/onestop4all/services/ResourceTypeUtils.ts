@@ -145,7 +145,9 @@ const searchResultHandlers: SearchResultHandler[] = [
 ];
 
 export function getHandler(result: string): SearchResultHandler {
-    console.log(result);
+    if (!result) {
+        result = "dataset";
+    }
     const match = searchResultHandlers.find((h) => h.canHandle(result));
     if (match) {
         return match;

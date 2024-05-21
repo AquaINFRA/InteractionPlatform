@@ -13,7 +13,13 @@
     align-items: center;
     gap: 10px;
     align-self: stretch;
-    margin-top: 1%;
+    margin-top: 3%;
+}
+
+@media only screen and (max-width: $customBreakpoint) {
+    .actionButton {
+        margin-top: 1%;
+    }
 }
 
 .actionButtonLabelSolid {

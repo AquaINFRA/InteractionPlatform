@@ -9,7 +9,7 @@ import VectorSource from "ol/source/Vector";
 import { useEffect, useRef, useState } from "react";
 
 import { DisableOverlay } from "../../../../components/DisableOverlay/DisableOverlay";
-import { RectangleSelectIcon } from "../../../../components/Icons";
+import { QuestionmarkIcon, RectangleSelectIcon } from "../../../../components/Icons";
 import { ActiveControlColor, PrimaryColor } from "../../../../Theme";
 import { useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
@@ -108,11 +108,25 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     <Box height="300px" marginBottom="16px" position="relative">
                         <IconButton
                             aria-label="rectangle select"
-                            size="xs"
+                            size="lg"
+                            position="absolute"
+                            zIndex="1000"
+                            right="10px"
+                            bottom="100px"
+                            rounded={"lg"}
+                            title="Click the button below and draw a bounding box to find resources relevant for that area"
+                            icon={<QuestionmarkIcon />}
+                            _hover={{cursor: "default"}}
+                        />
+                        <IconButton
+                            aria-label="rectangle select"
+                            size="lg"
                             position="absolute"
                             zIndex="1000"
                             right="10px"
                             bottom="45px"
+                            rounded={"lg"}
+                            title="Click here to draw a bounding box"
                             bg={bboxActive ? ActiveControlColor : PrimaryColor}
                             onClick={() => selectBbox()}
                             icon={<RectangleSelectIcon />}
