@@ -1,4 +1,4 @@
-import { Flex } from "@open-pioneer/chakra-integration";
+import { Box, Button, Flex } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 
@@ -15,6 +15,7 @@ export interface DataProvider {
 export function DataProviderFacet() {
     const searchState = useSearchState();
     const [entries, setEntries] = useState<SelectableDataProvider[]>([]);
+    //const [allSelected, setAllSelected] = useState(false);
     const searchSrvc = useService("onestop4all.SearchService");
 
     useEffect(() => {
@@ -44,6 +45,11 @@ export function DataProviderFacet() {
         }
     }
 
+    /*function changeAllSelection() {
+        const dataProviderIds = entries.map(obj => obj.id);    
+        searchState.setSelectedDataProvider(dataProviderIds);
+    }*/
+
     return (
         <FacetBase title="Data provider" expanded>
             <SimpleGrid columns={[1, 2]} spacing={3} marginTop={"1%"}>
@@ -62,6 +68,9 @@ export function DataProviderFacet() {
                     ) : null
                 )}
             </SimpleGrid>
+            {/*<Box pt={3}>
+                <Button w={"100%"} onClick={changeAllSelection}>{allSelected ? "Deselect all" : "Select all"}</Button>
+            </Box>*/}
         </FacetBase>
     );
 }

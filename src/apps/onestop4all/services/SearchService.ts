@@ -116,7 +116,7 @@ export class SearchService {
         this.addDataProvider(searchParams.dataProvider, queryParams);
 
         const url = `${oapirUrl}/search?${queryParams.toString()}`;
-
+        console.log(url);
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 const response = responseData;
