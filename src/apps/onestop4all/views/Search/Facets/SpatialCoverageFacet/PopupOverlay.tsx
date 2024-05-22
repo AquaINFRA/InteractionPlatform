@@ -27,11 +27,6 @@ import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercato
 // Search
 import { useSearchState } from "../../SearchState";
 import { Feature, MapBrowserEvent } from "ol";
-import Geometry from "ol/geom";
-import { Button } from "@open-pioneer/chakra-integration";
-import DragBox from "ol/interaction/DragBox";
-import Collection from "ol";
-import Interaction from "ol/interaction/Interaction";
 // Custom Control Buttons (not used currently)
 export class DrawControl extends Control {
     private handle: () => void;
@@ -311,10 +306,12 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     return (
         <Box className="popup-background-transparent">
             <Box className="popup-background">
-                <Box fontSize={20}><b>Select catchment areas</b></Box>
-                <Box height="85%" width="100%">
+                <Box fontSize={20}>
+                    <b>Select catchment areas</b>
+                </Box>
+                <Box className="map-container">
                     <MapContainer mapId={mapId} />
-                    <Box position="absolute" bottom="16%" left="4%">
+                    <Box className="legend">
                         <Legend />
                     </Box>
                 </Box>
