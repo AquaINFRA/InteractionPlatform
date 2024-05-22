@@ -4,14 +4,38 @@ import { Box, Flex } from "@open-pioneer/chakra-integration";
 import { LinkObject } from "../../../views/Dataset/Dataset";
 import { ActionButton } from "../ActionButton/ActionButton";
 import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
+
+interface ExternalLink {
+    href: string;
+    title: string;
+    type: string;
+    description: string;
+    protocol: string;
+}
 
 export const ExternalResources = (props: { links: LinkObject[] }) => {
     const { links } = props;
-    console.log(links);
+    const [externalLinks, setExternalLinks] = useState<ExternalLink[]>();
+
+    useEffect(() => {
+        const newLinks = new Array<ExternalLink>();
+        links.forEach((link) => {
+            link.title !== "The landing page of this server as HTML" && 
+            link.title !== "This document as GeoJSON" && 
+            link.title !== "This document as RDF (JSON-LD)" &&
+            link.title !== "The landing page of this server as JSON" &&
+            link.title !== "This document as HTML" ?
+                newLinks.push(link) :
+                null;
+        });
+        setExternalLinks(newLinks);
+    }, []);
+
     return (
         <Box>
             <div className="abstractSectionHeader">External Resources</div>
-            {links.map((link: LinkObject, i: number) => (
+            {externalLinks ? externalLinks.map((link: ExternalLink, i: number) => (
                 <Box key={i} pt={3}>
                     <div className="seperator" />
                     {link.title !== "" && link.title !== null ? (
@@ -38,7 +62,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                             <span className="metadataValue">{link.type}</span>
                         </div>
                     ) : null}
-                    <Flex flexDirection="column">
+                    <Flex flexDirection="column"> 
                         <Link to={link.href as string} target="_blank">
                             <ActionButton
                                 label="Visit"
@@ -47,26 +71,42 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                                 fun={() => void 0}
                             />
                         </Link>
-                        {link.type === "application/zip" ? (
-                            <Link
-                                to={
-                                    ("https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=" +
-                                        link.href) as string
-                                }
-                                //className="actionButtonLink"
-                                target="_blank"
-                            >
-                                <ActionButton
-                                    label="Import to Galaxy"
-                                    icon={<DownloadIcon color="white" />}
-                                    variant="solid"
-                                    fun={() => void 0}
-                                />
-                            </Link>
-                        ) : null}
+                        {link.type === "application/zip" || 
+                            link.type === "ZIP" ||
+                            link.type === "SHAPE-ZIP" || 
+                            link.type === "OGC API - Features" ||
+                            link.type === "image/png" ||
+                            link.type === "image/tif" ||
+                            link.type === "image/tiff" ||
+                            link.type === "image/bmp" ||
+                            link.type === "image/gif" ||
+                            link.type === "image/svg" ||
+                            link.type === "image/eps" ||
+                            link.type === "image/xcf" || 
+                            link.type === "image/jpg" ||
+                            link.type === "image/jpeg" ||
+                            (link.type === "application/json" && link.href.endsWith(".json")) ||
+                            (link.type === "application/octet-stream" && link.href.includes("/rest/")) ||
+                            (link.type === "application/octet-stream" && link.href.includes("api.") && link.href.includes("getData")) ? (
+                                <Link
+                                    to={
+                                        ("https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=" +
+                                            link.href) as string
+                                    }
+                                    //className="actionButtonLink"
+                                    target="_blank"
+                                >
+                                    <ActionButton
+                                        label="Import to Galaxy"
+                                        icon={<DownloadIcon color="white" />}
+                                        variant="solid"
+                                        fun={() => void 0}
+                                    />
+                                </Link>
+                            ) : null}
                     </Flex>
                 </Box>
-            ))}
+            )) : null}
         </Box>
     );
 };

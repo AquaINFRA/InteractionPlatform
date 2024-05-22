@@ -39,7 +39,6 @@ export function Result() {
 
     useEffect(() => {
         if (history.state && history.state.usr && history.state.usr.resultPage) {
-            // console.log(`Current page is ${history.state.usr.resultPage}`);
             setResult(history.state.usr.resultPage);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -48,6 +47,7 @@ export function Result() {
     useEffect(() => {
         setLoading(true);
         searchSrvc.getMetadata(resultId).then((result) => {
+            console.log(result);
             if (result) {
                 if (result.provider === "zenodo") {
                     searchSrvc.fetchRoCrateFile("10477880").then((crate: any) => {
@@ -165,19 +165,11 @@ export function Result() {
     }
 
     function fetchResultId(result: number) {
-        searchSrvc
-            .doSearch({
-                pageSize: 1,
-                pageStart: result - 1,
-                searchTerm: searchState.searchTerm,
-                spatialFilter: searchState.spatialFilter
-            })
-            .then((res: any) => {
-                if (res.results[0]) {
-                    navigate(`/result/${res.results[0].id}`, { state: { resultPage: result } });
-                    setResult(result);
-                }
-            });
+        const resultId = searchState && searchState.searchResults ? searchState.searchResults.results[result - 1]?.id : null;
+        if (resultId) {
+            navigate(`/result/${resultId}`, { state: { resultPage: result } });
+            setResult(result);
+        }
     }
 
     function renderPaging(): import("react").ReactNode {
@@ -211,7 +203,7 @@ export function Result() {
                 marginTop={{ base: "-40px", custombreak: "-50px" }}
             >
                 <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                    <SearchBar></SearchBar>
+                    <SearchBar />
                 </Container>
             </Box>
 
