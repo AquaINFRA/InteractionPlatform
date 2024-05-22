@@ -1,69 +1,42 @@
 import {
     Box,
     Button,
-    ButtonGroup,
-    Checkbox,
-    HStack,
     Stack,
-    VStack,
-    extendTheme
 } from "@open-pioneer/chakra-integration";
 import { useSearchState } from "../../SearchState";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import {FilterCheckbox} from "./FilterCheckbox";
 
-interface Item {
+interface SearchTermItem {
     value?: string;
     type?: string;
 }
 
 export const RelatedKeywords = (props: {
-    list: Array<Item>;
+    list: Array<SearchTermItem>;
     tag: string;
     element: string;
     type?: string;
 }) => {
-    const { list, tag, element, type } = props;
+    const { list, tag, element } = props;
 
     const searchState = useSearchState();
-    const [selectedItems, setSelectedItems] = useState([] as string[]);
-    const [filterCategories, setFilterCategories] = useState([
+    const [selectedItems, setSelectedItems] = useState<string[]>([]);
+    const [filterCategories, setFilterCategories] = useState<string[]>([
         "originalMatch",
         "narrower",
         "broader",
         "related"
-    ] as string[]);
+    ]);
 
-    const contains = (array: string[], item: string) => {
-        for (let i = 0; i < array.length; i++) {
-            if (array[i] == item) {
-                return true;
-            }
-        }
-        return false;
-    };
-
-    const itemBorder = (item: Item) => {
-        if (item.value) {
-            if (contains(selectedItems, item.value)) return "2px solid black";
+    const itemBorder = (item: SearchTermItem) => {
+        if (item.value && selectedItems.includes(item.value)) {
+            return "2px solid black";
         } else return "";
     };
 
-    const createQuery = (element: string, elem: string) => {
-        if (element == "keyword") {
-            return "/search?searchterm=" + elem;
-        } else {
-            if (element == "theme") {
-                return "/search?subjects=" + elem;
-            } else {
-                return "/";
-            }
-        }
-    };
-
-    function getClassName(item: Item) {
-        // console.log(item);
+    function getClassName(item: SearchTermItem) {
         if (item.type != null) {
-            // console.log("TYPE: " + item.type);
             switch (item.type) {
                 case "originalMatch":
                     return "metadataKeyword";
@@ -76,13 +49,15 @@ export const RelatedKeywords = (props: {
             }
         } else return element == "keyword" ? "metadataKeyword" : "metadataTheme";
     }
-    // shorten the list
-    const shortList: Array<Item> = [];
+
+    const shortList: Array<SearchTermItem> = [];
+    
     let originalIndex = 0;
     let narrowerIndex = 0;
     let broaderIndex = 0;
     let relatedIndex = 0;
-    list.map((item: Item) => {
+
+    list.map((item: SearchTermItem) => {
         if (item.type == "originalMatch") {
             originalIndex++;
             if (originalIndex < 6) shortList.push(item);
@@ -101,22 +76,21 @@ export const RelatedKeywords = (props: {
         }
     });
 
-    const makeSearchterm = (array: string[]) => {
-        let tmp = searchState.searchTerm + " ";
-        for (let i = 0; i < array.length; i++) {
-            tmp = tmp + array[i] + " ";
-        }
-        return tmp;
+    const combineSearchTerms = (searchTermList: string[]) => {
+        let searchTermsCombined = searchState.searchTerm + " ";
+        searchTermList.forEach((searchTerm) => {
+            searchTermsCombined = searchTermsCombined + searchTerm + " ";
+        });
+        return searchTermsCombined;
     };
+
     const updateFilter = (isChecked: boolean, type: string) => {
-        if (isChecked) {
-            if (!contains(filterCategories, type)) {
-                const tmp = filterCategories.slice();
-                tmp.push(type);
-                setFilterCategories(tmp);
-            }
+        if (isChecked && !filterCategories.includes(type)) {
+            const tmp = filterCategories.slice();
+            tmp.push(type);
+            setFilterCategories(tmp);
         } else {
-            if (contains(filterCategories, type)) {
+            if (filterCategories.includes(type)) {
                 setFilterCategories(filterCategories.filter((item) => item != type));
             }
         }
@@ -125,7 +99,7 @@ export const RelatedKeywords = (props: {
     const updateSelectedItems = (itemValue: string) => {
         let tmp = selectedItems.slice();
         if (itemValue) {
-            if (contains(tmp, itemValue)) {
+            if (tmp.includes(itemValue)) {
                 tmp = tmp.filter((i) => itemValue != i);
             } else {
                 tmp.push(itemValue);
@@ -138,78 +112,59 @@ export const RelatedKeywords = (props: {
         <Box className="metadataSection">
             <Stack spacing={3} direction="row" wrap="wrap">
                 <span className="metadataTag">{tag}:</span>
-                <Checkbox
-                    defaultChecked
-                    onChange={(e) => {
-                        updateFilter(e.target.checked, "originalMatch");
-                    }}
-                >
-                    <Box borderRadius="50px" background={"rgba(34, 192, 210, 0.2)"} padding="3px">
-                        Original Match
-                    </Box>
-                </Checkbox>
-                <Checkbox
-                    defaultChecked
-                    onChange={(e) => {
-                        updateFilter(e.target.checked, "narrower");
-                    }}
-                >
-                    <Box borderRadius="50px" background={"rgb(255, 222, 173)"} padding="3px">
-                        Narrower
-                    </Box>
-                </Checkbox>
-                <Checkbox
-                    defaultChecked
-                    onChange={(e) => {
-                        updateFilter(e.target.checked, "broader");
-                    }}
-                >
-                    <Box borderRadius="50px" background={"rgb(230, 230, 250)"} padding="3px">
-                        Broader
-                    </Box>
-                </Checkbox>
-                <Checkbox
-                    defaultChecked
-                    onChange={(e) => {
-                        updateFilter(e.target.checked, "related");
-                    }}
-                >
-                    <Box borderRadius="50px" background={"rgb(210, 180, 140)"} padding="3px">
-                        Related
-                    </Box>
-                </Checkbox>
-
-                <HStack spacing="3px">
-                    <Button
-                        height="3vh"
-                        width="12vw"
-                        fontSize="0.7vw"
-                        onClick={() => {
-                            if (selectedItems.length != 0)
-                                searchState.setSearchTerm(makeSearchterm(selectedItems));
-                        }}
-                        isActive={selectedItems.length == 0}
-                    >
-                        Search for selected terms
-                    </Button>
-                </HStack>
+                <FilterCheckbox
+                    label="Original Match"
+                    background="rgba(34, 192, 210, 0.2)"
+                    filterType="originalMatch"
+                    updateFilter={updateFilter}
+                />
+                <FilterCheckbox
+                    label="Narrower"
+                    background="rgb(255, 222, 173)"
+                    filterType="narrower"
+                    updateFilter={updateFilter}
+                />
+                <FilterCheckbox
+                    label="Broader"
+                    background="rgb(230, 230, 250)"
+                    filterType="broader"
+                    updateFilter={updateFilter}
+                />
+                <FilterCheckbox
+                    label="Related"
+                    background="rgb(210, 180, 140)"
+                    filterType="related"
+                    updateFilter={updateFilter}
+                />
             </Stack>
             {shortList
                 .filter((item) => {
-                    return contains(filterCategories, item.type!);
+                    return filterCategories.includes(item.type!);
                 })
-                .map((item: Item, j: number) => (
-                    <button
+                .map((item: SearchTermItem, j: number) => (
+                    <Box
                         className={getClassName(item)}
                         style={{ border: itemBorder(item) }}
                         key={j}
                         onClick={() => {
                             updateSelectedItems(item.value!);
                         }}
+                        _hover={{ cursor: "pointer" }}
                     >
                         {item.value}
-                    </button>
+                    </Box>
                 ))}
+            <Box pt={3}>
+                <Button
+                    onClick={() => {
+                        if (selectedItems.length != 0)
+                            searchState.setSearchTerm(combineSearchTerms(selectedItems));
+                    }}
+                    isActive={selectedItems.length == 0}
+                >
+                    Search for selected terms
+                </Button>
+            </Box>
             <div className="seperator" style={{ marginTop: "10px" }}></div>
         </Box>
     );
