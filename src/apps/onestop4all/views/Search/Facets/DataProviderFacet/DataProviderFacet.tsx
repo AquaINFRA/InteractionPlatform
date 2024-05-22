@@ -15,7 +15,7 @@ export interface DataProvider {
 export function DataProviderFacet() {
     const searchState = useSearchState();
     const [entries, setEntries] = useState<SelectableDataProvider[]>([]);
-    //const [allSelected, setAllSelected] = useState(false);
+    const [allSelected, setAllSelected] = useState(false);
     const searchSrvc = useService("onestop4all.SearchService");
 
     useEffect(() => {
@@ -25,7 +25,8 @@ export function DataProviderFacet() {
                     (a: DataProvider, b: DataProvider) =>
                         a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
                 );
-                setEntries(sortedEntries);
+                setEntries(sortedEntries.filter((entry: any) => entry.id !== "dataeurope"));
+                console.log(sortedEntries);
                 const providerTitles = sortedEntries.map((se: any) => {
                     return { title: se.title, id: se.id, description: se.description };
                 });
@@ -45,10 +46,16 @@ export function DataProviderFacet() {
         }
     }
 
-    /*function changeAllSelection() {
-        const dataProviderIds = entries.map(obj => obj.id);    
-        searchState.setSelectedDataProvider(dataProviderIds);
-    }*/
+    function changeAllSelection() {
+        if (allSelected) {
+            searchState.setSelectedDataProvider([]);
+            setAllSelected(false);
+        } else {
+            const dataProviderIds = entries.map(obj => obj.id);    
+            searchState.setSelectedDataProvider(dataProviderIds);
+            setAllSelected(true);
+        }
+    }
 
     return (
         <FacetBase title="Data provider" expanded>
@@ -68,9 +75,9 @@ export function DataProviderFacet() {
                     ) : null
                 )}
             </SimpleGrid>
-            {/*<Box pt={3}>
+            <Box pt={5}>
                 <Button w={"100%"} onClick={changeAllSelection}>{allSelected ? "Deselect all" : "Select all"}</Button>
-            </Box>*/}
+            </Box>
         </FacetBase>
     );
 }
