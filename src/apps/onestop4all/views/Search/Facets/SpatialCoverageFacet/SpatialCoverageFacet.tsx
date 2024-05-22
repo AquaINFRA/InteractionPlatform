@@ -116,7 +116,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                             rounded={"lg"}
                             title="Click the button below and draw a bounding box to find resources relevant for that area"
                             icon={<QuestionmarkIcon />}
-                            _hover={{cursor: "default"}}
+                            _hover={{ cursor: "default" }}
                         />
                         <IconButton
                             aria-label="rectangle select"
@@ -133,7 +133,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         />
                         <MapContainer mapId={mapId} />
                     </Box>
-                    <Box id="popupOverlay1">
+                    <Box>
                         <Button width="100%" onClick={() => setSearchArea()}>
                             set search area
                         </Button>
@@ -148,7 +148,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     {disabled && (
                         <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
                     )}
-                    <PopupOverlay showPopup={showPopup} onClose={() => setShowPopup(false)}/>
+                    <PopupOverlay showPopup={showPopup} onClose={() => setShowPopup(false)} />
                 </Box>
             </FacetBase>
         </Box>
