@@ -26,6 +26,7 @@ export interface SearchRequestParams {
     resourceTypes?: string[];
     subjects?: string[];
     dataProvider?: string[];
+    downloadOption: boolean;
     //pageSize?: number;
     //pageStart?: number;
     spatialFilter?: number[];
@@ -132,8 +133,10 @@ export class SearchService {
 
         this.addDataProvider(searchParams.dataProvider, queryParams);
 
+        this.addDownloadOption(searchParams.downloadOption, queryParams);
+
         const url = `${oapirUrl}/search?${queryParams.toString()}`;
-        console.log(url);
+
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 const response = responseData;
@@ -221,6 +224,7 @@ export class SearchService {
             })
         );
     }
+
     getRelatedSearchterms(keyword: string) {
         const baseUrl = "http://vm2558.kaj.pouta.csc.fi/rcsearch?keyword=";
         const url = baseUrl + keyword + "&broader=true&narrower=true&related=true";
@@ -247,6 +251,12 @@ export class SearchService {
     private addDataProvider(dataProvider: string[] | undefined, queryParams: URLSearchParams) {
         if (dataProvider?.length) {
             queryParams.set("collections", `${dataProvider.map((e) => `${e}`).join(",")}`);
+        }
+    }
+
+    private addDownloadOption(downloadOption: boolean, queryParams: URLSearchParams) {
+        if (downloadOption) {
+            queryParams.set("rdl", `${downloadOption}`);
         }
     }
 

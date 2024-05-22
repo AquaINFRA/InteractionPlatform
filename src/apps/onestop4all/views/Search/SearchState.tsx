@@ -47,8 +47,8 @@ export interface SortOption {
 export interface ISearchState {
     searchTerm: string;
     setSearchTerm(searchTerm: string): void;
-    downloadOption: string;
-    setDownloadOption(downloadOption: string): void;
+    downloadOption: boolean;
+    setDownloadOption(downloadOption: boolean): void;
     selectedDataProvider: string[];
     setSelectedDataProvider(dataProvider: string[]): void;
     dataProviderTitles: string[];
@@ -118,7 +118,7 @@ export const SearchState = (props: PropsWithChildren) => {
     const [selectedDataProvider, setSelectedDataProvider] = useState<string[]>(dPr);
 
     //init download option
-    const [downloadOption, setDownloadOption] = useState<string>("");
+    const [downloadOption, setDownloadOption] = useState<boolean>(false);
 
     // init spatial filter
     let sp: number[] = [];
@@ -145,6 +145,7 @@ export const SearchState = (props: PropsWithChildren) => {
                 .doSearch({
                     searchTerm,
                     dataProvider: selectedDataProvider.map((e:any) => e.id ? e.id : e),
+                    downloadOption,
                     spatialFilter,
                     //pageSize,
                     //pageStart,
