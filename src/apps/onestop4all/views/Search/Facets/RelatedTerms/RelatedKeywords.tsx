@@ -13,8 +13,9 @@ export const RelatedKeywords = (props: {
     tag: string;
     element: string;
     type?: string;
+    hide: (() => void) | null;
 }) => {
-    const { list, tag, element } = props;
+    const { list, tag, element, hide } = props;
 
     const searchState = useSearchState();
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -105,7 +106,7 @@ export const RelatedKeywords = (props: {
     };
 
     return (
-        <Box className="relatedTermsBox">
+        <Box>
             <Flex align="center">
                 <Stack spacing={1} direction="row" wrap="wrap">
                     <span className="relatedTermsTitle">{tag}:</span>
@@ -154,7 +155,7 @@ export const RelatedKeywords = (props: {
                 ))}
             <Box pt={3}>
                 <Button
-                    className="CatchmentButton"
+                    className="searchSelectedTerms"
                     onClick={() => {
                         if (selectedItems.length != 0)
                             searchState.setSearchTerm(combineSearchTerms(selectedItems));
@@ -163,6 +164,11 @@ export const RelatedKeywords = (props: {
                 >
                     Search for selected terms
                 </Button>
+                {hide != null ? (
+                    <Button className="toggleRelatedTerms" onClick={() => hide()}>
+                        Hide related terms
+                    </Button>
+                ) : null}
             </Box>
             <div className="seperator" style={{ marginTop: "10px" }}></div>
         </Box>

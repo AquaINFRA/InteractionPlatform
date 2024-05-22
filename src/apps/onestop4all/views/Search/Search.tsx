@@ -19,6 +19,7 @@ import { DownloadOptionFacet } from "./Facets/DownloadOptionFacet/DownloadOption
 
 export function SearchView() {
     const searchState = useSearchState();
+    const [openRelatedTerms, setOpenRelatedTerms] = useState(false);
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -96,8 +97,24 @@ export function SearchView() {
                     {searchState.isLoaded ? (
                         <Box flex="1 1 100%" overflow="hidden">
                             {searchState.searchTerm != "" ? (
-                                <Box width="100%" paddingTop="10px">
-                                    <RelatedTerms></RelatedTerms>
+                                <Box className="relatedTermsBox">
+                                    {/* Mobile view */}
+                                    <Box id="mobileRelatedTerms">
+                                        {!openRelatedTerms ? (
+                                            <Button
+                                                className="toggleRelatedTerms"
+                                                onClick={() => setOpenRelatedTerms(true)}
+                                            >
+                                                View related terms
+                                            </Button>
+                                        ) : (
+                                            <RelatedTerms hide={() => setOpenRelatedTerms(false)} />
+                                        )}
+                                    </Box>
+                                    {/* Desktop view */}
+                                    <Box id="desktopRelatedTerms">
+                                        <RelatedTerms hide={null} />
+                                    </Box>
                                 </Box>
                             ) : null}
 

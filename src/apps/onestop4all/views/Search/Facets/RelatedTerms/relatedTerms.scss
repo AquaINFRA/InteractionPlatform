@@ -10,6 +10,43 @@
     font-weight: 700;
 }
 .relatedTermsBox {
+    width: 100%;
     margin-bottom: 10px;
-    padding-top: 10px;
+    padding-top: 0px;
+}
+.toggleRelatedTerms {
+    width: 100%;
+    background-color: white !important;
+    color: #05668d !important;
+    border: 1mm solid #05668d !important;
+    text-align: center !important;
+}
+.searchSelectedTerms {
+    width: 100%;
+}
+
+#mobileRelatedTerms {
+    display: none;
+}
+
+#desktopRelatedTerms {
+    display: block;
+}
+@media only screen and (max-width: $customBreakpoint) {
+    .relatedTermsBox {
+        width: 100%;
+        margin-bottom: 10px;
+        padding-top: 8%;
+    }
+    .searchSelectedTerms {
+        width: 100%;
+        font-size: 12px !important;
+    }
+    #mobileRelatedTerms {
+        display: block;
+    }
+
+    #desktopRelatedTerms {
+        display: none;
+    }
 }

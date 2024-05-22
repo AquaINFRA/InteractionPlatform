@@ -74,7 +74,8 @@
     font-weight: 700;
 }
 .catchment-button {
-    width: 250px;
+    width: 32%;
+    font-size: 0.9vw !important;
 }
 @media only screen and (max-width: $customBreakpoint) {
     #popupOverlay1 {
