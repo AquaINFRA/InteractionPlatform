@@ -76,7 +76,7 @@ export function DataProviderFacet() {
                 )}
             </SimpleGrid>
             <Box pt={5}>
-                <Button w={"100%"} onClick={changeAllSelection}>{allSelected ? "Deselect all" : "Select all"}</Button>
+                <Button w={"100%"} onClick={changeAllSelection}>{allSelected ? "Deselect all data provider" : "Select all data provider"}</Button>
             </Box>
         </FacetBase>
     );
