@@ -1,6 +1,5 @@
 import "@open-pioneer/runtime";
 
-import { ServiceOptions } from "@open-pioneer/runtime";
 import { ResourceType } from "./ResourceTypeUtils";
 import { DataProvider } from "../views/Search/Facets/DataProviderFacet/DataProviderFacet";
 
@@ -26,8 +25,6 @@ export interface SearchRequestParams {
     resourceTypes?: string[];
     subjects?: string[];
     dataProvider?: string[];
-    //pageSize?: number;
-    //pageStart?: number;
     spatialFilter?: number[];
     temporalFilter?: TemporalFilter;
     temporalConfig?: TemporalConfig;
@@ -102,24 +99,10 @@ export interface SearchResult {
     facets: Facets;
 }
 
-export interface SolrConfig {
-    url: string;
-    coreSelector: string;
-}
-
 const oapirUrl = import.meta.env.VITE_OAPIR_URL;
 export const supportForm = "http://localhost/html/nfdi/";
 
 export class SearchService {
-    private config: SolrConfig;
-
-    constructor(opts: ServiceOptions) {
-        if (opts.properties.solr) {
-            this.config = opts.properties.solr as SolrConfig;
-        } else {
-            throw new Error("Configuration for solr is missing.");
-        }
-    }
 
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
         const queryParams = this.createQueryParams();
@@ -162,7 +145,6 @@ export class SearchService {
         let url = "";
         if (resourceId) {
             queryParams.set("ids", resourceId);
-            this.addChildQueryParams(queryParams);
         }
         if (provider === "zenodo") {
             const baseUrl = "https://zenodo.org/api/records";
@@ -237,29 +219,14 @@ export class SearchService {
         }
     }
 
-    private addSearchResultsLimit(
-        /*pageSize: number | undefined,
-        pageStart: number | undefined,*/
-        queryParams: URLSearchParams
-    ) {
+    private addSearchResultsLimit(queryParams: URLSearchParams) {
         queryParams.set("limit", "100");
-        /*if (pageSize !== undefined) {
-            queryParams.set("limit", pageSize.toString());
-            if (pageStart !== undefined) {
-                queryParams.set("offset", (pageStart * pageSize).toString());
-            }
-        }*/
     }
 
     private addSearchterm(searchTerm: string | undefined, queryParams: URLSearchParams) {
         if (searchTerm) {
             queryParams.set("q", searchTerm);
         }
-    }
-
-    private addChildQueryParams(queryParams: URLSearchParams) {
-        queryParams.set("fl", "*, [child author]");
-        queryParams.set("fq", '-type:"person_nested"');
     }
 
     private createQueryParams(): URLSearchParams {
