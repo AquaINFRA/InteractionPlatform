@@ -96,7 +96,7 @@ export function SearchView() {
                     {searchState.isLoaded ? (
                         <Box flex="1 1 100%" overflow="hidden">
                             {searchState.searchTerm != "" ? (
-                                <Box width="100%">
+                                <Box width="100%" paddingTop="10px">
                                     <RelatedTerms></RelatedTerms>
                                 </Box>
                             ) : null}
@@ -141,17 +141,21 @@ export function SearchView() {
                                 <Chips />
                             </Box>
                             <Box>
-                                {searchState.searchResults?.results.slice(searchState.pageStart * searchState.pageSize, 
-                                    (searchState.pageStart+1) * searchState.pageSize).map((e) => {
-                                    return (
-                                        <Box key={e.id}>
-                                            <Box className="seperator"></Box>
-                                            <Box padding={{ base: "40px 0px" }}>
-                                                <SearchResult item={e} />
+                                {searchState.searchResults?.results
+                                    .slice(
+                                        searchState.pageStart * searchState.pageSize,
+                                        (searchState.pageStart + 1) * searchState.pageSize
+                                    )
+                                    .map((e) => {
+                                        return (
+                                            <Box key={e.id}>
+                                                <Box className="seperator"></Box>
+                                                <Box padding={{ base: "40px 0px" }}>
+                                                    <SearchResult item={e} />
+                                                </Box>
                                             </Box>
-                                        </Box>
-                                    );
-                                })}
+                                        );
+                                    })}
                             </Box>
                             <Box className="seperator" />
                             <Box hideFrom="custombreak" padding="40px 0px">

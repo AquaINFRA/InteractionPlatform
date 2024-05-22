@@ -1,11 +1,7 @@
-import {
-    Box,
-    Button,
-    Stack,
-} from "@open-pioneer/chakra-integration";
+import { Box, Button, Flex, Stack } from "@open-pioneer/chakra-integration";
 import { useSearchState } from "../../SearchState";
 import { useState } from "react";
-import {FilterCheckbox} from "./FilterCheckbox";
+import { FilterCheckbox } from "./FilterCheckbox";
 
 interface SearchTermItem {
     value?: string;
@@ -32,14 +28,14 @@ export const RelatedKeywords = (props: {
     const itemBorder = (item: SearchTermItem) => {
         if (item.value && selectedItems.includes(item.value)) {
             return "2px solid black";
-        } else return "";
+        } else return "2px solid white";
     };
 
     function getClassName(item: SearchTermItem) {
         if (item.type != null) {
             switch (item.type) {
                 case "originalMatch":
-                    return "metadataKeyword";
+                    return "";
                 case "narrower":
                     return "metadataKeywordNarrower";
                 case "broader":
@@ -51,7 +47,7 @@ export const RelatedKeywords = (props: {
     }
 
     const shortList: Array<SearchTermItem> = [];
-    
+
     let originalIndex = 0;
     let narrowerIndex = 0;
     let broaderIndex = 0;
@@ -109,41 +105,43 @@ export const RelatedKeywords = (props: {
     };
 
     return (
-        <Box className="metadataSection">
-            <Stack spacing={3} direction="row" wrap="wrap">
-                <span className="metadataTag">{tag}:</span>
-                <FilterCheckbox
-                    label="Original Match"
-                    background="rgba(34, 192, 210, 0.2)"
-                    filterType="originalMatch"
-                    updateFilter={updateFilter}
-                />
-                <FilterCheckbox
-                    label="Narrower"
-                    background="rgb(255, 222, 173)"
-                    filterType="narrower"
-                    updateFilter={updateFilter}
-                />
-                <FilterCheckbox
-                    label="Broader"
-                    background="rgb(230, 230, 250)"
-                    filterType="broader"
-                    updateFilter={updateFilter}
-                />
-                <FilterCheckbox
-                    label="Related"
-                    background="rgb(210, 180, 140)"
-                    filterType="related"
-                    updateFilter={updateFilter}
-                />
-            </Stack>
+        <Box className="relatedTermsBox">
+            <Flex align="center">
+                <Stack spacing={1} direction="row" wrap="wrap">
+                    <span className="relatedTermsTitle">{tag}:</span>
+                    <FilterCheckbox
+                        label="Original Match"
+                        background="rgba(34, 192, 210, 0.2)"
+                        filterType="originalMatch"
+                        updateFilter={updateFilter}
+                    />
+                    <FilterCheckbox
+                        label="Narrower"
+                        background="rgb(255, 222, 173)"
+                        filterType="narrower"
+                        updateFilter={updateFilter}
+                    />
+                    <FilterCheckbox
+                        label="Broader"
+                        background="rgb(230, 230, 250)"
+                        filterType="broader"
+                        updateFilter={updateFilter}
+                    />
+                    <FilterCheckbox
+                        label="Related"
+                        background="rgb(210, 180, 140)"
+                        filterType="related"
+                        updateFilter={updateFilter}
+                    />
+                </Stack>
+            </Flex>
             {shortList
                 .filter((item) => {
                     return filterCategories.includes(item.type!);
                 })
                 .map((item: SearchTermItem, j: number) => (
                     <Box
-                        className={getClassName(item)}
+                        className={"metadataKeyword " + getClassName(item)}
                         style={{ border: itemBorder(item) }}
                         key={j}
                         onClick={() => {
@@ -156,6 +154,7 @@ export const RelatedKeywords = (props: {
                 ))}
             <Box pt={3}>
                 <Button
+                    className="CatchmentButton"
                     onClick={() => {
                         if (selectedItems.length != 0)
                             searchState.setSearchTerm(combineSearchTerms(selectedItems));
