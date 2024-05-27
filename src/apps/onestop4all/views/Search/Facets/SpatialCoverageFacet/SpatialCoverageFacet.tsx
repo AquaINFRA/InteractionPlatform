@@ -1,4 +1,4 @@
-import { Box, Button, IconButton } from "@open-pioneer/chakra-integration";
+import { Box, Button, IconButton, Tooltip } from "@open-pioneer/chakra-integration";
 import { MapContainer, useMap } from "@open-pioneer/experimental-ol-map";
 import { Feature } from "ol";
 import { Polygon } from "ol/geom";
@@ -14,6 +14,7 @@ import { ActiveControlColor, PrimaryColor } from "../../../../Theme";
 import { useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { PopupOverlay } from "./PopupOverlay";
+import { Questionmark } from "../../../../components/Questionmark";
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
@@ -106,18 +107,12 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
             <FacetBase title="Spatial Coverage" expanded>
                 <Box position="relative">
                     <Box height="300px" marginBottom="16px" position="relative">
-                        <IconButton
-                            aria-label="rectangle select"
-                            size="lg"
-                            position="absolute"
-                            zIndex="1000"
-                            right="10px"
-                            bottom="100px"
-                            rounded={"lg"}
-                            title="Click the button below and draw a bounding box to find resources relevant for that area"
-                            icon={<QuestionmarkIcon />}
-                            _hover={{ cursor: "default" }}
-                        />
+                        <Box position="absolute" right="10px" bottom="100px">
+                            <Questionmark
+                                size="lg"
+                                label="Click the button below and draw a bounding box to find resources relevant for that area"
+                            />
+                        </Box>
                         <IconButton
                             aria-label="rectangle select"
                             size="lg"

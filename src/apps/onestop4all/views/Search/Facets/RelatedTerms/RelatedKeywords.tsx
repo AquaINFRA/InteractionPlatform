@@ -2,6 +2,7 @@ import { Box, Button, Flex, Stack } from "@open-pioneer/chakra-integration";
 import { useSearchState } from "../../SearchState";
 import { useState } from "react";
 import { FilterCheckbox } from "./FilterCheckbox";
+import { Questionmark } from "../../../../components/Questionmark";
 
 interface SearchTermItem {
     value?: string;
@@ -106,9 +107,13 @@ export const RelatedKeywords = (props: {
 
     return (
         <Box>
+            <span className="relatedTermsTitle">{tag}:</span>
+            <Questionmark
+                label="Search for terms that are related to your previous search"
+                size="sm"
+            />
             <Flex align="center">
                 <Stack spacing={1} direction="row" wrap="wrap">
-                    <span className="relatedTermsTitle">{tag}:</span>
                     <FilterCheckbox
                         label="Original Match"
                         background="rgba(34, 192, 210, 0.2)"

@@ -96,8 +96,9 @@ export function SearchView() {
                 <Flex gap="5vw">
                     {searchState.isLoaded ? (
                         <Box flex="1 1 100%" overflow="hidden">
-                            {searchState.searchTerm != "" ? <RelatedTerms /> : null}
-
+                            <Box className="relatedTermsBox">
+                                {searchState.searchTerm != "" ? <RelatedTerms /> : null}
+                            </Box>
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
                                 <Box className="results-count">
                                     {searchState.selectedDataProvider.length > 0 &&
