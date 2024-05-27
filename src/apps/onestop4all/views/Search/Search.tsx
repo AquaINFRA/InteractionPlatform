@@ -17,11 +17,21 @@ import { RelatedTerms } from "./Facets/RelatedTerms/RelatedTerms";
 import { DownloadOptionFacet } from "./Facets/DownloadOptionFacet/DownloadOptionFacet";
 //import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
 
+import {
+    Accordion,
+    AccordionItem,
+    AccordionPanel,
+    AccordionButton
+} from "@open-pioneer/chakra-integration";
+import { UpIcon, DownIcon } from "../../components/Icons";
+
 export function SearchView() {
     const searchState = useSearchState();
     const [openRelatedTerms, setOpenRelatedTerms] = useState(false);
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
+
+    const [expanded, setExpanded] = useState(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => searchState.search(), [searchParams]);
 
@@ -100,20 +110,65 @@ export function SearchView() {
                                 <Box className="relatedTermsBox">
                                     {/* Mobile view */}
                                     <Box id="mobileRelatedTerms">
-                                        {!openRelatedTerms ? (
-                                            <Button
-                                                className="toggleRelatedTerms"
-                                                onClick={() => setOpenRelatedTerms(true)}
+                                        <Accordion
+                                            allowMultiple
+                                            defaultIndex={expanded ? [0] : [1]}
+                                        >
+                                            <AccordionItem
+                                                borderTopWidth="0 !important"
+                                                borderBottomWidth="0 !important"
                                             >
-                                                View related terms
-                                            </Button>
-                                        ) : (
-                                            <RelatedTerms hide={() => setOpenRelatedTerms(false)} />
-                                        )}
+                                                <AccordionPanel
+                                                    paddingInlineStart="unset !important"
+                                                    paddingInlineEnd="unset !important"
+                                                    paddingTop="unset !important"
+                                                >
+                                                    <RelatedTerms />
+                                                </AccordionPanel>
+
+                                                <div>
+                                                    <AccordionButton
+                                                        justifyContent="center"
+                                                        onClick={() => setExpanded(!expanded)}
+                                                    >
+                                                        <Flex
+                                                            alignItems="center"
+                                                            justifyContent="center"
+                                                            direction="column"
+                                                            gap="4px"
+                                                            style={{
+                                                                marginLeft: "10%",
+                                                                marginRight: "10%"
+                                                            }}
+                                                        >
+                                                            {expanded ? (
+                                                                <>
+                                                                    <Box>
+                                                                        <UpIcon />
+                                                                    </Box>
+                                                                    <Box className="metadataShowHide">
+                                                                        Hide related terms
+                                                                    </Box>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <Box className="metadataShowHide">
+                                                                        Show related terms
+                                                                    </Box>
+                                                                    <Box>
+                                                                        <DownIcon />
+                                                                    </Box>
+                                                                </>
+                                                            )}
+                                                        </Flex>
+                                                    </AccordionButton>
+                                                </div>
+                                            </AccordionItem>
+                                        </Accordion>
                                     </Box>
                                     {/* Desktop view */}
                                     <Box id="desktopRelatedTerms">
-                                        <RelatedTerms hide={null} />
+                                        <RelatedTerms />
                                     </Box>
                                 </Box>
                             ) : null}

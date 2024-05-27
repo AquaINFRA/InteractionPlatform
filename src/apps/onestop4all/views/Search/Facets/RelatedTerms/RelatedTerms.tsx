@@ -4,10 +4,8 @@ import { useService } from "open-pioneer:react-hooks";
 import { RelatedKeywords } from "./RelatedKeywords";
 import { SearchState, useSearchState } from "../../SearchState";
 
-export const RelatedTerms = (props: { hide: (() => void) | null }) => {
-    const { hide } = props;
+export const RelatedTerms = () => {
     const [related, setRelated] = useState<any>();
-    null;
     const [myArray, setMyArray] = useState<Array<string>>([]);
     const searchSrvc = useService("onestop4all.SearchService");
     const [myJson, setMyJson] = useState<Array<object>>([]);
@@ -31,5 +29,5 @@ export const RelatedTerms = (props: { hide: (() => void) | null }) => {
             // console.log(myJson);
         });
     }, [searchState]);
-    return <RelatedKeywords list={myJson} tag={"Related terms"} element={"keyword"} hide={hide} />;
+    return <RelatedKeywords list={myJson} tag={"Related terms"} element={"keyword"} />;
 };

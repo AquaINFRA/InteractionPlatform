@@ -13,9 +13,8 @@ export const RelatedKeywords = (props: {
     tag: string;
     element: string;
     type?: string;
-    hide: (() => void) | null;
 }) => {
-    const { list, tag, element, hide } = props;
+    const { list, tag, element } = props;
 
     const searchState = useSearchState();
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -164,11 +163,6 @@ export const RelatedKeywords = (props: {
                 >
                     Search for selected terms
                 </Button>
-                {hide != null ? (
-                    <Button className="toggleRelatedTerms" onClick={() => hide()}>
-                        Hide related terms
-                    </Button>
-                ) : null}
             </Box>
             <div className="seperator" style={{ marginTop: "10px" }}></div>
         </Box>
