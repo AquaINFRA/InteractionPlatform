@@ -96,8 +96,9 @@ export function SearchView() {
                 <Flex gap="5vw">
                     {searchState.isLoaded ? (
                         <Box flex="1 1 100%" overflow="hidden">
-                            <Box className="relatedTermsBox">
-                                {searchState.searchTerm != "" ? <RelatedTerms /> : null}
+                            {/* Mobile view */}
+                            <Box className="relatedTermsBox" id="mobileRelatedTerms">
+                                <RelatedTerms />
                             </Box>
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
                                 <Box className="results-count">
@@ -173,6 +174,9 @@ export function SearchView() {
                     <Flex flex="0 0 25%" hideBelow="custombreak" flexDirection="column">
                         <Box>
                             <ResultPaging />
+                        </Box>
+                        <Box padding={"32px 0px"}>
+                            {searchState.searchTerm != "" ? <RelatedTerms /> : null}
                         </Box>
                         <Box padding={"32px 0px"}>
                             <DataProviderFacet />
