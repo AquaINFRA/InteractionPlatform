@@ -292,7 +292,10 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         if (map && showPopup) {
             map.addInteraction(selectHover);
             map.addInteraction(selectClick);
-            selectClick.on("select", () => setAreFeaturesSelected(true));
+            selectClick.on("select", () => {
+                setAreFeaturesSelected(true);
+                getBBox();
+            });
         } else {
             // const selected = selectClick.getFeatures();
             // if (selected.getLength() > 0) selected.remove(selected.item(0));
@@ -306,7 +309,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     return (
         <Box className="popup-background-transparent">
             <Box className="popup-background">
-                <Box fontSize={20}>
+                <Box className="popup-header">
                     <b>Select catchment areas</b>
                 </Box>
                 <Box className="map-container">
@@ -316,27 +319,18 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                     </Box>
                 </Box>
                 <XButton handleClose={handleClose} />
-                <Box display="flex" justifyContent="space-around" overflow="hidden">
-                    <Box>
-                        <Flex marginTop="2%" gap="1vh" flexWrap="wrap">
-                            <CatchmentButton
-                                active={areFeaturesSelected}
-                                onClick={getBBox}
-                                text="Generate bounding box"
-                            />
-                            <CatchmentButton
-                                active={areFeaturesSelected || isBBoxDisplayed}
-                                onClick={deselectAll}
-                                text="Delete selection"
-                            />
-                            <CatchmentButton
-                                active={isBBoxDisplayed}
-                                onClick={setSearchArea}
-                                text="Apply bounding box"
-                            />
-                        </Flex>
-                    </Box>
-                </Box>
+                <Flex className="catchment-button-container">
+                    <CatchmentButton
+                        active={areFeaturesSelected || isBBoxDisplayed}
+                        onClick={deselectAll}
+                        text="Delete selection"
+                    />
+                    <CatchmentButton
+                        active={isBBoxDisplayed}
+                        onClick={setSearchArea}
+                        text="Apply bounding box"
+                    />
+                </Flex>
             </Box>
         </Box>
     );
