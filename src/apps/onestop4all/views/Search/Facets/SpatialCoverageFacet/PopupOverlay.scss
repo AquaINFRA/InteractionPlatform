@@ -46,10 +46,11 @@
 }
 .popup-header {
     font-size: 1.5vw;
+    color: #05668d;
 }
 
 .active-button {
-    background-color: PrimaryColor;
+    background-color: "PrimaryColor";
 }
 .inactive-button {
     background-color: "grey";
@@ -109,6 +110,7 @@
     }
     .popup-header {
         font-size: 20px;
+        color: #05668d;
     }
     .map-container {
         height: 75%;
