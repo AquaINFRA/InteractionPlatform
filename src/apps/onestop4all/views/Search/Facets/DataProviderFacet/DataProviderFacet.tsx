@@ -26,7 +26,11 @@ export function DataProviderFacet() {
                         a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
                 );
                 setEntries(sortedEntries.filter((entry: any) => entry.id !== "dataeurope"));
-                console.log(sortedEntries);
+                //console.log(sortedEntries.length-1, searchState.selectedDataProvider.length);
+                //Needed if a users shares a link with all data providers selected, then the button text should show uncheck all data providers.
+                if (sortedEntries.length -1 === searchState.selectedDataProvider.length) {
+                    setAllSelected(true);
+                }
                 const providerTitles = sortedEntries.map((se: any) => {
                     return { title: se.title, id: se.id, description: se.description };
                 });
