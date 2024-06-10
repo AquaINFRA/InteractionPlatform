@@ -53,7 +53,7 @@ export function SearchView() {
         }
 
         if (searchState.downloadOption) {
-            params[UrlSearchParameterType.DownloadOption] = searchState.downloadOption;
+            params[UrlSearchParameterType.DownloadOption] = `${searchState.downloadOption}`;
         }
 
         navigate({
@@ -181,7 +181,7 @@ export function SearchView() {
                         <Box padding={"32px 0px"}>
                             <DataProviderFacet />
                         </Box>
-                        {<Box>
+                        {<Box padding={"32px 0px"}>
                             <DownloadOptionFacet />
                         </Box>}
                         {/*<Box padding={"64px 0px 32px"} ref={menu}>
