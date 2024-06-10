@@ -21,6 +21,7 @@ export function SearchView() {
     const searchState = useSearchState();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => searchState.search(), [searchParams]);
 
@@ -95,12 +96,10 @@ export function SearchView() {
                 <Flex gap="5vw">
                     {searchState.isLoaded ? (
                         <Box flex="1 1 100%" overflow="hidden">
-                            {searchState.searchTerm != "" ? (
-                                <Box width="100%">
-                                    <RelatedTerms></RelatedTerms>
-                                </Box>
-                            ) : null}
-
+                            {/* Mobile view */}
+                            <Box className="relatedTermsBox" id="mobileRelatedTerms">
+                                <RelatedTerms />
+                            </Box>
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
                                 <Box className="results-count">
                                     {searchState.selectedDataProvider.length > 0 &&
@@ -141,17 +140,21 @@ export function SearchView() {
                                 <Chips />
                             </Box>
                             <Box>
-                                {searchState.searchResults?.results.slice(searchState.pageStart * searchState.pageSize, 
-                                    (searchState.pageStart+1) * searchState.pageSize).map((e) => {
-                                    return (
-                                        <Box key={e.id}>
-                                            <Box className="seperator"></Box>
-                                            <Box padding={{ base: "40px 0px" }}>
-                                                <SearchResult item={e} />
+                                {searchState.searchResults?.results
+                                    .slice(
+                                        searchState.pageStart * searchState.pageSize,
+                                        (searchState.pageStart + 1) * searchState.pageSize
+                                    )
+                                    .map((e) => {
+                                        return (
+                                            <Box key={e.id}>
+                                                <Box className="seperator"></Box>
+                                                <Box padding={{ base: "40px 0px" }}>
+                                                    <SearchResult item={e} />
+                                                </Box>
                                             </Box>
-                                        </Box>
-                                    );
-                                })}
+                                        );
+                                    })}
                             </Box>
                             <Box className="seperator" />
                             <Box hideFrom="custombreak" padding="40px 0px">
@@ -171,6 +174,9 @@ export function SearchView() {
                     <Flex flex="0 0 25%" hideBelow="custombreak" flexDirection="column">
                         <Box>
                             <ResultPaging />
+                        </Box>
+                        <Box padding={"32px 0px"}>
+                            {searchState.searchTerm != "" ? <RelatedTerms /> : null}
                         </Box>
                         <Box padding={"32px 0px"}>
                             <DataProviderFacet />

@@ -9,8 +9,8 @@ interface DeselectButtonProps {
 }
 export function CatchmentButton(props: DeselectButtonProps) {
     const { onClick, active, text } = props;
-    const bgcolor = active ? PrimaryColor : "grey";
-    const hover = active ? { bg: lineBlue } : { bg: "grey" };
+    const bgcolor = active ? PrimaryColor : "rgba(5, 102, 141, 0.6)";
+    const hover = active ? { bg: lineBlue } : { bg: "rgba(5, 102, 141, 0.6)" };
     // remove onClick if button is deactivated
     function handleClick() {
         if (active) {
@@ -18,7 +18,7 @@ export function CatchmentButton(props: DeselectButtonProps) {
         }
     }
     return (
-        <Button bg={bgcolor} _hover={hover} onClick={handleClick} w={"250px"}>
+        <Button bg={bgcolor} _hover={hover} onClick={handleClick} className="catchment-button">
             {text}
         </Button>
     );
