@@ -27,11 +27,6 @@ import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercato
 // Search
 import { useSearchState } from "../../SearchState";
 import { Feature, MapBrowserEvent } from "ol";
-import Geometry from "ol/geom";
-import { Button } from "@open-pioneer/chakra-integration";
-import DragBox from "ol/interaction/DragBox";
-import Collection from "ol";
-import Interaction from "ol/interaction/Interaction";
 // Custom Control Buttons (not used currently)
 export class DrawControl extends Control {
     private handle: () => void;
@@ -297,7 +292,10 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         if (map && showPopup) {
             map.addInteraction(selectHover);
             map.addInteraction(selectClick);
-            selectClick.on("select", () => setAreFeaturesSelected(true));
+            selectClick.on("select", () => {
+                setAreFeaturesSelected(true);
+                getBBox();
+            });
         } else {
             // const selected = selectClick.getFeatures();
             // if (selected.getLength() > 0) selected.remove(selected.item(0));
@@ -311,35 +309,28 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     return (
         <Box className="popup-background-transparent">
             <Box className="popup-background">
-                <Box fontSize={20}><b>Select catchment areas</b></Box>
-                <Box height="85%" width="100%">
+                <Box className="popup-header">
+                    <b>Select catchment areas</b>
+                </Box>
+                <Box className="map-container">
                     <MapContainer mapId={mapId} />
-                    <Box position="absolute" bottom="16%" left="4%">
+                    <Box className="legend">
                         <Legend />
                     </Box>
                 </Box>
                 <XButton handleClose={handleClose} />
-                <Box display="flex" justifyContent="space-around" overflow="hidden">
-                    <Box>
-                        <Flex marginTop="2%" gap="1vh" flexWrap="wrap">
-                            <CatchmentButton
-                                active={areFeaturesSelected}
-                                onClick={getBBox}
-                                text="Generate bounding box"
-                            />
-                            <CatchmentButton
-                                active={areFeaturesSelected || isBBoxDisplayed}
-                                onClick={deselectAll}
-                                text="Delete selection"
-                            />
-                            <CatchmentButton
-                                active={isBBoxDisplayed}
-                                onClick={setSearchArea}
-                                text="Apply bounding box"
-                            />
-                        </Flex>
-                    </Box>
-                </Box>
+                <Flex className="catchment-button-container">
+                    <CatchmentButton
+                        active={areFeaturesSelected || isBBoxDisplayed}
+                        onClick={deselectAll}
+                        text="Delete selection"
+                    />
+                    <CatchmentButton
+                        active={isBBoxDisplayed}
+                        onClick={setSearchArea}
+                        text="Apply bounding box"
+                    />
+                </Flex>
             </Box>
         </Box>
     );

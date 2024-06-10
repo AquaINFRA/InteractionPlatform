@@ -13,6 +13,7 @@ import { ResultCountSelector } from "./ResultCountSelector/ResultCountSelector";
 import { ResultPaging } from "./ResultPaging/ResultPaging";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "./SearchState";
+import { RelatedTerms } from "./Facets/RelatedTerms/RelatedTerms";
 import { DownloadOptionFacet } from "./Facets/DownloadOptionFacet/DownloadOptionFacet";
 //import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
 
@@ -20,6 +21,7 @@ export function SearchView() {
     const searchState = useSearchState();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => searchState.search(), [searchParams]);
 
@@ -88,12 +90,16 @@ export function SearchView() {
                 </Container>
             </Box>
 
-            <Box height={{ base: "50px", custombreak: "80px" }}></Box>
+            <Box height={{ base: "50px", custombreak: "60px" }}></Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
                 <Flex gap="5vw">
                     {searchState.isLoaded ? (
                         <Box flex="1 1 100%" overflow="hidden">
+                            {/* Mobile view */}
+                            <Box className="relatedTermsBox" id="mobileRelatedTerms">
+                                <RelatedTerms />
+                            </Box>
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
                                 <Box className="results-count">
                                     {searchState.selectedDataProvider.length > 0 &&
@@ -134,17 +140,21 @@ export function SearchView() {
                                 <Chips />
                             </Box>
                             <Box>
-                                {searchState.searchResults?.results.slice(searchState.pageStart * searchState.pageSize, 
-                                    (searchState.pageStart+1) * searchState.pageSize).map((e) => {
-                                    return (
-                                        <Box key={e.id}>
-                                            <Box className="seperator"></Box>
-                                            <Box padding={{ base: "40px 0px" }}>
-                                                <SearchResult item={e} />
+                                {searchState.searchResults?.results
+                                    .slice(
+                                        searchState.pageStart * searchState.pageSize,
+                                        (searchState.pageStart + 1) * searchState.pageSize
+                                    )
+                                    .map((e) => {
+                                        return (
+                                            <Box key={e.id}>
+                                                <Box className="seperator"></Box>
+                                                <Box padding={{ base: "40px 0px" }}>
+                                                    <SearchResult item={e} />
+                                                </Box>
                                             </Box>
-                                        </Box>
-                                    );
-                                })}
+                                        );
+                                    })}
                             </Box>
                             <Box className="seperator" />
                             <Box hideFrom="custombreak" padding="40px 0px">
@@ -161,9 +171,12 @@ export function SearchView() {
                         </Box>
                     )}
 
-                    <Flex flex="0 0 30%" hideBelow="custombreak" flexDirection="column">
+                    <Flex flex="0 0 25%" hideBelow="custombreak" flexDirection="column">
                         <Box>
                             <ResultPaging />
+                        </Box>
+                        <Box padding={"32px 0px"}>
+                            {searchState.searchTerm != "" ? <RelatedTerms /> : null}
                         </Box>
                         <Box padding={"32px 0px"}>
                             <DataProviderFacet />

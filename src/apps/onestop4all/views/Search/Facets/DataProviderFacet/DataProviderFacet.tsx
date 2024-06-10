@@ -2,7 +2,7 @@ import { Box, Button, Flex } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 
-import { SimpleGrid } from "@chakra-ui/react";
+import { Button, SimpleGrid } from "@chakra-ui/react";
 
 import { SelectableDataProvider, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
@@ -37,6 +37,7 @@ export function DataProviderFacet() {
                 searchState.setDataProviderTitles(providerTitles);
             }
         });
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
