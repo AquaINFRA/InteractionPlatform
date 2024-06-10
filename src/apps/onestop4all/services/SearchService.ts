@@ -210,7 +210,7 @@ export class SearchService {
     }
 
     getRelatedSearchterms(keyword: string) {
-        const baseUrl = "http://vm2558.kaj.pouta.csc.fi/rcsearch?keyword=";
+        const baseUrl = "https://vm2558.kaj.pouta.csc.fi/rcsearch?keyword=";
         const url = baseUrl + keyword + "&broader=true&narrower=true&related=true";
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
