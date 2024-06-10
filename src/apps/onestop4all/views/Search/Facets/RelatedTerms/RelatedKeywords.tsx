@@ -49,19 +49,17 @@ export const RelatedKeywords = (props: {
 
     const shortList: Array<SearchTermItem> = [];
 
-    let originalIndex = 0;
-    let narrowerIndex = 0;
+    // let originalIndex = 0;
+    // let narrowerIndex = 0;
     let broaderIndex = 0;
     let relatedIndex = 0;
 
     list.map((item: SearchTermItem) => {
         if (item.type == "originalMatch") {
-            originalIndex++;
-            if (originalIndex < 6) shortList.push(item);
+            shortList.push(item);
         }
         if (item.type == "narrower") {
-            narrowerIndex++;
-            if (narrowerIndex < 6) shortList.push(item);
+            shortList.push(item);
         }
         if (item.type == "broader") {
             broaderIndex++;
@@ -157,7 +155,7 @@ export const RelatedKeywords = (props: {
                         {item.value}
                     </Box>
                 ))}
-            <Box pt={3}>
+            <Flex paddingTop="3" width="100%" justifyContent="center">
                 <Button
                     className="searchSelectedTerms"
                     onClick={() => {
@@ -168,7 +166,7 @@ export const RelatedKeywords = (props: {
                 >
                     Search for selected terms
                 </Button>
-            </Box>
+            </Flex>
             <div className="seperator" style={{ marginTop: "10px" }}></div>
         </Box>
     );

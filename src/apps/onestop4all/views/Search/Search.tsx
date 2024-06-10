@@ -96,6 +96,10 @@ export function SearchView() {
                 <Flex gap="5vw">
                     {searchState.isLoaded ? (
                         <Box flex="1 1 100%" overflow="hidden">
+                            {/* Desktop view */}
+                            <Box className="relatedTermsBox" id="desktopRelatedTerms">
+                                {searchState.searchTerm != "" ? <RelatedTerms /> : null}
+                            </Box>
                             {/* Mobile view */}
                             <Box className="relatedTermsBox" id="mobileRelatedTerms">
                                 <RelatedTerms />
@@ -175,9 +179,7 @@ export function SearchView() {
                         <Box>
                             <ResultPaging />
                         </Box>
-                        <Box padding={"32px 0px"}>
-                            {searchState.searchTerm != "" ? <RelatedTerms /> : null}
-                        </Box>
+
                         <Box padding={"32px 0px"}>
                             <DataProviderFacet />
                         </Box>
