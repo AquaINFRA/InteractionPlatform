@@ -15,6 +15,15 @@ import { useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { PopupOverlay } from "./PopupOverlay";
 import { Questionmark } from "../../../../components/Questionmark";
+import { Stroke, Style } from "ol/style";
+import { DatasetMetadataResponse } from "../../../Dataset/Dataset";
+import {
+    SearchResultItem,
+    SolrSearchResultItem,
+    ZenodoResultItem
+} from "../../../../services/SearchService";
+import { useService } from "open-pioneer:react-hooks";
+import { ResourceType, getResourceType } from "../../../../services/ResourceTypeUtils";
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
@@ -28,8 +37,105 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     const searchState = useSearchState();
 
     const [source] = useState(new VectorSource({ wrapX: false }));
-    const [vector] = useState(new VectorLayer({ source: source }));
+    const [vector] = useState(
+        new VectorLayer({
+            source: source,
+            style: new Style({
+                stroke: new Stroke({
+                    color: "black",
+                    width: 2
+                })
+            })
+        })
+    );
+    const searchSrvc = useService("onestop4all.SearchService");
     const draw = useRef<Draw>();
+
+    const [resultsSource] = useState(new VectorSource());
+    const [resultsVector] = useState(
+        new VectorLayer({
+            source: resultsSource
+        })
+    );
+    const [resultsGeometries, setResultsGeometries] = useState([]);
+    const [resourceType, setResourceType] = useState<ResourceType>();
+    const [searchResult, setSearchResult] = useState<SolrSearchResultItem | ZenodoResultItem>();
+
+    useEffect(() => {
+        const displayedResults = searchState.searchResults?.results.slice(
+            searchState.pageStart * searchState.pageSize,
+            (searchState.pageStart + 1) * searchState.pageSize
+        );
+
+        displayedResults?.map((r) => {
+            const tmp = resultsGeometries.slice() as any[];
+            tmp.push(getGeometry(r));
+            console.log(tmp);
+        });
+    }, [searchState]);
+
+    const getGeometry = (result: SearchResultItem) => {
+        searchSrvc.getMetadata(result.id).then((result) => {
+            if (result) {
+                //no zenodo case
+                setSearchResult(result.response);
+                setResourceType(getResourceType(result.response.properties.type));
+            } else return null;
+        });
+        switch (resourceType) {
+            case ResourceType.Repos: {
+                return null;
+            }
+            case ResourceType.Organisations: {
+                return null;
+            }
+            case ResourceType.Tools: {
+                return null;
+            }
+            case ResourceType.Standards: {
+                return null;
+            }
+            case ResourceType.Learning_Resource: {
+                return null;
+            }
+            case ResourceType.Articles: {
+                return null;
+            }
+            case ResourceType.Dataset: {
+                const item = searchResult as DatasetMetadataResponse;
+                return item.geometry;
+            }
+            case ResourceType.Series: {
+                const item = searchResult as DatasetMetadataResponse;
+                return item.geometry;
+            }
+            case ResourceType.Model: {
+                const item = searchResult as DatasetMetadataResponse;
+                return item.geometry;
+            }
+            case ResourceType.Service: {
+                const item = searchResult as DatasetMetadataResponse;
+                return item.geometry;
+            }
+            case ResourceType.DownloadableData: {
+                const item = searchResult as DatasetMetadataResponse;
+                return item.geometry;
+            }
+            case ResourceType.OfflineData: {
+                const item = searchResult as DatasetMetadataResponse;
+                return item.geometry;
+            }
+            case ResourceType.LiveData: {
+                const item = searchResult as DatasetMetadataResponse;
+                return item.geometry;
+            }
+            case ResourceType.Software: {
+                return null;
+            }
+            default:
+                throw new Error(`Unknown resourceType: '${resourceType}'`);
+        }
+    };
 
     const [bboxActive, setBboxActive] = useState(false);
     const [disabled, setDisable] = useState(false);
@@ -38,11 +144,12 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     useEffect(() => {
         if (map) {
             map.addLayer(vector);
+            map.addLayer(resultsVector);
             return () => {
                 map.removeLayer(vector);
             };
         }
-    }, [map, vector]);
+    }, [map, vector, resultsVector]);
 
     useEffect(() => {
         if (map && searchState.spatialFilter !== undefined) {
@@ -102,6 +209,25 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
         }
     }
 
+    // Hinzufügen des neuen Layers mit dem Polygon
+    useEffect(() => {
+        if (map) {
+            const dummyExtent = [
+                8.313468364098577, 50.00682302553727, 14.250194672173054, 53.08784577957255
+            ];
+            const dummyFeature = fromExtent(dummyExtent).transform(
+                usedEPSGCode,
+                map?.getView().getProjection().getCode()
+            );
+
+            const polygonFeature = new Feature({
+                geometry: dummyFeature
+            });
+
+            resultsSource.addFeature(polygonFeature);
+        }
+    }, [map, source]);
+
     return (
         <Box>
             <FacetBase title="Spatial Coverage" expanded>
@@ -133,11 +259,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                             set search area
                         </Button>
                     </Box>
-                    <Button
-                        width="100%"
-                        onClick={() => setShowPopup(true)}
-                        marginTop="8px" // Fügt einen Abstand zwischen den Buttons hinzu
-                    >
+                    <Button width="100%" onClick={() => setShowPopup(true)} marginTop="8px">
                         set catchment area
                     </Button>
                     {disabled && (
