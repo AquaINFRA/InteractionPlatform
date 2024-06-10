@@ -97,7 +97,7 @@ export function SearchView() {
                     {searchState.isLoaded ? (
                         <Box flex="1 1 100%" overflow="hidden">
                             {/* Desktop view */}
-                            <Box className="relatedTermsBox">
+                            <Box className="relatedTermsBox" id="desktopRelatedTerms">
                                 {searchState.searchTerm != "" ? <RelatedTerms /> : null}
                             </Box>
                             {/* Mobile view */}
