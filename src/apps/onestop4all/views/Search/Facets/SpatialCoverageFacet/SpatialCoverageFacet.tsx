@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { DisableOverlay } from "../../../../components/DisableOverlay/DisableOverlay";
 import { QuestionmarkIcon, RectangleSelectIcon } from "../../../../components/Icons";
-import { ActiveControlColor, PrimaryColor } from "../../../../Theme";
+import { ActiveControlColor, PrimaryColor, PrimaryColor40 } from "../../../../Theme";
 import { useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { PopupOverlay } from "./PopupOverlay";
@@ -55,45 +55,49 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     const [resultsSource] = useState(new VectorSource());
     const [resultsVector] = useState(
         new VectorLayer({
-            source: resultsSource
+            source: resultsSource,
+            style: new Style({
+                stroke: new Stroke({
+                    color: PrimaryColor40,
+                    width: 1
+                })
+            })
         })
     );
     const [resultsGeometries, setResultsGeometries] = useState([] as any[]);
     const [resourceType, setResourceType] = useState<ResourceType>();
     const [searchResult, setSearchResult] = useState<SolrSearchResultItem | ZenodoResultItem>();
-
+    let index = 0;
+    const maxNumberOfBoxesShown = 12;
     useEffect(() => {
+        resultsSource.clear();
         if (searchState.searchResults) {
             const displayedResults = searchState.searchResults.results.slice(
                 searchState.pageStart * searchState.pageSize,
                 (searchState.pageStart + 1) * searchState.pageSize
             );
-            console.log("Results: " + searchState.searchResults);
-            const tmpArr = [] as any[];
-            displayedResults?.map((r) => {
+            displayedResults?.map((r: any) => {
                 if (getGeometry(r) != null) {
                     const geoJSONFormat = new GeoJSON();
                     const tmp = geoJSONFormat.readFeatures(getGeometry(r), {
                         featureProjection: "EPSG:3857"
                     });
-                    tmpArr.push(tmp);
+                    if (index < maxNumberOfBoxesShown) {
+                        index++;
+                        for (const t of tmp) {
+                            resultsSource.addFeature(t);
+                        }
+                    }
                 }
             });
-            setResultsGeometries(tmpArr);
-            console.log(tmpArr);
         }
-    }, [searchState.searchResults]);
+    }, [searchState.searchResults, resultsSource, searchState.pageStart]);
 
-    const getGeometry = (result: SearchResultItem) => {
-        searchSrvc.getMetadata(result.id).then((result) => {
-            if (result) {
-                //no zenodo case
-                setSearchResult(result.response);
-                setResourceType(getResourceType(result.response.properties.type));
-                console.log("ResType: " + resourceType);
-            } else return null;
-        });
-        switch (resourceType) {
+    const getGeometry = (result: SolrSearchResultItem) => {
+        if (result) {
+            //no zenodo case
+        } else return null;
+        switch (getResourceType(result.properties.type)) {
             case ResourceType.Repos: {
                 return null;
             }
@@ -113,38 +117,40 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                 return null;
             }
             case ResourceType.Dataset: {
-                const item = searchResult as DatasetMetadataResponse;
+                const item = result as DatasetMetadataResponse;
                 return item.geometry;
             }
             case ResourceType.Series: {
-                const item = searchResult as DatasetMetadataResponse;
+                const item = result as DatasetMetadataResponse;
                 return item.geometry;
             }
             case ResourceType.Model: {
-                const item = searchResult as DatasetMetadataResponse;
+                const item = result as DatasetMetadataResponse;
                 return item.geometry;
             }
             case ResourceType.Service: {
-                const item = searchResult as DatasetMetadataResponse;
+                const item = result as DatasetMetadataResponse;
                 return item.geometry;
             }
             case ResourceType.DownloadableData: {
-                const item = searchResult as DatasetMetadataResponse;
+                const item = result as DatasetMetadataResponse;
                 return item.geometry;
             }
             case ResourceType.OfflineData: {
-                const item = searchResult as DatasetMetadataResponse;
+                const item = result as DatasetMetadataResponse;
                 return item.geometry;
             }
             case ResourceType.LiveData: {
-                const item = searchResult as DatasetMetadataResponse;
+                const item = result as DatasetMetadataResponse;
                 return item.geometry;
             }
             case ResourceType.Software: {
                 return null;
             }
             default:
-                throw new Error(`Unknown resourceType: '${resourceType}'`);
+                throw new Error(
+                    `Unknown resourceType: '${getResourceType(result.properties.type)}'`
+                );
         }
     };
 

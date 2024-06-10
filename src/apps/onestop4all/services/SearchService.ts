@@ -103,12 +103,11 @@ const oapirUrl = import.meta.env.VITE_OAPIR_URL;
 export const supportForm = "http://localhost/html/nfdi/";
 
 export class SearchService {
-
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
         const queryParams = this.createQueryParams();
 
         this.addSearchterm(searchParams.searchTerm, queryParams);
-        
+
         this.addSearchResultsLimit(queryParams);
 
         this.addSpatialFilter(searchParams.spatialFilter, queryParams);

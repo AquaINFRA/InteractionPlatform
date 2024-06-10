@@ -159,5 +159,6 @@ export function getHandler(result: string): SearchResultHandler {
 }
 
 export function getResourceType(result: string): ResourceType {
+    console.log(getHandler(result).resourceType);
     return getHandler(result).resourceType;
 }
