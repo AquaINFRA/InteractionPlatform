@@ -1,7 +1,7 @@
 import { Box, Button, IconButton, Tooltip } from "@open-pioneer/chakra-integration";
 import { MapContainer, useMap } from "@open-pioneer/experimental-ol-map";
 import { Feature } from "ol";
-import { Polygon } from "ol/geom";
+import { Geometry, Polygon } from "ol/geom";
 import { fromExtent } from "ol/geom/Polygon";
 import Draw, { createBox } from "ol/interaction/Draw";
 import VectorLayer from "ol/layer/Vector";
@@ -16,7 +16,7 @@ import { FacetBase } from "../FacetBase/FacetBase";
 import { PopupOverlay } from "./PopupOverlay";
 import { Questionmark } from "../../../../components/Questionmark";
 import { Stroke, Style } from "ol/style";
-import { DatasetMetadataResponse } from "../../../Dataset/Dataset";
+import { DatasetMetadataResponse, ResourceGeometry } from "../../../Dataset/Dataset";
 import {
     SearchResultItem,
     SolrSearchResultItem,
@@ -24,6 +24,7 @@ import {
 } from "../../../../services/SearchService";
 import { useService } from "open-pioneer:react-hooks";
 import { ResourceType, getResourceType } from "../../../../services/ResourceTypeUtils";
+import GeoJSON from "ol/format/GeoJSON";
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
@@ -57,22 +58,31 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
             source: resultsSource
         })
     );
-    const [resultsGeometries, setResultsGeometries] = useState([]);
+    const [resultsGeometries, setResultsGeometries] = useState([] as any[]);
     const [resourceType, setResourceType] = useState<ResourceType>();
     const [searchResult, setSearchResult] = useState<SolrSearchResultItem | ZenodoResultItem>();
 
     useEffect(() => {
-        const displayedResults = searchState.searchResults?.results.slice(
-            searchState.pageStart * searchState.pageSize,
-            (searchState.pageStart + 1) * searchState.pageSize
-        );
-
-        displayedResults?.map((r) => {
-            const tmp = resultsGeometries.slice() as any[];
-            tmp.push(getGeometry(r));
-            console.log(tmp);
-        });
-    }, [searchState]);
+        if (searchState.searchResults) {
+            const displayedResults = searchState.searchResults.results.slice(
+                searchState.pageStart * searchState.pageSize,
+                (searchState.pageStart + 1) * searchState.pageSize
+            );
+            console.log("Results: " + searchState.searchResults);
+            const tmpArr = [] as any[];
+            displayedResults?.map((r) => {
+                if (getGeometry(r) != null) {
+                    const geoJSONFormat = new GeoJSON();
+                    const tmp = geoJSONFormat.readFeatures(getGeometry(r), {
+                        featureProjection: "EPSG:3857"
+                    });
+                    tmpArr.push(tmp);
+                }
+            });
+            setResultsGeometries(tmpArr);
+            console.log(tmpArr);
+        }
+    }, [searchState.searchResults]);
 
     const getGeometry = (result: SearchResultItem) => {
         searchSrvc.getMetadata(result.id).then((result) => {
@@ -80,6 +90,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                 //no zenodo case
                 setSearchResult(result.response);
                 setResourceType(getResourceType(result.response.properties.type));
+                console.log("ResType: " + resourceType);
             } else return null;
         });
         switch (resourceType) {

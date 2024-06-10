@@ -165,7 +165,10 @@ export function Result() {
     }
 
     function fetchResultId(result: number) {
-        const resultId = searchState && searchState.searchResults ? searchState.searchResults.results[result - 1]?.id : null;
+        const resultId =
+            searchState && searchState.searchResults
+                ? searchState.searchResults.results[result - 1]?.id
+                : null;
         if (resultId) {
             navigate(`/result/${resultId}`, { state: { resultPage: result } });
             setResult(result);
