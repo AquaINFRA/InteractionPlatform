@@ -47,7 +47,6 @@ export function Result() {
     useEffect(() => {
         setLoading(true);
         searchSrvc.getMetadata(resultId).then((result) => {
-            console.log(result);
             if (result) {
                 if (result.provider === "zenodo") {
                     searchSrvc.fetchRoCrateFile("10477880").then((crate: any) => {
