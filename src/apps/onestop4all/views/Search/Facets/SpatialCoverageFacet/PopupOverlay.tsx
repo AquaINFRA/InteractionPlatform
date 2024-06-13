@@ -11,7 +11,7 @@ import { defaults as defaultControls, Control } from "ol/control";
 import { click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
 // Import other components
-import { Box, ButtonGroup, Flex } from "@open-pioneer/chakra-integration";
+import { Box, ButtonGroup, Flex, Tooltip } from "@open-pioneer/chakra-integration";
 import { Legend } from "./Legend";
 import { XButton } from "./XButton";
 import { CatchmentOptions } from "./CatchmentOptions";
@@ -72,6 +72,9 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     const [bBox, setBBox] = useState<Feature<any>[]>();
 
     const [drawing, setDrawing] = useState(false);
+
+    const [tooltipContent, setTooltipContent] = useState("");
+    const [tooltipPos, setTooltipPos] = useState({ x: "0", y: "0" });
 
     // console.log(
     //     "Current states: drawing = " +
@@ -296,6 +299,16 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 setAreFeaturesSelected(true);
                 getBBox();
             });
+
+            selectHover.on("select", (event) => {
+                const xPos = event.mapBrowserEvent.originalEvent.offsetX - 20;
+                const yPos = event.mapBrowserEvent.originalEvent.offsetY - 20;
+                setTooltipContent(selectHover.getFeatures().item(0).getProperties().rb_name);
+                setTooltipPos({
+                    x: xPos.toString(),
+                    y: yPos.toString()
+                });
+            });
         } else {
             // const selected = selectClick.getFeatures();
             // if (selected.getLength() > 0) selected.remove(selected.item(0));
@@ -312,12 +325,33 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 <Box className="popup-header">
                     <b>Select catchment areas</b>
                 </Box>
+
                 <Box className="map-container">
                     <MapContainer mapId={mapId} />
+                    <Tooltip
+                        label={tooltipContent}
+                        isOpen={true}
+                        placement="bottom"
+                        bg="white"
+                        color="black"
+                        border="1px solid black"
+                        p="5px"
+                        zIndex="9990"
+                    >
+                        <Box
+                            position="absolute"
+                            top={tooltipPos.y}
+                            left={tooltipPos.x}
+                            zIndex="9999"
+                            pointerEvents="none"
+                        ></Box>
+                    </Tooltip>
+
                     <Box className="legend">
                         <Legend />
                     </Box>
                 </Box>
+
                 <XButton handleClose={handleClose} />
                 <Flex className="catchment-button-container">
                     <CatchmentButton
