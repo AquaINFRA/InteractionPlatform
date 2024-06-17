@@ -37,6 +37,8 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     const draw = useRef<Draw>();
 
     const searchState = useSearchState();
+    const [tooltipContent, setTooltipContent] = useState("");
+    const [tooltipPos, setTooltipPos] = useState({ x: "0", y: "0" });
 
     // VectorLayer to display the Spatial filter
     const [source] = useState(new VectorSource({ wrapX: false }));
@@ -127,6 +129,25 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     navigateTo(selectedId);
                 }
             });
+            selectHover.on("select", (event) => {
+                const xPos = event.mapBrowserEvent.originalEvent.offsetX - 30;
+                const yPos = event.mapBrowserEvent.originalEvent.offsetY - 30;
+                setTooltipContent("");
+                if (selectHover.getFeatures().getLength() > 0) {
+                    const idx =
+                        searchState.searchResults?.results.findIndex(
+                            (r) => r.id === selectHover.getFeatures().item(0).getId()
+                        ) || 0;
+                    setTooltipContent(
+                        searchState.searchResults?.results[idx]?.properties.title ||
+                            "Name could not be displayed"
+                    );
+                }
+                setTooltipPos({
+                    x: xPos.toString(),
+                    y: yPos.toString()
+                });
+            });
             return () => {
                 map.removeLayer(vector);
                 map.removeLayer(resultsVector);
@@ -134,7 +155,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                 map.removeInteraction(selectHover);
             };
         }
-    }, [map, vector, resultsVector]);
+    }, [map, vector, resultsVector, searchState]);
 
     // Display spatial filter on map
     useEffect(() => {
@@ -289,6 +310,24 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         </Box>
                         <DrawBboxButton bboxActive={bboxActive} onClick={selectBbox} />
                         <MapContainer mapId={mapId} />
+                        <Tooltip
+                            label={tooltipContent}
+                            isOpen={true}
+                            placement="bottom"
+                            bg="white"
+                            color="black"
+                            border="1px solid black"
+                            p="5px"
+                            zIndex="9990"
+                        >
+                            <Box
+                                position="absolute"
+                                top={tooltipPos.y}
+                                left={tooltipPos.x}
+                                zIndex="9999"
+                                pointerEvents="none"
+                            ></Box>
+                        </Tooltip>
                     </Box>
                     <Box>
                         <Button width="100%" onClick={() => setSearchArea()}>
