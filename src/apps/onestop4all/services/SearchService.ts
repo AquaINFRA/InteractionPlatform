@@ -25,6 +25,9 @@ export interface SearchRequestParams {
     resourceTypes?: string[];
     subjects?: string[];
     dataProvider?: string[];
+    downloadOption: boolean;
+    //pageSize?: number;
+    //pageStart?: number;
     spatialFilter?: number[];
     temporalFilter?: TemporalFilter;
     temporalConfig?: TemporalConfig;
@@ -115,12 +118,14 @@ export class SearchService {
 
         this.addDataProvider(searchParams.dataProvider, queryParams);
 
+        this.addDownloadOption(searchParams.downloadOption, queryParams);
+
         const url = `${oapirUrl}/search?${queryParams.toString()}`;
         console.log(url);
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 const response = responseData;
-                console.log(response);
+                //console.log(response);
                 if (response.numberMatched !== undefined && response.features !== undefined) {
                     return {
                         count: response.features.length,
@@ -203,6 +208,7 @@ export class SearchService {
             })
         );
     }
+
     getRelatedSearchterms(keyword: string) {
         const baseUrl = "https://vm2558.kaj.pouta.csc.fi/rcsearch?keyword=";
         const url = baseUrl + keyword + "&broader=true&narrower=true&related=true";
@@ -232,7 +238,17 @@ export class SearchService {
         }
     }
 
-    private addSearchResultsLimit(queryParams: URLSearchParams) {
+    private addDownloadOption(downloadOption: boolean, queryParams: URLSearchParams) {
+        if (downloadOption) {
+            queryParams.set("rdl", `${downloadOption}`);
+        }
+    }
+
+    private addSearchResultsLimit(
+        /*pageSize: number | undefined,
+        pageStart: number | undefined,*/
+        queryParams: URLSearchParams
+    ) {
         queryParams.set("limit", "100");
     }
 
