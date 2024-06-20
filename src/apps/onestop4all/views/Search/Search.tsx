@@ -53,7 +53,7 @@ export function SearchView() {
         }
 
         if (searchState.downloadOption) {
-            params[UrlSearchParameterType.DownloadOption] = searchState.downloadOption;
+            params[UrlSearchParameterType.DownloadOption] = `${searchState.downloadOption}`;
         }
 
         navigate({
@@ -101,9 +101,9 @@ export function SearchView() {
                                 {searchState.searchTerm != "" ? <RelatedTerms /> : null}
                             </Box>
                             {/* Mobile view */}
-                            <Box className="relatedTermsBox" id="mobileRelatedTerms">
+                            {/*<Box className="relatedTermsBox" id="mobileRelatedTerms">
                                 <RelatedTerms />
-                            </Box>
+                            </Box>*/}
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
                                 <Box className="results-count">
                                     {searchState.selectedDataProvider.length > 0 &&
@@ -179,25 +179,15 @@ export function SearchView() {
                         <Box>
                             <ResultPaging />
                         </Box>
-
                         <Box padding={"32px 0px"}>
                             <DataProviderFacet />
                         </Box>
-                        {/*<Box>
-                            <DownloadOptionFacet />
-                        </Box>*/}
-                        {/*<Box padding={"64px 0px 32px"} ref={menu}>
-                            <ResourceTypeFacet></ResourceTypeFacet>
-                        </Box>
                         <Box padding={"32px 0px"}>
-                            <SubjectFacet></SubjectFacet>
-                        </Box>*/}
+                            <DownloadOptionFacet />
+                        </Box>
                         <Box padding={"32px 0px"}>
                             <SpatialCoverageFacet mapId="spatial-filter-map" />
                         </Box>
-                        {/*<Box padding={"32px 0px"}>
-                            <TemporalCoverageFacet />
-                    </Box>*/}
                         <Spacer />
                         <Box>
                             <ResultPaging />

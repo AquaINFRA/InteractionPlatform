@@ -128,6 +128,14 @@ export function StartView() {
                                     )}
                                 </Box>
                                 <Box paddingTop={10} id="introVideo1">
+                                    <Box marginBottom={2} marginTop={10}><b>Video 5: Ontology-based search and further filter options</b></Box>
+                                    <iframe
+                                        width="760"
+                                        height="409"
+                                        src="https://www.youtube.com/embed/D4gWc-RXUsU?si=qN3DZWOvqYFhhBIw"
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    />
                                     <Box marginBottom={2} marginTop={10}><b>Video 4: Importing data to Galaxy, option 2</b></Box>
                                     <iframe
                                         width="760"
@@ -162,7 +170,15 @@ export function StartView() {
                                     />
                                 </Box>
                                 <Box paddingTop={10} id="introVideo2">
-                                    <Box marginBottom={2}><b>Video 4: Importing data to Galaxy, option 2</b></Box>
+                                    <Box marginBottom={2}><b>Video 5: Ontology-based search and further filter options</b></Box>
+                                    <iframe
+                                        width="330"
+                                        height="190"
+                                        src="https://www.youtube.com/embed/D4gWc-RXUsU?si=qN3DZWOvqYFhhBIw"
+                                        title="YouTube video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    />
+                                    <Box marginBottom={2} marginTop={10}><b>Video 4: Importing data to Galaxy, option 2</b></Box>
                                     <iframe
                                         width="330"
                                         height="190"
@@ -202,7 +218,7 @@ export function StartView() {
             </Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Box minH={{ base: "1300px", custombreak: "2200px" }}></Box>
+                <Box minH={{ base: "1700px", custombreak: "2700px" }}></Box>
 
                 <div className="seperator"></div>
             </Container>
