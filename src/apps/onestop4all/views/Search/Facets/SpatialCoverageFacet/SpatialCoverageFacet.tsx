@@ -322,8 +322,8 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         >
                             <Box
                                 position="absolute"
-                                top={tooltipPos.y}
-                                left={tooltipPos.x}
+                                top="2%"
+                                right="10%"
                                 zIndex="9999"
                                 pointerEvents="none"
                             ></Box>

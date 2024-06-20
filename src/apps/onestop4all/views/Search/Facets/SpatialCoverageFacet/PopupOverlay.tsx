@@ -303,11 +303,15 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             selectHover.on("select", (event) => {
                 const xPos = event.mapBrowserEvent.originalEvent.offsetX - 20;
                 const yPos = event.mapBrowserEvent.originalEvent.offsetY - 20;
-                setTooltipContent(selectHover.getFeatures().item(0).getProperties().rb_name);
+                setTooltipContent("");
+                if (selectHover.getFeatures().getLength() > 0) {
+                    setTooltipContent(selectHover.getFeatures().item(0).getProperties().rb_name);
+                }
                 setTooltipPos({
                     x: xPos.toString(),
                     y: yPos.toString()
                 });
+                console.log(xPos, yPos);
             });
         } else {
             // const selected = selectClick.getFeatures();
@@ -331,7 +335,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                     <Tooltip
                         label={tooltipContent}
                         isOpen={true}
-                        placement="bottom"
+                        placement="right"
                         bg="white"
                         color="black"
                         border="1px solid black"
@@ -340,10 +344,11 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                     >
                         <Box
                             position="absolute"
-                            top={tooltipPos.y}
-                            left={tooltipPos.x}
+                            top="10%"
+                            right="12%"
                             zIndex="9999"
                             pointerEvents="none"
+                            bg="black"
                         ></Box>
                     </Tooltip>
 
