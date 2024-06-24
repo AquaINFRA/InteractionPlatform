@@ -30,6 +30,7 @@ import { Feature, MapBrowserEvent } from "ol";
 import MouseWheelZoom from "ol/interaction/MouseWheelZoom.js";
 import { defaults as defaultInteractions, defaults } from "ol/interaction.js";
 import { Icon, Style } from "ol/style";
+import { toLonLat } from "ol/proj";
 
 // Custom Control Buttons (not used currently)
 export class DrawControl extends Control {
@@ -98,13 +99,20 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             source: markerSource,
             style: new Style({
                 image: new Icon({
-                    src: "https://openlayers.org/en/latest/examples/data/icon.png",
+                    src: "/marker.svg",
                     anchor: [0.5, 1]
                 })
             })
         })
     );
     const draw = useRef<Draw>();
+    const [markerLon, setMarkerLon] = useState(0);
+    const [markerLat, setMarkerLat] = useState(0);
+    const [loading, setLoading] = useState(false); // Zustand für den Ladezustand
+
+    // Catchment-layer
+    const [catchmentSource, setCatchmentSource] = useState(new VectorSource());
+    const [catchmentLayer, setCatchmentLayer] = useState(new VectorLayer());
 
     // Display the Catchment areas
     const geoJSONFormat = new GeoJSON();
@@ -253,6 +261,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     /*********************************Various Buttons********************************* */
     function removeDraw() {
         if (draw.current) {
+            markerSource.clear();
             map?.removeInteraction(draw.current);
         }
     }
@@ -273,14 +282,21 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         setBBoxVectorLayer(new VectorLayer());
         setisBBoxDisplayed(false);
         setAreFeaturesSelected(false);
+        markerSource.clear();
+        catchmentSource?.clear();
     }
     function addInteraction(newDraw: Draw) {
         removeDraw();
         draw.current = newDraw;
         newDraw.on("drawstart", () => markerSource.clear());
         newDraw.on("drawend", (event) => {
-            const feature = event.feature;
-            console.log("Fertig gezeichnet:", feature);
+            const geom = event.feature.getGeometry();
+            if (geom instanceof Point) {
+                const coords = geom.getCoordinates();
+                const lonLat = toLonLat(coords);
+                setMarkerLon(lonLat[0]!);
+                setMarkerLat(lonLat[1]!);
+            }
         });
         map?.addInteraction(newDraw);
     }
@@ -293,6 +309,89 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             })
         );
     }
+    const getCatchmentWrap = () => {
+        setLoading(true);
+        getCatchment(markerLon, markerLat);
+    };
+    const getCatchment = (lon: number, lat: number) => {
+        const proxyUrl = "http://localhost:8081/";
+        const targetUrl =
+            "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
+        const url = proxyUrl + targetUrl;
+
+        const data = {
+            inputs: {
+                lon: lon,
+                lat: lat,
+                comment: "Nordoestliche Schlei, bei Rabenholz"
+            }
+        };
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((result) => {
+                console.log("Result:", result);
+                const href = result.outputs.polygon.href;
+                fetchGeoJSON(href); // Abrufen des GeoJSON von der href URL
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+
+    const fetchGeoJSON = (url: string) => {
+        const proxyUrl = "http://localhost:8081/";
+        const fetchUrl = proxyUrl + url;
+
+        fetch(fetchUrl)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((geojson) => {
+                console.log("GeoJSON:", geojson);
+                addGeoJSONToMap(geojson);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
+
+    const addGeoJSONToMap = (geojson: any) => {
+        setLoading(false);
+        const geoJSONFormat = new GeoJSON();
+        const features = geoJSONFormat.readFeatures(geojson, {
+            featureProjection: "EPSG:3857" // Anpassung der Projektion, falls notwendig
+        });
+
+        const catchmentSource = new VectorSource({
+            features: features
+        });
+
+        const catchmentLayer = new VectorLayer({
+            source: catchmentSource
+        });
+        setCatchmentSource(catchmentSource);
+        setCatchmentLayer(catchmentLayer);
+        if (map) {
+            map.addLayer(catchmentLayer);
+        } else {
+            console.error("Map not found!");
+        }
+    };
     /***********************************Selectable Catchment areas ********************/
     // testing stuff
     const falsef = (event: any) => false;
@@ -347,6 +446,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             });
         } else {
             if (map) {
+                deselectAll();
                 map?.getInteractions().clear(); // This deletes ALL interactions! (zoom and drag as well)
                 defaultInteractions().forEach((interaction) => map?.addInteraction(interaction));
                 setAreFeaturesSelected(false);
@@ -375,6 +475,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                         onChange={setSelectedOption}
                         selectedOption={selectedOption}
                     />
+                    {loading && "Loading..."}
                     <MapContainer mapId={mapId} />
                     <Tooltip
                         label={tooltipContent}
@@ -404,14 +505,18 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 <XButton handleClose={handleClose} />
                 <Flex className="catchment-button-container">
                     <CatchmentButton
-                        active={areFeaturesSelected || isBBoxDisplayed}
+                        active={
+                            areFeaturesSelected ||
+                            isBBoxDisplayed ||
+                            markerSource?.getFeatures().length > 0
+                        }
                         onClick={deselectAll}
                         text="Delete selection"
                     />
                     {selectedOption == "upstream" ? (
                         <CatchmentButton
-                            active={isBBoxDisplayed}
-                            onClick={setSearchArea}
+                            active={true}
+                            onClick={getCatchmentWrap}
                             text="Compute catchment"
                         />
                     ) : null}

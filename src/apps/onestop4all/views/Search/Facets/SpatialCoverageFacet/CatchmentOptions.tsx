@@ -15,7 +15,6 @@ export function CatchmentOptions(props: CatchmentOptionsProps) {
                 <Radio value="full">Full catchment</Radio>
                 <Radio value="upstream">Upstream catchment</Radio>
             </Stack>
-            {selectedOption}
         </RadioGroup>
     );
 }
