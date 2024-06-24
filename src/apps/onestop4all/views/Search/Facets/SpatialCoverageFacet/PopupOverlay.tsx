@@ -6,7 +6,7 @@ import { MapContainer, useMap } from "@open-pioneer/experimental-ol-map";
 import Draw, { createBox } from "ol/interaction/Draw";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
-import { Polygon } from "ol/geom";
+import { Point, Polygon } from "ol/geom";
 import { defaults as defaultControls, Control } from "ol/control";
 import { click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
@@ -27,6 +27,10 @@ import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercato
 // Search
 import { useSearchState } from "../../SearchState";
 import { Feature, MapBrowserEvent } from "ol";
+import MouseWheelZoom from "ol/interaction/MouseWheelZoom.js";
+import { defaults as defaultInteractions, defaults } from "ol/interaction.js";
+import { Icon, Style } from "ol/style";
+
 // Custom Control Buttons (not used currently)
 export class DrawControl extends Control {
     private handle: () => void;
@@ -60,7 +64,6 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
 
     // inititalize state
     const [renderState, setRenderState] = useState(false); //hook 11
-    const draw = useRef<Draw>();
 
     const [vectorLayer, setVectorLayer] = useState(new VectorLayer({ source: source }));
     const [bBoxVectorLayer, setBBoxVectorLayer] = useState(new VectorLayer());
@@ -73,18 +76,12 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
 
     const [drawing, setDrawing] = useState(false);
 
+    // Tooltip state
     const [tooltipContent, setTooltipContent] = useState("");
     const [tooltipPos, setTooltipPos] = useState({ x: "0", y: "0" });
 
-    // console.log(
-    //     "Current states: drawing = " +
-    //         drawing +
-    //         ", areFeaturesSelected = " +
-    //         areFeaturesSelected +
-    //         ", isBBoxDisplayed =" +
-    //         isBBoxDisplayed +
-    //         ", selectedAreas = "
-    // );
+    //catchment options
+    const [selectedOption, setSelectedOption] = useState("full");
 
     // Center the map in Europe everytime the Popup gets opened
     useEffect(() => {
@@ -93,6 +90,21 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             map.getView().setZoom(4);
         }
     }, [showPopup]);
+
+    // Marker
+    const [markerSource] = useState(new VectorSource());
+    const [markerVector] = useState(
+        new VectorLayer({
+            source: markerSource,
+            style: new Style({
+                image: new Icon({
+                    src: "https://openlayers.org/en/latest/examples/data/icon.png",
+                    anchor: [0.5, 1]
+                })
+            })
+        })
+    );
+    const draw = useRef<Draw>();
 
     // Display the Catchment areas
     const geoJSONFormat = new GeoJSON();
@@ -140,7 +152,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 if (i === 0 || i === 1) {
                     //
                 } else {
-                    if (layer instanceof VectorLayer) {
+                    if (layer instanceof VectorLayer && layer != markerVector) {
                         map.removeLayer(layer);
                     }
                 }
@@ -262,6 +274,25 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         setisBBoxDisplayed(false);
         setAreFeaturesSelected(false);
     }
+    function addInteraction(newDraw: Draw) {
+        removeDraw();
+        draw.current = newDraw;
+        newDraw.on("drawstart", () => markerSource.clear());
+        newDraw.on("drawend", (event) => {
+            const feature = event.feature;
+            console.log("Fertig gezeichnet:", feature);
+        });
+        map?.addInteraction(newDraw);
+    }
+
+    function addMarker(): void {
+        addInteraction(
+            new Draw({
+                source: markerSource,
+                type: "Point"
+            })
+        );
+    }
     /***********************************Selectable Catchment areas ********************/
     // testing stuff
     const falsef = (event: any) => false;
@@ -285,14 +316,14 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             style: selectStyle
         })
     );
+    // Add a marker state
+    const [markerLayer, setMarkerLayer] = useState<VectorLayer<VectorSource> | null>(null);
     /************************Feature: Draw a box to select multiple areas************************** */
-    // HANDLER: draw a box
-    function handleSelectBox() {
-        return;
-    }
 
     useEffect(() => {
-        if (map && showPopup) {
+        if (map && showPopup && selectedOption == "full") {
+            removeDraw();
+            // activate selects
             map.addInteraction(selectHover);
             map.addInteraction(selectClick);
             selectClick.on("select", () => {
@@ -300,6 +331,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 getBBox();
             });
 
+            // Display names when hovered over
             selectHover.on("select", (event) => {
                 const xPos = event.mapBrowserEvent.originalEvent.offsetX - 20;
                 const yPos = event.mapBrowserEvent.originalEvent.offsetY - 20;
@@ -311,16 +343,24 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                     x: xPos.toString(),
                     y: yPos.toString()
                 });
-                console.log(xPos, yPos);
+                // console.log(xPos, yPos);
             });
         } else {
-            // const selected = selectClick.getFeatures();
-            // if (selected.getLength() > 0) selected.remove(selected.item(0));
-            map?.removeInteraction(selectHover);
-            map?.removeInteraction(selectClick);
-            setAreFeaturesSelected(false);
+            if (map) {
+                map?.getInteractions().clear(); // This deletes ALL interactions! (zoom and drag as well)
+                defaultInteractions().forEach((interaction) => map?.addInteraction(interaction));
+                setAreFeaturesSelected(false);
+                // Add click interaction for adding/removing markers
+                addMarker();
+            }
         }
-    }, [map, showPopup]);
+    }, [map, showPopup, selectedOption]);
+
+    useEffect(() => {
+        if (map) {
+            map.addLayer(markerVector);
+        }
+    }, [map, markerVector]);
     /**********************************Return***************************************** */
     if (!showPopup) return null;
     return (
@@ -331,6 +371,10 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 </Box>
 
                 <Box className="map-container">
+                    <CatchmentOptions
+                        onChange={setSelectedOption}
+                        selectedOption={selectedOption}
+                    />
                     <MapContainer mapId={mapId} />
                     <Tooltip
                         label={tooltipContent}
@@ -364,6 +408,13 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                         onClick={deselectAll}
                         text="Delete selection"
                     />
+                    {selectedOption == "upstream" ? (
+                        <CatchmentButton
+                            active={isBBoxDisplayed}
+                            onClick={setSearchArea}
+                            text="Compute catchment"
+                        />
+                    ) : null}
                     <CatchmentButton
                         active={isBBoxDisplayed}
                         onClick={setSearchArea}
