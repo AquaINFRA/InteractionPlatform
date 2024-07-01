@@ -284,7 +284,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         const selectedHover = selectHover.getFeatures();
         if (selectedHover.getLength() > 0) selectedHover.clear();
         map?.removeLayer(bBoxVectorLayer);
-        setBBoxVectorLayer(new VectorLayer()); //ran
+        setBBoxVectorLayer(new VectorLayer()); // clean up?
         setisBBoxDisplayed(false);
         setAreFeaturesSelected(false);
         markerSource.clear();
@@ -355,7 +355,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     };
     /** Performs a https request to the pygeoapi, gets a geoJSON as response */
     const fetchGeoJSON = (url: string) => {
-        //ran (arbeitsablauf)
+        // clean up?
         const proxyUrl = "http://localhost:8081/";
         const fetchUrl = proxyUrl + url;
 
@@ -383,7 +383,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         });
 
         const catchmentSource = new VectorSource({
-            //ran?
+            //clean up?
             features: features
         });
 
