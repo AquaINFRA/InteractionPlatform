@@ -90,14 +90,14 @@ export function SearchView() {
                 </Container>
             </Box>
 
-            <Box height={{ base: "50px", custombreak: "60px" }}></Box>
+            <Box height={{ base: "100px", custombreak: "60px" }}></Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
                 <Flex gap="5vw">
                     {searchState.isLoaded ? (
-                        <Box flex="1 1 100%" overflow="hidden">
+                        <Box flex="1 1 100%" >
                             {/* Desktop view */}
-                            <Box className="relatedTermsBox" id="desktopRelatedTerms">
+                            <Box className="relatedTermsBox">
                                 {searchState.searchTerm != "" ? <RelatedTerms /> : null}
                             </Box>
                             {/* Mobile view */}
