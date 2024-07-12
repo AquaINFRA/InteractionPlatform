@@ -35,9 +35,16 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     const [disabled, setDisable] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
 
+    const coords = [1489200, 6894026, 1489200, 6894026];
+
+    const delSelection = () => {
+        searchState.setSpatialFilter([]);
+    };
+
     useEffect(() => {
         if (map) {
             map.addLayer(vector);
+            map.getView().fit(coords, { maxZoom: 2.6 });
             return () => {
                 map.removeLayer(vector);
             };
@@ -139,6 +146,14 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         marginTop="8px" // Fügt einen Abstand zwischen den Buttons hinzu
                     >
                         set catchment area
+                    </Button>
+                    <Button
+                        width="100%"
+                        onClick={() => delSelection()}
+                        marginTop="8px"
+                        backgroundColor="red"
+                    >
+                        Delete selection
                     </Button>
                     {disabled && (
                         <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
