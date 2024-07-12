@@ -20,6 +20,7 @@ export const RelatedTerms = () => {
     const [myJson, setMyJson] = useState<Array<object>>([]);
     const searchState = useSearchState();
     const [expanded, setExpanded] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         searchSrvc.getRelatedSearchterms(searchState.searchTerm).then((res: any) => {
@@ -33,7 +34,7 @@ export const RelatedTerms = () => {
                 tmpJson.push({ type: object.type, value: object.value });
                 tmpArray.push(object.value);
             });
-
+            setLoading(false);
             setMyArray(tmpArray);
             setMyJson(tmpJson);
             // console.log(myJson);
@@ -50,56 +51,24 @@ export const RelatedTerms = () => {
                             paddingInlineEnd="unset !important"
                             paddingTop="unset !important"
                         >
-                            <RelatedKeywords
+                            {<RelatedKeywords
                                 list={myJson}
                                 tag={"Related terms"}
                                 element={"keyword"}
-                            />
+                                loading={loading}
+                            />}
                         </AccordionPanel>
-
-                        <div>
-                            <AccordionButton
-                                justifyContent="center"
-                                onClick={() => setExpanded(!expanded)}
-                            >
-                                <Flex
-                                    alignItems="center"
-                                    justifyContent="center"
-                                    direction="column"
-                                    gap="4px"
-                                    style={{
-                                        marginLeft: "10%",
-                                        marginRight: "10%"
-                                    }}
-                                >
-                                    {expanded ? (
-                                        <>
-                                            <Box>
-                                                <UpIcon />
-                                            </Box>
-                                            <Box className="metadataShowHide">
-                                                Hide related terms
-                                            </Box>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Box className="metadataShowHide">
-                                                Show related terms
-                                            </Box>
-                                            <Box>
-                                                <DownIcon />
-                                            </Box>
-                                        </>
-                                    )}
-                                </Flex>
-                            </AccordionButton>
-                        </div>
                     </AccordionItem>
                 </Accordion>
             </Box>
             {/* Desktop view */}
             <Box id="desktopRelatedTerms">
-                <RelatedKeywords list={myJson} tag={"Related terms"} element={"keyword"} />
+                <RelatedKeywords 
+                    list={myJson} 
+                    tag={"Related terms"} 
+                    element={"keyword"}
+                    loading={loading} 
+                />
             </Box>
         </Box>
     );

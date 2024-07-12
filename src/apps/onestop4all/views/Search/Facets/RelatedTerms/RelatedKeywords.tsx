@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Stack } from "@open-pioneer/chakra-integration";
+import { Box, Button, Flex, Skeleton, Stack } from "@open-pioneer/chakra-integration";
 import { useSearchState } from "../../SearchState";
 import { useState } from "react";
 import { FilterCheckbox } from "./FilterCheckbox";
@@ -14,8 +14,9 @@ export const RelatedKeywords = (props: {
     tag: string;
     element: string;
     type?: string;
+    loading: boolean;
 }) => {
-    const { list, tag, element } = props;
+    const { list, tag, element, loading } = props;
 
     const searchState = useSearchState();
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -138,7 +139,13 @@ export const RelatedKeywords = (props: {
                     />
                 </Stack>
             </Flex>
-            {shortList
+            {loading ? (
+                <Stack pt={3}>
+                    <Skeleton height='20px' />
+                    <div>Loading related terms...</div>
+                    <Skeleton height='20px' />
+                </Stack>
+            ) : shortList
                 .filter((item) => {
                     return filterCategories.includes(item.type!);
                 })
