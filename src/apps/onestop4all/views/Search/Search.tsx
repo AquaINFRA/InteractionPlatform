@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, Spacer } from "@open-pioneer/chakra-integration";
+import { Box, Button, Container, Flex, Skeleton, Spacer, Stack } from "@open-pioneer/chakra-integration";
 import { useEffect, useRef, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 
@@ -172,6 +172,10 @@ export function SearchView() {
                             paddingTop={{ base: "7%", custombreak: "0%" }}
                         >
                             Your request is currently being processed. This may take a few seconds.
+                            <Stack pt={3}>
+                                <Skeleton height='20px' />
+                                <Skeleton height='20px' />
+                            </Stack>
                         </Box>
                     )}
 
