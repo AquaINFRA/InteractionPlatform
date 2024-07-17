@@ -7,6 +7,7 @@ import { SimpleGrid } from "@chakra-ui/react";
 import { SelectableDataProvider, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
+import { SearchService } from "../../../../services";
 
 export interface DataProvider {
     title: string;
@@ -16,7 +17,7 @@ export function DataProviderFacet() {
     const searchState = useSearchState();
     const [entries, setEntries] = useState<SelectableDataProvider[]>([]);
     const [allSelected, setAllSelected] = useState(false);
-    const searchSrvc = useService("onestop4all.SearchService");
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService;
 
     useEffect(() => {
         searchSrvc.getDataProvider().then((res) => {
@@ -26,8 +27,18 @@ export function DataProviderFacet() {
                         a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
                 );
                 setEntries(sortedEntries.filter((entry: any) => entry.id !== "dataeurope"));
+                /*const ids = [] as string[];
+                entries.forEach((prov)=>{
+                    ids.push(prov.id);
+                });
+                console.log(entries.length);
+                searchState.setSelectedDataProvider(ids);
+                setAllSelected(true);
+                console.log("here we are");*/
                 //console.log(sortedEntries.length-1, searchState.selectedDataProvider.length);
                 //Needed if a users shares a link with all data providers selected, then the button text should show uncheck all data providers.
+                //setAllSelected(true);
+                //changeAllSelection();
                 if (sortedEntries.length -1 === searchState.selectedDataProvider.length) {
                     setAllSelected(true);
                 }
