@@ -171,7 +171,7 @@ export function SearchView() {
                             overflow="hidden"
                             paddingTop={{ base: "7%", custombreak: "0%" }}
                         >
-                            Loading...
+                            Your request is currently being processed. This may take a few seconds.
                         </Box>
                     )}
 

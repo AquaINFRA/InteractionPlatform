@@ -139,7 +139,7 @@ export const RelatedKeywords = (props: {
                     />
                 </Stack>
             </Flex>
-            <Box maxH={"200px"} overflow={"scroll"}>
+            <Box maxH={"200px"} overflow={"scroll"} className="custom-scrollbar">
                 {loading ? (
                     <Stack pt={3}>
                         <Skeleton height='20px' />
