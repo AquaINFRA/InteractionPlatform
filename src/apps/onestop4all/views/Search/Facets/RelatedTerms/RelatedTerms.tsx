@@ -12,11 +12,12 @@ import {
     Box,
     Flex
 } from "@open-pioneer/chakra-integration";
+import { SearchService } from "../../../../services";
 
 export const RelatedTerms = () => {
     const [related, setRelated] = useState<any>();
     const [myArray, setMyArray] = useState<Array<string>>([]);
-    const searchSrvc = useService("onestop4all.SearchService");
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const [myJson, setMyJson] = useState<Array<object>>([]);
     const searchState = useSearchState();
     const [expanded, setExpanded] = useState(true);

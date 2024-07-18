@@ -1,9 +1,7 @@
 import { Box, Button, Flex } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
-
 import { SimpleGrid } from "@chakra-ui/react";
-
 import { SelectableDataProvider, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
@@ -16,7 +14,7 @@ export interface DataProvider {
 export function DataProviderFacet() {
     const searchState = useSearchState();
     const [entries, setEntries] = useState<SelectableDataProvider[]>([]);
-    const [allSelected, setAllSelected] = useState(false);
+    const [allSelected, setAllSelected] = useState(true); // Default to all selected
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
 
     useEffect(() => {
@@ -26,23 +24,14 @@ export function DataProviderFacet() {
                     (a: DataProvider, b: DataProvider) =>
                         a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
                 );
-                setEntries(sortedEntries.filter((entry: any) => entry.id !== "dataeurope"));
-                /*const ids = [] as string[];
-                entries.forEach((prov)=>{
-                    ids.push(prov.id);
-                });
-                console.log(entries.length);
+                const filteredEntries = sortedEntries.filter((entry: any) => entry.id !== "dataeurope");
+                setEntries(filteredEntries);
+
+                const ids = filteredEntries.map((entry: any) => entry.id);
                 searchState.setSelectedDataProvider(ids);
                 setAllSelected(true);
-                console.log("here we are");*/
-                //console.log(sortedEntries.length-1, searchState.selectedDataProvider.length);
-                //Needed if a users shares a link with all data providers selected, then the button text should show uncheck all data providers.
-                //setAllSelected(true);
-                //changeAllSelection();
-                if (sortedEntries.length -1 === searchState.selectedDataProvider.length) {
-                    setAllSelected(true);
-                }
-                const providerTitles = sortedEntries.map((se: any) => {
+
+                const providerTitles = filteredEntries.map((se: any) => {
                     return { title: se.title, id: se.id, description: se.description };
                 });
                 searchState.setDataProviderTitles(providerTitles);
@@ -67,7 +56,7 @@ export function DataProviderFacet() {
             searchState.setSelectedDataProvider([]);
             setAllSelected(false);
         } else {
-            const dataProviderIds = entries.map(obj => obj.id);    
+            const dataProviderIds = entries.map(obj => obj.id);
             searchState.setSelectedDataProvider(dataProviderIds);
             setAllSelected(true);
         }
@@ -92,7 +81,9 @@ export function DataProviderFacet() {
                 )}
             </SimpleGrid>
             <Box pt={5}>
-                <Button w={"100%"} onClick={changeAllSelection}>{allSelected ? "Uncheck all data providers" : "Select all data providers"}</Button>
+                <Button w={"100%"} onClick={changeAllSelection}>
+                    {allSelected ? "Uncheck all data providers" : "Select all data providers"}
+                </Button>
             </Box>
         </FacetBase>
     );
