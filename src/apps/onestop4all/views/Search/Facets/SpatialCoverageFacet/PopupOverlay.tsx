@@ -11,7 +11,7 @@ import { defaults as defaultControls, Control } from "ol/control";
 import { click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
 // Import other components
-import { Box, ButtonGroup, Flex, Tooltip } from "@open-pioneer/chakra-integration";
+import { Box, ButtonGroup, Flex, HStack, Tooltip } from "@open-pioneer/chakra-integration";
 import { Legend } from "./Legend";
 import { XButton } from "./XButton";
 import { CatchmentOptions } from "./CatchmentOptions";
@@ -90,11 +90,13 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     const [catchmentSource, setCatchmentSource] = useState(new VectorSource());
     const [catchmentLayer, setCatchmentLayer] = useState(new VectorLayer());
 
+    const [CatchmentBBoxSource, setCatchmentBBoxSource] = useState(new VectorSource());
+
     const [bBox, setBBox] = useState<Feature<any>[]>();
     // Booleans
     const [areFeaturesSelected, setAreFeaturesSelected] = useState(false); //hook 15
     const [isBBoxDisplayed, setisBBoxDisplayed] = useState(false);
-    const [drawing, setDrawing] = useState(false);
+    const [markerDrawn, setMarkerDrawn] = useState(false);
     const [loading, setLoading] = useState(false); // shows if curl request is pending
 
     const searchState = useSearchState();
@@ -289,6 +291,8 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         setAreFeaturesSelected(false);
         markerSource.clear();
         catchmentSource?.clear();
+        CatchmentBBoxSource?.clear();
+        setMarkerDrawn(false);
     }
     /**Adds marker interaction to the map */
     function addMarker(): void {
@@ -307,6 +311,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 const lonLat = toLonLat(coords);
                 setMarkerLon(lonLat[0]!);
                 setMarkerLat(lonLat[1]!);
+                setMarkerDrawn(true);
             }
         });
         map?.addInteraction(newDraw);
@@ -326,7 +331,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             const features = geoJSONFormat.readFeatures(geojson, {
                 featureProjection: "EPSG:3857"
             });
-            addCatchmentFeaturesToMap(features); // 3. add features to map
+            addCatchmentFeaturesToMap(features, computeBBox(features)); // 3. add features to map
         } catch (error) {
             console.error("Error processing catchment:", error);
         } finally {
@@ -383,7 +388,26 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     };
 
     /** Displays the geoJSON */
-    const addCatchmentFeaturesToMap = (features: Feature<Geometry>[]) => {
+    const addCatchmentFeaturesToMap = (features: Feature<Geometry>[], bbox: number[][]) => {
+        const bboxgeojson = {
+            type: "Feature",
+            properties: {},
+            geometry: {
+                type: "Polygon",
+                coordinates: [bbox] // Wrap coordinates in an array to represent a polygon
+            }
+        };
+        const bboxFeatures = geoJSONFormat.readFeatures(bboxgeojson, {
+            featureProjection: "EPSG:4326"
+        });
+        const vectorSourceBBox = new VectorSource({
+            features: bboxFeatures
+        });
+        const vectorLayerBBox = new VectorLayer({
+            source: vectorSourceBBox,
+            style: bBoxStyle
+        });
+
         const catchmentSource = new VectorSource({
             features: features
         });
@@ -391,12 +415,17 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         const catchmentLayer = new VectorLayer({
             source: catchmentSource
         });
+        setCatchmentSource(catchmentSource);
+        setCatchmentBBoxSource(vectorSourceBBox);
 
         if (map) {
             map.addLayer(catchmentLayer);
+            map.addLayer(vectorLayerBBox);
         } else {
             console.error("Map not found!");
         }
+        setisBBoxDisplayed(true);
+        setBBox(bboxFeatures);
     };
 
     /***********************************Selectable Catchment areas ********************/
@@ -474,11 +503,14 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 </Box>
 
                 <Box className="map-container">
-                    <CatchmentOptions
-                        onChange={setSelectedOption}
-                        selectedOption={selectedOption}
-                    />
-                    {loading && "Loading..."}
+                    <HStack spacing="4">
+                        <CatchmentOptions
+                            onChange={setSelectedOption}
+                            selectedOption={selectedOption}
+                        />
+                        <Box position="relative">{loading && <b>{"Loading..."}</b>}</Box>
+                    </HStack>
+
                     <MapContainer mapId={mapId} />
                     <Tooltip
                         label={tooltipContent}
@@ -518,7 +550,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                     />
                     {selectedOption == "upstream" ? (
                         <CatchmentButton
-                            active={true}
+                            active={markerDrawn && !isBBoxDisplayed}
                             onClick={getCatchmentWrap}
                             text="Compute catchment"
                         />
