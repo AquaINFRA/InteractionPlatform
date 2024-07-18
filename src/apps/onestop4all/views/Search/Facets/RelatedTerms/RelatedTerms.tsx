@@ -12,14 +12,16 @@ import {
     Box,
     Flex
 } from "@open-pioneer/chakra-integration";
+import { SearchService } from "../../../../services";
 
 export const RelatedTerms = () => {
     const [related, setRelated] = useState<any>();
     const [myArray, setMyArray] = useState<Array<string>>([]);
-    const searchSrvc = useService("onestop4all.SearchService");
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const [myJson, setMyJson] = useState<Array<object>>([]);
     const searchState = useSearchState();
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         searchSrvc.getRelatedSearchterms(searchState.searchTerm).then((res: any) => {
@@ -33,7 +35,7 @@ export const RelatedTerms = () => {
                 tmpJson.push({ type: object.type, value: object.value });
                 tmpArray.push(object.value);
             });
-
+            setLoading(false);
             setMyArray(tmpArray);
             setMyJson(tmpJson);
             // console.log(myJson);
@@ -41,8 +43,7 @@ export const RelatedTerms = () => {
     }, [searchState]);
     return (
         <Box className="relatedTermsBox">
-            {/* Mobile view */}
-            <Box id="mobileRelatedTerms">
+            <Box>
                 <Accordion allowMultiple defaultIndex={expanded ? [0] : [1]}>
                     <AccordionItem borderTopWidth="0 !important" borderBottomWidth="0 !important">
                         <AccordionPanel
@@ -54,38 +55,31 @@ export const RelatedTerms = () => {
                                 list={myJson}
                                 tag={"Related terms"}
                                 element={"keyword"}
+                                loading={loading}
                             />
                         </AccordionPanel>
-
                         <div>
                             <AccordionButton
                                 justifyContent="center"
                                 onClick={() => setExpanded(!expanded)}
+                                marginBottom={"2%"}
                             >
                                 <Flex
                                     alignItems="center"
-                                    justifyContent="center"
                                     direction="column"
                                     gap="4px"
-                                    style={{
-                                        marginLeft: "10%",
-                                        marginRight: "10%"
-                                    }}
+                                    style={{ marginLeft: "40%", marginRight: "40%" }}
                                 >
                                     {expanded ? (
                                         <>
                                             <Box>
                                                 <UpIcon />
                                             </Box>
-                                            <Box className="metadataShowHide">
-                                                Hide related terms
-                                            </Box>
+                                            <Box className="metadataShowHide">Hide related terms</Box>
                                         </>
                                     ) : (
                                         <>
-                                            <Box className="metadataShowHide">
-                                                Show related terms
-                                            </Box>
+                                            <Box className="metadataShowHide">Show related terms</Box>
                                             <Box>
                                                 <DownIcon />
                                             </Box>
@@ -96,10 +90,6 @@ export const RelatedTerms = () => {
                         </div>
                     </AccordionItem>
                 </Accordion>
-            </Box>
-            {/* Desktop view */}
-            <Box id="desktopRelatedTerms">
-                <RelatedKeywords list={myJson} tag={"Related terms"} element={"keyword"} />
             </Box>
         </Box>
     );

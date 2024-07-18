@@ -22,9 +22,10 @@ import {
 } from "../views/Search/SearchState";
 import { DropdownArrowIcon, SearchIcon } from "./Icons";
 import { DataProvider } from "../views/Search/Facets/DataProviderFacet/DataProviderFacet";
+import { SearchService } from "../services";
 
 export function SearchBar() {
-    const searchSrvc = useService("onestop4all.SearchService");
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const [searchTerm, setSearchTerm] = useState<string>("");
     const intl = useIntl();
     //const resourceTypes = Object.values(ResourceType).sort((a, b) => a.localeCompare(b));
@@ -100,7 +101,7 @@ export function SearchBar() {
         >
             <div id="searchbar">
                 <HStack padding={{ base: "5px 10px", custombreak: "8px 15px" }} w="100%" bg="white">
-                    <Select
+                    {/*<Select
                         icon={<DropdownArrowIcon />}
                         iconSize="12"
                         variant="unstyled"
@@ -115,7 +116,7 @@ export function SearchBar() {
                     >
                         {createResourceTypeSelectOptions()}
                     </Select>
-                    <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
+                    <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />*/}
                     <Input
                         placeholder="Search for research data"
                         value={searchTerm}

@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Stack } from "@open-pioneer/chakra-integration";
+import { Box, Button, Flex, Skeleton, Stack } from "@open-pioneer/chakra-integration";
 import { useSearchState } from "../../SearchState";
 import { useState } from "react";
 import { FilterCheckbox } from "./FilterCheckbox";
@@ -14,8 +14,9 @@ export const RelatedKeywords = (props: {
     tag: string;
     element: string;
     type?: string;
+    loading: boolean;
 }) => {
-    const { list, tag, element } = props;
+    const { list, tag, element, loading } = props;
 
     const searchState = useSearchState();
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -111,7 +112,7 @@ export const RelatedKeywords = (props: {
                 size="sm"
             />
             <Flex align="center">
-                <Stack spacing={1} direction="row" wrap="wrap">
+                <Stack spacing={1} direction="row" wrap="wrap" marginY={3}>
                     <FilterCheckbox
                         label="Original Match"
                         background="rgba(34, 192, 210, 0.2)"
@@ -138,23 +139,31 @@ export const RelatedKeywords = (props: {
                     />
                 </Stack>
             </Flex>
-            {shortList
-                .filter((item) => {
-                    return filterCategories.includes(item.type!);
-                })
-                .map((item: SearchTermItem, j: number) => (
-                    <Box
-                        className={"metadataKeyword " + getClassName(item)}
-                        style={{ border: itemBorder(item) }}
-                        key={j}
-                        onClick={() => {
-                            updateSelectedItems(item.value!);
-                        }}
-                        _hover={{ cursor: "pointer" }}
-                    >
-                        {item.value}
-                    </Box>
-                ))}
+            <Box maxH={"200px"} overflow={"scroll"} className="custom-scrollbar">
+                {loading ? (
+                    <Stack pt={3}>
+                        <Skeleton height='20px' />
+                        <div>Loading related terms...</div>
+                        <Skeleton height='20px' />
+                    </Stack>
+                ) : shortList
+                    .filter((item) => {
+                        return filterCategories.includes(item.type!);
+                    })
+                    .map((item: SearchTermItem, j: number) => (
+                        <Box
+                            className={"metadataKeyword " + getClassName(item)}
+                            style={{ border: itemBorder(item) }}
+                            key={j}
+                            onClick={() => {
+                                updateSelectedItems(item.value!);
+                            }}
+                            _hover={{ cursor: "pointer" }}
+                        >
+                            {item.value}
+                        </Box>
+                    ))}
+            </Box>
             <Flex paddingTop="3" width="100%" justifyContent="center">
                 <Button
                     className="searchSelectedTerms"

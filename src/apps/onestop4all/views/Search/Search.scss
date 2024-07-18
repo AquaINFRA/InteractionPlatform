@@ -29,8 +29,11 @@
 
         @media only screen and (max-width: $customBreakpoint) {
             text-align: center;
-            font-size: 14px;
-            padding-top: 0%;
+            color: var(--grey-grey, #272727);
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.7px;
+            font-family: Nimbus Sans;
         }
     }
 }
