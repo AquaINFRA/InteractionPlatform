@@ -314,10 +314,28 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     /** Executes getCatchment with the coordinates of the marker */
     function getCatchmentWrap(): void {
         setLoading(true);
-        getCatchment(markerLon, markerLat);
+        processCatchment(markerLon, markerLat);
     }
+
+    /** Wrapper function that processes the catchment */
+    async function processCatchment(lon: number, lat: number) {
+        try {
+            const href = await getHref(lon, lat); // 1. get href
+            const geojson = await fetchGeoJSON(href); // 2. get geojson
+            const geoJSONFormat = new GeoJSON();
+            const features = geoJSONFormat.readFeatures(geojson, {
+                featureProjection: "EPSG:3857"
+            });
+            addCatchmentFeaturesToMap(features); // 3. add features to map
+        } catch (error) {
+            console.error("Error processing catchment:", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     /** Performs a https request to the pygeoapi, the resulting link is then processed */
-    const getCatchment = (lon: number, lat: number) => {
+    const getHref = async (lon: number, lat: number): Promise<string> => {
         const proxyUrl = "http://localhost:8081/";
         const targetUrl =
             "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
@@ -331,73 +349,56 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             }
         };
 
-        fetch(url, {
+        const response = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((result) => {
-                console.log("Result:", result);
-                const href = result.outputs.polygon.href;
-                fetchGeoJSON(href); // Abrufen des GeoJSON von der href URL
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log("Result:", result);
+        return result.outputs.polygon.href;
     };
+
     /** Performs a https request to the pygeoapi, gets a geoJSON as response */
-    const fetchGeoJSON = (url: string) => {
-        // clean up?
+    const fetchGeoJSON = async (url: string): Promise<any> => {
         const proxyUrl = "http://localhost:8081/";
         const fetchUrl = proxyUrl + url;
 
-        fetch(fetchUrl)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((geojson) => {
-                console.log("GeoJSON:", geojson);
-                addGeoJSONToMap(geojson);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-    };
-    /** Displays the geoJSON */
-    const addGeoJSONToMap = (geojson: any) => {
-        setLoading(false);
-        const geoJSONFormat = new GeoJSON();
-        const features = geoJSONFormat.readFeatures(geojson, {
-            featureProjection: "EPSG:3857" // Anpassung der Projektion, falls notwendig
-        });
+        const response = await fetch(fetchUrl);
 
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const geojson = await response.json();
+        console.log("GeoJSON:", geojson);
+        return geojson;
+    };
+
+    /** Displays the geoJSON */
+    const addCatchmentFeaturesToMap = (features: Feature<Geometry>[]) => {
         const catchmentSource = new VectorSource({
-            //clean up?
             features: features
         });
 
         const catchmentLayer = new VectorLayer({
             source: catchmentSource
         });
-        setCatchmentSource(catchmentSource);
-        setCatchmentLayer(catchmentLayer);
+
         if (map) {
             map.addLayer(catchmentLayer);
         } else {
             console.error("Map not found!");
         }
     };
+
     /***********************************Selectable Catchment areas ********************/
 
     /**Hover over areas to highlight them */
