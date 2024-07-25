@@ -11,7 +11,7 @@ import { defaults as defaultControls, Control } from "ol/control";
 import { click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
 // Import other components
-import { Box, ButtonGroup, Flex, HStack, Tooltip } from "@open-pioneer/chakra-integration";
+import { Box, ButtonGroup, Flex, HStack, Spinner, Tooltip } from "@open-pioneer/chakra-integration";
 import { Legend } from "./Legend";
 import { XButton } from "./XButton";
 import { CatchmentOptions } from "./CatchmentOptions";
@@ -51,14 +51,17 @@ export class DrawControl extends Control {
 interface PopupOverlayProps {
     showPopup: boolean;
     onClose: () => void;
+    setSelectedOption: (value: string) => void;
+    selectedOption: string;
 }
 
-export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
+export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOption }: PopupOverlayProps) {
     /********************************Initialization******************************* */
     // Initialize the map
     const mapId = "popup";
     const { map } = useMap(mapId);
     const olMapRegistry = useService("ol-map.MapRegistry");
+    //console.log(selectedOption);
 
     // Center the map in Europe everytime the Popup gets opened
     useEffect(() => {
@@ -106,7 +109,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     const [tooltipPos, setTooltipPos] = useState({ x: "0", y: "0" });
 
     // Catchment option state (full or upstream catchment)
-    const [selectedOption, setSelectedOption] = useState("full");
+    
 
     // Marker state
     const draw = useRef<Draw>();
@@ -277,6 +280,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     function handleClose(): void {
         onClose();
         removeDraw();
+        console.log(selectedOption);
     }
 
     /**HANDLER: Deselects all selectClick and selectHover (hover doesnt work yet)*/
@@ -417,10 +421,16 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         });
         setCatchmentSource(catchmentSource);
         setCatchmentBBoxSource(vectorSourceBBox);
-
         if (map) {
             map.addLayer(catchmentLayer);
             map.addLayer(vectorLayerBBox);
+            const source = catchmentLayer.getSource();
+            if (source) {
+                const extent = source.getExtent();
+                if (extent) {
+                    map.getView().fit(extent, { duration: 1000 }); // optional duration for smooth zoom
+                }
+            }
         } else {
             console.error("Map not found!");
         }
@@ -454,6 +464,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         if (map && showPopup && selectedOption == "full") {
             removeDraw();
             // activate selects
+            deselectAll();
             map.addInteraction(selectHover);
             map.addInteraction(selectClick);
             selectClick.on("select", () => {
@@ -508,7 +519,14 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                             onChange={setSelectedOption}
                             selectedOption={selectedOption}
                         />
-                        <Box position="relative">{loading && <b>{"Loading..."}</b>}</Box>
+                        <Box position="relative">
+                            {loading && 
+                                <HStack spacing="2">
+                                    <Spinner size="sm" />
+                                    <b>{"Loading..."}</b>
+                                </HStack>
+                            }
+                        </Box>
                     </HStack>
 
                     <MapContainer mapId={mapId} />
@@ -538,7 +556,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 </Box>
 
                 <XButton handleClose={handleClose} />
-                <Flex className="catchment-button-container">
+                <Flex className="catchment-button-container" marginTop={"6%"}>
                     <CatchmentButton
                         active={
                             areFeaturesSelected ||

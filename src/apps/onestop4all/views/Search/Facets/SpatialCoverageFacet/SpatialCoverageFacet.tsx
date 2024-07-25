@@ -68,9 +68,17 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
         })
     );
     //Display search results on map
-    let index = 0;
+    const index = 0;
     const maxNumberOfBoxesShown = 20;
     const [idMap, setIdMap] = useState(new Map());
+
+    const polygonStyle = new Style({
+        stroke: new Stroke({
+            color: "#ff0000", // Red color for the border
+            width: 2
+        })
+    });
+    
     useEffect(() => {
         // Clear Layer
         resultsSource.clear();
@@ -80,7 +88,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                 searchState.pageStart * searchState.pageSize,
                 (searchState.pageStart + 1) * searchState.pageSize
             );
-            displayedResults?.map((r: any) => {
+            displayedResults?.map((r: any, index: number) => {
                 if (getGeometry(r) != null) {
                     // Convert into features
                     const geoJSONFormat = new GeoJSON();
@@ -90,10 +98,10 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     // Save extent-id-pairs in a map
                     idMap.set(getGeometry(r)!.coordinates, r.id);
                     if (index < maxNumberOfBoxesShown) {
-                        index++;
                         // Add feature to map
                         for (const t of tmp) {
                             t.setId(r.id);
+                            t.setStyle(polygonStyle); // Set the custom style
                             resultsSource.addFeature(t);
                         }
                     }
@@ -105,6 +113,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     const [bboxActive, setBboxActive] = useState(false);
     const [disabled, setDisable] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
+    const [selectedOption, setSelectedOption] = useState("full");
     const navigate = useNavigate();
 
     // Navigate to a result when the corresponding box is clicked on the map
@@ -305,7 +314,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         <Box position="absolute" right="10px" bottom="100px">
                             <Questionmark
                                 size="lg"
-                                label="Click the button below and draw a bounding box to find resources relevant for that area"
+                                label="You can draw a bounding box to find resources relevant for that area by using the button below or by setting a catchment area."
                             />
                         </Box>
                         <DrawBboxButton bboxActive={bboxActive} onClick={selectBbox} />
@@ -340,7 +349,12 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     {disabled && (
                         <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
                     )}
-                    <PopupOverlay showPopup={showPopup} onClose={() => setShowPopup(false)} />
+                    <PopupOverlay 
+                        showPopup={showPopup} 
+                        onClose={() => setShowPopup(false)} 
+                        selectedOption={selectedOption}
+                        setSelectedOption={setSelectedOption}
+                    />
                 </Box>
             </FacetBase>
         </Box>

@@ -10,10 +10,14 @@ interface CatchmentOptionsProps {
 export function CatchmentOptions(props: CatchmentOptionsProps) {
     const { onChange, selectedOption } = props;
     return (
-        <RadioGroup defaultValue="full" onChange={(value) => onChange(value)}>
+        <RadioGroup 
+            defaultValue={selectedOption} 
+            onChange={(value) => onChange(value)} 
+            marginY={"1%"}
+        >
             <Stack spacing={5} direction="row">
-                <Radio value="full">Full catchment</Radio>
-                <Radio value="upstream">Upstream catchment</Radio>
+                <Radio value="full" ><b>Full catchment</b></Radio>
+                <Radio value="upstream"><b>Upstream catchment</b></Radio>
             </Stack>
         </RadioGroup>
     );

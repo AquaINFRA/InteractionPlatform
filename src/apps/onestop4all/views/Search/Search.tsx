@@ -173,8 +173,21 @@ export function SearchView() {
                         >
                             Your request is currently being processed. This may take a few seconds.
                             <Stack pt={3}>
-                                <Skeleton height='20px' />
-                                <Skeleton height='20px' />
+                                <Skeleton height='50px' />
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                
                             </Stack>
                         </Box>
                     )}
