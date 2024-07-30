@@ -3,7 +3,7 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { ResourceType } from "../../services/ResourceTypeUtils";
-import { SearchResult } from "../../services/SearchService";
+import { SearchResult, SearchService } from "../../services/SearchService";
 
 export enum UrlSearchParameterType {
     Searchterm = "searchterm",
@@ -84,7 +84,7 @@ export const useSearchState = () => {
 };
 
 export const SearchState = (props: PropsWithChildren) => {
-    const searchSrvc = useService("onestop4all.SearchService");
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const [searchParams] = useSearchParams();
 
     // init search results and loading state
