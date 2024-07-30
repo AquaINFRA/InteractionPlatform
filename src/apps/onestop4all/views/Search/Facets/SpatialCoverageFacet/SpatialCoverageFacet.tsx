@@ -331,8 +331,9 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                             isOpen={true}
                             placement="bottom"
                             bg="white"
-                            color="black"
+                            backgroundColor="rgba(1,1,1,0.8)"
                             border="1px solid black"
+                            borderRadius="8px"
                             p="5px"
                             zIndex="9990"
                         >

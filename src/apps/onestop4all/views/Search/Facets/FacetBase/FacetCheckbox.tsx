@@ -26,7 +26,7 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
             flexDirection="row"
             alignItems="center"
             gridColumnGap={2}
-            rounded="lg"
+            borderRadius="8px"
             cursor="pointer"
             onClick={(event) => event.stopPropagation()}
             {...htmlProps}
