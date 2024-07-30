@@ -40,6 +40,12 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     const [tooltipContent, setTooltipContent] = useState("");
     const [tooltipPos, setTooltipPos] = useState({ x: "0", y: "0" });
 
+    const coords = [1489200, 6894026, 1489200, 6894026];
+
+    const delSelection = () => {
+        searchState.setSpatialFilter([]);
+    };
+
     // VectorLayer to display the Spatial filter
     const [source] = useState(new VectorSource({ wrapX: false }));
     const [vector] = useState(
@@ -129,6 +135,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
         if (map) {
             map.addLayer(vector);
             map.addLayer(resultsVector);
+            map.getView().fit(coords, { maxZoom: 2.6 });
             map.addInteraction(selectClick);
             map.addInteraction(selectHover);
             selectClick.on("select", () => {
@@ -345,6 +352,14 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     </Box>
                     <Button width="100%" onClick={() => setShowPopup(true)} marginTop="8px">
                         set catchment area
+                    </Button>
+                    <Button
+                        width="100%"
+                        onClick={() => delSelection()}
+                        marginTop="8px"
+                        backgroundColor="red"
+                    >
+                        Delete selection
                     </Button>
                     {disabled && (
                         <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
