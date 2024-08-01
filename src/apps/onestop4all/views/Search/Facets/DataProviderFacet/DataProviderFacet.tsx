@@ -15,6 +15,7 @@ export function DataProviderFacet() {
     const searchState = useSearchState();
     const [entries, setEntries] = useState<SelectableDataProvider[]>([]);
     const [allSelected, setAllSelected] = useState(true); // Default to all selected
+    const [providerWithResults, setProviderWithResults] = useState<string[]>();
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
 
     useEffect(() => {
@@ -40,6 +41,36 @@ export function DataProviderFacet() {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        const providerWithResults: string[] = [];
+        const providerTitles = searchState.dataProviderTitles;
+        const {searchTerm, downloadOption, spatialFilter} = searchState;
+        let i = 0;
+        providerTitles.length && providerTitles.map((elem: any, key: number) => { 
+            searchSrvc.doSearch({
+                searchTerm,
+                dataProvider: [elem.id], 
+                downloadOption,
+                spatialFilter
+            }).then((res) => {
+                console.log(res);
+                i++;
+                if (res.count > 0) {
+                    providerWithResults.push(elem.id); 
+                };
+                console.log(i, " ", providerTitles.length);
+                if (providerTitles.length === i) {
+                    console.log(providerWithResults);
+                    setProviderWithResults(providerWithResults);
+                }
+            })
+                .catch((e: any) => {
+                    console.log(e);
+                    i++;
+                });
+        });
+    }, [searchState.dataProviderTitles]);
 
     function dataProviderToggled(checked: boolean, entry: any) {
         if (checked) {
