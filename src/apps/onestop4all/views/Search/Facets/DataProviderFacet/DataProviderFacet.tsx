@@ -70,19 +70,18 @@ export function DataProviderFacet() {
                     };
                     console.log(i, " ", providerTitles.length);
                     if (providerTitles.length === i) {
-                        //console.log(providerWithResults);
+                        console.log("Done with requesting search hits per data provider");
                         setProviderWithResults(providerWithResults);
                     }
                 })
                     .catch((e: any) => {
-                        //console.log(e);
+                        console.log(e);
                         i++;
                     });
             });
         }
     }, [
         searchState.dataProviderTitles, 
-        searchState.selectedDataProvider, 
         searchState.searchTerm,
         searchState.downloadOption,
         searchState.spatialFilter
