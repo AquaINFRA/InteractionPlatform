@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { SystemStyleObject } from "@open-pioneer/chakra-integration";
 
-import { PrimaryColor, PrimaryColor40 } from "../../../Theme";
+import { PrimaryColor, PrimaryColor40, PrimaryFont } from "../../../Theme";
 import { useSearchState } from "../SearchState";
 
 interface ChipsEntry {
@@ -55,7 +55,7 @@ export function Chips() {
 
     const titleStyles = {
         color: PrimaryColor,
-        fontFamily: "Open Sans",
+        fontFamily: PrimaryFont,
         fontSize: "14px",
         fontWeight: 700,
         lineHeight: "24px"

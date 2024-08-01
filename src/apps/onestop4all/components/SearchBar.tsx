@@ -101,22 +101,6 @@ export function SearchBar() {
         >
             <div id="searchbar">
                 <HStack padding={{ base: "5px 10px", custombreak: "8px 15px" }} w="100%" bg="white">
-                    {/*<Select
-                        icon={<DropdownArrowIcon />}
-                        iconSize="12"
-                        variant="unstyled"
-                        textTransform="uppercase"
-                        color={PrimaryColor}
-                        placeholder="Select data provider"
-                        borderColor="white"
-                        flex={{ base: "0 0 16rem" }}
-                        value={selectedProvider}
-                        onChange={(event) => setSelectProvider(event.target.value)}
-                        _hover={{ cursor: "pointer" }}
-                    >
-                        {createResourceTypeSelectOptions()}
-                    </Select>
-                    <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />*/}
                     <Input
                         placeholder="Search for research data"
                         value={searchTerm}
@@ -130,7 +114,7 @@ export function SearchBar() {
                         hideBelow="custombreak"
                         onClick={() => startSearch()}
                     >
-                        <Box>{intl.formatMessage({ id: "search.search-bar.button-label" })}</Box>
+                        {intl.formatMessage({ id: "search.search-bar.button-label" })}
                     </Button>
                     <IconButton
                         aria-label="start search"

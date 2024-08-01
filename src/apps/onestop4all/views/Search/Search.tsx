@@ -15,6 +15,7 @@ import { SearchResult } from "./SearchResult/SearchResult";
 import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "./SearchState";
 import { RelatedTerms } from "./Facets/RelatedTerms/RelatedTerms";
 import { DownloadOptionFacet } from "./Facets/DownloadOptionFacet/DownloadOptionFacet";
+import { PrimaryFont } from "../../Theme";
 //import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
 
 export function SearchView() {
@@ -105,7 +106,7 @@ export function SearchView() {
                                 <RelatedTerms />
                             </Box>*/}
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
-                                <Box className="results-count">
+                                <Box className="results-count" style={{fontFamily: PrimaryFont}}>
                                     {searchState.selectedDataProvider.length > 0 &&
                                     !searchState.searchResults?.count
                                         ? "0"
@@ -172,8 +173,8 @@ export function SearchView() {
                             paddingTop={{ base: "7%", custombreak: "0%" }}
                         >
                             Your request is currently being processed and may take a few seconds. 
-                            For performance reasons, the number of search results will be limited to a maximum of 100 prioritized hits.
-                            Hence, there might be more search results than indicated.
+                            For performance reasons, the number of search results are limited to a maximum of 100 prioritized hits.
+                            Hence, there might be more search results than shown.
                             <Stack pt={3}>
                                 <Skeleton height='50px' />
                                 <Skeleton height='50px' marginTop={"20px"}/>

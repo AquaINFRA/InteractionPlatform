@@ -1,6 +1,6 @@
 import { Box, CheckboxProps, chakra, useCheckbox } from "@open-pioneer/chakra-integration";
 
-import { PrimaryColor } from "../../../../Theme";
+import { PrimaryColor, PrimaryFont } from "../../../../Theme";
 
 export interface FacetCheckboxProps {
     label: string;
@@ -15,7 +15,7 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
     const countStyles = {
         color: PrimaryColor,
         opacity: 0.5,
-        fontFamily: "Open Sans",
+        fontFamily: "Nimbus Sans",
         fontSize: "14px",
         fontWeight: 400
     };
@@ -68,7 +68,7 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
             </Box>
             <Box
                 color={PrimaryColor}
-                fontFamily="Open Sans"
+                fontFamily={PrimaryFont}
                 fontSize="14px"
                 fontWeight={state.isChecked ? "700" : "400"}
                 {...getLabelProps()}
