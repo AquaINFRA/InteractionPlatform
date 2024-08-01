@@ -171,7 +171,9 @@ export function SearchView() {
                             overflow="hidden"
                             paddingTop={{ base: "7%", custombreak: "0%" }}
                         >
-                            Your request is currently being processed. This may take a few seconds.
+                            Your request is currently being processed and may take a few seconds. 
+                            For performance reasons, the number of search results will be limited to a maximum of 100 prioritized hits.
+                            Hence, there might be more search results than indicated.
                             <Stack pt={3}>
                                 <Skeleton height='20px' />
                                 <Skeleton height='20px' />

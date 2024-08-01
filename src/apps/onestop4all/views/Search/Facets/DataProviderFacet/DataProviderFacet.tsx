@@ -6,7 +6,6 @@ import { SelectableDataProvider, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
 import { SearchService } from "../../../../services";
-import { InfoIcon, ViewIcon } from "@chakra-ui/icons";
 import { useSearchParams } from "react-router-dom";
 
 export interface DataProvider {
@@ -51,6 +50,7 @@ export function DataProviderFacet() {
     }, []);
 
     useEffect(() => {
+        console.log("-----------------RENDER-------------");
         setProviderWithResults([]);
         if (searchState.selectedDataProvider.length > 0) {
             const providerWithResults: ProviderWithResults[] = [];
@@ -64,24 +64,29 @@ export function DataProviderFacet() {
                     downloadOption,
                     spatialFilter
                 }).then((res) => {
-                    console.log(res);
                     i++;
                     if (res.count > 0) {
                         providerWithResults.push({id:elem.id, count:res.count}); 
                     };
                     console.log(i, " ", providerTitles.length);
                     if (providerTitles.length === i) {
-                        console.log(providerWithResults);
+                        //console.log(providerWithResults);
                         setProviderWithResults(providerWithResults);
                     }
                 })
                     .catch((e: any) => {
-                        console.log(e);
+                        //console.log(e);
                         i++;
                     });
             });
         }
-    }, [searchState.dataProviderTitles, searchState.selectedDataProvider, searchParams]);
+    }, [
+        searchState.dataProviderTitles, 
+        searchState.selectedDataProvider, 
+        searchState.searchTerm,
+        searchState.downloadOption,
+        searchState.spatialFilter
+    ]);
 
     function dataProviderToggled(checked: boolean, entry: any) {
         if (checked) {
