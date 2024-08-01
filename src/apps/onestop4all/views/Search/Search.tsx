@@ -179,7 +179,7 @@ export function SearchView() {
                         </Box>
                     )}
 
-                    <Flex flex="0 0 25%" hideBelow="custombreak" flexDirection="column">
+                    <Flex flex="0 0 35%" hideBelow="custombreak" flexDirection="column">
                         <Box>
                             <ResultPaging />
                         </Box>

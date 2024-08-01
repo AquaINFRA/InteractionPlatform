@@ -23,7 +23,7 @@ export function FacetBase(props: PropsWithChildren<FacetBaseProps>) {
         flex: 1,
         textAlign: "left",
         fontFamily: "Open Sans",
-        fontSize: "12px",
+        fontSize: "14px",
         fontWeight: 700,
         letterSpacing: "0.6px",
         textTransform: "uppercase",

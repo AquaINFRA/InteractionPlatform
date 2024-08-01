@@ -6,17 +6,25 @@ import { SelectableDataProvider, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
 import { SearchService } from "../../../../services";
+import { InfoIcon, ViewIcon } from "@chakra-ui/icons";
+import { useSearchParams } from "react-router-dom";
 
 export interface DataProvider {
     title: string;
+}
+
+export interface ProviderWithResults {
+    id: string;
+    count: number;
 }
 
 export function DataProviderFacet() {
     const searchState = useSearchState();
     const [entries, setEntries] = useState<SelectableDataProvider[]>([]);
     const [allSelected, setAllSelected] = useState(true); // Default to all selected
-    const [providerWithResults, setProviderWithResults] = useState<string[]>();
+    const [providerWithResults, setProviderWithResults] = useState<ProviderWithResults[]>();
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         searchSrvc.getDataProvider().then((res) => {
@@ -43,34 +51,37 @@ export function DataProviderFacet() {
     }, []);
 
     useEffect(() => {
-        const providerWithResults: string[] = [];
-        const providerTitles = searchState.dataProviderTitles;
-        const {searchTerm, downloadOption, spatialFilter} = searchState;
-        let i = 0;
-        providerTitles.length && providerTitles.map((elem: any, key: number) => { 
-            searchSrvc.doSearch({
-                searchTerm,
-                dataProvider: [elem.id], 
-                downloadOption,
-                spatialFilter
-            }).then((res) => {
-                console.log(res);
-                i++;
-                if (res.count > 0) {
-                    providerWithResults.push(elem.id); 
-                };
-                console.log(i, " ", providerTitles.length);
-                if (providerTitles.length === i) {
-                    console.log(providerWithResults);
-                    setProviderWithResults(providerWithResults);
-                }
-            })
-                .catch((e: any) => {
-                    console.log(e);
+        setProviderWithResults([]);
+        if (searchState.selectedDataProvider.length > 0) {
+            const providerWithResults: ProviderWithResults[] = [];
+            const providerTitles = searchState.dataProviderTitles;
+            const {searchTerm, downloadOption, spatialFilter} = searchState;
+            let i = 0;
+            providerTitles.length && providerTitles.map((elem: any, key: number) => { 
+                searchSrvc.doSearch({
+                    searchTerm,
+                    dataProvider: [elem.id], 
+                    downloadOption,
+                    spatialFilter
+                }).then((res) => {
+                    console.log(res);
                     i++;
-                });
-        });
-    }, [searchState.dataProviderTitles]);
+                    if (res.count > 0) {
+                        providerWithResults.push({id:elem.id, count:res.count}); 
+                    };
+                    console.log(i, " ", providerTitles.length);
+                    if (providerTitles.length === i) {
+                        console.log(providerWithResults);
+                        setProviderWithResults(providerWithResults);
+                    }
+                })
+                    .catch((e: any) => {
+                        console.log(e);
+                        i++;
+                    });
+            });
+        }
+    }, [searchState.dataProviderTitles, searchState.selectedDataProvider, searchParams]);
 
     function dataProviderToggled(checked: boolean, entry: any) {
         if (checked) {
@@ -106,6 +117,7 @@ export function DataProviderFacet() {
                                 onChange={(event) =>
                                     dataProviderToggled(event.target.checked, entry)
                                 }
+                                count={providerWithResults?.find(result => result.id === entry.id)?.count}                            
                             />
                         </Flex>
                     ) : null

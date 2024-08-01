@@ -4,8 +4,8 @@ import { PrimaryColor } from "../../../../Theme";
 
 export interface FacetCheckboxProps {
     label: string;
-    count?: number;
     description: string;
+    count?: number;
 }
 
 export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
@@ -73,9 +73,8 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
                 fontWeight={state.isChecked ? "700" : "400"}
                 {...getLabelProps()}
             >
-                {label}
+                {label}{count ? " (" + count + ")" : null}
             </Box>
-            {count !== undefined ? <Box __css={countStyles}>({count})</Box> : <></>}
         </chakra.label>
     );
 };
