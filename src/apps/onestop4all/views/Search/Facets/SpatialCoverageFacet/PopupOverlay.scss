@@ -29,13 +29,14 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    z-index: 9999;
+    z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .popup-background {
     width: 45%;
+    min-width: 600px;
     height: 70%;
     background-color: white;
     padding: 1vw;
@@ -82,8 +83,8 @@
 }
 .catchment-button {
     width: 50%;
-    font-size: 0.9vw !important;
-    padding: 3% !important;
+    font-size: 16px !important;
+    padding: 2% !important;
     margin-bottom: 0px !important;
 }
 .catchment-button-container {

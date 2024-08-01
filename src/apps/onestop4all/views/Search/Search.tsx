@@ -175,8 +175,21 @@ export function SearchView() {
                             For performance reasons, the number of search results will be limited to a maximum of 100 prioritized hits.
                             Hence, there might be more search results than indicated.
                             <Stack pt={3}>
-                                <Skeleton height='20px' />
-                                <Skeleton height='20px' />
+                                <Skeleton height='50px' />
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                <Skeleton height='50px' marginTop={"20px"}/>
+                                
                             </Stack>
                         </Box>
                     )}

@@ -46,6 +46,7 @@ export interface DatasetViewProps {
 
 export function DatasetView(props: DatasetViewProps) {
     const metadata = props.item;
+    console.log("Geometry: " + JSON.stringify(metadata.geometry));
 
     return (
         <Box>

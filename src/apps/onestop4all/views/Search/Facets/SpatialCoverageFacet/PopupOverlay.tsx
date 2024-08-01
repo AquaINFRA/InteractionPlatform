@@ -6,12 +6,12 @@ import { MapContainer, useMap } from "@open-pioneer/experimental-ol-map";
 import Draw, { createBox } from "ol/interaction/Draw";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
-import { Polygon } from "ol/geom";
+import { Geometry, Point, Polygon } from "ol/geom";
 import { defaults as defaultControls, Control } from "ol/control";
 import { click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
 // Import other components
-import { Box, ButtonGroup, Flex } from "@open-pioneer/chakra-integration";
+import { Box, ButtonGroup, Flex, HStack, Spinner, Tooltip } from "@open-pioneer/chakra-integration";
 import { Legend } from "./Legend";
 import { XButton } from "./XButton";
 import { CatchmentOptions } from "./CatchmentOptions";
@@ -27,6 +27,10 @@ import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercato
 // Search
 import { useSearchState } from "../../SearchState";
 import { Feature, MapBrowserEvent } from "ol";
+import { defaults as defaultInteractions, defaults } from "ol/interaction.js";
+import { Icon, Style } from "ol/style";
+import { toLonLat } from "ol/proj";
+
 // Custom Control Buttons (not used currently)
 export class DrawControl extends Control {
     private handle: () => void;
@@ -47,41 +51,17 @@ export class DrawControl extends Control {
 interface PopupOverlayProps {
     showPopup: boolean;
     onClose: () => void;
+    setSelectedOption: (value: string) => void;
+    selectedOption: string;
 }
 
-export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
-    // console.log("Page reloaded!");
+export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOption }: PopupOverlayProps) {
     /********************************Initialization******************************* */
     // Initialize the map
     const mapId = "popup";
     const { map } = useMap(mapId);
-    const source = new VectorSource();
     const olMapRegistry = useService("ol-map.MapRegistry");
-
-    // inititalize state
-    const [renderState, setRenderState] = useState(false); //hook 11
-    const draw = useRef<Draw>();
-
-    const [vectorLayer, setVectorLayer] = useState(new VectorLayer({ source: source }));
-    const [bBoxVectorLayer, setBBoxVectorLayer] = useState(new VectorLayer());
-
-    const [areFeaturesSelected, setAreFeaturesSelected] = useState(false); //hook 15
-    const [isBBoxDisplayed, setisBBoxDisplayed] = useState(false);
-
-    const searchState = useSearchState();
-    const [bBox, setBBox] = useState<Feature<any>[]>();
-
-    const [drawing, setDrawing] = useState(false);
-
-    // console.log(
-    //     "Current states: drawing = " +
-    //         drawing +
-    //         ", areFeaturesSelected = " +
-    //         areFeaturesSelected +
-    //         ", isBBoxDisplayed =" +
-    //         isBBoxDisplayed +
-    //         ", selectedAreas = "
-    // );
+    //console.log(selectedOption);
 
     // Center the map in Europe everytime the Popup gets opened
     useEffect(() => {
@@ -90,6 +70,51 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             map.getView().setZoom(4);
         }
     }, [showPopup]);
+
+    // inititalize states
+    const [renderState, setRenderState] = useState(false); //hook 11
+
+    // Layer for the bounding boxes
+    const [bBoxVectorLayer, setBBoxVectorLayer] = useState(new VectorLayer());
+    // Layer to draw a marker on (in upstream mode)
+    const [markerSource] = useState(new VectorSource());
+    const [markerVector] = useState(
+        new VectorLayer({
+            source: markerSource,
+            style: new Style({
+                image: new Icon({
+                    src: "/marker.svg",
+                    anchor: [0.5, 1]
+                })
+            })
+        })
+    );
+    // Layer to display the upstream catchment areas (response from pygeoapi)
+    const [catchmentSource, setCatchmentSource] = useState(new VectorSource());
+    const [catchmentLayer, setCatchmentLayer] = useState(new VectorLayer());
+
+    const [CatchmentBBoxSource, setCatchmentBBoxSource] = useState(new VectorSource());
+
+    const [bBox, setBBox] = useState<Feature<any>[]>();
+    // Booleans
+    const [areFeaturesSelected, setAreFeaturesSelected] = useState(false); //hook 15
+    const [isBBoxDisplayed, setisBBoxDisplayed] = useState(false);
+    const [markerDrawn, setMarkerDrawn] = useState(false);
+    const [loading, setLoading] = useState(false); // shows if curl request is pending
+
+    const searchState = useSearchState();
+
+    // Tooltip state (content + position)
+    const [tooltipContent, setTooltipContent] = useState("");
+    const [tooltipPos, setTooltipPos] = useState({ x: "0", y: "0" });
+
+    // Catchment option state (full or upstream catchment)
+    
+
+    // Marker state
+    const draw = useRef<Draw>();
+    const [markerLon, setMarkerLon] = useState(0);
+    const [markerLat, setMarkerLat] = useState(0);
 
     // Display the Catchment areas
     const geoJSONFormat = new GeoJSON();
@@ -101,14 +126,16 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         features: features
     });
 
-    const vectorLayer2 = new VectorLayer({
-        source: vectorSource,
-        style: function (feature) {
-            const color = feature.get("COLOR") || "#eeeeee";
-            style.getFill().setColor("rgba(0,0,0,0");
-            return style;
-        }
-    });
+    const [vectorLayer, setVectorLayer] = useState(
+        new VectorLayer({
+            source: vectorSource,
+            style: function (feature) {
+                const color = feature.get("COLOR") || "#eeeeee";
+                style.getFill().setColor("rgba(0,0,0,0");
+                return style;
+            }
+        })
+    );
 
     useEffect(() => {
         if (!map) return;
@@ -117,8 +144,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 map.removeLayer(layer);
             }
         });
-        map.addLayer(vectorLayer2);
-        setVectorLayer(vectorLayer2);
+        map.addLayer(vectorLayer);
         return () => {
             if (vectorLayer) {
                 map.removeLayer(vectorLayer);
@@ -128,25 +154,10 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
 
     /**************************Feature:getBBox & setSearchArea**************** */
 
-    // Shows BBox containing all selected areas
-    function getBBox() {
-        // 1. Remove all but the first two layers
-        const layers = map?.getAllLayers();
-        if (map && layers && layers.length > 2) {
-            layers.forEach((layer, i) => {
-                if (i === 0 || i === 1) {
-                    //
-                } else {
-                    if (layer instanceof VectorLayer) {
-                        map.removeLayer(layer);
-                    }
-                }
-            });
-        }
-        // 2. Compute BBox
+    /**Computes the bounding box of a set of features and returns its coordinates */
+    function computeBBox(features: Feature<Geometry>[]) {
         let extentArrays = [] as number[];
-        const selectedFeatures = selectClick.getFeatures().getArray();
-        selectedFeatures.forEach((area: any) => {
+        features.forEach((area: any) => {
             extentArrays = extentArrays.concat(area.getGeometry().getExtent());
         });
 
@@ -163,7 +174,29 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
             [maxX, minY],
             [minX, minY]
         ];
-        const coordinates = bbox;
+        return bbox;
+    }
+    /**Remove all but the first two layers */
+    function cleanUpLayers(): void {
+        const layers = map?.getAllLayers();
+        if (map && layers && layers.length > 2) {
+            layers.forEach((layer, i) => {
+                if (i === 0 || i === 1) {
+                    //
+                } else {
+                    if (layer instanceof VectorLayer && layer != markerVector) {
+                        map.removeLayer(layer);
+                    }
+                }
+            });
+        }
+    }
+    /**Shows BBox containing all selected areas*/
+    function getBBox() {
+        // 1. Remove all but the first two layers
+        cleanUpLayers();
+        // 2. Compute BBox
+        const coordinates = computeBBox(selectClick.getFeatures().getArray());
         // 3. Display BBox
         const geojson = {
             type: "Feature",
@@ -190,7 +223,7 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         setisBBoxDisplayed(true);
         setBBox(features);
     }
-    // HANDLER: Starts a new Search with the spatial filter given by the BBox
+    /**HANDLER: Starts a new search with the spatial filter given by the bbox*/
     function setSearchArea(): void {
         const features = bBox;
         if (features) {
@@ -236,38 +269,180 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
     }, [renderState]);
 
     /*********************************Various Buttons********************************* */
+    /**Remove draw interaction */
     function removeDraw() {
         if (draw.current) {
+            markerSource.clear();
             map?.removeInteraction(draw.current);
         }
     }
-    // HANDLER: Close the map
+    /**HANDLER: Close the map*/
     function handleClose(): void {
         onClose();
-        source.clear(); // clears the map
         removeDraw();
+        console.log(selectedOption);
     }
 
-    // HANDLER: Deselects all selectClick and selectHover (hover doesnt work yet)
+    /**HANDLER: Deselects all selectClick and selectHover (hover doesnt work yet)*/
     function deselectAll(): void {
         const selected = selectClick.getFeatures();
         if (selected.getLength() > 0) selected.clear();
         const selectedHover = selectHover.getFeatures();
         if (selectedHover.getLength() > 0) selectedHover.clear();
         map?.removeLayer(bBoxVectorLayer);
-        setBBoxVectorLayer(new VectorLayer());
+        setBBoxVectorLayer(new VectorLayer()); // clean up?
         setisBBoxDisplayed(false);
         setAreFeaturesSelected(false);
+        markerSource.clear();
+        catchmentSource?.clear();
+        CatchmentBBoxSource?.clear();
+        setMarkerDrawn(false);
     }
-    /***********************************Selectable Catchment areas ********************/
-    // testing stuff
-    const falsef = (event: any) => false;
-    let condition = pointerMove;
-    if (drawing) condition = falsef;
+    /**Adds marker interaction to the map */
+    function addMarker(): void {
+        removeDraw(); // setting a marker removes the old marker
+        const newDraw = new Draw({
+            source: markerSource,
+            type: "Point"
+        });
+        draw.current = newDraw;
+        newDraw.on("drawstart", () => markerSource.clear());
+        /**Get the coordinates of the marker to perform a request */
+        newDraw.on("drawend", (event) => {
+            const geom = event.feature.getGeometry();
+            if (geom instanceof Point) {
+                const coords = geom.getCoordinates();
+                const lonLat = toLonLat(coords);
+                setMarkerLon(lonLat[0]!);
+                setMarkerLat(lonLat[1]!);
+                setMarkerDrawn(true);
+            }
+        });
+        map?.addInteraction(newDraw);
+    }
+    /** Executes getCatchment with the coordinates of the marker */
+    function getCatchmentWrap(): void {
+        setLoading(true);
+        processCatchment(markerLon, markerLat);
+    }
 
-    // SelectHover
+    /** Wrapper function that processes the catchment */
+    async function processCatchment(lon: number, lat: number) {
+        try {
+            const href = await getHref(lon, lat); // 1. get href
+            const geojson = await fetchGeoJSON(href); // 2. get geojson
+            const geoJSONFormat = new GeoJSON();
+            const features = geoJSONFormat.readFeatures(geojson, {
+                featureProjection: "EPSG:3857"
+            });
+            addCatchmentFeaturesToMap(features, computeBBox(features)); // 3. add features to map
+        } catch (error) {
+            console.error("Error processing catchment:", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    /** Performs a https request to the pygeoapi, the resulting link is then processed */
+    const getHref = async (lon: number, lat: number): Promise<string> => {
+        const proxyUrl = "http://localhost:8081/";
+        const targetUrl =
+            "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
+        const url = proxyUrl + targetUrl;
+
+        const data = {
+            inputs: {
+                lon: lon,
+                lat: lat,
+                comment: "Nordoestliche Schlei, bei Rabenholz"
+            }
+        };
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log("Result:", result);
+        return result.outputs.polygon.href;
+    };
+
+    /** Performs a https request to the pygeoapi, gets a geoJSON as response */
+    const fetchGeoJSON = async (url: string): Promise<any> => {
+        const proxyUrl = "http://localhost:8081/";
+        const fetchUrl = proxyUrl + url;
+
+        const response = await fetch(fetchUrl);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const geojson = await response.json();
+        console.log("GeoJSON:", geojson);
+        return geojson;
+    };
+
+    /** Displays the geoJSON */
+    const addCatchmentFeaturesToMap = (features: Feature<Geometry>[], bbox: number[][]) => {
+        const bboxgeojson = {
+            type: "Feature",
+            properties: {},
+            geometry: {
+                type: "Polygon",
+                coordinates: [bbox] // Wrap coordinates in an array to represent a polygon
+            }
+        };
+        const bboxFeatures = geoJSONFormat.readFeatures(bboxgeojson, {
+            featureProjection: "EPSG:4326"
+        });
+        const vectorSourceBBox = new VectorSource({
+            features: bboxFeatures
+        });
+        const vectorLayerBBox = new VectorLayer({
+            source: vectorSourceBBox,
+            style: bBoxStyle
+        });
+
+        const catchmentSource = new VectorSource({
+            features: features
+        });
+
+        const catchmentLayer = new VectorLayer({
+            source: catchmentSource
+        });
+        setCatchmentSource(catchmentSource);
+        setCatchmentBBoxSource(vectorSourceBBox);
+        if (map) {
+            map.addLayer(catchmentLayer);
+            map.addLayer(vectorLayerBBox);
+            const source = catchmentLayer.getSource();
+            if (source) {
+                const extent = source.getExtent();
+                if (extent) {
+                    map.getView().fit(extent, { duration: 1000 }); // optional duration for smooth zoom
+                }
+            }
+        } else {
+            console.error("Map not found!");
+        }
+        setisBBoxDisplayed(true);
+        setBBox(bboxFeatures);
+    };
+
+    /***********************************Selectable Catchment areas ********************/
+
+    /**Hover over areas to highlight them */
     const selectHover = new Select({
-        condition: condition,
+        condition: pointerMove,
         style: hoverStyle,
         toggleCondition: function (event) {
             return false;
@@ -275,35 +450,60 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
         layers: [vectorLayer]
     });
 
-    // SelectClick
+    /**Click to select areas */
     const [selectClick, setSelectClick] = useState<Select>(
         new Select({
             condition: click,
             style: selectStyle
         })
     );
-    /************************Feature: Draw a box to select multiple areas************************** */
-    // HANDLER: draw a box
-    function handleSelectBox() {
-        return;
-    }
+    /************************Manage all interactions************************** */
 
     useEffect(() => {
-        if (map && showPopup) {
+        /**Full catchment mode */
+        if (map && showPopup && selectedOption == "full") {
+            removeDraw();
+            // activate selects
+            deselectAll();
             map.addInteraction(selectHover);
             map.addInteraction(selectClick);
             selectClick.on("select", () => {
                 setAreFeaturesSelected(true);
                 getBBox();
             });
+
+            // Display names when hovered over
+            selectHover.on("select", (event) => {
+                const xPos = event.mapBrowserEvent.originalEvent.offsetX - 20;
+                const yPos = event.mapBrowserEvent.originalEvent.offsetY - 20;
+                setTooltipContent("");
+                if (selectHover.getFeatures().getLength() > 0) {
+                    setTooltipContent(selectHover.getFeatures().item(0).getProperties().rb_name);
+                }
+                setTooltipPos({
+                    x: xPos.toString(),
+                    y: yPos.toString()
+                });
+                // console.log(xPos, yPos);
+            });
         } else {
-            // const selected = selectClick.getFeatures();
-            // if (selected.getLength() > 0) selected.remove(selected.item(0));
-            map?.removeInteraction(selectHover);
-            map?.removeInteraction(selectClick);
-            setAreFeaturesSelected(false);
+            /** Upstream catchment mode */
+            if (map) {
+                deselectAll();
+                map?.getInteractions().clear(); // This deletes ALL interactions! (zoom and drag as well)
+                defaultInteractions().forEach((interaction) => map?.addInteraction(interaction));
+                setAreFeaturesSelected(false);
+                // Add click interaction for adding/removing markers
+                addMarker();
+            }
         }
-    }, [map, showPopup]);
+    }, [map, showPopup, selectedOption]);
+
+    useEffect(() => {
+        if (map) {
+            map.addLayer(markerVector);
+        }
+    }, [map, markerVector]);
     /**********************************Return***************************************** */
     if (!showPopup) return null;
     return (
@@ -312,19 +512,67 @@ export function PopupOverlay({ showPopup, onClose }: PopupOverlayProps) {
                 <Box className="popup-header">
                     <b>Select catchment areas</b>
                 </Box>
+
                 <Box className="map-container">
+                    <HStack spacing="4">
+                        <CatchmentOptions
+                            onChange={setSelectedOption}
+                            selectedOption={selectedOption}
+                        />
+                        <Box position="relative">
+                            {loading && 
+                                <HStack spacing="2">
+                                    <Spinner size="sm" />
+                                    <b>{"Loading..."}</b>
+                                </HStack>
+                            }
+                        </Box>
+                    </HStack>
+
                     <MapContainer mapId={mapId} />
+                    <Tooltip
+                        label={tooltipContent}
+                        isOpen={true}
+                        placement="right"
+                        bg="white"
+                        color="black"
+                        border="1px solid black"
+                        p="5px"
+                        zIndex="9990"
+                    >
+                        <Box
+                            position="absolute"
+                            top="10%"
+                            right="12%"
+                            zIndex="9999"
+                            pointerEvents="none"
+                            bg="black"
+                        ></Box>
+                    </Tooltip>
+
                     <Box className="legend">
                         <Legend />
                     </Box>
                 </Box>
+
                 <XButton handleClose={handleClose} />
-                <Flex className="catchment-button-container">
+                <Flex className="catchment-button-container" marginTop={"6%"}>
                     <CatchmentButton
-                        active={areFeaturesSelected || isBBoxDisplayed}
+                        active={
+                            areFeaturesSelected ||
+                            isBBoxDisplayed ||
+                            markerSource?.getFeatures().length > 0
+                        }
                         onClick={deselectAll}
                         text="Delete selection"
                     />
+                    {selectedOption == "upstream" ? (
+                        <CatchmentButton
+                            active={markerDrawn && !isBBoxDisplayed}
+                            onClick={getCatchmentWrap}
+                            text="Compute catchment"
+                        />
+                    ) : null}
                     <CatchmentButton
                         active={isBBoxDisplayed}
                         onClick={setSearchArea}

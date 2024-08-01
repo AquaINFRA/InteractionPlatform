@@ -1,13 +1,23 @@
 import { RadioGroup } from "@open-pioneer/chakra-integration";
 import { Radio } from "@open-pioneer/chakra-integration";
 import { Stack } from "@open-pioneer/chakra-integration";
+import { useState } from "react";
 
-export function CatchmentOptions() {
+interface CatchmentOptionsProps {
+    onChange: (value: string) => void;
+    selectedOption: string;
+}
+export function CatchmentOptions(props: CatchmentOptionsProps) {
+    const { onChange, selectedOption } = props;
     return (
-        <RadioGroup defaultValue="option2" marginTop="20px">
+        <RadioGroup 
+            defaultValue={selectedOption} 
+            onChange={(value) => onChange(value)} 
+            marginY={"1%"}
+        >
             <Stack spacing={5} direction="row">
-                <Radio value="option1">Upstream Catchment</Radio>
-                <Radio value="option2">Full catchment</Radio>
+                <Radio value="full" ><b>Full catchment</b></Radio>
+                <Radio value="upstream"><b>Upstream catchment</b></Radio>
             </Stack>
         </RadioGroup>
     );

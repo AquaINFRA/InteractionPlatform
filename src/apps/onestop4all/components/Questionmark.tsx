@@ -17,6 +17,7 @@ export const Questionmark = (props: QuestionmarkProps) => {
             openDelay={0}
             borderRadius="8px"
             backgroundColor="rgba(1,1,1,0.8)"
+            zIndex="9999"
         >
             <IconButton
                 className="question-mark"
