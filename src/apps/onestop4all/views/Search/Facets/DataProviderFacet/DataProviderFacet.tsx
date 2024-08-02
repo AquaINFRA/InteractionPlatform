@@ -68,7 +68,7 @@ export function DataProviderFacet() {
                     if (res.count > 0) {
                         providerWithResults.push({id:elem.id, count:res.count}); 
                     };
-                    console.log(i, " ", providerTitles.length);
+                    console.log(i, " ", providerTitles.length, " ", elem.id, " ", res.count);
                     if (providerTitles.length === i) {
                         console.log("Done with requesting search hits per data provider");
                         setProviderWithResults(providerWithResults);

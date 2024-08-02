@@ -37,7 +37,7 @@
 .popup-background {
     width: 45%;
     min-width: 600px;
-    height: 70%;
+    height: 75%;
     background-color: white;
     padding: 1vw;
     position: relative;
@@ -46,7 +46,7 @@
     align-items: center;
 }
 .popup-header {
-    font-size: 1.5vw;
+    font-size: 24px;
     color: #05668d;
 }
 
@@ -92,7 +92,7 @@
     flex-direction: row;
     gap: 1vw;
     justify-content: space-between;
-    margin-top: 1vw;
+    margin-top: 85px;
 }
 @media only screen and (max-width: $customBreakpoint) {
     #popupOverlay1 {

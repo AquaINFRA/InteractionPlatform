@@ -141,7 +141,10 @@ export function SearchView() {
                                     </Box>
                                 </Flex>
                             </Flex>
-                            <Box hideBelow="custombreak" padding={{ base: "40px 0px" }}>
+                            <Box pt={2}>
+                                For performance reasons, the number of search results is limited to a maximum of 100 prioritized hits.
+                            </Box>
+                            <Box hideBelow="custombreak" padding={{ base: "20px 0px" }}>
                                 <Chips />
                             </Box>
                             <Box>
@@ -199,13 +202,13 @@ export function SearchView() {
                         <Box>
                             <ResultPaging />
                         </Box>
-                        <Box padding={"32px 0px"}>
+                        <Box padding={"22px 0px"}>
                             <DataProviderFacet />
                         </Box>
-                        <Box padding={"32px 0px"}>
+                        <Box padding={"22px 0px"}>
                             <DownloadOptionFacet />
                         </Box>
-                        <Box padding={"32px 0px"}>
+                        <Box padding={"22px 0px"}>
                             <SpatialCoverageFacet mapId="spatial-filter-map" />
                         </Box>
                         <Spacer />
