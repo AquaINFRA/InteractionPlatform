@@ -518,15 +518,8 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                         <CatchmentOptions
                             onChange={setSelectedOption}
                             selectedOption={selectedOption}
+                            loading={loading}
                         />
-                        <Box position="relative">
-                            {loading && 
-                                <HStack spacing="2">
-                                    <Spinner size="sm" />
-                                    <b>{"Loading..."}</b>
-                                </HStack>
-                            }
-                        </Box>
                     </HStack>
 
                     <MapContainer mapId={mapId} />
@@ -556,7 +549,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                 </Box>
 
                 <XButton handleClose={handleClose} />
-                <Flex className="catchment-button-container" marginTop={"6%"}>
+                <Flex className="catchment-button-container">
                     <CatchmentButton
                         active={
                             areFeaturesSelected ||

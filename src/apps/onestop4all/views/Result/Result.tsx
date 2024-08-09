@@ -7,7 +7,7 @@ import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHe
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { SearchBar } from "../../components/SearchBar";
 import { getResourceType, ResourceType } from "../../services/ResourceTypeUtils";
-import { SolrSearchResultItem, ZenodoResultItem } from "../../services/SearchService";
+import { SearchService, SolrSearchResultItem, ZenodoResultItem } from "../../services/SearchService";
 import { ArticleMetadataResponse, ArticleView } from "../Article/Article";
 import { DatasetMetadataResponse, DatasetView } from "../Dataset/Dataset";
 import { SoftwareView } from "../Software/Software";
@@ -25,7 +25,7 @@ import { ResourceTypeLabel } from "../../components/ResourceTypeLabel/ResourceTy
 
 export function Result() {
     const resultId = useParams().id as string;
-    const searchSrvc = useService("onestop4all.SearchService");
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService; 
     const [searchResult, setSearchResult] = useState<SolrSearchResultItem | ZenodoResultItem>();
     const [resourceType, setResourceType] = useState<ResourceType>();
     const [loading, setLoading] = useState(true);

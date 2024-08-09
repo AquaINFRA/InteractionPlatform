@@ -15,6 +15,7 @@ import { SearchResult } from "./SearchResult/SearchResult";
 import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "./SearchState";
 import { RelatedTerms } from "./Facets/RelatedTerms/RelatedTerms";
 import { DownloadOptionFacet } from "./Facets/DownloadOptionFacet/DownloadOptionFacet";
+import { PrimaryFont } from "../../Theme";
 //import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
 
 export function SearchView() {
@@ -105,7 +106,7 @@ export function SearchView() {
                                 <RelatedTerms />
                             </Box>*/}
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
-                                <Box className="results-count">
+                                <Box className="results-count" style={{fontFamily: PrimaryFont}}>
                                     {searchState.selectedDataProvider.length > 0 &&
                                     !searchState.searchResults?.count
                                         ? "0"
@@ -140,7 +141,10 @@ export function SearchView() {
                                     </Box>
                                 </Flex>
                             </Flex>
-                            <Box hideBelow="custombreak" padding={{ base: "40px 0px" }}>
+                            <Box pt={2}>
+                                For performance reasons, the number of search results is limited to a maximum of 100 prioritized hits.
+                            </Box>
+                            <Box hideBelow="custombreak" padding={{ base: "20px 0px" }}>
                                 <Chips />
                             </Box>
                             <Box>
@@ -171,7 +175,9 @@ export function SearchView() {
                             overflow="hidden"
                             paddingTop={{ base: "7%", custombreak: "0%" }}
                         >
-                            Your request is currently being processed. This may take a few seconds.
+                            Your request is currently being processed and may take a few seconds. 
+                            For performance reasons, the number of search results are limited to a maximum of 100 prioritized hits.
+                            Hence, there might be more search results than shown.
                             <Stack pt={3}>
                                 <Skeleton height='50px' />
                                 <Skeleton height='50px' marginTop={"20px"}/>
@@ -192,17 +198,17 @@ export function SearchView() {
                         </Box>
                     )}
 
-                    <Flex flex="0 0 25%" hideBelow="custombreak" flexDirection="column">
+                    <Flex flex="0 0 35%" hideBelow="custombreak" flexDirection="column">
                         <Box>
                             <ResultPaging />
                         </Box>
-                        <Box padding={"32px 0px"}>
+                        <Box padding={"22px 0px"}>
                             <DataProviderFacet />
                         </Box>
-                        <Box padding={"32px 0px"}>
+                        <Box padding={"22px 0px"}>
                             <DownloadOptionFacet />
                         </Box>
-                        <Box padding={"32px 0px"}>
+                        <Box padding={"22px 0px"}>
                             <SpatialCoverageFacet mapId="spatial-filter-map" />
                         </Box>
                         <Spacer />
