@@ -365,7 +365,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
             },
             body: JSON.stringify(data)
         });
-
+        console.log("request cors")
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
