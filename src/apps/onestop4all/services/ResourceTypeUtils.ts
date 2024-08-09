@@ -1,17 +1,10 @@
 import { ArticleSearchHandler } from "./search/result-handler/article-handler";
-import { Learning_ResourceHandler } from "./search/result-handler/learning_resource-handler";
-import { LHB_ArticleSearchHandler } from "./search/result-handler/lhb_article-handler";
-import { OrganizationSearchHandler } from "./search/result-handler/organization-handler";
-import { RepositorySearchHandler } from "./search/result-handler/repository-handler";
 import { SearchResultHandler } from "./search/result-handler/search-result-handler";
-import { SoftwareSearchHandler } from "./search/result-handler/software-handler";
-import { StandardSearchHandler } from "./search/result-handler/standard-handler";
 import { DatasetHandler } from "./search/result-handler/dataset-handler";
 import { SeriesHandler } from "./search/result-handler/series-handler";
 import { ModelHandler } from "./search/result-handler/model-handler";
 import { ServiceHandler } from "./search/result-handler/service-handler";
 import { SoftwareHandler } from "./search/result-handler/software-zenodo-handler";
-
 import { OfflineDataHandler } from "./search/result-handler/offlineData-handler";
 import { LiveDataHandler } from "./search/result-handler/liveData-handler";
 import { DownloadableDataHandler } from "./search/result-handler/downloadableData-handler";
@@ -19,11 +12,8 @@ import { DownloadableDataHandler } from "./search/result-handler/downloadableDat
 export enum ResourceType {
     Repos = "Repository / Archive",
     Articles = "Article",
-    // Educational = "Educational resource",
-    // Datasets = "Dataset",
     Tools = "Tool/Software",
     Organisations = "Organisation",
-    // Services = "Service",
     Standards = "Standard",
     LHB_Articles = "Living Handbook Article",
     Learning_Resource = "Learning resource",
@@ -43,30 +33,6 @@ const mapping = [
     {
         type: ResourceType.Articles,
         identifier: "http://schema.org/Article"
-    },
-    {
-        type: ResourceType.Organisations,
-        identifier: "http://xmlns.com/foaf/0.1/Organization"
-    },
-    {
-        type: ResourceType.Repos,
-        identifier: "http://nfdi4earth.de/ontology/Repository"
-    },
-    {
-        type: ResourceType.Standards,
-        identifier: "http://nfdi4earth.de/ontology/MetadataStandard"
-    },
-    {
-        type: ResourceType.Tools,
-        identifier: "http://schema.org/SoftwareSourceCode"
-    },
-    {
-        type: ResourceType.LHB_Articles,
-        identifier: "http://nfdi4earth.de/ontology/LHBArticle"
-    },
-    {
-        type: ResourceType.Learning_Resource,
-        identifier: "http://schema.org/LearningResource"
     },
     {
         type: ResourceType.Dataset,
@@ -127,13 +93,7 @@ export function mapFromResourceType(resourceType: ResourceType): string {
 }
 
 const searchResultHandlers: SearchResultHandler[] = [
-    new RepositorySearchHandler(),
-    new OrganizationSearchHandler(),
-    new LHB_ArticleSearchHandler(),
     new ArticleSearchHandler(),
-    new StandardSearchHandler(),
-    new SoftwareSearchHandler(),
-    new Learning_ResourceHandler(),
     new DatasetHandler(),
     new SoftwareHandler(),
     new SeriesHandler(),

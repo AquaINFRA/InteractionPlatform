@@ -103,7 +103,6 @@ export interface SearchResult {
 }
 
 const oapirUrl = import.meta.env.VITE_OAPIR_URL;
-export const supportForm = "http://localhost/html/nfdi/";
 
 export class SearchService {
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
