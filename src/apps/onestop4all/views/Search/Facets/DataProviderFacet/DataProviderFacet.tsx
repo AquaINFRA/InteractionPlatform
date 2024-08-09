@@ -32,7 +32,8 @@ export function DataProviderFacet() {
                     (a: DataProvider, b: DataProvider) =>
                         a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
                 );
-                const filteredEntries = sortedEntries.filter((entry: any) => entry.id !== "dataeurope");
+                let filteredEntries = sortedEntries.filter((entry: any) => entry.id !== "dataeurope");
+                filteredEntries = filteredEntries.filter((entry: any) => entry.id !== "gbif");
                 setEntries(filteredEntries);
 
                 const ids = filteredEntries.map((entry: any) => entry.id);
