@@ -345,10 +345,8 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
     /** Performs a https request to the pygeoapi, the resulting link is then processed */
     const getHref = async (lon: number, lat: number): Promise<string> => {
-        //const proxyUrl = "http://localhost:8081/";
         const targetUrl =
             "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
-        //const url = proxyUrl + targetUrl;
         const url = targetUrl;
 
         const data = {
@@ -362,7 +360,8 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         const response = await fetch(url, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "X-config-test": "bla"
             },
             body: JSON.stringify(data)
         });
