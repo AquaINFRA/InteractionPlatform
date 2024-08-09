@@ -15,7 +15,7 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
     const countStyles = {
         color: PrimaryColor,
         opacity: 0.5,
-        fontFamily: "Nimbus Sans",
+        fontFamily: "Arial",
         fontSize: "14px",
         fontWeight: 400
     };
