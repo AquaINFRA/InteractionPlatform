@@ -140,7 +140,7 @@ export const SearchState = (props: PropsWithChildren) => {
 
     function search() {
         setIsLoaded(false);
-        selectedDataProvider.length > 0
+        selectedDataProvider.length > 0 && searchTerm.trim() !== ""
             ? searchSrvc
                 .doSearch({
                     searchTerm,

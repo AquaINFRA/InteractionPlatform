@@ -57,7 +57,7 @@ export function DataProviderFacet() {
             const providerTitles = searchState.dataProviderTitles;
             const {searchTerm, downloadOption, spatialFilter} = searchState;
             let i = 0;
-            providerTitles.length && providerTitles.map((elem: any, key: number) => { 
+            providerTitles.length && searchState.searchTerm.trim() !== "" && providerTitles.map((elem: any, key: number) => { 
                 searchSrvc.doSearch({
                     searchTerm,
                     dataProvider: [elem.id], 

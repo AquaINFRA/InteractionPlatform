@@ -108,13 +108,14 @@ export function SearchView() {
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
                                 <Box className="results-count" style={{fontFamily: PrimaryFont}}>
                                     {searchState.selectedDataProvider.length > 0 &&
-                                    !searchState.searchResults?.count
+                                    !searchState.searchResults?.count &&
+                                    searchState.searchTerm.trim() !== ""
                                         ? "0"
                                         : searchState.searchResults?.count}{" "}
                                     {searchState.searchResults?.count ||
-                                    searchState.selectedDataProvider.length > 0
+                                    (searchState.selectedDataProvider.length > 0 && searchState.searchTerm.trim() !== "")
                                         ? "Results for your search"
-                                        : "Select a data provider on the right"}
+                                        : "Select a data provider on the right and type in a search term"}
                                 </Box>
                                 <Box hideFrom="custombreak" padding="20px 0px">
                                     <ResultPaging />
