@@ -1,12 +1,8 @@
 import { Box, Container, Flex } from "@open-pioneer/chakra-integration";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useIntl } from "open-pioneer:react-hooks";
 
 export const Footer = () => {
     const intl = useIntl();
-    const [openSupportForm, setOpenSupportForm] = useState(false);
-    const navigate = useNavigate();
 
     return (
         <>

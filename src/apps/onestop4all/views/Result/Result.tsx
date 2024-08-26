@@ -1,9 +1,8 @@
-import { Box, Container, Divider, Flex, Skeleton, Stack } from "@open-pioneer/chakra-integration";
+import { Box, Container, Divider, Flex, Skeleton } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { ResourceTypeHeader } from "../../components/ResourceType/ResourceTypeHeader/ResourceTypeHeader";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { SearchBar } from "../../components/SearchBar";
 import { getResourceType, ResourceType } from "../../services/ResourceTypeUtils";
@@ -11,15 +10,7 @@ import { SearchService, SolrSearchResultItem, ZenodoResultItem } from "../../ser
 import { ArticleMetadataResponse, ArticleView } from "../Article/Article";
 import { DatasetMetadataResponse, DatasetView } from "../Dataset/Dataset";
 import { SoftwareView } from "../Software/Software";
-import {
-    LearningResourceMetadataResponse,
-    LearningResourceView
-} from "../LearningResource/LearningResource";
-import { OrganisationMetadataResponse, OrganisationView } from "../Organisation/Organisation";
-import { RepositoryMetadataResponse, RepositoryView } from "../Repository/Repository";
 import { useSearchState } from "../Search/SearchState";
-import { StandardMetadataResponse, StandardView } from "../Standard/Standard";
-import { ToolsSoftwareMetadataResponse, ToolsSoftwareView } from "../ToolsSoftware/ToolsSoftware";
 import { BackToSearchLink } from "../../components/BackToSearchLink/BackToSearchLink";
 import { ResourceTypeLabel } from "../../components/ResourceTypeLabel/ResourceTypeLabel";
 
@@ -34,7 +25,6 @@ export function Result() {
 
     const [result, setResult] = useState<number>();
     const [resultCount, setResultCount] = useState<number>();
-    const [relatedResources, setRelatedResources] = useState<object>([]);
     const searchState = useSearchState();
 
     useEffect(() => {
@@ -78,26 +68,6 @@ export function Result() {
 
     function getResourceView(): import("react").ReactNode {
         switch (resourceType) {
-            case ResourceType.Repos: {
-                const item = searchResult as RepositoryMetadataResponse;
-                return <RepositoryView item={item} />;
-            }
-            case ResourceType.Organisations: {
-                const item = searchResult as OrganisationMetadataResponse;
-                return <OrganisationView item={item} />;
-            }
-            case ResourceType.Tools: {
-                const item = searchResult as ToolsSoftwareMetadataResponse;
-                return <ToolsSoftwareView item={item} />;
-            }
-            case ResourceType.Standards: {
-                const item = searchResult as StandardMetadataResponse;
-                return <StandardView item={item} />;
-            }
-            case ResourceType.Learning_Resource: {
-                const item = searchResult as LearningResourceMetadataResponse;
-                return <LearningResourceView item={item} />;
-            }
             case ResourceType.Articles: {
                 const item = searchResult as ArticleMetadataResponse;
                 return <ArticleView item={item} />;

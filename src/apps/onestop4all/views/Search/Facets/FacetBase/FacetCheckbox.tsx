@@ -15,7 +15,7 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
     const countStyles = {
         color: PrimaryColor,
         opacity: 0.5,
-        fontFamily: "Nimbus Sans",
+        fontFamily: "Arial",
         fontSize: "14px",
         fontWeight: 400
     };
@@ -73,7 +73,7 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
                 fontWeight={state.isChecked ? "700" : "400"}
                 {...getLabelProps()}
             >
-                {label}{count ? " (" + count + ")" : null}
+                {label}{count ? " (" + count + (count === 100 ? "+" : "") + ")" : null}
             </Box>
         </chakra.label>
     );
