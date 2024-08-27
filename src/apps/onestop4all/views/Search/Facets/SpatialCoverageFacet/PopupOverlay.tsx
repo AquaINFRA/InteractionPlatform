@@ -55,7 +55,12 @@ interface PopupOverlayProps {
     selectedOption: string;
 }
 
-export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOption }: PopupOverlayProps) {
+export function PopupOverlay({
+    showPopup,
+    onClose,
+    selectedOption,
+    setSelectedOption
+}: PopupOverlayProps) {
     /********************************Initialization******************************* */
     // Initialize the map
     const mapId = "popup";
@@ -109,7 +114,6 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     const [tooltipPos, setTooltipPos] = useState({ x: "0", y: "0" });
 
     // Catchment option state (full or upstream catchment)
-    
 
     // Marker state
     const draw = useRef<Draw>();
@@ -184,7 +188,11 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                 if (i === 0 || i === 1) {
                     //
                 } else {
-                    if (layer instanceof VectorLayer && layer != markerVector) {
+                    if (
+                        layer instanceof VectorLayer &&
+                        layer != markerVector &&
+                        layer != vectorLayer
+                    ) {
                         map.removeLayer(layer);
                     }
                 }
