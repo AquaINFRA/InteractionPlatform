@@ -19,7 +19,7 @@ export function CatchmentOptions(props: CatchmentOptionsProps) {
         >
             <Stack spacing={5} direction="row">
                 <Radio value="full"><b>Full catchment</b></Radio>
-                <Radio value="upstream" isDisabled><b>Upstream catchment (in progress)</b></Radio>
+                <Radio value="upstream"><b>Upstream catchment (in progress)</b></Radio>
             </Stack>
             <Box pt={1}>
                 <HStack>
