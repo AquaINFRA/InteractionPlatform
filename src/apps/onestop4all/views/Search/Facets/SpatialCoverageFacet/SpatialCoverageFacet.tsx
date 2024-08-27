@@ -84,7 +84,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
             width: 2
         })
     });
-    
+
     useEffect(() => {
         // Clear Layer
         resultsSource.clear();
@@ -335,6 +335,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                             border="1px solid black"
                             p="5px"
                             zIndex="9990"
+                            className="tooltip-map"
                         >
                             <Box
                                 position="absolute"
@@ -364,9 +365,9 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                     {disabled && (
                         <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
                     )}
-                    <PopupOverlay 
-                        showPopup={showPopup} 
-                        onClose={() => setShowPopup(false)} 
+                    <PopupOverlay
+                        showPopup={showPopup}
+                        onClose={() => setShowPopup(false)}
                         selectedOption={selectedOption}
                         setSelectedOption={setSelectedOption}
                     />

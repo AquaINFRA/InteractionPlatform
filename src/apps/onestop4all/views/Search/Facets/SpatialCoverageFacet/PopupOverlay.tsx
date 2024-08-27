@@ -521,16 +521,19 @@ export function PopupOverlay({
                     <b>Select catchment areas</b>
                 </Box>
 
+                <HStack spacing="4">
+                    <CatchmentOptions
+                        onChange={setSelectedOption}
+                        selectedOption={selectedOption}
+                        loading={loading}
+                    />
+                </HStack>
                 <Box className="map-container">
-                    <HStack spacing="4">
-                        <CatchmentOptions
-                            onChange={setSelectedOption}
-                            selectedOption={selectedOption}
-                            loading={loading}
-                        />
-                    </HStack>
-
+                    <Box className="legend">
+                        <Legend />
+                    </Box>
                     <MapContainer mapId={mapId} />
+
                     <Tooltip
                         label={tooltipContent}
                         isOpen={true}
@@ -540,6 +543,7 @@ export function PopupOverlay({
                         border="1px solid black"
                         p="5px"
                         zIndex="9990"
+                        className="tooltip-map"
                     >
                         <Box
                             position="absolute"
@@ -550,10 +554,6 @@ export function PopupOverlay({
                             bg="black"
                         ></Box>
                     </Tooltip>
-
-                    <Box className="legend">
-                        <Legend />
-                    </Box>
                 </Box>
 
                 <XButton handleClose={handleClose} />
