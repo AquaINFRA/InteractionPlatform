@@ -127,8 +127,19 @@ export function StartView() {
                                         }
                                     )}
                                 </Box>
+                                {/*Attempt to display the leaflet html*/}
+                                <iframe
+                                    src="/leaflet/map_shapefile_insitu.html"
+                                    style={{ width: "100%", height: "600px", border: "none" }}
+                                    title="Leaflet"
+                                />
                                 <Box paddingTop={10} id="introVideo1">
-                                    <Box marginBottom={2} marginTop={10}><b>Video 5: Ontology-based search and further filter options</b></Box>
+                                    <Box marginBottom={2} marginTop={10}>
+                                        <b>
+                                            Video 5: Ontology-based search and further filter
+                                            options
+                                        </b>
+                                    </Box>
                                     <iframe
                                         width="760"
                                         height="409"
@@ -136,7 +147,9 @@ export function StartView() {
                                         title="YouTube video player"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     />
-                                    <Box marginBottom={2} marginTop={10}><b>Video 4: Importing data to Galaxy, option 2</b></Box>
+                                    <Box marginBottom={2} marginTop={10}>
+                                        <b>Video 4: Importing data to Galaxy, option 2</b>
+                                    </Box>
                                     <iframe
                                         width="760"
                                         height="409"
@@ -144,7 +157,9 @@ export function StartView() {
                                         title="YouTube video player"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     />
-                                    <Box marginBottom={2} marginTop={10}><b>Video 3: Searching with the help of catchment areas</b></Box>
+                                    <Box marginBottom={2} marginTop={10}>
+                                        <b>Video 3: Searching with the help of catchment areas</b>
+                                    </Box>
                                     <iframe
                                         width="760"
                                         height="409"
@@ -152,7 +167,9 @@ export function StartView() {
                                         title="YouTube video player"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     />
-                                    <Box marginBottom={2} marginTop={10}><b>Video 2: Importing data to Galaxy, option 1</b></Box>
+                                    <Box marginBottom={2} marginTop={10}>
+                                        <b>Video 2: Importing data to Galaxy, option 1</b>
+                                    </Box>
                                     <iframe
                                         width="760"
                                         height="409"
@@ -160,7 +177,9 @@ export function StartView() {
                                         title="YouTube video player"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     />
-                                    <Box marginBottom={2} marginTop={10}><b>Video 1: Searching for datasets</b></Box>
+                                    <Box marginBottom={2} marginTop={10}>
+                                        <b>Video 1: Searching for datasets</b>
+                                    </Box>
                                     <iframe
                                         width="760"
                                         height="409"
@@ -170,7 +189,12 @@ export function StartView() {
                                     />
                                 </Box>
                                 <Box paddingTop={10} id="introVideo2">
-                                    <Box marginBottom={2}><b>Video 5: Ontology-based search and further filter options</b></Box>
+                                    <Box marginBottom={2}>
+                                        <b>
+                                            Video 5: Ontology-based search and further filter
+                                            options
+                                        </b>
+                                    </Box>
                                     <iframe
                                         width="330"
                                         height="190"
@@ -178,7 +202,9 @@ export function StartView() {
                                         title="YouTube video player"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     />
-                                    <Box marginBottom={2} marginTop={10}><b>Video 4: Importing data to Galaxy, option 2</b></Box>
+                                    <Box marginBottom={2} marginTop={10}>
+                                        <b>Video 4: Importing data to Galaxy, option 2</b>
+                                    </Box>
                                     <iframe
                                         width="330"
                                         height="190"
@@ -186,7 +212,9 @@ export function StartView() {
                                         title="YouTube video player"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     />
-                                    <Box marginBottom={2} marginTop={10}><b>Video 3: Searching with the help of catchment areas</b></Box>
+                                    <Box marginBottom={2} marginTop={10}>
+                                        <b>Video 3: Searching with the help of catchment areas</b>
+                                    </Box>
                                     <iframe
                                         width="330"
                                         height="190"
@@ -194,7 +222,9 @@ export function StartView() {
                                         title="YouTube video player"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     />
-                                    <Box marginBottom={2} marginTop={10}><b>Video 2: Importing data to Galaxy, option 1</b></Box>
+                                    <Box marginBottom={2} marginTop={10}>
+                                        <b>Video 2: Importing data to Galaxy, option 1</b>
+                                    </Box>
                                     <iframe
                                         width="330"
                                         height="190"
@@ -202,7 +232,9 @@ export function StartView() {
                                         title="YouTube video player"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                     />
-                                    <Box marginBottom={2} marginTop={10}><b>Video 1: Searching for datasets</b></Box>
+                                    <Box marginBottom={2} marginTop={10}>
+                                        <b>Video 1: Searching for datasets</b>
+                                    </Box>
                                     <iframe
                                         width="330"
                                         height="190"

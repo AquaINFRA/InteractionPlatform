@@ -1,0 +1,46 @@
+{
+    "version": "0.1.0",
+    "id": "mean-by-group",
+    "title": {
+        "en": "mean-by-group"
+    },
+    "description": {
+        "en": "Calculate data average per site, per year, per season and per HELCOM_ID."
+    },
+    "jobControlOptions": ["sync-execute", "async-execute"],
+    "keywords": ["hello world", "example", "echo"],
+    "links": [{
+        "type": "text/html",
+        "rel": "about",
+        "title": "GitHub repo",
+        "href": "https://github.com/AstraLabuce/aquainfra-usecase-Daugava",
+        "hreflang": "en-US"
+    }],
+    "inputs": {
+        "input_data": {
+            "title": "Input table (result from peri_conv)",
+            "description": "TODO must ask astra what this is",
+            "schema": {
+                "type": "string"
+            },
+            "minOccurs": 0,
+            "maxOccurs": 1,
+            "keywords": ["csv"]
+        }
+    },
+    "outputs": {
+        "mean_by_group": {
+            "title": "mean_by_group result table",
+            "description": "TODO must ask astra what this is",
+            "schema": {
+                "type": "object",
+                "contentMediaType": "application/json"
+            }
+        }
+    },
+    "example": {
+        "inputs": {
+            "input_data": "peri_conv.csv"
+        }
+    }
+}
