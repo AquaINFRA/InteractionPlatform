@@ -13,9 +13,6 @@ import {
 import { useService } from "open-pioneer:react-hooks";
 import { ReactNode, useEffect } from "react";
 
-import { LanguageToggler } from "../Header/LanguageToggler";
-import { Login } from "../Header/Login";
-import { UserSupportLink } from "../Header/UserSupportLink";
 import { MenuCloseIcon } from "../Icons";
 
 export function BaseMenu() {

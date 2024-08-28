@@ -298,6 +298,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         CatchmentBBoxSource?.clear();
         setMarkerDrawn(false);
     }
+
     /**Adds marker interaction to the map */
     function addMarker(): void {
         removeDraw(); // setting a marker removes the old marker
@@ -320,75 +321,52 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         });
         map?.addInteraction(newDraw);
     }
+
     /** Executes getCatchment with the coordinates of the marker */
     function getCatchmentWrap(): void {
-        setLoading(true);
         processCatchment(markerLon, markerLat);
     }
 
-    /** Wrapper function that processes the catchment */
-    async function processCatchment(lon: number, lat: number) {
-        try {
-            const href = await getHref(lon, lat); // 1. get href
-            const geojson = await fetchGeoJSON(href); // 2. get geojson
-            const geoJSONFormat = new GeoJSON();
-            const features = geoJSONFormat.readFeatures(geojson, {
-                featureProjection: "EPSG:3857"
-            });
-            addCatchmentFeaturesToMap(features, computeBBox(features)); // 3. add features to map
-        } catch (error) {
-            console.error("Error processing catchment:", error);
-        } finally {
-            setLoading(false);
-        }
-    }
-
     /** Performs a https request to the pygeoapi, the resulting link is then processed */
-    const getHref = async (lon: number, lat: number): Promise<string> => {
-        const targetUrl =
-            "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
-        const url = targetUrl;
-
+    const processCatchment = async (lon: number, lat: number) => {
+        const url = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
+        
         const data = {
             inputs: {
                 lon: lon,
                 lat: lat,
-                comment: "Nordoestliche Schlei, bei Rabenholz"
+                comment: "..."
             }
         };
-
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-config-test": "bla"
-            },
-            body: JSON.stringify(data)
-        });
-        console.log("request cors");
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        setLoading(true);
+        try{
+            fetch(url, {
+                method: "POST",
+                mode: "cors",
+                body: JSON.stringify(data)
+            }).then((response) => {
+                response.json().then((result) => {
+                    if (result) {
+                        const polygon_url = result.outputs.polygon.href;
+                        fetch(polygon_url).then((response2) => {
+                            response2.json().then((polygon) => {
+                                const geoJSONFormat = new GeoJSON();
+                                const features = geoJSONFormat.readFeatures(polygon, {
+                                    featureProjection: "EPSG:3857"
+                                });
+                                addCatchmentFeaturesToMap(features, computeBBox(features)); // 3. add features to map
+                                setLoading(false);
+                            });
+                        });
+                    } else {
+                        setLoading(false);
+                        throw new Error("Unexpected response: " + JSON.stringify(result));
+                    }
+                });
+            });
+        } catch (error) {
+            console.error("Error processing catchment:", error);
         }
-
-        const result = await response.json();
-        console.log("Result:", result);
-        return result.outputs.polygon.href;
-    };
-
-    /** Performs a https request to the pygeoapi, gets a geoJSON as response */
-    const fetchGeoJSON = async (url: string): Promise<any> => {
-        const proxyUrl = "http://localhost:8081/";
-        const fetchUrl = proxyUrl + url;
-
-        const response = await fetch(fetchUrl);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const geojson = await response.json();
-        console.log("GeoJSON:", geojson);
-        return geojson;
     };
 
     /** Displays the geoJSON */
