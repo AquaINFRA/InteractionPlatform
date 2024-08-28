@@ -5,6 +5,7 @@ import { LinkObject } from "../../../views/Dataset/Dataset";
 import { ActionButton } from "../ActionButton/ActionButton";
 import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
+import { Input } from "@chakra-ui/react";
 
 interface ExternalLink {
     href: string;
@@ -17,6 +18,9 @@ interface ExternalLink {
 export const ExternalResources = (props: { links: LinkObject[] }) => {
     const { links } = props;
     const [externalLinks, setExternalLinks] = useState<ExternalLink[]>();
+
+    const [url, setUrl] = useState("");
+    const handleChange = (event: any) => setUrl(event.target.value);
 
     useEffect(() => {
         const newLinks = new Array<ExternalLink>();
@@ -103,10 +107,38 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                                         fun={() => void 0}
                                     />
                                 </Link>
-                            ) : null}
+                            ) : null
+                        }
                     </Flex>
                 </Box>
             )) : null}
+            <Box pt={3}>
+                <div className="seperator" />
+                <Box pt={3}>
+                    <span className="metadataTag">Or: </span>Find a download URL and import it to Galaxy:
+                </Box>
+                <Input 
+                    marginTop={2}
+                    isInvalid 
+                    errorBorderColor="red.300" 
+                    placeholder="Insert a downlink to a dataset"
+                    onChange={handleChange}
+                />
+                <Link
+                    to={
+                        ("https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=" +
+                            url) as string
+                    }
+                    target="_blank"
+                >
+                    <ActionButton
+                        label="Import to Galaxy"
+                        icon={<DownloadIcon color="white" />}
+                        variant="solid"
+                        fun={() => void 0}
+                    />
+                </Link>
+            </Box>
         </Box>
     );
 };
