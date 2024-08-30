@@ -2,6 +2,8 @@ import { Box, Divider, Flex, Hide, HStack } from "@open-pioneer/chakra-integrati
 import { useNavigate } from "react-router-dom";
 import { useIntl } from "open-pioneer:react-hooks";
 
+import {useSearchState} from "../../views/Search/SearchState";
+
 import { Logo } from "./Logo";
 import { MenuButton } from "./MenuButton";
 import { Feedback } from "./Feedback";
@@ -9,8 +11,11 @@ import { Feedback } from "./Feedback";
 export const Header = () => {
     const intl = useIntl();
     const navigate = useNavigate();
+    const searchState = useSearchState();
 
     const backToStart = () => {
+        searchState.setSearchTerm("");
+        searchState.setSelectedDataProvider([]);
         navigate("/");
     };
 

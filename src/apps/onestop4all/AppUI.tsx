@@ -47,19 +47,19 @@ function Layout() {
         <>
             <ChakraProvider theme={Theme}>
                 <BaseMenu></BaseMenu>
+                <SearchState>
+                    <Flex as="header" position="fixed" w="100%" bg="white" zIndex="1000">
+                        <Container maxW={{ base: "100%", custombreak: "80%" }}>
+                            <Header></Header>
+                        </Container>
+                    </Flex>
 
-                <Flex as="header" position="fixed" w="100%" bg="white" zIndex="1000">
-                    <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                        <Header></Header>
-                    </Container>
-                </Flex>
-
-                <Box as="main" w="100%" pt="152px">
-                    <SearchState>
+                    <Box as="main" w="100%" pt="152px">
+                        
                         <Outlet />
-                    </SearchState>
-                </Box>
-
+                        
+                    </Box>
+                </SearchState>
                 <Box as="footer" w="100%">
                     <Footer></Footer>
                 </Box>

@@ -37,9 +37,10 @@ export function DataProviderFacet() {
                 setEntries(filteredEntries);
 
                 const ids = filteredEntries.map((entry: any) => entry.id);
-                searchState.setSelectedDataProvider(ids);
+                if(searchState.selectedDataProvider.length === 0) {
+                    searchState.setSelectedDataProvider(ids);
+                }
                 setAllSelected(true);
-
                 const providerTitles = filteredEntries.map((se: any) => {
                     return { title: se.title, id: se.id, description: se.description };
                 });
@@ -69,7 +70,6 @@ export function DataProviderFacet() {
                     if (res.count > 0) {
                         providerWithResults.push({id:elem.id, count:res.count}); 
                     };
-                    console.log(i, " ", providerTitles.length, " ", elem.id, " ", res.count);
                     if (providerTitles.length === i) {
                         console.log("Done with requesting search hits per data provider");
                         setProviderWithResults(providerWithResults);

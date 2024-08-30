@@ -73,7 +73,7 @@ export function SearchBar() {
         }
     }
 
-    function addProvider(p: any) {
+    /*function addProvider(p: any) {
         console.log("add provider");
         setSelectProvider(p);
         const pr = provider.find((e) => e.id === p) as any;
@@ -86,7 +86,7 @@ export function SearchBar() {
         if (pr && !searchState.selectedDataProvider.includes(pr.id)) {
             searchState.setSelectedDataProvider([...searchState.selectedDataProvider, pr.id]);
         }
-    }
+    }*/
 
     function handleKeyDown(key: string): void {
         if (key === "Enter") {
