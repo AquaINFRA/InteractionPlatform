@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 
-import { Box, Flex } from "@open-pioneer/chakra-integration";
+import { Box, Flex, Input } from "@open-pioneer/chakra-integration";
 import { LinkObject } from "../../../views/Dataset/Dataset";
 import { ActionButton } from "../ActionButton/ActionButton";
 import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
+import { isUrl } from "../Metadata/PersonalInfo";
 
 interface ExternalLink {
     href: string;
@@ -17,6 +18,13 @@ interface ExternalLink {
 export const ExternalResources = (props: { links: LinkObject[] }) => {
     const { links } = props;
     const [externalLinks, setExternalLinks] = useState<ExternalLink[]>();
+
+    const [value, setValue] = useState("");
+    const [disabled, setDisabled] = useState(true);
+    const handleChange = (event: any) => {
+        setValue(event.target.value);
+        isUrl(event.target.value) ? setDisabled(false) : setDisabled(true);
+    };
 
     useEffect(() => {
         const newLinks = new Array<ExternalLink>();
@@ -73,7 +81,8 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                         </Link>
                         {link.type === "application/zip" || 
                             link.type === "ZIP" ||
-                            link.type === "SHAPE-ZIP" || 
+                            link.type === "SHAPE-ZIP" ||
+                            link.type === "JSON" || 
                             link.type === "OGC API - Features" ||
                             link.type === "image/png" ||
                             link.type === "image/tif" ||
@@ -107,6 +116,37 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                     </Flex>
                 </Box>
             )) : null}
+            <Box pt={3}>
+                <div className="seperator" />
+                <Box>
+                    <div>
+                        <span className="metadataValue">Insert URL to a dataset</span>
+                    </div>
+                    <Box pt={3}>
+                        <Input 
+                            value={value}
+                            onChange={handleChange}
+                            placeholder="Insert here"
+                        />
+                    </Box>
+                    <Link
+                        to={
+                            ("https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=" +
+                                value) as string
+                        }
+                        //className="actionButtonLink"
+                        target="_blank"
+                    >
+                        <ActionButton
+                            label="Import to Galaxy"
+                            disabled={disabled}
+                            icon={<DownloadIcon color="white" />}
+                            variant="solid"
+                            fun={() => void 0}
+                        />
+                    </Link>
+                </Box>
+            </Box>
         </Box>
     );
 };
