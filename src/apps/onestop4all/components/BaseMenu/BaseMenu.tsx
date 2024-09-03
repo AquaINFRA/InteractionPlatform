@@ -33,7 +33,7 @@ export function BaseMenu() {
             >
                 <Box
                     className="block-header"
-                    fontSize={{ base: "24px", custombreak: "36px" }}
+                    fontSize={{ base: "20px", custombreak: "30px" }}
                     paddingBottom={{ base: "20px", custombreak: "40px" }}
                 >
                     {header}
@@ -78,6 +78,17 @@ export function BaseMenu() {
                     </>
                 )}
                 <div className="seperator"></div>
+                {createBlock(
+                    "AquaINFRA Platform",
+                    <>
+                        <Link href="https://aquainfra.dev.52north.org/search" target="_blank" rel="noreferrer">
+                            Search for research data
+                        </Link>
+                        <Link href="https://aqua.usegalaxy.eu/" target="_blank" rel="noreferrer">
+                            AquaINFRA&#39;s Galaxy
+                        </Link>
+                    </>
+                )}
             </DrawerContent>
         </Drawer>
     );

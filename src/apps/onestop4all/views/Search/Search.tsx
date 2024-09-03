@@ -24,7 +24,9 @@ export function SearchView() {
     const navigate = useNavigate();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => searchState.search(), [searchParams]);
+    useEffect(() =>  {
+        searchState.search();
+    }, [searchParams]);
 
     useEffect(() => {
         const params: UrlSearchParams = {};
