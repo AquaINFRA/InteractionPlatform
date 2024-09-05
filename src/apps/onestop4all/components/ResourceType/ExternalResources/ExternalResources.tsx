@@ -94,6 +94,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                             link.type === "image/xcf" || 
                             link.type === "image/jpg" ||
                             link.type === "image/jpeg" ||
+                            link.type === "application/x-netcdf" ||
                             (link.type === "application/json" && link.href.endsWith(".json")) ||
                             (link.type === "application/octet-stream" && link.href.includes("/rest/")) ||
                             (link.type === "application/octet-stream" && link.href.includes("api.") && link.href.includes("getData")) ? (
