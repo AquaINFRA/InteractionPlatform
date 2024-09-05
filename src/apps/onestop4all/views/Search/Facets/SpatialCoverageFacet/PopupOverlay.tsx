@@ -520,7 +520,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                             transform="translateX(-50%)" // Centering adjustment
                             zIndex="1000" // Ensure it's on top
                         >
-                            Computation failed! The selected point is not in Europe.
+                            Computation failed! The selected point either resulted in too many subcatchments or is not in Europe.
                         </Box>
                     )}
 
