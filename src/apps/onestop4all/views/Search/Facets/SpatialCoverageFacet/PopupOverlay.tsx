@@ -108,9 +108,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     const [tooltipContent, setTooltipContent] = useState("");
     const [tooltipPos, setTooltipPos] = useState({ x: "0", y: "0" });
 
-    // Catchment option state (full or upstream catchment)
-    
-
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
     // Marker state
     const draw = useRef<Draw>();
     const [markerLon, setMarkerLon] = useState(0);
@@ -286,6 +284,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     /**HANDLER: Deselects all selectClick and selectHover (hover doesnt work yet)*/
     function deselectAll(): void {
         const selected = selectClick.getFeatures();
+        setShowErrorMessage(false);
         if (selected.getLength() > 0) selected.clear();
         const selectedHover = selectHover.getFeatures();
         if (selectedHover.getLength() > 0) selectedHover.clear();
@@ -324,6 +323,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
     /** Executes getCatchment with the coordinates of the marker */
     function getCatchmentWrap(): void {
+        setShowErrorMessage(false);
         processCatchment(markerLon, markerLat);
     }
 
@@ -363,8 +363,13 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                         throw new Error("Unexpected response: " + JSON.stringify(result));
                     }
                 });
-            });
+            })
+                .catch((err) => {
+                    setLoading(false);
+                    setShowErrorMessage(true);
+                });
         } catch (error) {
+            setLoading(false);
             console.error("Error processing catchment:", error);
         }
     };
@@ -491,7 +496,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                     <b>Select catchment areas</b>
                 </Box>
 
-                <Box className="map-container">
+                <Box className="map-container" position="relative">
                     <HStack spacing="4">
                         <CatchmentOptions
                             onChange={setSelectedOption}
@@ -499,6 +504,25 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                             loading={loading}
                         />
                     </HStack>
+
+                    {showErrorMessage && (
+                        <Box
+                            backgroundColor="red.500"
+                            color="white"
+                            p={2} // Padding
+                            borderRadius="md" // Rounded corners
+                            textAlign="center" // Center the text
+                            boxShadow="md" // Add a shadow for depth
+                            maxW="400px" // Optional: set a maximum width
+                            position="absolute" // Position it on top of the map
+                            top="100px" // Adjust the top position
+                            left="50%" // Center horizontally
+                            transform="translateX(-50%)" // Centering adjustment
+                            zIndex="1000" // Ensure it's on top
+                        >
+                            Computation failed! The selected point is not in Europe.
+                        </Box>
+                    )}
 
                     <MapContainer mapId={mapId} />
                     <Tooltip
