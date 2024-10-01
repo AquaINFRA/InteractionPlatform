@@ -73,10 +73,10 @@ export const RelatedKeywords = (props: {
     });
 
     const combineSearchTerms = (searchTermList: string[]) => {
-        let searchTermsCombined = searchState.searchTerm + " ";
-        searchTermList.forEach((searchTerm) => {
-            searchTermsCombined = searchTermsCombined + searchTerm + " ";
-        });
+        let searchTermsCombined = searchState.searchTerm;
+        if (searchTermList.length > 0) {
+            searchTermsCombined += ", " + searchTermList.join(", ");
+        }
         return searchTermsCombined;
     };
 
