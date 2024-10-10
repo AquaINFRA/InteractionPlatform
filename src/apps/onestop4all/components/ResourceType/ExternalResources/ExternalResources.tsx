@@ -1,6 +1,6 @@
 import { Box, Flex, Input } from "@open-pioneer/chakra-integration";
 import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import { useService } from "open-pioneer:react-hooks";
 
 import { LinkObject } from "../../../views/Dataset/Dataset";
@@ -62,7 +62,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
         }
     };
 
-    const handleChange = async (event: any) => {
+    const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
         const url = event.target.value;
         setUrlToImport(url);
         isUrl(event.target.value) ? setDisableImportToGalaxy(false) : setDisableImportToGalaxy(true);

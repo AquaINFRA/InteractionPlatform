@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 
 import { Box, Flex, SimpleGrid } from "@open-pioneer/chakra-integration";
 import { LatestAddition } from "./LatestAddition";
-import { ZenodoResultItem } from "../../../services/SearchService";
+import { SearchService, ZenodoResultItem } from "../../../services/SearchService";
 
 export const LatestAdditions = () => {
-    const searchSrvc = useService("onestop4all.SearchService");
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService; 
     //const [aquaResources, setAquaResources] = useState<AquaResources>();
     const [aquaResources, setAquaResources] = useState<ZenodoResultItem[]>();
 

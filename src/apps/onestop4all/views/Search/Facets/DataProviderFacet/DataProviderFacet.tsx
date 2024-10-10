@@ -6,7 +6,6 @@ import { SelectableDataProvider, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
 import { SearchService } from "../../../../services";
-import { useSearchParams } from "react-router-dom";
 
 export interface DataProvider {
     title: string;
@@ -23,7 +22,6 @@ export function DataProviderFacet() {
     const [allSelected, setAllSelected] = useState(true); // Default to all selected
     const [providerWithResults, setProviderWithResults] = useState<ProviderWithResults[]>();
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
-    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         searchSrvc.getDataProvider().then((res) => {

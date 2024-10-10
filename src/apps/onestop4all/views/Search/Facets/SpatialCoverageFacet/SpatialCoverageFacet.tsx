@@ -73,7 +73,6 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
         })
     );
     //Display search results on map
-    const index = 0;
     const maxNumberOfBoxesShown = 20;
     const [idMap, setIdMap] = useState(new Map());
 

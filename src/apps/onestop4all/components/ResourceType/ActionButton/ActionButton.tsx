@@ -1,7 +1,7 @@
 import { Button, Icon } from "@open-pioneer/chakra-integration";
 import { PrimaryColor } from "../../../Theme";
 
-export const ActionButton = (props: { label: string; icon: any; variant: string; fun: any; disabled?:boolean; }) => {
+export const ActionButton = (props: { label: string; icon: any; variant: string; fun: () => void; disabled?:boolean; }) => {
     const { label, icon, variant, fun, disabled } = props;
     return (
         <Button

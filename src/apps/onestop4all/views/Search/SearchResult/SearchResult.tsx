@@ -1,5 +1,4 @@
 import { Box, Flex, SystemStyleObject } from "@open-pioneer/chakra-integration";
-import { DateTime } from "luxon";
 import { Link } from "react-router-dom";
 
 import { SearchResultItem } from "../../../services/SearchService";
@@ -67,20 +66,6 @@ export function SearchResult(props: SearchResultProps) {
             </Flex>
         </Link>
     );
-
-    function dateSection() {
-        if (props.item.publishDate) {
-            return (
-                <>
-                    <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
-                    <Box className="date">
-                        Published:{" "}
-                        {DateTime.fromJSDate(props.item.publishDate).toFormat("MMMM yyyy")}
-                    </Box>
-                </>
-            );
-        }
-    }
 
     function providerSection() {
         return props.item.properties.aicollection ? (

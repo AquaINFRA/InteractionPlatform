@@ -1,5 +1,5 @@
 import { Box, Button, Container, Flex, Skeleton, Spacer, Stack } from "@open-pioneer/chakra-integration";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 
 import { FilterIcon } from "../../components/Icons";
