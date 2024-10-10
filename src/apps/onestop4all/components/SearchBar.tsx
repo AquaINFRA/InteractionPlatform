@@ -13,7 +13,7 @@ import {
     Select
 } from "@open-pioneer/chakra-integration";
 
-import { BorderColor, PrimaryColor } from "../Theme";
+import { PrimaryColor } from "../Theme";
 import {
     SelectableDataProvider,
     UrlSearchParameterType,
@@ -28,7 +28,6 @@ export function SearchBar() {
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const [searchTerm, setSearchTerm] = useState<string>("");
     const intl = useIntl();
-    //const resourceTypes = Object.values(ResourceType).sort((a, b) => a.localeCompare(b));
     const searchState = useSearchState();
     const navigate = useNavigate();
     const location = useLocation();
@@ -72,21 +71,6 @@ export function SearchBar() {
             });
         }
     }
-
-    /*function addProvider(p: any) {
-        console.log("add provider");
-        setSelectProvider(p);
-        const pr = provider.find((e) => e.id === p) as any;
-        console.log(
-            pr,
-            searchState.selectedDataProvider,
-            searchState.selectedDataProvider.includes(pr.id),
-            pr.id
-        );
-        if (pr && !searchState.selectedDataProvider.includes(pr.id)) {
-            searchState.setSelectedDataProvider([...searchState.selectedDataProvider, pr.id]);
-        }
-    }*/
 
     function handleKeyDown(key: string): void {
         if (key === "Enter") {

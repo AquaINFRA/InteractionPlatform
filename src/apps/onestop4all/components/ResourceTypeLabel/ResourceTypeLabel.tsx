@@ -13,7 +13,6 @@ import {
     StandardIcon,
     ToolSoftwareIcon
 } from "../Icons";
-import { ResourceIcon } from "../../views/Start/ResourceEntry/ResourceIcons";
 
 export function ResourceTypeLabel(props: {
     resType: ResourceType | undefined;

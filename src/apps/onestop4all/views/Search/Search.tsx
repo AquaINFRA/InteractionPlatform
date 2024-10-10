@@ -9,7 +9,6 @@ import { Chips } from "./Chips/Chips";
 import { MobileFilterMenu } from "./Facets/MobileFilterMenu/MobileFilterMenu";
 import { SpatialCoverageFacet } from "./Facets/SpatialCoverageFacet/SpatialCoverageFacet";
 import { DataProviderFacet } from "./Facets/DataProviderFacet/DataProviderFacet";
-import { ResultCountSelector } from "./ResultCountSelector/ResultCountSelector";
 import { ResultPaging } from "./ResultPaging/ResultPaging";
 import { SearchResult } from "./SearchResult/SearchResult";
 import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "./SearchState";
@@ -67,8 +66,6 @@ export function SearchView() {
     }, [
         searchState.searchTerm,
         searchState.spatialFilter,
-        //searchState.pageSize,
-        //searchState.pageStart,
         searchState.sorting,
         searchState.selectedDataProvider,
         searchState.downloadOption
@@ -76,7 +73,6 @@ export function SearchView() {
 
     const [openMenu, setOpenMenu] = useState(false);
 
-    const menu = useRef(null);
     return (
         <Box className="search-view">
             <Box position="relative">

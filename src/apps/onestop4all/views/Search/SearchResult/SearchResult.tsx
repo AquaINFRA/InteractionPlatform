@@ -1,6 +1,6 @@
 import { Box, Flex, SystemStyleObject } from "@open-pioneer/chakra-integration";
 import { DateTime } from "luxon";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { SearchResultItem } from "../../../services/SearchService";
 import { mapToResourceType } from "../../../services/ResourceTypeUtils";
@@ -14,7 +14,6 @@ export interface SearchResultProps {
 
 export function SearchResult(props: SearchResultProps) {
     const { item } = props;
-    const navigate = useNavigate();
     const type = item.properties.type;
     const resType = type ? mapToResourceType(type) : mapToResourceType("unknown");
     const searchState = useSearchState();
@@ -26,14 +25,6 @@ export function SearchResult(props: SearchResultProps) {
         cursor: "pointer",
         backgroundColor: "var(--primary-primary-transparent-background)"
     };
-
-    function navigateTo(): void {
-        // calculate result page
-        const idx = searchState.searchResults?.results.findIndex((r) => r.id === item.id) || 0;
-        const resultPage = idx + 1; //+ searchState.pageSize * searchState.pageStart;
-        navigate(`/result/${item.id}`, { state: { resultPage } });
-        window.scrollTo(0, 0);
-    }
 
     return (
         <Link
@@ -89,25 +80,6 @@ export function SearchResult(props: SearchResultProps) {
                 </>
             );
         }
-        /*if (props.item.updateDate) {
-            return (
-                <>
-                    <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
-                    <Box className="date">
-                        Updated: {DateTime.fromJSDate(props.item.updateDate).toFormat("MMMM yyyy")}
-                    </Box>
-                </>
-            );
-        }*/
-    }
-
-    function locationSection() {
-        return props.item.locality ? (
-            <>
-                <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
-                <Box className="date">{props.item.locality}</Box>
-            </>
-        ) : null;
     }
 
     function providerSection() {

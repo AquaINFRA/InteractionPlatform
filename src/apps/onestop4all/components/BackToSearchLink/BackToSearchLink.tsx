@@ -1,5 +1,4 @@
 import { Box, Flex } from "@open-pioneer/chakra-integration";
-import { useIntl } from "open-pioneer:react-hooks";
 import { useNavigate } from "react-router-dom";
 
 import { BackIcon } from "../Icons";
@@ -11,7 +10,7 @@ export function BackToSearchLink(props: { visible: boolean }) {
     function backToSearch() {
         navigate({ pathname: "/search" });
     }
-    const intl = useIntl();
+
     const backText = "Back";
     const toResultListText = "to result list";
 

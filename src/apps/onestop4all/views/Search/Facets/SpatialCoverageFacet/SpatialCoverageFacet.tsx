@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Tooltip } from "@open-pioneer/chakra-integration";
+import { Box, Button, Tooltip } from "@open-pioneer/chakra-integration";
 import { MapContainer, useMap } from "@open-pioneer/experimental-ol-map";
 import { Feature } from "ol";
 import { Polygon } from "ol/geom";
@@ -9,8 +9,7 @@ import VectorSource from "ol/source/Vector";
 import { useEffect, useRef, useState } from "react";
 
 import { DisableOverlay } from "../../../../components/DisableOverlay/DisableOverlay";
-import { RectangleSelectIcon } from "../../../../components/Icons";
-import { ActiveControlColor, PrimaryColor, PrimaryColor40 } from "../../../../Theme";
+import { PrimaryColor40 } from "../../../../Theme";
 import { useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { PopupOverlay } from "./PopupOverlay";

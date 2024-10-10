@@ -1,6 +1,6 @@
 import { IconButton } from "@open-pioneer/chakra-integration";
 import { RectangleSelectIcon } from "../../../../components/Icons";
-import { ActiveControlColor, PrimaryColor, PrimaryColor40 } from "../../../../Theme";
+import { ActiveControlColor, PrimaryColor } from "../../../../Theme";
 interface DrawBboxButtonProps {
     bboxActive: boolean;
     onClick: () => void;

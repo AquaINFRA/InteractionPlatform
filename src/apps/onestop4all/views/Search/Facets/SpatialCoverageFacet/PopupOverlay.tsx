@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useService } from "open-pioneer:react-hooks";
 // Import OpenLayers-Map-Stuff
 import { MapContainer, useMap } from "@open-pioneer/experimental-ol-map";
-import Draw, { createBox } from "ol/interaction/Draw";
+import Draw from "ol/interaction/Draw";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { Geometry, Point, Polygon } from "ol/geom";
@@ -11,12 +11,11 @@ import { defaults as defaultControls, Control } from "ol/control";
 import { click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
 // Import other components
-import { Box, ButtonGroup, Flex, HStack, Spinner, Tooltip } from "@open-pioneer/chakra-integration";
+import { Box, Flex, HStack, Tooltip } from "@open-pioneer/chakra-integration";
 import { Legend } from "./Legend";
 import { XButton } from "./XButton";
 import { CatchmentOptions } from "./CatchmentOptions";
 import { CatchmentButton } from "./CatchmentButton";
-import { SearchButton } from "./SearchButton";
 // Import Styles
 import { hoverStyle, style, selectStyle, bBoxStyle } from "./Styles";
 // Import GeoJSON
@@ -26,8 +25,8 @@ import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercato
 //import dataNewTopo from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc_topo.json";
 // Search
 import { useSearchState } from "../../SearchState";
-import { Feature, MapBrowserEvent } from "ol";
-import { defaults as defaultInteractions, defaults } from "ol/interaction.js";
+import { Feature } from "ol";
+import { defaults as defaultInteractions } from "ol/interaction.js";
 import { Icon, Style } from "ol/style";
 import { toLonLat } from "ol/proj";
 
@@ -128,7 +127,6 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         new VectorLayer({
             source: vectorSource,
             style: function (feature) {
-                const color = feature.get("COLOR") || "#eeeeee";
                 style.getFill().setColor("rgba(0,0,0,0");
                 return style;
             }

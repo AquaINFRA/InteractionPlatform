@@ -3,7 +3,6 @@ import {
     Drawer,
     DrawerContent,
     DrawerOverlay,
-    Hide,
     HStack,
     IconButton,
     Link,

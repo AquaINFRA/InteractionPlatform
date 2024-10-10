@@ -12,14 +12,6 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
     const { state, getInputProps, getLabelProps, htmlProps } = useCheckbox(props);
     const { label, count, description } = props;
 
-    const countStyles = {
-        color: PrimaryColor,
-        opacity: 0.5,
-        fontFamily: "Arial",
-        fontSize: "14px",
-        fontWeight: 400
-    };
-
     return (
         <chakra.label
             display="flex"

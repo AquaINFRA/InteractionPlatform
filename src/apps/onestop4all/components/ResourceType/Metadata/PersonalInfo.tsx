@@ -24,8 +24,8 @@ export const MetadataUrl = (props: { item: string; type: string }) => {
     );
 };
 
-export const PersonalInfo = (props: { name: string; orcid?: string; affiliation: string }) => {
-    const { name, orcid, affiliation } = props;
+export const PersonalInfo = (props: { name: string; orcid?: string; }) => {
+    const { name, orcid } = props;
 
     return (
         <>
