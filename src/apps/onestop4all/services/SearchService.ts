@@ -102,6 +102,13 @@ export interface SearchResult {
     facets: Facets;
 }
 
+export interface TextFileResponse {
+    jobID: string,
+    textfile: {
+        href: string;
+    };
+}
+
 const oapirUrl = import.meta.env.VITE_OAPIR_URL;
 
 export class SearchService {
@@ -219,6 +226,52 @@ export class SearchService {
                 }
             })
         );
+    }
+
+    createTxtFile(url: string) {
+        const headers = new Headers();
+        headers.append("Prefer", "respond-async");
+        headers.append("Content-Type", "application/json");
+
+        const inputs = JSON.stringify({
+            "inputs": {
+                "link_from_ddas": url
+            }
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: headers,
+            body: inputs,
+            redirect: "follow" as RequestRedirect
+        };
+
+        return fetch("http://localhost:8081/https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-ddas-galaxy-link-textfile/execution", requestOptions)
+            .then((response) => response.json().then((responseData: TextFileResponse) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            }))
+            .catch((error) => console.error(error));
+    }
+
+    getUrlToTxtFile(jobId: string) {
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow" as RequestRedirect
+        };
+          
+        return fetch("http://localhost:8081/https://aqua.igb-berlin.de/pygeoapi-dev/jobs/" + jobId + "/results?f=json", requestOptions)
+            .then((response) => response.json().then((responseData: TextFileResponse) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            }))
+            .catch((error) => console.error(error));
     }
 
     private addSpatialFilter(spatialFilter: number[] | undefined, queryParams: URLSearchParams) {

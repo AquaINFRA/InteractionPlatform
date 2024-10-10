@@ -1,58 +1,95 @@
-import { Link } from "react-router-dom";
-
 import { Box, Flex, Input } from "@open-pioneer/chakra-integration";
-import { LinkObject } from "../../../views/Dataset/Dataset";
-import { ActionButton } from "../ActionButton/ActionButton";
 import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import { isUrl } from "../Metadata/PersonalInfo";
+import { useService } from "open-pioneer:react-hooks";
 
-interface ExternalLink {
-    href: string;
-    title: string;
-    type: string;
-    description: string;
-    protocol: string;
-}
+import { LinkObject } from "../../../views/Dataset/Dataset";
+import { ActionButton } from "../ActionButton/ActionButton";
+import { isUrl } from "../Metadata/PersonalInfo";
+import { SearchService } from "../../../services";
+import { TextFileResponse } from "../../../services/SearchService";
 
 export const ExternalResources = (props: { links: LinkObject[] }) => {
     const { links } = props;
-    const [externalLinks, setExternalLinks] = useState<ExternalLink[]>();
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService;
 
-    const [value, setValue] = useState("");
-    const [disabled, setDisabled] = useState(true);
-    const handleChange = (event: any) => {
-        setValue(event.target.value);
-        isUrl(event.target.value) ? setDisabled(false) : setDisabled(true);
-    };
+    const [externalLinks, setExternalLinks] = useState<LinkObject[]>();
+    const [urlToImport, setUrlToImport] = useState("");
+    const [disableImportToGalaxy, setDisableImportToGalaxy] = useState(true);
 
     useEffect(() => {
-        const newLinks = new Array<ExternalLink>();
+        const newLinks = new Array<LinkObject>();
         links.forEach((link) => {
-            link.title !== "The landing page of this server as HTML" && 
-            link.title !== "This document as GeoJSON" && 
-            link.title !== "This document as RDF (JSON-LD)" &&
-            link.title !== "The landing page of this server as JSON" &&
-            link.title !== "This document as HTML" ?
-                newLinks.push(link) :
-                null;
+            if (link.title !== "The landing page of this server as HTML" &&
+                link.title !== "This document as GeoJSON" &&
+                link.title !== "This document as RDF (JSON-LD)" &&
+                link.title !== "The landing page of this server as JSON" &&
+                link.title !== "This document as HTML") {
+                newLinks.push(link);
+            }
         });
         setExternalLinks(newLinks);
-    }, []);
+    }, [links]);
+
+    const createTextFile = async (url: string): Promise<string | null> => {
+        if (isUrl(url)) {
+            try {
+                const res = await searchSrvc.createTxtFile(url) as TextFileResponse;
+                return new Promise((resolve, reject) => {
+                    setTimeout(async () => {
+                        try {
+                            const res2 = await searchSrvc.getUrlToTxtFile(res.jobID) as TextFileResponse;
+                            if (res2.textfile && res2.textfile.href && isUrl(res2.textfile.href)) {
+                                resolve(res2.textfile.href);
+                            } else {
+                                setDisableImportToGalaxy(true);
+                                resolve(null);
+                            }
+                        } catch (error) {
+                            console.error(error);
+                            reject(null);
+                        }
+                    }, 100);
+                });
+            } catch (error) {
+                console.error(error);
+                setDisableImportToGalaxy(true);
+                return null;
+            }
+        } else {
+            setDisableImportToGalaxy(true);
+            return null;
+        }
+    };
+
+    const handleChange = async (event: any) => {
+        const url = event.target.value;
+        setUrlToImport(url);
+        isUrl(event.target.value) ? setDisableImportToGalaxy(false) : setDisableImportToGalaxy(true);
+    };
+
+    const handleGalaxyImport = async (href: string) => {
+        console.log(href);
+        const txt = await createTextFile(href);
+        if (txt) {
+            console.log(txt);
+            window.open(`https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=${txt}`, "_blank");
+        }
+    };
 
     return (
         <Box>
             <div className="abstractSectionHeader">External Resources</div>
-            {externalLinks ? externalLinks.map((link: ExternalLink, i: number) => (
+            {externalLinks ? externalLinks.map((link: LinkObject, i: number) => (
                 <Box key={i} pt={3}>
                     <div className="seperator" />
-                    {link.title !== "" && link.title !== null ? (
+                    {link.title ? (
                         <div>
                             <span className="metadataTag">Title: </span>
                             <span className="metadataValue">{link.title}</span>
                         </div>
                     ) : null}
-                    {link.description && link.description !== "" && link.description !== null ? (
+                    {link.description ? (
                         <div>
                             <span className="metadataTag">Description: </span>
                             <span className="metadataValue">{link.description}</span>
@@ -64,55 +101,28 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                             <span className="metadataValue">{link.protocol}</span>
                         </div>
                     ) : null}
-                    {link.type ? (
-                        <div>
-                            <span className="metadataTag">Type: </span>
-                            <span className="metadataValue">{link.type}</span>
-                        </div>
-                    ) : null}
                     <Flex flexDirection="column"> 
-                        <Link to={link.href as string} target="_blank">
-                            <ActionButton
-                                label="Visit"
-                                icon={<ExternalLinkIcon color="white" />}
-                                variant="solid"
-                                fun={() => void 0}
-                            />
-                        </Link>
-                        {link.type === "application/zip" || 
+                        <ActionButton
+                            label="Visit"
+                            icon={<ExternalLinkIcon color="white" />}
+                            variant="solid"
+                            fun={() => window.open(link.href as string, "_blank")} // Opens the visit link in a new tab
+                        />
+                        {(link.type === "application/zip" || 
                             link.type === "ZIP" ||
                             link.type === "SHAPE-ZIP" ||
                             link.type === "JSON" || 
                             link.type === "OGC API - Features" ||
-                            link.type === "image/png" ||
-                            link.type === "image/tif" ||
-                            link.type === "image/tiff" ||
-                            link.type === "image/bmp" ||
-                            link.type === "image/gif" ||
-                            link.type === "image/svg" ||
-                            link.type === "image/eps" ||
-                            link.type === "image/xcf" || 
-                            link.type === "image/jpg" ||
-                            link.type === "image/jpeg" ||
+                            link.type.startsWith("image/") ||
                             link.type === "application/x-netcdf" ||
                             (link.type === "application/json" && link.href.endsWith(".json")) ||
-                            (link.type === "application/octet-stream" && link.href.includes("/rest/")) ||
-                            (link.type === "application/octet-stream" && link.href.includes("api.") && link.href.includes("getData")) ? (
-                                <Link
-                                    to={
-                                        ("https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=" +
-                                            link.href) as string
-                                    }
-                                    //className="actionButtonLink"
-                                    target="_blank"
-                                >
-                                    <ActionButton
-                                        label="Import to Galaxy"
-                                        icon={<DownloadIcon color="white" />}
-                                        variant="solid"
-                                        fun={() => void 0}
-                                    />
-                                </Link>
+                            (link.type === "application/octet-stream" && (link.href.includes("/rest/") || link.href.includes("api.") && link.href.includes("getData")))) ? (
+                                <ActionButton
+                                    label="Import to Galaxy"
+                                    icon={<DownloadIcon color="white" />}
+                                    variant="solid"
+                                    fun={() => handleGalaxyImport(link.href)} 
+                                />
                             ) : null}
                     </Flex>
                 </Box>
@@ -125,27 +135,18 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                     </div>
                     <Box pt={3}>
                         <Input 
-                            value={value}
+                            value={urlToImport}
                             onChange={handleChange}
                             placeholder="Insert here"
                         />
                     </Box>
-                    <Link
-                        to={
-                            ("https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=" +
-                                value) as string
-                        }
-                        //className="actionButtonLink"
-                        target="_blank"
-                    >
-                        <ActionButton
-                            label="Import to Galaxy"
-                            disabled={disabled}
-                            icon={<DownloadIcon color="white" />}
-                            variant="solid"
-                            fun={() => void 0}
-                        />
-                    </Link>
+                    <ActionButton
+                        label="Import to Galaxy"
+                        disabled={disableImportToGalaxy}
+                        icon={<DownloadIcon color="white" />}
+                        variant="solid"
+                        fun={() => handleGalaxyImport(urlToImport)} 
+                    />
                 </Box>
             </Box>
         </Box>
