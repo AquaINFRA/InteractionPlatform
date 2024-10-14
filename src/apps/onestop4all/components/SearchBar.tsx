@@ -111,24 +111,6 @@ export function SearchBar() {
             </div>
             <div id="searchbarResponsive">
                 <Flex bg="white" direction={"column"}>
-                    <Select
-                        icon={<DropdownArrowIcon />}
-                        iconSize="12"
-                        variant="unstyled"
-                        textTransform="uppercase"
-                        color={PrimaryColor}
-                        placeholder="Select data provider"
-                        borderColor="white"
-                        //flex={{ base: "0 0 1rem" }}
-                        value={selectedProvider}
-                        onChange={(event) => setSelectProvider(event.target.value)}
-                        _hover={{ cursor: "pointer" }}
-                        margin={"2% 0% 0% 3%"}
-                        w={"max-content"}
-                        maxWidth={"250px"}
-                    >
-                        {createResourceTypeSelectOptions()}
-                    </Select>
                     <Flex alignItems="center">
                         <Input
                             placeholder="Search for research data"

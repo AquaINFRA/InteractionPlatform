@@ -13,11 +13,12 @@ import { useService } from "open-pioneer:react-hooks";
 import { ReactNode, useEffect } from "react";
 
 import { MenuCloseIcon } from "../Icons";
+import { MenuHandler } from "../../services";
 
 export function BaseMenu() {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const menuHandler = useService("onestop4all.MenuHandler");
+    const menuHandler = useService("onestop4all.MenuHandler") as MenuHandler;
 
     useEffect(() => {
         const openMenuListener = menuHandler.on("open-menu", () => onOpen());
@@ -28,12 +29,12 @@ export function BaseMenu() {
         return (
             <Box
                 className="block"
-                padding={{ base: "30px 50px 30px 70px;", custombreak: "40px 70px;" }}
+                padding={{ base: "30px 20px 10px 20px;", custombreak: "10px 10px 0.px" }}
             >
                 <Box
                     className="block-header"
                     fontSize={{ base: "20px", custombreak: "30px" }}
-                    paddingBottom={{ base: "20px", custombreak: "40px" }}
+                    padding={{ base: "10px 20px 10px 0px;", custombreak: "30px 0px" }}
                 >
                     {header}
                 </Box>
@@ -47,11 +48,11 @@ export function BaseMenu() {
             isOpen={isOpen}
             placement="right"
             onClose={onClose}
-            size={{ base: "customMenu", custombreak: "md" }}
+            size={{ base: "customMenu", custombreak: "xs" }}
         >
             <DrawerOverlay bg={"var(--chakra-colors-blackAlpha-200)"} />
             <DrawerContent className="navigation-menu">
-                <HStack padding={{ base: "52px 52px 0px", custombreak: "52px 52px 100px" }}>
+                <HStack padding={{ base: "22px 22px 10px 0px", custombreak: "32px 52px 20px" }}>
                     <Spacer></Spacer>
                     <IconButton
                         aria-label="Search database"

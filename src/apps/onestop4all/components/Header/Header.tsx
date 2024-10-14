@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import {useSearchState} from "../../views/Search/SearchState";
 
-import { Logo } from "./Logo";
+import { Logo, LogoSmall } from "./Logo";
 import { MenuButton } from "./MenuButton";
 import { Feedback } from "./Feedback";
 
@@ -25,8 +25,11 @@ export const Header = () => {
                 margin="6px 0px"
                 padding={{ base: "6px 1px 0px", custombreak: "36px 1px 10px" }}
             >
-                <Box _hover={{ cursor: "pointer" }} onClick={backToStart}>
+                <Box _hover={{ cursor: "pointer" }} onClick={backToStart} id = "logoBig">
                     <Logo />
+                </Box>
+                <Box _hover={{ cursor: "pointer" }} onClick={backToStart} id = "logoSmall">
+                    <LogoSmall />
                 </Box>
                 <div id="feedback1">
                     <Feedback fontSize="16pt" />
