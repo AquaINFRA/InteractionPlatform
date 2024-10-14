@@ -62,7 +62,8 @@ export function DataProviderFacet() {
                     searchTerm,
                     dataProvider: [elem.id], 
                     downloadOption,
-                    spatialFilter
+                    spatialFilter,
+                    individualCollection: true
                 }).then((res) => {
                     i++;
                     if (res.count > 0) {
