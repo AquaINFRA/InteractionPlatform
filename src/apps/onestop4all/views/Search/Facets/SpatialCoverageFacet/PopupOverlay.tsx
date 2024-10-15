@@ -352,7 +352,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                                 const features = geoJSONFormat.readFeatures(polygon, {
                                     featureProjection: "EPSG:3857"
                                 });
-                                addCatchmentFeaturesToMap(features, computeBBox(features)); // 3. add features to map
+                                addCatchmentFeaturesToMap(features, computeBBox(features));
                                 setLoading(false);
                             });
                         });

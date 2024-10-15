@@ -31,25 +31,27 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
         setExternalLinks(newLinks);
     }, [links]);
 
-    const createTextFile = async (url: string): Promise<string | null> => {
+    const createTextFile = async (url: string) => {
+        const req_url = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-ddas-galaxy-link-textfile/execution";
         if (isUrl(url)) {
             try {
-                const res = await searchSrvc.createTxtFile(url) as TextFileResponse;
-                return new Promise((resolve, reject) => {
-                    setTimeout(async () => {
-                        try {
-                            const res2 = await searchSrvc.getUrlToTxtFile(res.jobID) as TextFileResponse;
-                            if (res2.textfile && res2.textfile.href && isUrl(res2.textfile.href)) {
-                                resolve(res2.textfile.href);
-                            } else {
-                                setDisableImportToGalaxy(true);
-                                resolve(null);
-                            }
-                        } catch (error) {
-                            console.error(error);
-                            reject(null);
-                        }
-                    }, 100);
+                //const res = await searchSrvc.createTxtFile(url) as TextFileResponse;
+
+                const data = {
+                    inputs: {
+                        link_from_ddas: url
+                    }
+                };
+                
+                fetch(req_url, {
+                    method: "POST",
+                    mode: "cors",
+                    body: JSON.stringify(data)
+                }).then((response) => {
+                    response.json().then((result) => {
+                        console.log(result);
+                        window.open(`https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=${result.textfile.href}`, "_blank");
+                    });
                 });
             } catch (error) {
                 console.error(error);

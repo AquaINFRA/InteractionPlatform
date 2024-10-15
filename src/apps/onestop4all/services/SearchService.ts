@@ -245,6 +245,7 @@ export class SearchService {
             headers: headers,
             body: inputs,
             redirect: "follow" as RequestRedirect
+            
         };
 
         return fetch("https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-ddas-galaxy-link-textfile/execution", requestOptions)
