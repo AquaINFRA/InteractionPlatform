@@ -31,28 +31,18 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
         setExternalLinks(newLinks);
     }, [links]);
 
-    const createTextFile = async (url: string) => {
-        const req_url = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-ddas-galaxy-link-textfile/execution";
+    const createTxtFile = async (url: string) => {
         if (isUrl(url)) {
             try {
-                //const res = await searchSrvc.createTxtFile(url) as TextFileResponse;
-
-                const data = {
-                    inputs: {
-                        link_from_ddas: url
-                    }
-                };
-                
-                fetch(req_url, {
-                    method: "POST",
-                    mode: "cors",
-                    body: JSON.stringify(data)
-                }).then((response) => {
-                    response.json().then((result) => {
-                        console.log(result);
-                        window.open(`https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=${result.textfile.href}`, "_blank");
+                searchSrvc.createTxtFile(url)
+                    .then((response: void | TextFileResponse) => {
+                        if (response && response.textfile && response.textfile.href) {
+                            window.open(`https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=${response.textfile.href}`, "_blank");
+                        }
+                    })
+                    .catch ((err) => {
+                        console.log(err);
                     });
-                });
             } catch (error) {
                 console.error(error);
                 setDisableImportToGalaxy(true);
@@ -71,10 +61,8 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
     };
 
     const handleGalaxyImport = async (href: string) => {
-        console.log(href);
-        const txt = await createTextFile(href);
+        const txt = await createTxtFile(href);
         if (txt) {
-            console.log(txt);
             window.open(`https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=${txt}`, "_blank");
         }
     };

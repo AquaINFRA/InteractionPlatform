@@ -29,6 +29,7 @@ import { Feature } from "ol";
 import { defaults as defaultInteractions } from "ol/interaction.js";
 import { Icon, Style } from "ol/style";
 import { toLonLat } from "ol/proj";
+import { SearchService } from "../../../../services";
 
 // Custom Control Buttons (not used currently)
 export class DrawControl extends Control {
@@ -59,9 +60,8 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     // Initialize the map
     const mapId = "popup";
     const { map } = useMap(mapId);
-    const olMapRegistry = useService("ol-map.MapRegistry");
-    //console.log(selectedOption);
-
+    const olMapRegistry = useService("ol-map.MapRegistry");    //console.log(selectedOption);
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     // Center the map in Europe everytime the Popup gets opened
     useEffect(() => {
         if (map) {
@@ -327,25 +327,13 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
     /** Performs a https request to the pygeoapi, the resulting link is then processed */
     const processCatchment = async (lon: number, lat: number) => {
-        const url = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
         
-        const data = {
-            inputs: {
-                lon: lon,
-                lat: lat,
-                comment: "..."
-            }
-        };
         setLoading(true);
         try{
-            fetch(url, {
-                method: "POST",
-                mode: "cors",
-                body: JSON.stringify(data)
-            }).then((response) => {
-                response.json().then((result) => {
-                    if (result) {
-                        const polygon_url = result.outputs.polygon.href;
+            searchSrvc.processCatchment(lon, lat)
+                .then((response) => {
+                    if (response) {
+                        const polygon_url = response.outputs.polygon.href;
                         fetch(polygon_url).then((response2) => {
                             response2.json().then((polygon) => {
                                 const geoJSONFormat = new GeoJSON();
@@ -358,11 +346,10 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                         });
                     } else {
                         setLoading(false);
-                        throw new Error("Unexpected response: " + JSON.stringify(result));
+                        throw new Error("Unexpected response: " + JSON.stringify(response));
                     }
-                });
-            })
-                .catch((err) => {
+                })
+                .catch ((err) => {
                     setLoading(false);
                     setShowErrorMessage(true);
                 });

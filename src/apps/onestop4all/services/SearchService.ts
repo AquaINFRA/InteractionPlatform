@@ -229,26 +229,17 @@ export class SearchService {
     }
 
     createTxtFile(url: string) {
-        const headers = new Headers();
-        headers.append("Prefer", "respond-async");
-        headers.append("Content-Type", "application/json");
-
-        const inputs = JSON.stringify({
-            "inputs": {
-                "link_from_ddas": url
+        const data = {
+            inputs: {
+                link_from_ddas: url
             }
-        });
-
-        const requestOptions = {
-            method: "POST",
-            mode: "cors" as RequestMode,
-            headers: headers,
-            body: inputs,
-            redirect: "follow" as RequestRedirect
-            
         };
 
-        return fetch("https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-ddas-galaxy-link-textfile/execution", requestOptions)
+        return fetch("https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-ddas-galaxy-link-textfile/execution", {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify(data)
+        })
             .then((response) => response.json().then((responseData: TextFileResponse) => {
                 if (responseData) {
                     return responseData;
@@ -259,19 +250,27 @@ export class SearchService {
             .catch((error) => console.error(error));
     }
 
-    getUrlToTxtFile(jobId: string) {
-        const requestOptions = {
-            method: "GET",
-            mode: "cors" as RequestMode,
-            redirect: "follow" as RequestRedirect
+    processCatchment(lon:number, lat: number) {
+        const url = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
+        
+        const data = {
+            inputs: {
+                lon: lon,
+                lat: lat,
+                comment: "..."
+            }
         };
-          
-        return fetch("https://aqua.igb-berlin.de/pygeoapi-dev/jobs/" + jobId + "/results?f=json", requestOptions)
-            .then((response) => response.json().then((responseData: TextFileResponse) => {
-                if (responseData) {
-                    return responseData;
+
+        return fetch(url, {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json().then((result) => {
+                if (result) {
+                    return result;
                 } else {
-                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                    throw new Error("Unexpected response: " + JSON.stringify(result));
                 }
             }))
             .catch((error) => console.error(error));
