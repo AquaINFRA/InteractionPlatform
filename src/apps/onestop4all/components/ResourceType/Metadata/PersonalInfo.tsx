@@ -24,8 +24,8 @@ export const MetadataUrl = (props: { item: string; type: string }) => {
     );
 };
 
-export const PersonalInfo = (props: { name: string; orcid?: string; }) => {
-    const { name, orcid } = props;
+export const PersonalInfo = (props: { name: string; orcid?: string; affiliation?: string }) => {
+    const { name, orcid, affiliation } = props;
 
     return (
         <>
@@ -39,6 +39,7 @@ export const PersonalInfo = (props: { name: string; orcid?: string; }) => {
                     <Image className="orcid" alt="Bg icon" src="/orcid.png" />
                 </a>
             ) : null}
+            {affiliation ? affiliation : ""}
         </>
     );
 };
