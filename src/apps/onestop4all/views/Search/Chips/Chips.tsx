@@ -3,7 +3,6 @@ import { SystemStyleObject } from "@open-pioneer/chakra-integration";
 
 import { PrimaryColor, PrimaryColor40, PrimaryFont } from "../../../Theme";
 import { useSearchState } from "../SearchState";
-import { DataProvider } from "../Facets/DataProviderFacet/DataProviderFacet";
 
 interface ChipsEntry {
     title: string;
@@ -15,7 +14,6 @@ export function Chips() {
     const searchState = useSearchState();
     const chips: ChipsEntry[] = [];
 
-    // TODO: remove later searchterm
     const st = searchState.searchTerm;
     if (st) {
         chips.push({
@@ -25,7 +23,6 @@ export function Chips() {
         });
     }
 
-    // data provider
     const dataProvider = searchState.selectedDataProvider;
     if (dataProvider.length) {
         const titles = [] as string[];
@@ -44,7 +41,6 @@ export function Chips() {
         });
     }
 
-    // spatial coverage
     const spatialFilter = searchState.spatialFilter;
     if (spatialFilter.length) {
         chips.push({
