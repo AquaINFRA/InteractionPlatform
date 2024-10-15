@@ -241,6 +241,7 @@ export class SearchService {
 
         const requestOptions = {
             method: "POST",
+            mode: "cors" as RequestMode,
             headers: headers,
             body: inputs,
             redirect: "follow" as RequestRedirect
@@ -260,6 +261,7 @@ export class SearchService {
     getUrlToTxtFile(jobId: string) {
         const requestOptions = {
             method: "GET",
+            mode: "cors" as RequestMode,
             redirect: "follow" as RequestRedirect
         };
           
