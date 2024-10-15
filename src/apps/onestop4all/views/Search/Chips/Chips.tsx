@@ -3,6 +3,7 @@ import { SystemStyleObject } from "@open-pioneer/chakra-integration";
 
 import { PrimaryColor, PrimaryColor40, PrimaryFont } from "../../../Theme";
 import { useSearchState } from "../SearchState";
+import { DataProvider } from "../Facets/DataProviderFacet/DataProviderFacet";
 
 interface ChipsEntry {
     title: string;
@@ -31,6 +32,7 @@ export function Chips() {
 
         dataProvider.forEach((dp) => {
             searchState.dataProviderTitles.forEach((dpt: any) => {
+                console.log(dpt);
                 if (dp === dpt.id) {
                     titles.push(dpt.title);
                 }

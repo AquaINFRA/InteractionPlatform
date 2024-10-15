@@ -32,7 +32,6 @@ export interface SearchRequestParams {
     temporalFilter?: TemporalFilter;
     temporalConfig?: TemporalConfig;
     sorting?: string;
-    individualCollection?: boolean;
 }
 
 export interface TemporalConfig {
@@ -111,7 +110,6 @@ export interface TextFileResponse {
 }
 
 const oapirUrl = import.meta.env.VITE_OAPIR_URL;
-const oapirCollectionUrl = import.meta.env.VITE_OAPIR_COLLECTION_URL;
 
 export class SearchService {
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
@@ -123,18 +121,12 @@ export class SearchService {
 
         this.addSpatialFilter(searchParams.spatialFilter, queryParams);
 
+        this.addDataProvider(searchParams.dataProvider, queryParams);
+
         this.addDownloadOption(searchParams.downloadOption, queryParams);
 
-        let url = "";
+        const url = `${oapirUrl}/search?${queryParams.toString()}`;
 
-        if (searchParams.individualCollection) {
-            url = `${oapirUrl}/collections/${searchParams.dataProvider}/items?${queryParams.toString()}`;
-        } else {
-            this.addDataProvider(searchParams.dataProvider, queryParams);
-            url = `${oapirUrl}/search?${queryParams.toString()}`;
-        }
-        
-        //console.log(url);
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 const response = responseData;
