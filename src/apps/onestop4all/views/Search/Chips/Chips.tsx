@@ -32,7 +32,6 @@ export function Chips() {
 
         dataProvider.forEach((dp) => {
             searchState.dataProviderTitles.forEach((dpt: any) => {
-                console.log(dpt);
                 if (dp === dpt.id) {
                     titles.push(dpt.title);
                 }
