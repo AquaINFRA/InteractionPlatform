@@ -246,7 +246,7 @@ export class SearchService {
             redirect: "follow" as RequestRedirect
         };
 
-        return fetch("http://localhost:8081/https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-ddas-galaxy-link-textfile/execution", requestOptions)
+        return fetch("https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-ddas-galaxy-link-textfile/execution", requestOptions)
             .then((response) => response.json().then((responseData: TextFileResponse) => {
                 if (responseData) {
                     return responseData;
@@ -263,7 +263,7 @@ export class SearchService {
             redirect: "follow" as RequestRedirect
         };
           
-        return fetch("http://localhost:8081/https://aqua.igb-berlin.de/pygeoapi-dev/jobs/" + jobId + "/results?f=json", requestOptions)
+        return fetch("https://aqua.igb-berlin.de/pygeoapi-dev/jobs/" + jobId + "/results?f=json", requestOptions)
             .then((response) => response.json().then((responseData: TextFileResponse) => {
                 if (responseData) {
                     return responseData;
