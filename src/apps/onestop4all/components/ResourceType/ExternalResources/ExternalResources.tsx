@@ -8,6 +8,7 @@ import { ActionButton } from "../ActionButton/ActionButton";
 import { isUrl } from "../Metadata/PersonalInfo";
 import { SearchService } from "../../../services";
 import { TextFileResponse } from "../../../services/SearchService";
+import { UrlBuilderPopup } from "./UrlBuilderPopup";
 
 export const ExternalResources = (props: { links: LinkObject[] }) => {
     const { links } = props;
@@ -16,6 +17,8 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
     const [externalLinks, setExternalLinks] = useState<LinkObject[]>();
     const [urlToImport, setUrlToImport] = useState("");
     const [disableImportToGalaxy, setDisableImportToGalaxy] = useState(true);
+    const [urlBuilder, openUrlBuilder] = useState(false);
+    const [ogcApiFeatureService, setOgcApiFeatureService] = useState<string | null>(null);
 
     useEffect(() => {
         const newLinks = new Array<LinkObject>();
@@ -61,9 +64,14 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
     };
 
     const handleGalaxyImport = async (href: string) => {
-        const txt = await createTxtFile(href);
-        if (txt) {
-            window.open(`https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=${txt}`, "_blank");
+        if (href.includes("https://vm4072.kaj.pouta.csc.fi/ddas/oapif/collections")) {
+            setOgcApiFeatureService(href); // Set the href to be used by the UrlBuilderPopup
+            openUrlBuilder(true); // Open the URL Builder popup
+        } else {
+            const txt = await createTxtFile(href);
+            if (txt) {
+                window.open(`https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=${txt}`, "_blank");
+            }
         }
     };
 
@@ -92,12 +100,14 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                         </div>
                     ) : null}
                     <Flex flexDirection="column"> 
-                        <ActionButton
-                            label="Visit"
-                            icon={<ExternalLinkIcon color="white" />}
-                            variant="solid"
-                            fun={() => window.open(link.href as string, "_blank")} // Opens the visit link in a new tab
-                        />
+                        <Box pt={3}>
+                            <ActionButton
+                                label="Visit"
+                                icon={<ExternalLinkIcon color="white" />}
+                                variant="solid"
+                                fun={() => window.open(link.href as string, "_blank")} // Opens the visit link in a new tab
+                            />
+                        </Box>
                         {(link.type === "application/zip" || 
                             link.type === "ZIP" ||
                             link.type === "SHAPE-ZIP" ||
@@ -107,12 +117,14 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                             link.type === "application/x-netcdf" ||
                             (link.type === "application/json" && link.href.endsWith(".json")) ||
                             (link.type === "application/octet-stream" && (link.href.includes("/rest/") || link.href.includes("api.") && link.href.includes("getData")))) ? (
-                                <ActionButton
-                                    label="Import to Galaxy"
-                                    icon={<DownloadIcon color="white" />}
-                                    variant="solid"
-                                    fun={() => handleGalaxyImport(link.href)} 
-                                />
+                                <Box pt={3}>
+                                    <ActionButton
+                                        label="Import to Galaxy"
+                                        icon={<DownloadIcon color="white" />}
+                                        variant="solid"
+                                        fun={() => handleGalaxyImport(link.href)} 
+                                    />
+                                </Box>
                             ) : null}
                     </Flex>
                 </Box>
@@ -139,6 +151,12 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                     />
                 </Box>
             </Box>
+            {ogcApiFeatureService && <UrlBuilderPopup
+                isOpen={urlBuilder}
+                onClose={() => openUrlBuilder(false)}
+                createTxtFile={createTxtFile}
+                href={ogcApiFeatureService}
+            />}
         </Box>
     );
 };
