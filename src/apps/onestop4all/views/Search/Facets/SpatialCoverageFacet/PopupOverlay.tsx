@@ -7,7 +7,7 @@ import Draw from "ol/interaction/Draw";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { Geometry, Point, Polygon } from "ol/geom";
-import { defaults as defaultControls, Control } from "ol/control";
+import { Control } from "ol/control";
 import { click, pointerMove } from "ol/events/condition.js";
 import Select from "ol/interaction/Select.js";
 // Import other components
@@ -90,7 +90,6 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     );
     // Layer to display the upstream catchment areas (response from pygeoapi)
     const [catchmentSource, setCatchmentSource] = useState(new VectorSource());
-    const [catchmentLayer, setCatchmentLayer] = useState(new VectorLayer());
 
     const [CatchmentBBoxSource, setCatchmentBBoxSource] = useState(new VectorSource());
 
@@ -350,6 +349,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                     }
                 })
                 .catch ((err) => {
+                    console.log(err);
                     setLoading(false);
                     setShowErrorMessage(true);
                 });
