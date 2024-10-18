@@ -1,5 +1,4 @@
 import { useIntl } from "open-pioneer:react-hooks";
-import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 
@@ -9,62 +8,30 @@ import {
     Flex,
     HStack,
     IconButton,
-    Input,
-    Select
+    Input
 } from "@open-pioneer/chakra-integration";
 
-import { PrimaryColor } from "../Theme";
 import {
-    SelectableDataProvider,
     UrlSearchParameterType,
     UrlSearchParams,
     useSearchState
 } from "../views/Search/SearchState";
-import { DropdownArrowIcon, SearchIcon } from "./Icons";
-import { DataProvider } from "../views/Search/Facets/DataProviderFacet/DataProviderFacet";
-import { SearchService } from "../services";
+import { SearchIcon } from "./Icons";
 
 export function SearchBar() {
-    const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const [searchTerm, setSearchTerm] = useState<string>("");
     const intl = useIntl();
     const searchState = useSearchState();
     const navigate = useNavigate();
     const location = useLocation();
-    const [selectedProvider, setSelectProvider] = useState("");
-    const [provider, setProvider] = useState<SelectableDataProvider[]>([]);
-
-    useEffect(() => {
-        searchSrvc.getDataProvider().then((res) => {
-            setProvider(
-                JSON.parse(res).collections.sort((a: DataProvider, b: DataProvider) =>
-                    a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
-                )
-            );
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     useEffect(() => setSearchTerm(searchState.searchTerm), [searchState.searchTerm]);
 
     function startSearch(): void {
         searchState.setSearchTerm(searchTerm);
-        if (selectedProvider === "") {
-            searchState.setSelectedDataProvider([...searchState.selectedDataProvider]);
-        } else {
-            if (!searchState.selectedDataProvider.includes(selectedProvider)) {
-                searchState.setSelectedDataProvider([
-                    ...searchState.selectedDataProvider,
-                    selectedProvider
-                ]);
-            }
-        }
         if (!location.pathname.endsWith("search")) {
             const params: UrlSearchParams = {};
             params[UrlSearchParameterType.Searchterm] = searchTerm;
-            if (!selectedProvider) {
-                searchState.setSelectedDataProvider([...searchState.selectedDataProvider]);
-            }
             navigate({
                 pathname: "/search",
                 search: `?${createSearchParams({ ...params })}`
@@ -117,7 +84,6 @@ export function SearchBar() {
                             value={searchTerm}
                             onChange={(event) => setSearchTerm(event.target.value)}
                             onKeyDown={(event) => handleKeyDown(event.key)}
-                            //borderColor="white"
                             margin={"2% 2% 2% 2%"}
                             outline={"1px solid #05668d"}
                         />
@@ -144,12 +110,4 @@ export function SearchBar() {
             </div>
         </Box>
     );
-
-    function createResourceTypeSelectOptions() {
-        return provider.map((e, i) => (
-            <option value={e.id} key={i}>
-                {e.title}
-            </option>
-        ));
-    }
 }
