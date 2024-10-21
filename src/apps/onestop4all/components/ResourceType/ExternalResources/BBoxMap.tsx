@@ -10,10 +10,10 @@ import { DrawBboxButton } from "../../../views/Search/Facets/SpatialCoverageFace
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
-    onBboxChange: (bbox: number[]) => void; // Add this prop
+    onBboxChange: (bbox: number[]) => void;
 }
 
-const usedEPSGCode = "EPSG:4326"; // Latitude/Longitude coordinates
+const usedEPSGCode = "EPSG:4326";
 
 export function BBoxMap({ mapId, onBboxChange }: SpatialCoverageFacetProps) {
     const { map } = useMap(mapId);

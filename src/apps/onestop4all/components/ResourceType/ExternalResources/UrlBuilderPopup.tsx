@@ -35,6 +35,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
     const [updatedGeoJsonHref, setUpdatedGeoJsonHref] = useState<string | null>(null);
     const [copyUrlText, setCopyUrlText] = useState("Copy URL");
     const [isLoaded, setIsLoaded] = useState(false);
+    const [maxValIsLoaded, setMaxValIsLoaded] = useState(true);
     const [metadata, setMetadata] = useState({} as any);
     const [bbox, setBbox] = useState<number[]>([]);
 
@@ -58,6 +59,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
     const updateBbox = (newBbox: number[]) => {
         setBbox(newBbox);
         updateGeoJsonHrefWithBbox(newBbox);
+        setMaxValIsLoaded(false);
     };
 
     const fetchUrlBuilderData = async (url: string) => {
@@ -89,14 +91,16 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
         try {
             const response = await fetch(geoJsonUrl);
             const data = await response.json();
-            const numberMatched = data.numberMatched ? data.numberMatched : 1000;
+            const numberMatched = data.numberMatched ? data.numberMatched : 111111;
             setMaxSliderValue(numberMatched);
             const newSliderValue = Math.min(sliderValue, numberMatched);
             setSliderValue(newSliderValue);
             setInputValue(String(newSliderValue));
             setIsLoaded(true);
+            setMaxValIsLoaded(true);
         } catch (error) {
             setIsLoaded(true);
+            setMaxValIsLoaded(true);
             console.error("Error fetching GeoJSON data:", error);
         }
     };
@@ -111,20 +115,14 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setInputValue(value);
-
-        const numericValue = parseInt(value, 10);
-        if (!isNaN(numericValue) && numericValue >= 1 && numericValue <= maxSliderValue) {
-            setSliderValue(numericValue);
-            updateGeoJsonHrefWithLimit(numericValue);
-        }
     };
 
     const handleInputBlur = () => {
         const value = parseInt(inputValue, 10);
         if (isNaN(value) || value < 1) {
-            setInputValue(String(1));
-            setSliderValue(1);
-            updateGeoJsonHrefWithLimit(1);
+            setInputValue(String(10));
+            setSliderValue(10);
+            updateGeoJsonHrefWithLimit(10);
         } else {
             const newValue = Math.min(value, maxSliderValue);
             setInputValue(String(newValue));
@@ -152,7 +150,8 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
 
     const handleCreateTxtFile = () => {
         if (updatedGeoJsonHref) {
-            createTxtFile(updatedGeoJsonHref);
+            handleInputBlur();
+            setTimeout(()=>createTxtFile(updatedGeoJsonHref), 500);
         }
     };
 
@@ -172,39 +171,53 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
                         <BBoxMap mapId="ogc" onBboxChange={updateBbox} />
                     </Box>
 
-                    <Box mb={4}>
-                        <Box mt={2} marginBottom={1}>Maximum Value: {maxSliderValue}</Box>
-                        {maxSliderValue > 0 ? (
-                            <Slider
-                                aria-label="slider-ex-1"
-                                value={sliderValue}
-                                onChange={handleSliderChange}
-                                min={1}
-                                max={maxSliderValue}
-                            >
-                                <SliderTrack>
-                                    <SliderFilledTrack />
-                                </SliderTrack>
-                                <SliderThumb />
-                            </Slider>
-                        ) : null}
-                    </Box>
+                    {maxValIsLoaded ? <>
+                        <Box mb={4}>
+                            <Box mt={2} marginBottom={1}>Maximum Value: {maxSliderValue} {maxSliderValue===111111 ? <span>(<b>Note: </b>The maximum value is most likely not correct.)</span> : ""}</Box>
+                            {maxSliderValue > 0 ? (
+                                <Slider
+                                    aria-label="slider-ex-1"
+                                    value={sliderValue}
+                                    onChange={handleSliderChange}
+                                    min={1}
+                                    max={maxSliderValue}
+                                >
+                                    <SliderTrack>
+                                        <SliderFilledTrack />
+                                    </SliderTrack>
+                                    <SliderThumb />
+                                </Slider>
+                            ) : null}
+                        </Box>
 
-                    <Box mb={4}>
-                        <Box marginBottom={2}>Number of datapoints:</Box>
-                        <Input
-                            type="text"
-                            value={inputValue}
-                            onChange={handleInputChange}
-                            onBlur={handleInputBlur}
-                            max={maxSliderValue}
-                            min={1}
-                        />
-                    </Box>
+                        <Box mb={4}>
+                            <Box marginBottom={2}>Number of datapoints:</Box>
+                            <Input
+                                type="text"
+                                value={inputValue}
+                                onChange={handleInputChange}
+                                onBlur={handleInputBlur}
+                                max={maxSliderValue}
+                                min={1}
+                                autoFocus
+                            />
+                        </Box>
+                    </>
+                        :
+                        <Box marginBottom={"15"}>
+                            <Stack>
+                                <Box>Loading...</Box>
+                                <Skeleton height='30px' />
+                                <Skeleton height='30px'/>
+                                <Skeleton height='30px'/>
+                            </Stack>
+                        </Box>
+                    }
 
                     {updatedGeoJsonHref && (
                         <Box mb={4} p={2} border="1px solid #ccc" borderRadius="md">
-                            <strong>Generated URL:</strong>
+                            <strong>Generated URL: </strong>
+                            <Button size="xs" w={"fit-content"} paddingLeft={"10px"} paddingRight={"10px"}>Regenerate</Button>
                             <Box wordBreak="break-all">{updatedGeoJsonHref}</Box>
                         </Box>
                     )}
