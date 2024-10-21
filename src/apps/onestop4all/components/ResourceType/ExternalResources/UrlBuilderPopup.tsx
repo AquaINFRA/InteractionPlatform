@@ -18,6 +18,7 @@ import {
 import { useState, useEffect } from "react";
 import { CopyToClipboardButton } from "../ActionButton/CopyToClipboardButton";
 import { Stack } from "@chakra-ui/react";
+import { BBoxMap } from "./BBoxMap";
 
 interface UrlBuilderPopupProps {
     isOpen: boolean;
@@ -35,6 +36,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
     const [copyUrlText, setCopyUrlText] = useState("Copy URL");
     const [isLoaded, setIsLoaded] = useState(false);
     const [metadata, setMetadata] = useState({} as any);
+    const [bbox, setBbox] = useState<number[]>([]); // New state for bbox
 
     useEffect(() => {
         if (isOpen && href) {
@@ -52,6 +54,11 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
             setIsLoaded(false);
         }
     }, [isOpen]);
+
+    const updateBbox = (newBbox: number[]) => {
+        setBbox(newBbox);
+        updateGeoJsonHrefWithBbox(newBbox);
+    };
 
     const fetchUrlBuilderData = async (url: string) => {
         try {
@@ -135,6 +142,14 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
         }
     };
 
+    const updateGeoJsonHrefWithBbox = (bbox: number[]) => {
+        if (geoJsonHref && bbox.length === 4) {
+            const url = new URL(geoJsonHref);
+            url.searchParams.set("bbox", bbox.join(","));
+            setUpdatedGeoJsonHref(url.toString());
+        }
+    };
+
     const handleCreateTxtFile = () => {
         if (updatedGeoJsonHref) {
             console.log("Final URL:", updatedGeoJsonHref);
@@ -143,23 +158,22 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="outside">
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent width={"40%"} maxW={"700px"} minW={"500px"} maxHeight="90vh" overflow="auto" padding="4">
                 <ModalHeader>URL Builder</ModalHeader>
                 <ModalCloseButton />
                 {isLoaded ? <ModalBody>
                     <Box>
                         <p><b>Title:</b> {metadata.title}</p> 
                         <p><b>Description:</b> {metadata.description}</p>
-                        <p><b>CRS:</b> {metadata.crs[0].split("/").pop()}</p>
-                    </Box>
-                    <Box pt={3}>
-                        The data is provided as an <b>OGC API Feature service</b>. Move the slider or type in the number of data points that you would like to have in the dataset.
                     </Box>
 
-                    {/* Slider */}
-                    <Box mb={4} pt={5}>
+                    <Box padding={"22px 0px"}>
+                        <BBoxMap mapId="ogc" onBboxChange={updateBbox} />
+                    </Box>
+
+                    <Box mb={4}>
                         <Box mt={2} marginBottom={1}>Maximum Value: {maxSliderValue}</Box>
                         {maxSliderValue > 0 ? (
                             <Slider
@@ -182,14 +196,13 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
                         <Input
                             type="text"
                             value={inputValue}
-                            onChange={handleInputChange} // Immediate input change handling
-                            onBlur={handleInputBlur} // Handle blur for final validation
+                            onChange={handleInputChange}
+                            onBlur={handleInputBlur}
                             max={maxSliderValue}
-                            min={1} // Optional minimum value
+                            min={1}
                         />
                     </Box>
 
-                    {/* Display the updated URL */}
                     {updatedGeoJsonHref && (
                         <Box mb={4} p={2} border="1px solid #ccc" borderRadius="md">
                             <strong>Generated URL:</strong>
@@ -197,19 +210,18 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
                         </Box>
                     )}
 
-                    {/* Action Buttons */}
                     <Box display="flex" justifyContent="space-between" mt={4}>
                         <Button 
                             onClick={handleCreateTxtFile} 
                             isDisabled={!updatedGeoJsonHref} 
-                            width="80%" // Set width to 48%
-                            mr={2} // Margin to the right
+                            width="80%"
+                            mr={2}
                         >
                             Import to Galaxy
                         </Button>
                         <CopyToClipboardButton 
                             data={updatedGeoJsonHref ? updatedGeoJsonHref : geoJsonHref} 
-                            label={copyUrlText} // Use the state for the button text
+                            label={copyUrlText}
                         />
                     </Box>
                 </ModalBody> 
