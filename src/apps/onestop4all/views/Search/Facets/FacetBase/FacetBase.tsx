@@ -63,7 +63,6 @@ export function FacetBase(props: PropsWithChildren<FacetBaseProps>) {
                         </AccordionButton>
                         <AccordionPanel padding="0">
                             <Box padding="8px 0">{children}</Box>
-                            <Box className="seperator"></Box>
                         </AccordionPanel>
                     </>
                 )}

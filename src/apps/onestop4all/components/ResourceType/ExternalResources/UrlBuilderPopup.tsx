@@ -36,7 +36,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
     const [copyUrlText, setCopyUrlText] = useState("Copy URL");
     const [isLoaded, setIsLoaded] = useState(false);
     const [metadata, setMetadata] = useState({} as any);
-    const [bbox, setBbox] = useState<number[]>([]); // New state for bbox
+    const [bbox, setBbox] = useState<number[]>([]);
 
     useEffect(() => {
         if (isOpen && href) {
@@ -64,7 +64,6 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
         try {
             const response = await fetch(url);
             const data = await response.json();
-            console.log(data);
             setMetadata(data);
             if (data.links && Array.isArray(data.links)) {
                 const geoJsonLink = data.links.find((link: any) =>
@@ -136,7 +135,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
 
     const updateGeoJsonHrefWithLimit = (limit: number) => {
         if (geoJsonHref && geoJsonHref.includes("/items")) {
-            const url = new URL(geoJsonHref);
+            const url = updatedGeoJsonHref ? new URL(updatedGeoJsonHref) : new URL(geoJsonHref);
             url.searchParams.set("limit", limit.toString());
             setUpdatedGeoJsonHref(url.toString());
         }
@@ -144,15 +143,15 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
 
     const updateGeoJsonHrefWithBbox = (bbox: number[]) => {
         if (geoJsonHref && bbox.length === 4) {
-            const url = new URL(geoJsonHref);
+            const url = updatedGeoJsonHref ? new URL(updatedGeoJsonHref) : new URL(geoJsonHref);
             url.searchParams.set("bbox", bbox.join(","));
             setUpdatedGeoJsonHref(url.toString());
+            fetchGeoJsonData(url.toString());
         }
     };
 
     const handleCreateTxtFile = () => {
         if (updatedGeoJsonHref) {
-            console.log("Final URL:", updatedGeoJsonHref);
             createTxtFile(updatedGeoJsonHref);
         }
     };
@@ -169,7 +168,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
                         <p><b>Description:</b> {metadata.description}</p>
                     </Box>
 
-                    <Box padding={"22px 0px"}>
+                    <Box padding={"22px 0px 0px"}>
                         <BBoxMap mapId="ogc" onBboxChange={updateBbox} />
                     </Box>
 
