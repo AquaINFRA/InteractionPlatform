@@ -14,7 +14,7 @@ export function DrawBboxButton(props: DrawBboxButtonProps) {
             position="absolute"
             zIndex="1000"
             right="10px"
-            bottom="45px"
+            bottom="75px"
             rounded={"lg"}
             title="Click here to draw a bounding box"
             bg={bboxActive ? ActiveControlColor : PrimaryColor}

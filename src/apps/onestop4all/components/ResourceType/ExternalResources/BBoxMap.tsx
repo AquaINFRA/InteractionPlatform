@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Stroke, Style } from "ol/style";
 import { FacetBase } from "../../../views/Search/Facets/FacetBase/FacetBase";
 import { DrawBboxButton } from "../../../views/Search/Facets/SpatialCoverageFacet/DrawBboxButton";
+import { DeleteBbox } from "./DeleteBbox";
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
@@ -83,6 +84,13 @@ export function BBoxMap({ mapId, onBboxChange }: SpatialCoverageFacetProps) {
         if (draw.current) {
             map?.removeInteraction(draw.current);
         }
+        source.clear();
+    }
+
+    function handleDeleteBbox() {
+        removeInteraction();
+        setBboxActive(false);
+        onBboxChange([]);
     }
 
     return (
@@ -91,6 +99,7 @@ export function BBoxMap({ mapId, onBboxChange }: SpatialCoverageFacetProps) {
                 <Box position="relative">
                     <Box height="200px" marginBottom="16px" position="relative">
                         <DrawBboxButton bboxActive={bboxActive} onClick={selectBbox} />
+                        <DeleteBbox onClick={handleDeleteBbox} />
                         <MapContainer mapId={mapId} />
                     </Box>
                 </Box>

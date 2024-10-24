@@ -140,9 +140,13 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
     };
 
     const updateGeoJsonHrefWithBbox = (bbox: number[]) => {
-        if (geoJsonHref && bbox.length === 4) {
+        if (geoJsonHref) {
             const url = updatedGeoJsonHref ? new URL(updatedGeoJsonHref) : new URL(geoJsonHref);
-            url.searchParams.set("bbox", bbox.join(","));
+            if (bbox && bbox.length === 4) {
+                url.searchParams.set("bbox", bbox.join(","));
+            } else {
+                url.searchParams.delete("bbox");
+            }
             setUpdatedGeoJsonHref(url.toString());
             fetchGeoJsonData(url.toString());
         }
@@ -159,7 +163,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
         <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="outside">
             <ModalOverlay />
             <ModalContent width={"40%"} maxW={"700px"} minW={"500px"} maxHeight="90vh" overflow="auto" padding="4">
-                <ModalHeader>URL Builder</ModalHeader>
+                <ModalHeader>OGC API Features subsetting</ModalHeader>
                 <ModalCloseButton />
                 {isLoaded ? <ModalBody>
                     <Box>
@@ -173,7 +177,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
 
                     {maxValIsLoaded ? <>
                         <Box mb={4}>
-                            <Box mt={2} marginBottom={1}>Maximum Value: {maxSliderValue} {maxSliderValue===111111 ? <span>(<b>Note: </b>The maximum value is most likely not correct.)</span> : ""}</Box>
+                            <Box mt={2} marginBottom={1}>Maximum number of data points: {maxSliderValue} {maxSliderValue===111111 ? <span>(<b>Note: </b>The maximum value is most likely not correct.)</span> : ""}</Box>
                             {maxSliderValue > 0 ? (
                                 <Slider
                                     aria-label="slider-ex-1"
@@ -191,7 +195,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
                         </Box>
 
                         <Box mb={4}>
-                            <Box marginBottom={2}>Number of datapoints:</Box>
+                            <Box marginBottom={2}>Selected number of datapoints:</Box>
                             <Input
                                 type="text"
                                 value={inputValue}
