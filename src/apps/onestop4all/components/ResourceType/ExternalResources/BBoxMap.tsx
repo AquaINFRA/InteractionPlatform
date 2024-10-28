@@ -50,30 +50,45 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCover
                         [ogcFeaturesExtent[0], ogcFeaturesExtent[1]] 
                     ]
                 ];
-                const geometry = {type: "Polygon", coordinates: polygonCoords};
+                const geometry = { type: "Polygon", coordinates: polygonCoords };
                 const geoJSONFormat = new GeoJSON();
                 const features = geoJSONFormat.readFeatures(geometry, {
                     featureProjection: "EPSG:3857"
                 });
-
+    
                 const vectorSource = new VectorSource({
                     features: features
                 });
-
+    
                 const vectorLayer = new VectorLayer({
                     source: vectorSource
                 });
-                map.addLayer(vectorLayer);
-                //map.removeLayer(vectorLayer);
+    
+                const allLayers = map.getAllLayers();
+
+                if (allLayers.length === 2 && allLayers[1]) {
+                    map.removeLayer(allLayers[1]);
+                }
+                
+                if (vectorLayer) {
+                    map.addLayer(vectorLayer);
+                }
             }
 
-            map.addLayer(vector);
+            if (vector) {
+                map.addLayer(vector);
+            }
+
             map.getView().fit(coords, { maxZoom: 2.6 });
+            
             return () => {
-                map.removeLayer(vector);
+                if (vector) {
+                    map.removeLayer(vector);
+                }
             };
         }
     }, [map, vector, ogcFeaturesExtent]);
+    
 
     function selectBbox(): void {
         if (bboxActive) {

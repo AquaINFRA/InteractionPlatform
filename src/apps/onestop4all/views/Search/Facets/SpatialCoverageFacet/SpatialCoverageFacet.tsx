@@ -316,10 +316,10 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
             <FacetBase title="Spatial Coverage" expanded>
                 <Box position="relative">
                     <Box height="300px" marginBottom="16px" position="relative">
-                        <Box position="absolute" right="10px" bottom="100px">
+                        <Box position="absolute" right="10px" bottom="20px">
                             <Questionmark
                                 size="lg"
-                                label="You can draw a bounding box to find resources relevant for that area by using the button below or by setting a catchment area."
+                                label="You can draw a bounding box to find resources relevant for that area by using the button above or by setting a catchment area."
                             />
                         </Box>
                         <DrawBboxButton bboxActive={bboxActive} onClick={selectBbox} />

@@ -13,7 +13,7 @@ export const Questionmark = (props: QuestionmarkProps) => {
             fontFamily="Arial"
             label={label}
             hasArrow
-            placement="top"
+            placement="bottom"
             openDelay={0}
             borderRadius="8px"
             backgroundColor="rgba(1,1,1,0.8)"
