@@ -77,7 +77,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
 
     return (
         <Box>
-            <div className="abstractSectionHeader">External Resources</div>
+            <div className="abstractSectionHeader">Access Data</div>
             {externalLinks ? externalLinks.map((link: LinkObject, i: number) => (
                 <Box key={i} pt={3}>
                     <div className="seperator" />

@@ -8,19 +8,19 @@ import { Stroke, Style } from "ol/style";
 import { FacetBase } from "../../../views/Search/Facets/FacetBase/FacetBase";
 import { DrawBboxButton } from "../../../views/Search/Facets/SpatialCoverageFacet/DrawBboxButton";
 import { DeleteBbox } from "./DeleteBbox";
+import GeoJSON from "ol/format/GeoJSON";
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
     onBboxChange: (bbox: number[]) => void;
+    ogcFeaturesExtent: number[];
 }
 
 const usedEPSGCode = "EPSG:4326";
 
-export function BBoxMap({ mapId, onBboxChange }: SpatialCoverageFacetProps) {
+export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCoverageFacetProps) {
     const { map } = useMap(mapId);
     const draw = useRef<Draw>();
-
-    const coords = [1489200, 6894026, 1489200, 6894026];
 
     const [source] = useState(new VectorSource({ wrapX: false }));
     const [vector] = useState(
@@ -38,14 +38,42 @@ export function BBoxMap({ mapId, onBboxChange }: SpatialCoverageFacetProps) {
     const [bboxActive, setBboxActive] = useState(false);
 
     useEffect(() => {
+        const coords = [1489200, 6894026, 1489200, 6894026];
         if (map) {
+            if (ogcFeaturesExtent && ogcFeaturesExtent.length === 4) {
+                const polygonCoords = [
+                    [
+                        [ogcFeaturesExtent[0], ogcFeaturesExtent[1]],
+                        [ogcFeaturesExtent[2], ogcFeaturesExtent[1]],
+                        [ogcFeaturesExtent[2], ogcFeaturesExtent[3]],
+                        [ogcFeaturesExtent[0], ogcFeaturesExtent[3]],
+                        [ogcFeaturesExtent[0], ogcFeaturesExtent[1]] 
+                    ]
+                ];
+                const geometry = {type: "Polygon", coordinates: polygonCoords};
+                const geoJSONFormat = new GeoJSON();
+                const features = geoJSONFormat.readFeatures(geometry, {
+                    featureProjection: "EPSG:3857"
+                });
+
+                const vectorSource = new VectorSource({
+                    features: features
+                });
+
+                const vectorLayer = new VectorLayer({
+                    source: vectorSource
+                });
+                map.addLayer(vectorLayer);
+                //map.removeLayer(vectorLayer);
+            }
+
             map.addLayer(vector);
             map.getView().fit(coords, { maxZoom: 2.6 });
             return () => {
                 map.removeLayer(vector);
             };
         }
-    }, [map, vector]);
+    }, [map, vector, ogcFeaturesExtent]);
 
     function selectBbox(): void {
         if (bboxActive) {

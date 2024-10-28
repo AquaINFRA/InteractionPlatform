@@ -1,7 +1,6 @@
 import {
     Box,
     Button,
-    Input,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -9,16 +8,13 @@ import {
     ModalCloseButton,
     ModalBody,
     ModalFooter,
-    Slider,
-    SliderTrack,
-    SliderFilledTrack,
-    SliderThumb,
     Skeleton
 } from "@open-pioneer/chakra-integration";
 import { useState, useEffect } from "react";
 import { CopyToClipboardButton } from "../ActionButton/CopyToClipboardButton";
 import { Stack } from "@chakra-ui/react";
 import { BBoxMap } from "./BBoxMap";
+import DataPointsSelector from "./DataPointSelector";
 
 interface UrlBuilderPopupProps {
     isOpen: boolean;
@@ -38,6 +34,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
     const [maxValIsLoaded, setMaxValIsLoaded] = useState(true);
     const [metadata, setMetadata] = useState({} as any);
     const [bbox, setBbox] = useState<number[]>([]);
+    const [ogcFeaturesExtent, setOgcFeaturesExtent] = useState<number[]>([]);
 
     useEffect(() => {
         if (isOpen && href) {
@@ -67,6 +64,9 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
             const response = await fetch(url);
             const data = await response.json();
             setMetadata(data);
+            if (data.extent.spatial.bbox) {
+                setOgcFeaturesExtent(data.extent.spatial.bbox[0]);
+            }
             if (data.links && Array.isArray(data.links)) {
                 const geoJsonLink = data.links.find((link: any) =>
                     link.type === "application/geo+json" &&
@@ -172,41 +172,17 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
                     </Box>
 
                     <Box padding={"22px 0px 0px"}>
-                        <BBoxMap mapId="ogc" onBboxChange={updateBbox} />
+                        <BBoxMap mapId="ogc" onBboxChange={updateBbox} ogcFeaturesExtent={ogcFeaturesExtent}/>
                     </Box>
 
-                    {maxValIsLoaded ? <>
-                        <Box mb={4}>
-                            <Box mt={2} marginBottom={1}>Maximum number of data points: {maxSliderValue} {maxSliderValue===111111 ? <span>(<b>Note: </b>The maximum value is most likely not correct.)</span> : ""}</Box>
-                            {maxSliderValue > 0 ? (
-                                <Slider
-                                    aria-label="slider-ex-1"
-                                    value={sliderValue}
-                                    onChange={handleSliderChange}
-                                    min={1}
-                                    max={maxSliderValue}
-                                >
-                                    <SliderTrack>
-                                        <SliderFilledTrack />
-                                    </SliderTrack>
-                                    <SliderThumb />
-                                </Slider>
-                            ) : null}
-                        </Box>
-
-                        <Box mb={4}>
-                            <Box marginBottom={2}>Selected number of datapoints:</Box>
-                            <Input
-                                type="text"
-                                value={inputValue}
-                                onChange={handleInputChange}
-                                onBlur={handleInputBlur}
-                                max={maxSliderValue}
-                                min={1}
-                                autoFocus
-                            />
-                        </Box>
-                    </>
+                    {maxValIsLoaded ? <DataPointsSelector
+                        maxSliderValue={maxSliderValue}
+                        sliderValue={sliderValue}
+                        inputValue={inputValue}
+                        onSliderChange={handleSliderChange}
+                        onInputChange={handleInputChange}
+                        onInputBlur={handleInputBlur}
+                    />
                         :
                         <Box marginBottom={"15"}>
                             <Stack>
