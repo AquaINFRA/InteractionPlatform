@@ -357,11 +357,12 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         onClick={() => delSelection()}
                         marginTop="8px"
                         backgroundColor="red"
+                        isDisabled={!(searchState.spatialFilter.length > 0)}
                     >
                         Delete selection
                     </Button>
                     {disabled && (
-                        <DisableOverlay label="The spatial filter is disabled because the current selection does not have spatial information."></DisableOverlay>
+                        <DisableOverlay label="The spatial filter isDisabled disabled because the current selection does not have spatial information."></DisableOverlay>
                     )}
                     <PopupOverlay 
                         showPopup={showPopup} 
