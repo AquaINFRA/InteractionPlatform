@@ -207,7 +207,7 @@ export function SearchView() {
                         <Box padding={"22px 0px"}>
                             <DownloadOptionFacet />
                         </Box>
-                        <Box padding={"22px 0px"}>
+                        <Box padding={"22px 0px"} position="sticky" top="150px" zIndex="1">
                             <SpatialCoverageFacet mapId="spatial-filter-map" />
                         </Box>
                         <Spacer />
