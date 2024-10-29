@@ -1,8 +1,6 @@
 import { Box, Container, Flex } from "@open-pioneer/chakra-integration";
-import { useIntl } from "open-pioneer:react-hooks";
 
 export const Footer = () => {
-    const intl = useIntl();
 
     return (
         <>
@@ -21,9 +19,7 @@ export const Footer = () => {
                             flexDirection={{ base: "column", custombreak: "row" }}
                         >
                             <Box className="section-header">
-                                {intl.formatMessage({
-                                    id: "footer.get-connected"
-                                })}
+                                Get connected
                                 :
                             </Box>
                             <Box display="flex" gap="8px">
@@ -34,9 +30,7 @@ export const Footer = () => {
                                     className="label"
                                 >
                                     <div className="label">
-                                        {intl.formatMessage({
-                                            id: "footer.about"
-                                        })}
+                                        About
                                     </div>
                                 </a>
                                 <span>|</span>
@@ -47,9 +41,7 @@ export const Footer = () => {
                                     className="label"
                                 >
                                     <div className="label">
-                                        {intl.formatMessage({
-                                            id: "footer.partners"
-                                        })}
+                                        Partners
                                     </div>
                                 </a>
                                 <span>|</span>
@@ -60,9 +52,7 @@ export const Footer = () => {
                                     className="label"
                                 >
                                     <div className="label">
-                                        {intl.formatMessage({
-                                            id: "footer.contact"
-                                        })}
+                                        Contact
                                     </div>
                                 </a>
                             </Box>
@@ -73,9 +63,7 @@ export const Footer = () => {
                             flexDirection={{ base: "column", custombreak: "row" }}
                         >
                             <Box className="section-header">
-                                {intl.formatMessage({
-                                    id: "footer.legal-information"
-                                })}
+                                Legal information
                                 :
                             </Box>
                             <Box display="flex" gap="8px">
@@ -86,9 +74,7 @@ export const Footer = () => {
                                     className="label"
                                 >
                                     <div className="label">
-                                        {intl.formatMessage({
-                                            id: "footer.legal-information"
-                                        })}
+                                        Legal information
                                     </div>
                                 </a>
                                 <span>|</span>
@@ -98,9 +84,7 @@ export const Footer = () => {
                                     rel="noreferrer"
                                 >
                                     <div className="label">
-                                        {intl.formatMessage({
-                                            id: "footer.privacy"
-                                        })}
+                                        Privacy
                                     </div>
                                 </a>
                             </Box>

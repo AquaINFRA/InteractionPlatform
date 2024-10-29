@@ -1,10 +1,6 @@
 import { Box } from "@open-pioneer/chakra-integration";
-//import { useIntl, useService } from "open-pioneer:react-hooks";
 
 export const Feedback = (props: { fontSize: string }) => {
-    //const intl = useIntl();
-    //const searchSrvc = useService("onestop4all.SearchService");
-    //const opts = searchSrvc.getFeedbackUrl();
 
     return (
         <Box w="100%">

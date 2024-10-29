@@ -1,4 +1,3 @@
-import { useIntl } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 
@@ -20,7 +19,6 @@ import { SearchIcon } from "./Icons";
 
 export function SearchBar() {
     const [searchTerm, setSearchTerm] = useState<string>("");
-    const intl = useIntl();
     const searchState = useSearchState();
     const navigate = useNavigate();
     const location = useLocation();
@@ -65,7 +63,7 @@ export function SearchBar() {
                         hideBelow="custombreak"
                         onClick={() => startSearch()}
                     >
-                        {intl.formatMessage({ id: "search.search-bar.button-label" })}
+                        Search
                     </Button>
                     <IconButton
                         aria-label="start search"
@@ -94,7 +92,7 @@ export function SearchBar() {
                             onClick={() => startSearch()}
                         >
                             <Box>
-                                {intl.formatMessage({ id: "search.search-bar.button-label" })}
+                                Search
                             </Box>
                         </Button>
                         <IconButton

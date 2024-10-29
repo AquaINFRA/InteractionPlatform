@@ -1,5 +1,4 @@
 import { Box, Flex, Skeleton } from "@open-pioneer/chakra-integration";
-import { useIntl } from "open-pioneer:react-hooks";
 
 import { ResourceType } from "../../services/ResourceTypeUtils";
 import {
@@ -20,8 +19,6 @@ export function ResourceTypeLabel(props: {
     iconAlign: "left" | "right";
 }) {
     const { resType, loading = false, iconAlign } = props;
-    const intl = useIntl();
-    const loadingText = intl.formatMessage({ id: "resource-type-header.loading" });
 
     return (
         <Flex
@@ -34,7 +31,7 @@ export function ResourceTypeLabel(props: {
             gap="12px"
         >
             {loading ? (
-                <Skeleton>{loadingText}</Skeleton>
+                <Skeleton>Loading...</Skeleton>
             ) : (
                 <>
                     {iconAlign === "left" && <Box>{getIcon()}</Box>}
