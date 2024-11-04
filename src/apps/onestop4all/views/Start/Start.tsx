@@ -40,6 +40,14 @@ export function StartView() {
                 <Box className="mission">
                     <Box className="text-centered-box">
                         <Box paddingTop={10} id="introVideo1">
+                            <Box marginBottom={2} marginTop={10}><b>Video 6: The AquaINFRA Interaction Platform - Integration with Galaxy and DDAS</b></Box>
+                            <iframe
+                                width="760"
+                                height="409"
+                                src="https://www.youtube.com/embed/KPdFnbUIASU?si=pJ7eZisduX9dutRK"
+                                title="YouTube video player"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            />
                             <Box marginBottom={2} marginTop={10}><b>Video 5: Ontology-based search and further filter options</b></Box>
                             <iframe
                                 width="760"
@@ -82,7 +90,15 @@ export function StartView() {
                             />
                         </Box>
                         <Box paddingTop={10} id="introVideo2">
-                            <Box marginBottom={2}><b>Video 5: Ontology-based search and further filter options</b></Box>
+                            <Box marginBottom={2}><b>Video 6: The AquaINFRA Interaction Platform - Integration with Galaxy and DDAS</b></Box>
+                            <iframe
+                                width="330"
+                                height="190"
+                                src="https://www.youtube.com/embed/KPdFnbUIASU?si=pJ7eZisduX9dutRK"
+                                title="YouTube video player"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            />
+                            <Box marginBottom={2} marginTop={10}><b>Video 5: Ontology-based search and further filter options</b></Box>
                             <iframe
                                 width="330"
                                 height="190"
