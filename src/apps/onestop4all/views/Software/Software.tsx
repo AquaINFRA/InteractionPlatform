@@ -1,21 +1,19 @@
+import React from "react";
 import { Box, Flex } from "@open-pioneer/chakra-integration";
-import { Link } from "react-router-dom";
-
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { ZenodoResultItem } from "../../services/SearchService";
-import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
+import { ActionButton } from "../../components/ResourceType/ActionButton/ActionButton";
 import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-import { CopyToClipboardButton } from "../../components/ResourceType/ActionButton/CopyToClipboardButton";
 
 export interface SoftwareViewProps {
     item: ZenodoResultItem;
 }
 
-export function SoftwareView(props: any) {
-    const metadata = props.item[1];
-    //const doiBaseUrl = "https://www.doi.org/";
-    console.log(metadata);
+export function SoftwareView(props: SoftwareViewProps) {
+    const object = props.item;
+    const metadata = object.metadata;
+    console.log(object);
 
     return (
         <Box>
@@ -30,121 +28,134 @@ export function SoftwareView(props: any) {
                         <Metadata
                             metadataElements={[
                                 {
-                                    element: "identifier",
-                                    tag: "Identifier",
-                                    val: metadata.identifier["@id"]
-                                },
-                                {
                                     element: "programmingLanguage",
-                                    tag:
-                                        metadata.programmingLanguage?.length > 1
-                                            ? "Programming language"
-                                            : "Programming languages",
-                                    val: metadata.programmingLanguage
+                                    tag: "Programming languages",
+                                    val: ["R", "Python", "XML"]
                                 },
                                 {
-                                    element: "Type",
-                                    tag: metadata["@type"].length > 1 ? "Types" : "Type",
-                                    val: metadata["@type"]
+                                    element: "created",
+                                    tag: "Created",
+                                    val: "2024-10-31T08:38:41.003327+00:00"
                                 },
                                 {
-                                    element: "datePublished",
-                                    tag: "Published",
-                                    val: new Date(metadata.datePublished).toLocaleDateString()
+                                    element: "modified",
+                                    tag: "Modified",
+                                    val: "2024-10-31T09:56:57.817489+00:00"
                                 },
                                 {
-                                    element: "Licenses",
-                                    tag: "Licenses",
-                                    val: metadata.license["@id"]
+                                    element: "keywords",
+                                    tag: "Keywords",
+                                    val: [ "AquaINFRA", "OGC API Processes", "Galaxy" ]
                                 },
                                 {
-                                    element: "Version",
+                                    element: "lang",
+                                    tag: "Language",
+                                    val: "English"
+                                },
+                                {
+                                    element: "license",
+                                    tag: "License",
+                                    val: "Apache License 2.0"
+                                },
+                                {
+                                    element: "version",
                                     tag: "Version",
-                                    val: metadata.version
+                                    val: "1.0"
                                 }
                             ]}
-                            visibleElements={2}
+                            visibleElements={3}
                             expandedByDefault={false}
                         />
                     </Box>
                     {metadata.description ? (
-                        <Box pt="80px">
-                            <Abstract abstractText={metadata.description} />
+                        <Box>
+                            <Box>
+                                <Abstract abstractText={metadata.description} />
+                            </Box>
+                            <Box
+                                dangerouslySetInnerHTML={{ __html: '<iframe title="Galaxy Workflow Embed" style="width: 100%; height: 700px; border: none;" src="https://aqua.usegalaxy.eu/published/workflow?id=d2cea0f0800891bf&embed=true&buttons=true&about=false&heading=false&minimap=true&zoom_controls=true&initialX=-20&initialY=-20&zoom=1"></iframe>' }}
+                            />
                         </Box>
                     ) : null}
                 </Box>
                 <Box w="25%">
-                    {metadata.identifier || metadata.codeRepository ? (
-                        <Box className="actionButtonGroup" pt="40px">
-                            <>
-                                {metadata.identifier ? (
-                                    <Link
-                                        to={metadata.identifier["@id"] as string}
-                                        className="actionButtonLink"
-                                        target="_blank"
-                                    >
-                                        <ActionButton
-                                            label="Go to archive"
-                                            icon={<ExternalLinkIcon color="white" />}
-                                            variant="solid"
-                                            fun={() => void 0}
-                                        />
-                                    </Link>
-                                ) : null}
-                                {metadata.codeRepository ? (
-                                    <Link
-                                        to={metadata.codeRepository["@id"] as string}
-                                        className="actionButtonLink"
-                                        target="_blank"
-                                    >
-                                        <ActionButton
-                                            label="Go to repository"
-                                            icon={<ExternalLinkIcon color="white" />}
-                                            variant="solid"
-                                            fun={() => void 0}
-                                        />
-                                    </Link>
-                                ) : null}
-                                {metadata.identifier ? (
-                                    <CopyToClipboardButton
-                                        label="Copy DOI"
-                                        data={metadata.identifier["@id"]}
+                    <Box>
+                        <div className="abstractSectionHeader">Access Workflow</div>
+                        <Box pt={3}>
+                            <div className="seperator" />
+                            <div>
+                                <span className="metadataTag">Title: </span>
+                                <span className="metadataValue">Visit worflow in Galaxy</span>
+                            </div>
+                            <Flex flexDirection="column"> 
+                                <Box pt={3}>
+                                    <ActionButton
+                                        label="Visit"
+                                        icon={<ExternalLinkIcon color="white" />}
+                                        variant="solid"
+                                        fun={() => window.open("https://aqua.usegalaxy.eu/published/workflow?id=d2cea0f0800891bf" as string, "_blank")} // Opens the visit link in a new tab
                                     />
-                                ) : null}
-                                {metadata.distribution ? (
-                                    <Link
-                                        to={metadata.distribution["@id"] as string}
-                                        className="actionButtonLink"
-                                        target="_blank"
-                                    >
-                                        <ActionButton
-                                            label="Download"
-                                            icon={<DownloadIcon color="#05668D" />}
-                                            variant="outline"
-                                            fun={() => void 0}
-                                        />
-                                    </Link>
-                                ) : null}
-                                {/*metadata.distribution ? (
-                                    <Link
-                                        to={
-                                            ("http://127.0.0.1:8080/tool_runner?tool_id=aquainfra_ddas&URL=" +
-                                                metadata.distribution["@id"]) as string
-                                        }
-                                        className="actionButtonLink"
-                                        target="_blank"
-                                    >
-                                        <ActionButton
-                                            label="Import to Galaxy"
-                                            icon={<DownloadIcon color="#05668D" />}
-                                            variant="outline"
-                                            fun={() => void 0}
-                                        />
-                                    </Link>
-                                    ) : null*/}
-                            </>
+                                </Box>
+                            </Flex>
                         </Box>
-                    ) : null}
+                        <Box pt={3}>
+                            <div className="seperator" />
+                            <div>
+                                <span className="metadataTag">Title: </span>
+                                <span className="metadataValue">Visit repository</span>
+                            </div>
+                            <Flex flexDirection="column"> 
+                                <Box pt={3}>
+                                    <ActionButton
+                                        label="Visit"
+                                        icon={<ExternalLinkIcon color="white" />}
+                                        variant="solid"
+                                        fun={() => window.open("https://sandbox.zenodo.org/records/123424" as string, "_blank")} // Opens the visit link in a new tab
+                                    />
+                                </Box>
+                            </Flex>
+                        </Box>
+                        <Box pt={3}>
+                            <div className="seperator" />
+                        </Box>
+                        <Box pt={3}>
+                            <div className="abstractSectionHeader">Input Data</div>
+                        </Box>
+                        <Box pt={3}>
+                            <div className="seperator" />
+                            <div>
+                                <span className="metadataTag">Title: </span>
+                                <span className="metadataValue">Regions</span>
+                            </div>
+                            <Flex flexDirection="column"> 
+                                <Box pt={3}>
+                                    <ActionButton
+                                        label="Visit"
+                                        icon={<ExternalLinkIcon color="white" />}
+                                        variant="solid"
+                                        fun={() => window.open("https://aquainfra.dev.52north.org/result/aquainfra-platform:3bc62e14-e6b3-476e-9be2-989477fea534" as string, "_blank")} // Opens the visit link in a new tab
+                                    />
+                                </Box>
+                            </Flex>
+                        </Box>
+                        <Box pt={3}>
+                            <div className="seperator" />
+                            <div>
+                                <span className="metadataTag">Title: </span>
+                                <span className="metadataValue">Points</span>
+                            </div>
+                            <Flex flexDirection="column"> 
+                                <Box pt={3}>
+                                    <ActionButton
+                                        label="Visit"
+                                        icon={<ExternalLinkIcon color="white" />}
+                                        variant="solid"
+                                        fun={() => window.open("https://aquainfra.dev.52north.org/result/helcom:c0d4c02f-4617-4636-94ef-8ea129094b52" as string, "_blank")} // Opens the visit link in a new tab
+                                    />
+                                </Box>
+                            </Flex>
+                        </Box>
+                    </Box>
                 </Box>
             </Flex>
         </Box>

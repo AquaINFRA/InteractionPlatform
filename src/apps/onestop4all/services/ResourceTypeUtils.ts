@@ -1,6 +1,7 @@
 import { ArticleSearchHandler } from "./search/result-handler/article-handler";
 import { SearchResultHandler } from "./search/result-handler/search-result-handler";
 import { DatasetHandler } from "./search/result-handler/dataset-handler";
+import { WorkflowHandler } from "./search/result-handler/workflow-handler";
 import { SeriesHandler } from "./search/result-handler/series-handler";
 import { ModelHandler } from "./search/result-handler/model-handler";
 import { ServiceHandler } from "./search/result-handler/service-handler";
@@ -26,7 +27,8 @@ export enum ResourceType {
     Model = "model",
     LiveData = "liveData",
     OfflineData = "offlineData",
-    DownloadableData = "downloadableData"
+    DownloadableData = "downloadableData",
+    Workflow = "workflow"
 }
 
 const mapping = [
@@ -73,6 +75,10 @@ const mapping = [
     {
         type: ResourceType.Software,
         identifier: "software"
+    },
+    {
+        type: ResourceType.Workflow,
+        identifier: "workflow"
     }
 ];
 
@@ -95,6 +101,7 @@ export function mapFromResourceType(resourceType: ResourceType): string {
 const searchResultHandlers: SearchResultHandler[] = [
     new ArticleSearchHandler(),
     new DatasetHandler(),
+    new WorkflowHandler(),
     new SoftwareHandler(),
     new SeriesHandler(),
     new ModelHandler(),

@@ -7,7 +7,7 @@ export const Abstract = (props: { abstractText: string }) => {
         <Box>
             <div className="abstractSectionHeader">Abstract</div>
             <LinkItUrl>
-                <div className="abstractText">{abstractText}</div>
+                <Box className="abstractText" dangerouslySetInnerHTML={{__html: abstractText}} />
             </LinkItUrl>
         </Box>
     );

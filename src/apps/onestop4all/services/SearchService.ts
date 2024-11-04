@@ -5,18 +5,18 @@ import { DataProvider } from "../views/Search/Facets/DataProviderFacet/DataProvi
 
 export interface SearchResultItem {
     id: string;
-    title: string;
-    resourceType: ResourceType;
+    title?: string;
+    resourceType?: ResourceType;
     publishDate?: Date;
     updateDate?: Date;
     locality?: string;
-    abstract: string;
-    url: string;
+    abstract?: string;
+    url?: string;
     properties: {
         title: string;
         type: string;
         aicollection: string;
-        description: string;
+        description?: string;
     };
 }
 
@@ -71,22 +71,40 @@ export interface ZenodoResultItem {
     identifier: string;
     codeRepository: string;
     metadata: {
+        access_right: string;
         resource_type: {
             title: string;
             type: ResourceType;
         };
+        related_identifiers: {
+            identifier: string;
+            relation: string;
+            resource_type: string;
+            scheme: string;
+        },
+        custom: {
+            "code:codeRepository": string;
+            "code:programmingLanguage": {
+                id: string;
+                title: {
+                    en: string;
+                }
+            }
+        },
         description: string;
+        title: string;
         language: string;
         publication_date: string;
         license: {
             id: string;
         };
+        keywords: string;
         version: string;
         creators: [
             {
                 affiliation: string;
                 name: string;
-                orcid: string;
+                orcid?: string;
             }
         ];
     };
@@ -187,9 +205,8 @@ export class SearchService {
         );
     }
 
-    fetchRoCrateFile(id: string) {
-        const url =
-            "https://zenodo.org/api/records/" + id + "/files/ro-crate-metadata.json/content";
+    zenodoTestFetch(zenodo_url: string) {
+        const url = zenodo_url;
         return fetch(url).then((response) =>
             response.json().then((responseData: object) => {
                 if (responseData) {

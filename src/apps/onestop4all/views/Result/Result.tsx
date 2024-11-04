@@ -37,14 +37,16 @@ export function Result() {
     useEffect(() => {
         setLoading(true);
         searchSrvc.getMetadata(resultId).then((result) => {
+            console.log(resultId);
             if (result) {
+                //console.log(result);
                 if (result.provider === "zenodo") {
-                    searchSrvc.fetchRoCrateFile("10477880").then((crate: any) => {
+                    searchSrvc.zenodoTestFetch("https://sandbox.zenodo.org/api/records/123424").then((resp: any) => {
                         //TO DO: implement handling for assets that don't have a ro-crate file.
-                        const roCrateFile = crate["@graph"];
-                        setSearchResult(roCrateFile);
+                        //console.log(resp);
+                        setSearchResult(resp);
                         setResourceType(
-                            getResourceType(result.response.metadata.resource_type.type)
+                            getResourceType(resp.metadata.resource_type.type)
                         );
                         setLoading(false);
                     });
@@ -101,6 +103,10 @@ export function Result() {
                 return <DatasetView item={item} />;
             }
             case ResourceType.Software: {
+                const item = searchResult as ZenodoResultItem;
+                return <SoftwareView item={item} />;
+            }
+            case ResourceType.Workflow: {
                 const item = searchResult as ZenodoResultItem;
                 return <SoftwareView item={item} />;
             }
