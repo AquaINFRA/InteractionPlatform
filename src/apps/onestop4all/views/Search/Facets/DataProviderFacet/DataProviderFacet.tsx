@@ -35,7 +35,7 @@ export function DataProviderFacet() {
                 setEntries(filteredEntries);
 
                 const ids = filteredEntries.map((entry: any) => entry.id);
-                if(searchState.selectedDataProvider.length === 0) {
+                if (searchState.selectedDataProvider.length === 0) {
                     searchState.setSelectedDataProvider(ids);
                 }
                 setAllSelected(true);
@@ -44,6 +44,8 @@ export function DataProviderFacet() {
                 });
                 searchState.setDataProviderTitles(providerTitles);
             }
+        }).catch((e) => {
+            console.error("Error fetching data providers:", e);
         });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,32 +57,31 @@ export function DataProviderFacet() {
         if (searchState.selectedDataProvider.length > 0) {
             const providerWithResults: ProviderWithResults[] = [];
             const providerTitles = searchState.dataProviderTitles;
-            const {searchTerm, downloadOption, spatialFilter} = searchState;
+            const { searchTerm, downloadOption, spatialFilter } = searchState;
             let i = 0;
-            providerTitles.length && searchState.searchTerm.trim() !== "" && providerTitles.map((elem: any, key: number) => { 
+            providerTitles.length && searchState.searchTerm.trim() !== "" && providerTitles.map((elem: any, key: number) => {
                 searchSrvc.doSearch({
                     searchTerm,
-                    dataProvider: [elem.id], 
+                    dataProvider: [elem.id],
                     downloadOption,
                     spatialFilter
                 }).then((res) => {
                     i++;
                     if (res.count > 0) {
-                        providerWithResults.push({id:elem.id, count:res.count}); 
+                        providerWithResults.push({ id: elem.id, count: res.count });
                     };
                     if (providerTitles.length === i) {
                         console.log("Done with requesting search hits per data provider");
                         setProviderWithResults(providerWithResults);
                     }
-                })
-                    .catch((e: any) => {
-                        console.log(e);
-                        i++;
-                    });
+                }).catch((e: any) => {
+                    console.log(e);
+                    i++;
+                });
             });
         }
     }, [
-        searchState.dataProviderTitles, 
+        searchState.dataProviderTitles,
         searchState.searchTerm,
         searchState.downloadOption,
         searchState.spatialFilter
@@ -108,29 +109,37 @@ export function DataProviderFacet() {
     }
 
     return (
-        <FacetBase title="Data provider" expanded>
-            <SimpleGrid columns={[1, 2]} spacing={3} marginTop={"1%"}>
-                {entries.map((entry: any, i) =>
-                    entry.id !== "dataeurope" ? (
-                        <Flex key={i}>
-                            <FacetCheckbox
-                                label={entry.title}
-                                description={entry.description}
-                                isChecked={searchState.selectedDataProvider.includes(entry.id)}
-                                onChange={(event) =>
-                                    dataProviderToggled(event.target.checked, entry)
-                                }
-                                count={providerWithResults?.find(result => result.id === entry.id)?.count}                            
-                            />
-                        </Flex>
-                    ) : null
-                )}
-            </SimpleGrid>
-            <Box pt={5}>
-                <Button w={"100%"} onClick={changeAllSelection}>
-                    {allSelected ? "Uncheck all data providers" : "Select all data providers"}
-                </Button>
+        entries.length > 0 ? (
+            <FacetBase title="Data provider" expanded>
+                <SimpleGrid columns={[1, 2]} spacing={3} marginTop={"1%"}>
+                    {entries.map((entry: any, i) =>
+                        entry.id !== "dataeurope" ? (
+                            <Flex key={i}>
+                                <FacetCheckbox
+                                    label={entry.title}
+                                    description={entry.description}
+                                    isChecked={searchState.selectedDataProvider.includes(entry.id)}
+                                    onChange={(event) =>
+                                        dataProviderToggled(event.target.checked, entry)
+                                    }
+                                    count={providerWithResults?.find(result => result.id === entry.id)?.count}
+                                />
+                            </Flex>
+                        ) : null
+                    )}
+                </SimpleGrid>
+                {searchState.selectedDataProvider.length > 0 ? (
+                    <Box pt={5}>
+                        <Button w={"100%"} onClick={changeAllSelection}>
+                            {allSelected ? "Uncheck all data providers" : "Select all data providers"}
+                        </Button>
+                    </Box>
+                ) : null}
+            </FacetBase>
+        ) : (
+            <Box color={"red"}>
+                Connection is broken. Either the DDAS is down or your wifi connection is instable. Please contact m.konkol [at] 52north.org.
             </Box>
-        </FacetBase>
+        )
     );
 }

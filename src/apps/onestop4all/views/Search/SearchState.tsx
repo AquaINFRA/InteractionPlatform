@@ -153,7 +153,7 @@ export const SearchState = (props: PropsWithChildren) => {
                 })
                 .then((result) => {
                     setIsLoaded(true);
-                    result.results.pop();
+                    /*result.results.pop();
                     result.results.push({
                         id: "zenodo:123424",
                         properties: {
@@ -161,7 +161,7 @@ export const SearchState = (props: PropsWithChildren) => {
                             title: "AquaINFRA's Daugava Workflow",
                             aicollection: "Zenodo"
                         }
-                    });
+                    });*/
                     setSearchResults(result);
                     const dataProviderFacet = result.facets.provider.map((dataprovider) => {
                         return {
