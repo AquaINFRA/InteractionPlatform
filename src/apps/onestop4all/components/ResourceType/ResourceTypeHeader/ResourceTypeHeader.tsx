@@ -4,11 +4,6 @@ import { useNavigate } from "react-router-dom";
 import {
     BackIcon,
     DatasetIcon,
-    DocumentsIcon,
-    LearningResourceIcon,
-    OrganisationsIcon,
-    RepositoriesIcon,
-    StandardIcon,
     ToolSoftwareIcon,
     SeriesIcon,
     ModelIcon
