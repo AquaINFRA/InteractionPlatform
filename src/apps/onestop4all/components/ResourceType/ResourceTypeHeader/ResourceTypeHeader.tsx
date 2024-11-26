@@ -53,21 +53,6 @@ export function ResourceTypeHeader(props: { resType: ResourceType | undefined; l
 
     function getIcon() {
         switch (resType) {
-            case ResourceType.Repos:
-                return <RepositoriesIcon />;
-            case ResourceType.Tools:
-                return <ToolSoftwareIcon />;
-            case ResourceType.Standards:
-                return <StandardIcon />;
-            case ResourceType.Learning_Resource:
-                return <LearningResourceIcon />;
-            case ResourceType.LHB_Articles:
-            case ResourceType.Articles:
-                return <DocumentsIcon />;
-            case ResourceType.Organisations:
-                return <OrganisationsIcon />;
-            // case ResourceType.Services:
-            //     return <ServicesIcon />;
             case ResourceType.Dataset:
                 return <DatasetIcon />;
             case ResourceType.Software:
@@ -75,6 +60,20 @@ export function ResourceTypeHeader(props: { resType: ResourceType | undefined; l
             case ResourceType.Series:
                 return <SeriesIcon />;
             case ResourceType.Model:
+                return <ModelIcon />;
+            case ResourceType.Poster:
+                return <ModelIcon />;
+            case ResourceType.Other:
+                return <ModelIcon />;
+            case ResourceType.Presentation:
+                return <ModelIcon />;
+            case ResourceType.Workflow:
+                return <ModelIcon />;
+            case ResourceType.Image:
+                return <ModelIcon />;
+            case ResourceType.Video:
+                return <ModelIcon />;
+            case ResourceType.Publication:
                 return <ModelIcon />;
             default:
                 return <></>;
