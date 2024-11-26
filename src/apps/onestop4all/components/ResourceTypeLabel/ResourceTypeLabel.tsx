@@ -3,14 +3,10 @@ import { Box, Flex, Skeleton } from "@open-pioneer/chakra-integration";
 import { ResourceType } from "../../services/ResourceTypeUtils";
 import {
     DatasetIcon,
-    DocumentsIcon,
-    LearningResourceIcon,
-    OrganisationsIcon,
-    RepositoriesIcon,
     SeriesIcon,
     ServicesIcon,
-    StandardIcon,
-    ToolSoftwareIcon
+    ToolSoftwareIcon,
+    WorkflowIcon
 } from "../Icons";
 
 export function ResourceTypeLabel(props: {
@@ -44,27 +40,16 @@ export function ResourceTypeLabel(props: {
 
     function getIcon() {
         switch (resType) {
-            case ResourceType.Repos:
-                return <RepositoriesIcon />;
-            case ResourceType.Tools:
-                return <ToolSoftwareIcon />;
-            case ResourceType.Standards:
-                return <StandardIcon />;
-            case ResourceType.Learning_Resource:
-                return <LearningResourceIcon />;
-            case ResourceType.LHB_Articles:
-            case ResourceType.Articles:
-                return <DocumentsIcon />;
-            case ResourceType.Organisations:
-                return <OrganisationsIcon />;
-            // case ResourceType.Services:
-            //     return <ServicesIcon />;
             case ResourceType.Dataset:
                 return <DatasetIcon />;
             case ResourceType.Service:
                 return <ServicesIcon />;
             case ResourceType.Series:
                 return <SeriesIcon />;
+            case ResourceType.Software:
+                return <ToolSoftwareIcon />;
+            case ResourceType.Workflow:
+                return <WorkflowIcon />;
             default:
                 return <></>;
         }

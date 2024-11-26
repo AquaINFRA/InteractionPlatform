@@ -6,18 +6,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { SearchBar } from "../../components/SearchBar";
 import { getResourceType, ResourceType } from "../../services/ResourceTypeUtils";
-import { SearchService, SolrSearchResultItem, ZenodoResultItem } from "../../services/SearchService";
-import { ArticleMetadataResponse, ArticleView } from "../Article/Article";
+import { SearchService, SolrSearchResultItem } from "../../services/SearchService";
 import { DatasetMetadataResponse, DatasetView } from "../Dataset/Dataset";
-import { SoftwareView } from "../Software/Software";
 import { useSearchState } from "../Search/SearchState";
 import { BackToSearchLink } from "../../components/BackToSearchLink/BackToSearchLink";
 import { ResourceTypeLabel } from "../../components/ResourceTypeLabel/ResourceTypeLabel";
+import { ZenodoMetadataResponse, ZenodoView } from "../Zenodo/Zenodo";
 
 export function Result() {
     const resultId = useParams().id as string;
     const searchSrvc = useService("onestop4all.SearchService") as SearchService; 
-    const [searchResult, setSearchResult] = useState<SolrSearchResultItem | ZenodoResultItem>();
+    const [searchResult, setSearchResult] = useState<SolrSearchResultItem | ZenodoMetadataResponse>();
     const [resourceType, setResourceType] = useState<ResourceType>();
     const [loading, setLoading] = useState(true);
 
@@ -42,12 +41,8 @@ export function Result() {
                 //console.log(result);
                 if (result.provider === "zenodo") {
                     searchSrvc.zenodoTestFetch("https://sandbox.zenodo.org/api/records/123424").then((resp: any) => {
-                        //TO DO: implement handling for assets that don't have a ro-crate file.
-                        //console.log(resp);
-                        setSearchResult(resp);
-                        setResourceType(
-                            getResourceType(resp.metadata.resource_type.type)
-                        );
+                        setSearchResult(result.response);
+                        setResourceType(getResourceType(result.response.metadata.resource_type.type));
                         setLoading(false);
                     });
                 } else {
@@ -70,10 +65,6 @@ export function Result() {
 
     function getResourceView(): import("react").ReactNode {
         switch (resourceType) {
-            case ResourceType.Articles: {
-                const item = searchResult as ArticleMetadataResponse;
-                return <ArticleView item={item} />;
-            }
             case ResourceType.Dataset: {
                 const item = searchResult as DatasetMetadataResponse;
                 return <DatasetView item={item} />;
@@ -103,12 +94,44 @@ export function Result() {
                 return <DatasetView item={item} />;
             }
             case ResourceType.Software: {
-                const item = searchResult as ZenodoResultItem;
-                return <SoftwareView item={item} />;
+                const item = searchResult as ZenodoMetadataResponse;
+                return <ZenodoView item={item} />;
             }
             case ResourceType.Workflow: {
-                const item = searchResult as ZenodoResultItem;
-                return <SoftwareView item={item} />;
+                const item = searchResult as ZenodoMetadataResponse;
+                return <ZenodoView item={item} />;
+            }
+            case ResourceType.Publication: {
+                const item = searchResult as ZenodoMetadataResponse;
+                return <ZenodoView item={item} />;
+            }
+            case ResourceType.Presentation: {
+                const item = searchResult as ZenodoMetadataResponse;
+                return <ZenodoView item={item} />;
+            }
+            case ResourceType.Video: {
+                const item = searchResult as ZenodoMetadataResponse;
+                return <ZenodoView item={item} />;
+            }
+            case ResourceType.Lesson: {
+                const item = searchResult as ZenodoMetadataResponse;
+                return <ZenodoView item={item} />;
+            }
+            case ResourceType.Other: {
+                const item = searchResult as ZenodoMetadataResponse;
+                return <ZenodoView item={item} />;
+            }
+            case ResourceType.Image: {
+                const item = searchResult as ZenodoMetadataResponse;
+                return <ZenodoView item={item} />;
+            }
+            case ResourceType.Poster: {
+                const item = searchResult as ZenodoMetadataResponse;
+                return <ZenodoView item={item} />;
+            }
+            case ResourceType.PhysicalObject: {
+                const item = searchResult as ZenodoMetadataResponse;
+                return <ZenodoView item={item} />;
             }
             default:
                 throw new Error(`Unknown resourceType: '${resourceType}'`);

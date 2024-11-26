@@ -11,7 +11,6 @@ export abstract class SearchResultHandler {
     public abstract readonly resourceType: ResourceType;
 
     public canHandle(item: string): boolean {
-        //console.log("hieeeer",item);
         if (item) {
             return item === (mapFromResourceType(this.resourceType) as string);
         }

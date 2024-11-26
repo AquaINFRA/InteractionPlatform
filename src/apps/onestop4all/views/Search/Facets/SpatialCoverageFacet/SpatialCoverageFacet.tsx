@@ -233,64 +233,49 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     // For all results that have a spatial extent information (i.e. datasets),
     // the function returns this geometry
     function getGeometry(result: SolrSearchResultItem) {
-        if (result) {
-            //no zenodo case
-        } else return null;
-        switch (getResourceType(result.properties.type)) {
-            case ResourceType.Repos: {
-                return null;
-            }
-            case ResourceType.Organisations: {
-                return null;
-            }
-            case ResourceType.Tools: {
-                return null;
-            }
-            case ResourceType.Standards: {
-                return null;
-            }
-            case ResourceType.Learning_Resource: {
-                return null;
-            }
-            case ResourceType.Articles: {
-                return null;
-            }
-            case ResourceType.Dataset: {
-                const item = result as DatasetMetadataResponse;
-                return item.geometry;
-            }
-            case ResourceType.Series: {
-                const item = result as DatasetMetadataResponse;
-                return item.geometry;
-            }
-            case ResourceType.Model: {
-                const item = result as DatasetMetadataResponse;
-                return item.geometry;
-            }
-            case ResourceType.Service: {
-                const item = result as DatasetMetadataResponse;
-                return item.geometry;
-            }
-            case ResourceType.DownloadableData: {
-                const item = result as DatasetMetadataResponse;
-                return item.geometry;
-            }
-            case ResourceType.OfflineData: {
-                const item = result as DatasetMetadataResponse;
-                return item.geometry;
-            }
-            case ResourceType.LiveData: {
-                const item = result as DatasetMetadataResponse;
-                return item.geometry;
-            }
-            case ResourceType.Software: {
-                return null;
-            }
-            default:
-                throw new Error(
-                    `Unknown resourceType: '${getResourceType(result.properties.type)}'`
-                );
+        if (!result) return null;
+    
+        const resourceType = getResourceType(result.properties.type);
+    
+        // Handle all cases where we need to return geometry
+        const geometryResourceTypes = new Set([
+            ResourceType.Dataset,
+            ResourceType.Series,
+            ResourceType.Model,
+            ResourceType.Service,
+            ResourceType.DownloadableData,
+            ResourceType.OfflineData,
+            ResourceType.LiveData,
+        ]);
+    
+        // If the resourceType matches one that provides geometry
+        if (geometryResourceTypes.has(resourceType)) {
+            const item = result as DatasetMetadataResponse;
+            return item.geometry;
         }
+    
+        // Cases where we explicitly return null
+        const nullReturningTypes = new Set([
+            ResourceType.Software,
+            ResourceType.Workflow,
+            ResourceType.Publication,
+            ResourceType.Presentation,
+            ResourceType.Lesson,
+            ResourceType.Image,
+            ResourceType.Video,
+            ResourceType.Other,
+            ResourceType.Poster,
+            ResourceType.PhysicalObject,
+        ]);
+    
+        if (nullReturningTypes.has(resourceType)) {
+            return null;
+        }
+    
+        // Handle unknown resource types
+        throw new Error(
+            `Unknown resourceType: '${resourceType}' for result with ID '${result.id || "unknown"}'`
+        );
     }
 
     /*************************************Select areas************************* */

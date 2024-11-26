@@ -435,6 +435,16 @@ export const ToolSoftwareIcon = () => (
     </svg>
 );
 
+export const WorkflowIcon = () => (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="12" width="8" height="8" fill="#4CAF50" rx="2" />
+        <rect x="12" y="8" width="8" height="8" fill="#FFC107" rx="2" />
+        <rect x="22" y="12" width="8" height="8" fill="#F44336" rx="2" />
+        <path d="M10 16H12" stroke="#808080" strokeWidth="2" strokeLinecap="round" />
+        <path d="M20 12L22 16" stroke="#808080" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+);
+
 export const DocumentsIcon = () => (
     <svg width="33" height="32" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clipPath="url(#clip0_259_11595)">

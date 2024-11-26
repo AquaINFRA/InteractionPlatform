@@ -25,8 +25,6 @@ export interface UrlSearchParams {
     [UrlSearchParameterType.DownloadOption]?: string;
 }
 
-export const SpatialFilterEnableForResourceTypes = [ResourceType.Organisations];
-
 export const SortOptions: SortOption[] = [
     { label: "Relevanz", term: "" },
     { label: "Title (A-Z)", term: "mainTitle asc" },

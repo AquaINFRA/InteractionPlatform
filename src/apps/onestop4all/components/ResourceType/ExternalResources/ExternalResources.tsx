@@ -108,7 +108,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                                 fun={() => window.open(link.href as string, "_blank")} // Opens the visit link in a new tab
                             />
                         </Box>
-                        {(link.type === "application/zip" || 
+                        { link.type && (link.type === "application/zip" || 
                             link.type === "ZIP" ||
                             link.type === "SHAPE-ZIP" ||
                             link.type === "JSON" || 

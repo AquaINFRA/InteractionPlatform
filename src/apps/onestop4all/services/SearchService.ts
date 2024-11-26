@@ -64,52 +64,6 @@ export interface SolrSearchResultItem {
     };
 }
 
-export interface ZenodoResultItem {
-    title: string;
-    recid: string;
-    doi_url: string;
-    identifier: string;
-    codeRepository: string;
-    metadata: {
-        access_right: string;
-        resource_type: {
-            title: string;
-            type: ResourceType;
-        };
-        related_identifiers: {
-            identifier: string;
-            relation: string;
-            resource_type: string;
-            scheme: string;
-        },
-        custom: {
-            "code:codeRepository": string;
-            "code:programmingLanguage": {
-                id: string;
-                title: {
-                    en: string;
-                }
-            }
-        },
-        description: string;
-        title: string;
-        language: string;
-        publication_date: string;
-        license: {
-            id: string;
-        };
-        keywords: string;
-        version: string;
-        creators: [
-            {
-                affiliation: string;
-                name: string;
-                orcid?: string;
-            }
-        ];
-    };
-}
-
 export interface Facets {
     provider: DataProvider[];
 }

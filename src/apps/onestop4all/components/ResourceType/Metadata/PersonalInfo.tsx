@@ -39,7 +39,7 @@ export const PersonalInfo = (props: { name: string; orcid?: string; affiliation?
                     <Image className="orcid" alt="Bg icon" src="/orcid.png" />
                 </a>
             ) : null}
-            {affiliation ? affiliation : ""}
+            {affiliation ? <span style={{ marginLeft: "0.5em" }}>{affiliation}</span> : ""}
         </>
     );
 };

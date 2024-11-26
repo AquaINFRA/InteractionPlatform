@@ -1,4 +1,3 @@
-import { ArticleSearchHandler } from "./search/result-handler/article-handler";
 import { SearchResultHandler } from "./search/result-handler/search-result-handler";
 import { DatasetHandler } from "./search/result-handler/dataset-handler";
 import { WorkflowHandler } from "./search/result-handler/workflow-handler";
@@ -9,15 +8,16 @@ import { SoftwareHandler } from "./search/result-handler/software-zenodo-handler
 import { OfflineDataHandler } from "./search/result-handler/offlineData-handler";
 import { LiveDataHandler } from "./search/result-handler/liveData-handler";
 import { DownloadableDataHandler } from "./search/result-handler/downloadableData-handler";
+import { PublicationHandler } from "./search/result-handler/publication-handler";
+import { PresentationHandler } from "./search/result-handler/presentation-handler";
+import { ImageHandler } from "./search/result-handler/image-handler";
+import { VideoHandler } from "./search/result-handler/video-handler";
+import { PosterHandler } from "./search/result-handler/poster-handler";
+import { OtherHandler } from "./search/result-handler/other-handler";
+import { LessonHandler } from "./search/result-handler/lesson-handler";
+import { PhysicalObejctHandler } from "./search/result-handler/physicalobject-handler";
 
 export enum ResourceType {
-    Repos = "Repository / Archive",
-    Articles = "Article",
-    Tools = "Tool/Software",
-    Organisations = "Organisation",
-    Standards = "Standard",
-    LHB_Articles = "Living Handbook Article",
-    Learning_Resource = "Learning resource",
     Dataset = "dataset",
     Series = "series",
     Service = "service",
@@ -28,14 +28,19 @@ export enum ResourceType {
     LiveData = "liveData",
     OfflineData = "offlineData",
     DownloadableData = "downloadableData",
-    Workflow = "workflow"
+    Workflow = "workflow",
+    Publication = "publication",
+    Presentation = "presentation",
+    Image = "image",
+    Lesson = "lesson",
+    Other = "other",
+    Poster = "poster",
+    Video = "video",
+    PhysicalObject = "physicalobject"
+
 }
 
 const mapping = [
-    {
-        type: ResourceType.Articles,
-        identifier: "http://schema.org/Article"
-    },
     {
         type: ResourceType.Dataset,
         identifier: "dataset"
@@ -79,6 +84,39 @@ const mapping = [
     {
         type: ResourceType.Workflow,
         identifier: "workflow"
+    },
+    {
+        type: ResourceType.Publication,
+        identifier: "publication"
+    },
+    {
+        type: ResourceType.Presentation,
+        identifier: "presentation"
+    },
+    {
+        type: ResourceType.Other,
+        identifier: "other"
+    },
+    {
+        type: ResourceType.Poster,
+        identifier: "poster"
+    },
+    {
+        type: ResourceType.Image,
+        identifier: "image"
+    },
+    {
+        type: ResourceType.Video,
+        identifier: "video"
+    },
+    {
+        type: ResourceType.Lesson,
+        identifier: "lesson"
+    }
+    ,
+    {
+        type: ResourceType.PhysicalObject,
+        identifier: "physicalobject"
     }
 ];
 
@@ -99,7 +137,6 @@ export function mapFromResourceType(resourceType: ResourceType): string {
 }
 
 const searchResultHandlers: SearchResultHandler[] = [
-    new ArticleSearchHandler(),
     new DatasetHandler(),
     new WorkflowHandler(),
     new SoftwareHandler(),
@@ -108,7 +145,15 @@ const searchResultHandlers: SearchResultHandler[] = [
     new ServiceHandler(),
     new DownloadableDataHandler(),
     new OfflineDataHandler(),
-    new LiveDataHandler()
+    new LiveDataHandler(),
+    new PublicationHandler(),
+    new PresentationHandler(),
+    new ImageHandler(),
+    new VideoHandler(),
+    new PosterHandler(),
+    new OtherHandler(),
+    new LessonHandler(),
+    new PhysicalObejctHandler()
 ];
 
 export function getHandler(result: string): SearchResultHandler {
