@@ -1,4 +1,4 @@
-import { useService } from "open-pioneer:react-hooks";
+/*import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 
 import { Box, Flex, SimpleGrid } from "@open-pioneer/chakra-integration";
@@ -52,3 +52,4 @@ export const LatestAdditions = () => {
         return null;
     }
 };
+*/
