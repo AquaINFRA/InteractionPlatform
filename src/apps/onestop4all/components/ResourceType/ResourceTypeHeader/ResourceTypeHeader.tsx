@@ -6,7 +6,8 @@ import {
     DatasetIcon,
     ToolSoftwareIcon,
     SeriesIcon,
-    ModelIcon
+    ModelIcon,
+    DocumentsIcon
 } from "../../Icons";
 import { ResourceType } from "../../../services/ResourceTypeUtils";
 
@@ -69,7 +70,7 @@ export function ResourceTypeHeader(props: { resType: ResourceType | undefined; l
             case ResourceType.Video:
                 return <ModelIcon />;
             case ResourceType.Publication:
-                return <ModelIcon />;
+                return <DocumentsIcon />;
             default:
                 return <></>;
         }
