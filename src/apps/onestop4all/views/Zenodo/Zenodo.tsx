@@ -3,7 +3,14 @@ import { Box, Flex } from "@open-pioneer/chakra-integration";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ZenodoResources } from "../../components/ResourceType/ExternalResources/ZenodoResources";
+import { RelatedContent } from "../../components/ResourceType/RelatedIdentifier/RelatedIdentifier";
 
+export interface RelatedIdentifier {
+    identifier: string;
+    relation: string;
+    resource_type: string;
+    scheme: string;
+}
 export interface ZenodoMetadataResponse {
     title: string;
     updated: string;
@@ -11,6 +18,7 @@ export interface ZenodoMetadataResponse {
     links?: {
         self: string;
         doi: string;
+        archive: string;
     };
     metadata: {
         description: string;
@@ -40,12 +48,7 @@ export interface ZenodoMetadataResponse {
                 }
             }
         },
-        related_identifiers?: [{
-            identifier: string;
-            relation: string;
-            resource_type: string;
-            scheme: string;
-        }]
+        related_identifiers?: RelatedIdentifier[]
     };
 }
 
@@ -90,15 +93,18 @@ export function ZenodoView(props: ZenodoViewProps) {
                             <iframe
                                 title="Galaxy Workflow Embed"
                                 style={{ width: "100%", height: "700px", border: "none" }}
-                                src={useGalaxyIdentifier.identifier + "&embed=true&buttons=true&about=false&heading=false&minimap=true&zoom_controls=true&initialX=-20&initialY=-20&zoom=0.7"}
+                                src={useGalaxyIdentifier.identifier + "&embed=true&buttons=true&about=false&heading=false&minimap=true&zoom_controls=true&initialX=-20&initialY=-20&zoom=0.6"}
                             ></iframe>
                         </Box>
                     )}
+                    {metadata.metadata.related_identifiers ? <Box pt={10}>
+                        <RelatedContent relatedContentItems={metadata.metadata.related_identifiers} />
+                    </Box> : null}
                 </Box>
                 <Box w="25%">
                     {metadata.links && metadata.links.doi ? (
-                        <Box pt="8px">
-                            <ZenodoResources self={metadata.links.self} repo={metadata.links.doi}/>
+                        <Box pt="40px">
+                            <ZenodoResources metadata={metadata.links.self} repo={metadata.links.doi} download={metadata.links.archive}/>
                         </Box>
                     ) : null}
                 </Box>
@@ -118,7 +124,7 @@ export function ZenodoView(props: ZenodoViewProps) {
                 ) : null}
                 {metadata.links && metadata.links.doi ? (
                     <Box pt="40px">
-                        <ZenodoResources self={metadata.links.self} repo={metadata.links.doi}/>
+                        <ZenodoResources metadata={metadata.links.self} repo={metadata.links.doi} download={metadata.links.archive}/>
                     </Box>
                 ) : null}
             </Box>

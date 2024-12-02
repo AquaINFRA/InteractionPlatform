@@ -10,8 +10,8 @@ import { SearchService } from "../../../services";
 import { TextFileResponse } from "../../../services/SearchService";
 import { UrlBuilderPopup } from "./UrlBuilderPopup";
 
-export const ZenodoResources = (props: { self: string, repo: string; }) => {
-    const { self, repo } = props;
+export const ZenodoResources = (props: { metadata: string, repo: string; download: string; }) => {
+    const { metadata, repo, download } = props;
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
 
     const [urlToImport, setUrlToImport] = useState("");
@@ -77,7 +77,19 @@ export const ZenodoResources = (props: { self: string, repo: string; }) => {
                                 label="Check metadata"
                                 icon={<ExternalLinkIcon color="white" />}
                                 variant="solid"
-                                fun={() => window.open(self as string, "_blank")} // Opens the visit link in a new tab
+                                fun={() => window.open(metadata as string, "_blank")} // Opens the visit link in a new tab
+                            />
+                        </Box>
+                    </Flex>
+                </Box>
+                <Box pt={3}>
+                    <Flex flexDirection="column"> 
+                        <Box pt={3}>
+                            <ActionButton
+                                label="Import to Galaxy"
+                                icon={<DownloadIcon color="white" />}
+                                variant="solid"
+                                fun={() => handleGalaxyImport(download)}
                             />
                         </Box>
                     </Flex>
