@@ -30,6 +30,7 @@ export const PersonalInfo = (props: { name: string; orcid?: string; affiliation?
     return (
         <>
             {name ? name : ""}
+            {(orcid && orcid[0]) || affiliation ? ", " : ""}
             {orcid && orcid[0] !== "" ? (
                 <a
                     href={isUrl(orcid) ? orcid : "https://orcid.org/" + orcid}
@@ -39,7 +40,7 @@ export const PersonalInfo = (props: { name: string; orcid?: string; affiliation?
                     <Image className="orcid" alt="Bg icon" src="/orcid.png" />
                 </a>
             ) : null}
-            {affiliation ? <span style={{ marginLeft: "0.5em" }}>{affiliation}</span> : ""}
+            {affiliation ? <span>{affiliation}</span> : ""}
         </>
     );
 };
