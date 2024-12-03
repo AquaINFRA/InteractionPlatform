@@ -4,9 +4,13 @@ import { ResourceType } from "../../services/ResourceTypeUtils";
 import {
     DatasetIcon,
     DocumentsIcon,
+    EventIcon,
+    ImageIcon,
+    LearningResourceIcon,
+    OtherIcon,
     SeriesIcon,
-    ServicesIcon,
     ToolSoftwareIcon,
+    VideoIcon,
     WorkflowIcon
 } from "../Icons";
 
@@ -43,8 +47,6 @@ export function ResourceTypeLabel(props: {
         switch (resType) {
             case ResourceType.Dataset:
                 return <DatasetIcon />;
-            case ResourceType.Service:
-                return <ServicesIcon />;
             case ResourceType.Series:
                 return <SeriesIcon />;
             case ResourceType.Software:
@@ -52,7 +54,19 @@ export function ResourceTypeLabel(props: {
             case ResourceType.Workflow:
                 return <WorkflowIcon />;
             case ResourceType.Publication:
+            case ResourceType.Poster:
+            case ResourceType.Presentation:
                 return <DocumentsIcon />;
+            case ResourceType.Image:
+                return <ImageIcon />;
+            case ResourceType.Event:
+                return <EventIcon />;
+            case ResourceType.Other:
+                return <OtherIcon />;
+            case ResourceType.Video:
+                return <VideoIcon />;
+            case ResourceType.Lesson:
+                return <LearningResourceIcon />;
             default:
                 return <></>;
         }
