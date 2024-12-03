@@ -16,6 +16,7 @@ import { PosterHandler } from "./search/result-handler/poster-handler";
 import { OtherHandler } from "./search/result-handler/other-handler";
 import { LessonHandler } from "./search/result-handler/lesson-handler";
 import { PhysicalObejctHandler } from "./search/result-handler/physicalobject-handler";
+import { EventHandler } from "./search/result-handler/event-handler";
 
 export enum ResourceType {
     Dataset = "dataset",
@@ -36,7 +37,8 @@ export enum ResourceType {
     Other = "other",
     Poster = "poster",
     Video = "video",
-    PhysicalObject = "physicalobject"
+    PhysicalObject = "physicalobject",
+    Event = "event"
 
 }
 
@@ -112,11 +114,14 @@ const mapping = [
     {
         type: ResourceType.Lesson,
         identifier: "lesson"
-    }
-    ,
+    },
     {
         type: ResourceType.PhysicalObject,
         identifier: "physicalobject"
+    },
+    {
+        type: ResourceType.Event,
+        identifier: "event"
     }
 ];
 
@@ -153,7 +158,8 @@ const searchResultHandlers: SearchResultHandler[] = [
     new PosterHandler(),
     new OtherHandler(),
     new LessonHandler(),
-    new PhysicalObejctHandler()
+    new PhysicalObejctHandler(),
+    new EventHandler()
 ];
 
 export function getHandler(result: string): SearchResultHandler {

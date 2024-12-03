@@ -3,6 +3,7 @@ import { Box, Flex, Skeleton } from "@open-pioneer/chakra-integration";
 import { ResourceType } from "../../services/ResourceTypeUtils";
 import {
     DatasetIcon,
+    DocumentsIcon,
     SeriesIcon,
     ServicesIcon,
     ToolSoftwareIcon,
@@ -50,6 +51,8 @@ export function ResourceTypeLabel(props: {
                 return <ToolSoftwareIcon />;
             case ResourceType.Workflow:
                 return <WorkflowIcon />;
+            case ResourceType.Publication:
+                return <DocumentsIcon />;
             default:
                 return <></>;
         }

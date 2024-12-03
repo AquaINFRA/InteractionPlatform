@@ -65,71 +65,27 @@ export function Result() {
 
     function getResourceView(): import("react").ReactNode {
         switch (resourceType) {
-            case ResourceType.Dataset: {
-                const item = searchResult as DatasetMetadataResponse;
-                return <DatasetView item={item} />;
-            }
-            case ResourceType.Series: {
-                const item = searchResult as DatasetMetadataResponse;
-                return <DatasetView item={item} />;
-            }
-            case ResourceType.Model: {
-                const item = searchResult as DatasetMetadataResponse;
-                return <DatasetView item={item} />;
-            }
-            case ResourceType.Service: {
-                const item = searchResult as DatasetMetadataResponse;
-                return <DatasetView item={item} />;
-            }
-            case ResourceType.DownloadableData: {
-                const item = searchResult as DatasetMetadataResponse;
-                return <DatasetView item={item} />;
-            }
-            case ResourceType.OfflineData: {
-                const item = searchResult as DatasetMetadataResponse;
-                return <DatasetView item={item} />;
-            }
+            case ResourceType.Dataset:
+            case ResourceType.Series:
+            case ResourceType.Model:
+            case ResourceType.Service:
+            case ResourceType.DownloadableData:
+            case ResourceType.OfflineData:
             case ResourceType.LiveData: {
                 const item = searchResult as DatasetMetadataResponse;
                 return <DatasetView item={item} />;
             }
-            case ResourceType.Software: {
-                const item = searchResult as ZenodoMetadataResponse;
-                return <ZenodoView item={item} />;
-            }
-            case ResourceType.Workflow: {
-                const item = searchResult as ZenodoMetadataResponse;
-                return <ZenodoView item={item} />;
-            }
-            case ResourceType.Publication: {
-                const item = searchResult as ZenodoMetadataResponse;
-                return <ZenodoView item={item} />;
-            }
-            case ResourceType.Presentation: {
-                const item = searchResult as ZenodoMetadataResponse;
-                return <ZenodoView item={item} />;
-            }
-            case ResourceType.Video: {
-                const item = searchResult as ZenodoMetadataResponse;
-                return <ZenodoView item={item} />;
-            }
-            case ResourceType.Lesson: {
-                const item = searchResult as ZenodoMetadataResponse;
-                return <ZenodoView item={item} />;
-            }
-            case ResourceType.Other: {
-                const item = searchResult as ZenodoMetadataResponse;
-                return <ZenodoView item={item} />;
-            }
-            case ResourceType.Image: {
-                const item = searchResult as ZenodoMetadataResponse;
-                return <ZenodoView item={item} />;
-            }
-            case ResourceType.Poster: {
-                const item = searchResult as ZenodoMetadataResponse;
-                return <ZenodoView item={item} />;
-            }
-            case ResourceType.PhysicalObject: {
+            case ResourceType.Software:
+            case ResourceType.Workflow:
+            case ResourceType.Publication:
+            case ResourceType.Presentation:
+            case ResourceType.Video:
+            case ResourceType.Lesson:
+            case ResourceType.Other:
+            case ResourceType.Image:
+            case ResourceType.Poster:
+            case ResourceType.PhysicalObject:
+            case ResourceType.Event: {
                 const item = searchResult as ZenodoMetadataResponse;
                 return <ZenodoView item={item} />;
             }
