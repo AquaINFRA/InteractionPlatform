@@ -15,6 +15,7 @@ export interface ZenodoMetadataResponse {
     title: string;
     updated: string;
     doi_url: string;
+    provider: string;
     links?: {
         self: string;
         doi: string;
@@ -58,7 +59,6 @@ export interface ZenodoViewProps {
 
 export function ZenodoView(props: ZenodoViewProps) {
     const metadata = props.item;
-    console.log(metadata);
 
     const programmingLanguages = metadata.metadata.custom?.["code:programmingLanguage"]
         ? Array.isArray(metadata.metadata.custom["code:programmingLanguage"])
@@ -69,8 +69,6 @@ export function ZenodoView(props: ZenodoViewProps) {
     const useGalaxyIdentifier = metadata.metadata.related_identifiers?.find(
         (identifier) => identifier.identifier.includes("usegalaxy") && identifier.identifier.includes("workflow")
     );
-
-    console.log(useGalaxyIdentifier);
     
     return (
         <Box>
@@ -141,6 +139,11 @@ export function ZenodoView(props: ZenodoViewProps) {
                         val: metadata.metadata.creators
                     },
                     {
+                        element: "provider",
+                        tag: "Provider",
+                        val: metadata.provider
+                    },
+                    {
                         element: "keyword",
                         tag: Array.isArray(metadata.metadata.keywords) && metadata.metadata.keywords?.length > 1 ? "Keywords" : "Keyword",
                         val: metadata.metadata.keywords
@@ -148,7 +151,7 @@ export function ZenodoView(props: ZenodoViewProps) {
                     {
                         element: "datePublished",
                         tag: "Published",
-                        val: new Date(metadata.metadata.publication_date).toLocaleDateString()
+                        val: metadata.metadata.publication_date ? new Date(metadata.metadata.publication_date).toLocaleDateString() : ""
                     },
                     {
                         element: "datePublished",
@@ -168,7 +171,7 @@ export function ZenodoView(props: ZenodoViewProps) {
                     {
                         element: "type",
                         tag: "Type",
-                        val: metadata.metadata.resource_type.title
+                        val: metadata.metadata.resource_type?.title
                     },
                     {
                         element: "rights",
@@ -178,7 +181,7 @@ export function ZenodoView(props: ZenodoViewProps) {
                     {
                         element: "license",
                         tag: "License",
-                        val: metadata.metadata.license.id
+                        val: metadata.metadata.license?.id
                     },
                     {
                         element: "doi",

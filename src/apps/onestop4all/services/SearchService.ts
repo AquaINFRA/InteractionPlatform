@@ -56,6 +56,7 @@ export interface SolrSearchResultItem {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
     time: string;
+    provider: string;
     properties: {
         title: string;
         type: string;

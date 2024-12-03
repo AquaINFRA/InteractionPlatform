@@ -38,17 +38,21 @@ export function Result() {
         searchSrvc.getMetadata(resultId).then((result) => {
             console.log(resultId);
             if (result) {
-                //console.log(result);
                 if (result.provider === "zenodo") {
-                    searchSrvc.zenodoTestFetch("https://sandbox.zenodo.org/api/records/123424").then((resp: any) => {
-                        setSearchResult(result.response);
-                        setResourceType(getResourceType(result.response.metadata.resource_type.type));
-                        setLoading(false);
-                    });
-                } else {
+                    result.response.provider = "Zenodo";
                     setSearchResult(result.response);
-                    setResourceType(getResourceType(result.response.properties.type));
+                    setResourceType(getResourceType(result.response.metadata.resource_type.type));
                     setLoading(false);
+                } else {
+                    fetch("https://vm4072.kaj.pouta.csc.fi/ddas/oapir/collections/" + result.provider).then((res) => 
+                        res.json().then((res) => {
+                            result.response.provider = res.description;
+                            setSearchResult(result.response);
+                            setResourceType(getResourceType(result.response.properties.type));
+                            setLoading(false);
+                        })
+                    );
+                    
                 }
             } else {
                 throw new Error("Unexpected response: " + JSON.stringify(result));
@@ -65,7 +69,15 @@ export function Result() {
 
     function getResourceView(): import("react").ReactNode {
         switch (resourceType) {
-            case ResourceType.Dataset:
+            case ResourceType.Dataset: {
+                if (searchResult?.provider === "Zenodo") {
+                    const item = searchResult as ZenodoMetadataResponse;
+                    return <ZenodoView item={item} />;
+                } else {
+                    const item = searchResult as DatasetMetadataResponse;
+                    return <DatasetView item={item} />;
+                }
+            }
             case ResourceType.Series:
             case ResourceType.Model:
             case ResourceType.Service:

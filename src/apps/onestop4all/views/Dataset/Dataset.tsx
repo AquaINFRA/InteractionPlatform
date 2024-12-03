@@ -119,6 +119,11 @@ export function DatasetView(props: DatasetViewProps) {
             <Metadata
                 metadataElements={[
                     {
+                        element: "provider",
+                        tag: "Provider",
+                        val: metadata.provider
+                    },
+                    {
                         element: "keyword",
                         tag: metadata.properties.keywords?.length > 1 ? "Keywords" : "Keyword",
                         val: metadata.properties.keywords
