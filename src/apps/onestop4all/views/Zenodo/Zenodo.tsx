@@ -64,7 +64,7 @@ export function ZenodoView(props: ZenodoViewProps) {
         ? Array.isArray(metadata.metadata.custom["code:programmingLanguage"])
             ? metadata.metadata.custom["code:programmingLanguage"].map(lang => lang.title?.en || "Unknown")
             : [metadata.metadata.custom["code:programmingLanguage"].title?.en || "Unknown"]
-        : [];
+        : "";
 
     const useGalaxyIdentifier = metadata.metadata.related_identifiers?.find(
         (identifier) => identifier.identifier.includes("usegalaxy") && identifier.identifier.includes("workflow")
