@@ -19,9 +19,10 @@ export interface ProviderWithResults {
 export function DataProviderFacet() {
     const searchState = useSearchState();
     const [entries, setEntries] = useState<SelectableDataProvider[]>([]);
-    const [allSelected, setAllSelected] = useState(true); // Default to all selected
+    const [allSelected, setAllSelected] = useState(true);
     const [providerWithResults, setProviderWithResults] = useState<ProviderWithResults[]>();
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         searchSrvc.getDataProvider().then((res) => {
@@ -43,16 +44,17 @@ export function DataProviderFacet() {
                     return { title: se.title, id: se.id, description: se.description };
                 });
                 searchState.setDataProviderTitles(providerTitles);
+                setLoading(false);
             }
         }).catch((e) => {
             console.error("Error fetching data providers:", e);
+            setLoading(false);
         });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
-        console.log("-----------------RENDER-------------");
         setProviderWithResults([]);
         if (searchState.selectedDataProvider.length > 0) {
             const providerWithResults: ProviderWithResults[] = [];
@@ -69,9 +71,8 @@ export function DataProviderFacet() {
                     i++;
                     if (res.count > 0) {
                         providerWithResults.push({ id: elem.id, count: res.count });
-                    };
+                    }
                     if (providerTitles.length === i) {
-                        console.log("Done with requesting search hits per data provider");
                         setProviderWithResults(providerWithResults);
                     }
                 }).catch((e: any) => {
@@ -108,6 +109,10 @@ export function DataProviderFacet() {
         }
     }
 
+    if (loading) {
+        return null;
+    }
+
     return (
         entries.length > 0 ? (
             <FacetBase title="Data provider" expanded>
@@ -138,8 +143,9 @@ export function DataProviderFacet() {
             </FacetBase>
         ) : (
             <Box color={"red"}>
-                Connection is broken. Either the DDAS is down or your wifi connection is instable. Please contact m.konkol [at] 52north.org.
+                No data providers available. Either the DDAS is down or your wifi connection is instable. Please contact m.konkol [at] 52north.org.
             </Box>
         )
     );
 }
+
