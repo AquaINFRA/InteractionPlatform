@@ -133,7 +133,7 @@ export function DataProviderFacet() {
                         ) : null
                     )}
                 </SimpleGrid>
-                {searchState.selectedDataProvider.length > 0 ? (
+                {entries.length > 0 ? (
                     <Box pt={5}>
                         <Button w={"100%"} onClick={changeAllSelection}>
                             {allSelected ? "Uncheck all data providers" : "Select all data providers"}
