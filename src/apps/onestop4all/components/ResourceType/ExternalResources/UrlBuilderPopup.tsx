@@ -65,7 +65,6 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
         setQueryableValue("");
         setSelectedQueryable(null);
         setInputValue("10");
-        updateBbox([]);
     };
 
     const fetchUrlBuilderData = async (url: string) => {
