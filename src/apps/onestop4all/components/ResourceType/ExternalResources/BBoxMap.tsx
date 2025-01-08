@@ -134,7 +134,7 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCover
     return (
         <FacetBase title="Spatial Coverage" expanded={true}>
             <Box position="relative">
-                <Box height="200px" marginBottom="16px" position="relative">
+                <Box height="200px" position="relative">
                     <DeleteBbox onClick={handleDeleteBbox} />
                     <MapContainer mapId={mapId} />
                 </Box>

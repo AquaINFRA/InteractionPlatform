@@ -225,7 +225,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
     return (
         <Modal isOpen={isOpen} onClose={closeBuilder} scrollBehavior="outside">
             <ModalOverlay />
-            <ModalContent width={"40%"} maxW={"700px"} minW={"500px"} maxHeight="90vh" overflow="auto" padding="4">
+            <ModalContent width={"40%"} maxW={"700px"} minW={"500px"} maxHeight="90vh" overflow="auto" padding="1">
                 <ModalHeader>OGC API Features Subsetting</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
@@ -234,11 +234,11 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
                         <p><b>Description:</b> {metadata.description}</p>
                     </Box>
 
-                    <Box padding={"22px 0px 12px"}>
+                    <Box padding={"12px 0px 20px"}>
                         <BBoxMap mapId="ogc" onBboxChange={updateBbox} ogcFeaturesExtent={ogcFeaturesExtent} />
                     </Box>
 
-                    <Box padding={"0px 0px 12px"}>
+                    <Box padding={"0px 0px 20px"}>
                         {maxValIsLoaded ? (
                             <DataPointsSelector
                                 maxSliderValue={maxSliderValue}
@@ -252,15 +252,13 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
                             <Box marginBottom={"15"}>
                                 <Stack>
                                     <Box>Loading...</Box>
-                                    <Skeleton height='30px' />
-                                    <Skeleton height='30px'/>
-                                    <Skeleton height='30px'/>
+                                    <Skeleton height='15px' />
                                 </Stack>
                             </Box>
                         )}
                     </Box>
                     
-                    <Box padding={"0px 0px 12px"}>
+                    <Box padding={"0px 0px 20px"}>
                         <QueryableSelector
                             queryablesArray={queryablesArray}
                             onApply={requestUrlWithQueryables}

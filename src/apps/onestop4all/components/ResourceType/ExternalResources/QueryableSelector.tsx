@@ -34,7 +34,7 @@ const QueryableSelector = ({
     };
 
     return (
-        <FacetBase title="Queryables" expanded={true}>
+        <FacetBase title="Queryables" expanded={false}>
             <Box mt={4}>
                 <Select
                     placeholder="Select Queryable"

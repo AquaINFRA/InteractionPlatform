@@ -20,7 +20,7 @@ const DataPointsSelector: React.FC<DataPointsSelectorProps> = ({
     onInputBlur,
 }) => {
     return (
-        <FacetBase title="Limit data points" expanded={true}>
+        <FacetBase title="Limit data points" expanded={false}>
             <Box mb={4}>
                 <Box mt={2} marginBottom={1}>
                     Maximum number of data points: {maxSliderValue}{" "}
