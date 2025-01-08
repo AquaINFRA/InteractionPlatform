@@ -1,5 +1,6 @@
 import { Box, Button, Select, Input } from "@open-pioneer/chakra-integration";
 import { useState } from "react";
+import { FacetBase } from "../../../views/Search/Facets/FacetBase/FacetBase";
 
 interface QueryableSelectorProps {
     queryablesArray: { title: string; type: string }[];
@@ -33,33 +34,35 @@ const QueryableSelector = ({
     };
 
     return (
-        <Box mt={4}>
-            <Select
-                placeholder="Select Queryable"
-                value={selectedQueryable || ""}
-                onChange={handleQueryableChange}
-            >
-                {queryablesArray.map((queryable, index) => (
-                    <option key={index} value={queryable.title}>
-                        {queryable.title} ({queryable.type})
-                    </option>
-                ))}
-            </Select>
-            <Input
-                mt={2}
-                placeholder="Enter value for queryable"
-                value={queryableValue}
-                onChange={handleQueryableValueChange}
-            />
-            <Button
-                mt={2}
-                onClick={handleApply}
-                isDisabled={!selectedQueryable || !queryableValue}
-                marginBottom={2}
-            >
-                Apply Queryable
-            </Button>
-        </Box>
+        <FacetBase title="Queryables" expanded={true}>
+            <Box mt={4}>
+                <Select
+                    placeholder="Select Queryable"
+                    value={selectedQueryable || ""}
+                    onChange={handleQueryableChange}
+                >
+                    {queryablesArray.map((queryable, index) => (
+                        <option key={index} value={queryable.title}>
+                            {queryable.title} ({queryable.type})
+                        </option>
+                    ))}
+                </Select>
+                <Input
+                    mt={2}
+                    placeholder="Enter value for queryable"
+                    value={queryableValue}
+                    onChange={handleQueryableValueChange}
+                />
+                <Button
+                    mt={2}
+                    onClick={handleApply}
+                    isDisabled={!selectedQueryable || !queryableValue}
+                    marginBottom={2}
+                >
+                    Apply Queryable
+                </Button>
+            </Box>
+        </FacetBase>
     );
 };
 

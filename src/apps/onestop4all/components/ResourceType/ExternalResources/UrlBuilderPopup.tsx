@@ -9,8 +9,6 @@ import {
     ModalBody,
     ModalFooter,
     Skeleton,
-    Select,
-    Input,
     Stack
 } from "@open-pioneer/chakra-integration";
 import { useState, useEffect, useRef } from "react";
@@ -41,9 +39,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
     const [maxValIsLoaded, setMaxValIsLoaded] = useState(true);
     
     const [copyUrlText, setCopyUrlText] = useState("Copy URL");
-    //const [isLoaded, setIsLoaded] = useState(false);    
     const [metadata, setMetadata] = useState({} as any);
-    //const [bbox, setBbox] = useState<number[]>([]);
     const [ogcFeaturesExtent, setOgcFeaturesExtent] = useState<number[]>([]);
 
     useEffect(() => {
@@ -61,14 +57,10 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
             setMaxSliderValue(100);
             setRequestUrl(null);
             setCopyUrlText("Copy URL");
-            //setIsLoaded(false);
         }
     }, [isOpen]);
 
     const reset = () => {
-        //const url = getOrCreateUrl();
-        //const params = [...url.searchParams.keys()];
-        //params.slice(2).forEach((key) => url.searchParams.delete(key));
         setRequestUrl(baseUrl);
         setSliderValue(10);
         setQueryableValue("");
@@ -137,10 +129,8 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
             const newSliderValue = Math.min(sliderValue, numberMatched);
             setSliderValue(newSliderValue);
             setInputValue(String(newSliderValue));
-            //setIsLoaded(true);
             setMaxValIsLoaded(true);
         } catch (error) {
-            //setIsLoaded(true);
             setMaxValIsLoaded(true);
             console.error("Error fetching GeoJSON data:", error);
         }
@@ -173,7 +163,6 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
     };
 
     const updateBbox = (newBbox: number[]) => {
-        //setBbox(newBbox);
         requestUrlWithBbox(newBbox);
         setMaxValIsLoaded(false);
     };
@@ -245,37 +234,42 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
                         <p><b>Description:</b> {metadata.description}</p>
                     </Box>
 
-                    <Box padding={"22px 0px 0px"}>
+                    <Box padding={"22px 0px 12px"}>
                         <BBoxMap mapId="ogc" onBboxChange={updateBbox} ogcFeaturesExtent={ogcFeaturesExtent} />
                     </Box>
 
-                    {maxValIsLoaded ? <DataPointsSelector
-                        maxSliderValue={maxSliderValue}
-                        sliderValue={sliderValue}
-                        inputValue={inputValue}
-                        onSliderChange={handleSliderChange}
-                        onInputChange={handleInputChange}
-                        onInputBlur={handleInputBlur}
-                    />
-                        :
-                        <Box marginBottom={"15"}>
-                            <Stack>
-                                <Box>Loading...</Box>
-                                <Skeleton height='30px' />
-                                <Skeleton height='30px'/>
-                                <Skeleton height='30px'/>
-                            </Stack>
-                        </Box>
-                    }
-
-                    <QueryableSelector
-                        queryablesArray={queryablesArray}
-                        onApply={requestUrlWithQueryables}
-                        selectedQueryable={selectedQueryable}
-                        setSelectedQueryable={setSelectedQueryable}
-                        queryableValue={queryableValue}
-                        setQueryableValue={setQueryableValue}
-                    />
+                    <Box padding={"0px 0px 12px"}>
+                        {maxValIsLoaded ? (
+                            <DataPointsSelector
+                                maxSliderValue={maxSliderValue}
+                                sliderValue={sliderValue}
+                                inputValue={inputValue}
+                                onSliderChange={handleSliderChange}
+                                onInputChange={handleInputChange}
+                                onInputBlur={handleInputBlur}
+                            />
+                        ) : (
+                            <Box marginBottom={"15"}>
+                                <Stack>
+                                    <Box>Loading...</Box>
+                                    <Skeleton height='30px' />
+                                    <Skeleton height='30px'/>
+                                    <Skeleton height='30px'/>
+                                </Stack>
+                            </Box>
+                        )}
+                    </Box>
+                    
+                    <Box padding={"0px 0px 12px"}>
+                        <QueryableSelector
+                            queryablesArray={queryablesArray}
+                            onApply={requestUrlWithQueryables}
+                            selectedQueryable={selectedQueryable}
+                            setSelectedQueryable={setSelectedQueryable}
+                            queryableValue={queryableValue}
+                            setQueryableValue={setQueryableValue}
+                        />
+                    </Box>
 
                     <Box mb={4} p={2} border="1px solid #ccc" borderRadius="md">
                         <strong>Generated URL: </strong>

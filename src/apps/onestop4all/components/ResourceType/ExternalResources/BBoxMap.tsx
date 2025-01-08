@@ -6,7 +6,6 @@ import VectorSource from "ol/source/Vector";
 import { useEffect, useRef, useState } from "react";
 import { Stroke, Style } from "ol/style";
 import { FacetBase } from "../../../views/Search/Facets/FacetBase/FacetBase";
-import { DrawBboxButton } from "../../../views/Search/Facets/SpatialCoverageFacet/DrawBboxButton";
 import { DeleteBbox } from "./DeleteBbox";
 import GeoJSON from "ol/format/GeoJSON";
 
@@ -34,8 +33,6 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCover
             })
         })
     );
-
-    //const [bboxActive, setBboxActive] = useState(false);
 
     useEffect(()=>{
         selectBbox();
@@ -126,27 +123,22 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCover
         if (draw.current) {
             map?.removeInteraction(draw.current);
         }
-        //source.clear();
     }
 
     function handleDeleteBbox() {
         removeInteraction();
         source.clear();
-        //setBboxActive(false);
         onBboxChange([]);
     }
 
     return (
-        <Box>
-            <FacetBase title="Spatial Coverage" expanded={true}>
-                <Box position="relative">
-                    <Box height="200px" marginBottom="16px" position="relative">
-                        {/*<DrawBboxButton bboxActive={bboxActive} onClick={selectBbox} />*/}
-                        <DeleteBbox onClick={handleDeleteBbox} />
-                        <MapContainer mapId={mapId} />
-                    </Box>
+        <FacetBase title="Spatial Coverage" expanded={true}>
+            <Box position="relative">
+                <Box height="200px" marginBottom="16px" position="relative">
+                    <DeleteBbox onClick={handleDeleteBbox} />
+                    <MapContainer mapId={mapId} />
                 </Box>
-            </FacetBase>
-        </Box>
+            </Box>
+        </FacetBase>
     );
 }
