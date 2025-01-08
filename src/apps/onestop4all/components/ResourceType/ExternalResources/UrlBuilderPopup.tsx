@@ -17,69 +17,101 @@ import { useState, useEffect, useRef } from "react";
 import { CopyToClipboardButton } from "../ActionButton/CopyToClipboardButton";
 import { BBoxMap } from "./BBoxMap";
 import DataPointsSelector from "./DataPointSelector";
+import QueryableSelector from "./QueryableSelector";
 
 interface UrlBuilderPopupProps {
     isOpen: boolean;
     onClose: () => void;
-    href: string;
+    ogc_features_url: string;
     createTxtFile: (url: string) => void;
 }
 
-export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBuilderPopupProps) => {
+export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFile }: UrlBuilderPopupProps) => {
     const [sliderValue, setSliderValue] = useState(10);
+    const [maxSliderValue, setMaxSliderValue] = useState(0);
     const [inputValue, setInputValue] = useState("10");
-    //const [maxSliderValue, setMaxSliderValue] = useState(0);
-    const [geoJsonHref, setGeoJsonHref] = useState<string>(href);
-    const [updatedGeoJsonHref, setUpdatedGeoJsonHref] = useState<string | null>(null);
+    
+    const [baseUrl, setBaseUrl] = useState<string>(ogc_features_url);
+    const [requestUrl, setRequestUrl] = useState<string | null>(null);
+    const sharedUrl = useRef<URL | null>(null);
+    
     const [queryablesArray, setQueryablesArray] = useState<{ title: string; type: string }[]>([]);
     const [selectedQueryable, setSelectedQueryable] = useState<string | null>(null);
     const [queryableValue, setQueryableValue] = useState<string>("");
-    const [copyUrlText, setCopyUrlText] = useState("Copy URL");
-    const [isLoaded, setIsLoaded] = useState(false);
     const [maxValIsLoaded, setMaxValIsLoaded] = useState(true);
+    
+    const [copyUrlText, setCopyUrlText] = useState("Copy URL");
+    //const [isLoaded, setIsLoaded] = useState(false);    
     const [metadata, setMetadata] = useState({} as any);
-    const [bbox, setBbox] = useState<number[]>([]);
+    //const [bbox, setBbox] = useState<number[]>([]);
     const [ogcFeaturesExtent, setOgcFeaturesExtent] = useState<number[]>([]);
 
     useEffect(() => {
-        if (isOpen && href) {
-            fetchUrlBuilderData(href);
+        if (isOpen && ogc_features_url) {
+            fetchMetadata(ogc_features_url);
+            fetchQueryables(ogc_features_url);
         }
-    }, [isOpen, href]);
+    }, [isOpen, ogc_features_url]);
 
     useEffect(() => {
         if (!isOpen) {
             setSliderValue(10);
             setQueryableValue("");
             setInputValue("10");
-            //setMaxSliderValue(100);
-            setUpdatedGeoJsonHref(null);
+            setMaxSliderValue(100);
+            setRequestUrl(null);
             setCopyUrlText("Copy URL");
-            setIsLoaded(false);
+            //setIsLoaded(false);
         }
     }, [isOpen]);
 
     const reset = () => {
-        const url = getOrCreateUrl();
-        const params = [...url.searchParams.keys()];
-        params.slice(2).forEach((key) => url.searchParams.delete(key));
-        setUpdatedGeoJsonHref(geoJsonHref);
-        //setSliderValue(10);
+        //const url = getOrCreateUrl();
+        //const params = [...url.searchParams.keys()];
+        //params.slice(2).forEach((key) => url.searchParams.delete(key));
+        setRequestUrl(baseUrl);
+        setSliderValue(10);
         setQueryableValue("");
         setSelectedQueryable(null);
         setInputValue("10");
         clearSharedUrl();
     };
 
-    const fetchUrlBuilderData = async (url: string) => {
+    const fetchMetadata = async (url: string) => {
         try {
             const response = await fetch(url);
-            const queryables = await fetch(url.split("?")[0] + "/queryables?f=json");
-            const data = await response.json();
-            setMetadata(data);
+            const metadata = await response.json();
+            setMetadata(metadata);
 
+            if (metadata.extent.spatial.bbox) {
+                setOgcFeaturesExtent(metadata.extent.spatial.bbox[0]);
+            }
+            if (metadata.links && Array.isArray(metadata.links)) {
+                const geoJsonLink = metadata.links.find((link: any) =>
+                    link.type === "application/geo+json" &&
+                    link.rel === "items" &&
+                    link.title === "items as GeoJSON"
+                );
+
+                if (geoJsonLink && geoJsonLink.href) {
+                    const initialLimit = 10;
+                    const newHref = `${geoJsonLink.href}&limit=${initialLimit}`;
+                    setBaseUrl(newHref);
+                    setRequestUrl(newHref);
+                    generateSliderMaxValue(newHref);
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching URL Builder data:", error);
+        }
+    };
+
+    const fetchQueryables = async (url: string) => {
+        try {
+            const queryables = await fetch(url.split("?")[0] + "/queryables?f=json");
             const queryablesData = await queryables.json();
             const queryablesArray: { title: string; type: string }[] = [];
+
             if (queryablesData.properties && typeof queryablesData.properties === "object") {
                 for (const key in queryablesData.properties) {
                     if (queryablesData.properties[key].title && queryablesData.properties[key].type) {
@@ -91,72 +123,34 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
                 }
             }
             setQueryablesArray(queryablesArray);
-
-            if (data.extent.spatial.bbox) {
-                setOgcFeaturesExtent(data.extent.spatial.bbox[0]);
-            }
-            if (data.links && Array.isArray(data.links)) {
-                const geoJsonLink = data.links.find((link: any) =>
-                    link.type === "application/geo+json" &&
-                    link.rel === "items" &&
-                    link.title === "items as GeoJSON"
-                );
-
-                if (geoJsonLink && geoJsonLink.href) {
-                    const initialLimit = 10;
-                    const newHref = `${geoJsonLink.href}&limit=${initialLimit}`;
-                    setGeoJsonHref(newHref);
-                    setUpdatedGeoJsonHref(newHref);
-                    //fetchGeoJsonData(newHref);
-                }
-            }
         } catch (error) {
             console.error("Error fetching URL Builder data:", error);
         }
     };
 
-    /*const fetchGeoJsonData = async (geoJsonUrl: string) => {
+    const generateSliderMaxValue = async (url: string) => {
         try {
-            const response = await fetch(geoJsonUrl);
-            const data = await response.json();
-            const numberMatched = data.numberMatched ? data.numberMatched : 111111;
+            const response = await fetch(url);
+            const responseData = await response.json();
+            const numberMatched = responseData.numberMatched ? responseData.numberMatched : 111111;
             setMaxSliderValue(numberMatched);
             const newSliderValue = Math.min(sliderValue, numberMatched);
             setSliderValue(newSliderValue);
             setInputValue(String(newSliderValue));
-            setIsLoaded(true);
+            //setIsLoaded(true);
             setMaxValIsLoaded(true);
         } catch (error) {
-            setIsLoaded(true);
+            //setIsLoaded(true);
             setMaxValIsLoaded(true);
             console.error("Error fetching GeoJSON data:", error);
         }
-    };*/
-
-    const handleQueryableChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedQueryable(e.target.value);
     };
 
-    const handleQueryableValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setQueryableValue(e.target.value);
-    };
-
-    const updateBbox = (newBbox: number[]) => {
-        setBbox(newBbox);
-        updateGeoJsonHrefWithBbox(newBbox);
-        setMaxValIsLoaded(false);
-    };
-
-    /*const handleSliderChange = (value: number) => {
+    const handleSliderChange = (value: number) => {
         setSliderValue(value);
         setInputValue(String(value));
-        updateGeoJsonHrefWithLimit(value);
+        requestUrlWithLimit(value);
         setCopyUrlText("Copy URL");
-    };
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setInputValue(value);
     };
 
     const handleInputBlur = () => {
@@ -164,53 +158,62 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
         if (isNaN(value) || value < 1) {
             setInputValue(String(10));
             setSliderValue(10);
-            updateGeoJsonHrefWithLimit(10);
+            requestUrlWithLimit(10);
         } else {
             const newValue = Math.min(value, maxSliderValue);
             setInputValue(String(newValue));
             setSliderValue(newValue);
-            updateGeoJsonHrefWithLimit(newValue);
+            requestUrlWithLimit(newValue);
         }
-    };*/
+    };
 
-    const sharedUrl = useRef<URL | null>(null);
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setInputValue(value);
+    };
+
+    const updateBbox = (newBbox: number[]) => {
+        //setBbox(newBbox);
+        requestUrlWithBbox(newBbox);
+        setMaxValIsLoaded(false);
+    };
 
     const getOrCreateUrl = (): URL => {
         if (!sharedUrl.current) {
-            sharedUrl.current = updatedGeoJsonHref
-                ? new URL(updatedGeoJsonHref)
-                : new URL(geoJsonHref);
+            sharedUrl.current = requestUrl
+                ? new URL(requestUrl)
+                : new URL(baseUrl);
         }
         return sharedUrl.current;
     };
     
-    const updateGeoJsonHrefWithQueryable = () => {
+    const requestUrlWithQueryables = () => {
         if (selectedQueryable && queryableValue) {
             const url = getOrCreateUrl();
             url.searchParams.set(selectedQueryable, queryableValue);
-            setUpdatedGeoJsonHref(url.toString());
+            setRequestUrl(url.toString());
+            generateSliderMaxValue(url.toString());
         }
     };
     
-    /*const updateGeoJsonHrefWithLimit = (limit: number) => {
-        if (geoJsonHref && geoJsonHref.includes("/items")) {
+    const requestUrlWithLimit = (limit: number) => {
+        if (baseUrl && baseUrl.includes("/items")) {
             const url = getOrCreateUrl();
             url.searchParams.set("limit", limit.toString());
-            setUpdatedGeoJsonHref(url.toString());
+            setRequestUrl(url.toString());
         }
-    };*/
+    };
     
-    const updateGeoJsonHrefWithBbox = (bbox: number[]) => {
-        if (geoJsonHref) {
+    const requestUrlWithBbox = (bbox: number[]) => {
+        if (baseUrl) {
             const url = getOrCreateUrl();
             if (bbox && bbox.length === 4) {
                 url.searchParams.set("bbox", bbox.join(","));
             } else {
                 url.searchParams.delete("bbox");
             }
-            console.log(url);
-            setUpdatedGeoJsonHref(url.toString());
-            //fetchGeoJsonData(url.toString());
+            setRequestUrl(url.toString());
+            generateSliderMaxValue(url.toString());
         }
     };
     
@@ -219,9 +222,9 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
     };  
 
     const handleCreateTxtFile = () => {
-        if (updatedGeoJsonHref) {
-            updateGeoJsonHrefWithQueryable();
-            setTimeout(() => createTxtFile(updatedGeoJsonHref), 500);
+        if (requestUrl) {
+            requestUrlWithQueryables();
+            setTimeout(() => createTxtFile(requestUrl), 500);
         }
     };
 
@@ -246,7 +249,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
                         <BBoxMap mapId="ogc" onBboxChange={updateBbox} ogcFeaturesExtent={ogcFeaturesExtent} />
                     </Box>
 
-                    {/*maxValIsLoaded ? <DataPointsSelector
+                    {maxValIsLoaded ? <DataPointsSelector
                         maxSliderValue={maxSliderValue}
                         sliderValue={sliderValue}
                         inputValue={inputValue}
@@ -263,54 +266,35 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
                                 <Skeleton height='30px'/>
                             </Stack>
                         </Box>
-                    */}
+                    }
 
-                    <Box mt={4}>
-                        <Select
-                            placeholder="Select Queryable"
-                            value={selectedQueryable || ""}
-                            onChange={handleQueryableChange}
-                        >
-                            {queryablesArray.map((queryable, index) => (
-                                <option key={index} value={queryable.title}>
-                                    {queryable.title} ({queryable.type})
-                                </option>
-                            ))}
-                        </Select>
-                        <Input
-                            mt={2}
-                            placeholder="Enter value for queryable"
-                            value={queryableValue}
-                            onChange={handleQueryableValueChange}
-                        />
-                        <Button
-                            mt={2}
-                            onClick={updateGeoJsonHrefWithQueryable}
-                            isDisabled={!selectedQueryable || !queryableValue}
-                            marginBottom={2}
-                        >
-                            Apply Queryable
-                        </Button>
-                    </Box>
+                    <QueryableSelector
+                        queryablesArray={queryablesArray}
+                        onApply={requestUrlWithQueryables}
+                        selectedQueryable={selectedQueryable}
+                        setSelectedQueryable={setSelectedQueryable}
+                        queryableValue={queryableValue}
+                        setQueryableValue={setQueryableValue}
+                    />
 
                     <Box mb={4} p={2} border="1px solid #ccc" borderRadius="md">
                         <strong>Generated URL: </strong>
                         <Button size="xs" w={"fit-content"} paddingLeft={"10px"} paddingRight={"10px"} marginRight={"10px"}>Regenerate</Button>
                         <Button size="xs" w={"fit-content"} paddingLeft={"10px"} paddingRight={"10px"} onClick={()=>{reset();}}>Reset</Button>
-                        <Box wordBreak="break-all">{updatedGeoJsonHref}</Box>
+                        <Box wordBreak="break-all">{requestUrl}</Box>
                     </Box>
 
                     <Box display="flex" justifyContent="space-between" mt={4}>
                         <Button
                             onClick={handleCreateTxtFile}
-                            isDisabled={!updatedGeoJsonHref}
+                            isDisabled={!requestUrl}
                             width="80%"
                             mr={2}
                         >
                             Import to Galaxy
                         </Button>
                         <CopyToClipboardButton
-                            data={updatedGeoJsonHref ? updatedGeoJsonHref : geoJsonHref}
+                            data={requestUrl ? requestUrl : baseUrl}
                             label={copyUrlText}
                         />
                     </Box>

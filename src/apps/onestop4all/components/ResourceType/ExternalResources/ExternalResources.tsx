@@ -155,7 +155,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                 isOpen={urlBuilder}
                 onClose={() => openUrlBuilder(false)}
                 createTxtFile={createTxtFile}
-                href={ogcApiFeatureService}
+                ogc_features_url={ogcApiFeatureService}
             />}
         </Box>
     );
