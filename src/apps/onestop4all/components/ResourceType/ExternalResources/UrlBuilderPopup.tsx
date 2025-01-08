@@ -13,7 +13,7 @@ import {
     Input,
     Stack
 } from "@open-pioneer/chakra-integration";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CopyToClipboardButton } from "../ActionButton/CopyToClipboardButton";
 import { BBoxMap } from "./BBoxMap";
 import DataPointsSelector from "./DataPointSelector";
@@ -28,7 +28,7 @@ interface UrlBuilderPopupProps {
 export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBuilderPopupProps) => {
     const [sliderValue, setSliderValue] = useState(10);
     const [inputValue, setInputValue] = useState("10");
-    const [maxSliderValue, setMaxSliderValue] = useState(0);
+    //const [maxSliderValue, setMaxSliderValue] = useState(0);
     const [geoJsonHref, setGeoJsonHref] = useState<string>(href);
     const [updatedGeoJsonHref, setUpdatedGeoJsonHref] = useState<string | null>(null);
     const [queryablesArray, setQueryablesArray] = useState<{ title: string; type: string }[]>([]);
@@ -52,7 +52,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
             setSliderValue(10);
             setQueryableValue("");
             setInputValue("10");
-            setMaxSliderValue(100);
+            //setMaxSliderValue(100);
             setUpdatedGeoJsonHref(null);
             setCopyUrlText("Copy URL");
             setIsLoaded(false);
@@ -60,11 +60,15 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
     }, [isOpen]);
 
     const reset = () => {
+        const url = getOrCreateUrl();
+        const params = [...url.searchParams.keys()];
+        params.slice(2).forEach((key) => url.searchParams.delete(key));
         setUpdatedGeoJsonHref(geoJsonHref);
-        setSliderValue(10);
+        //setSliderValue(10);
         setQueryableValue("");
         setSelectedQueryable(null);
         setInputValue("10");
+        clearSharedUrl();
     };
 
     const fetchUrlBuilderData = async (url: string) => {
@@ -103,7 +107,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
                     const newHref = `${geoJsonLink.href}&limit=${initialLimit}`;
                     setGeoJsonHref(newHref);
                     setUpdatedGeoJsonHref(newHref);
-                    fetchGeoJsonData(newHref);
+                    //fetchGeoJsonData(newHref);
                 }
             }
         } catch (error) {
@@ -111,7 +115,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
         }
     };
 
-    const fetchGeoJsonData = async (geoJsonUrl: string) => {
+    /*const fetchGeoJsonData = async (geoJsonUrl: string) => {
         try {
             const response = await fetch(geoJsonUrl);
             const data = await response.json();
@@ -127,7 +131,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
             setMaxValIsLoaded(true);
             console.error("Error fetching GeoJSON data:", error);
         }
-    };
+    };*/
 
     const handleQueryableChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedQueryable(e.target.value);
@@ -143,7 +147,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
         setMaxValIsLoaded(false);
     };
 
-    const handleSliderChange = (value: number) => {
+    /*const handleSliderChange = (value: number) => {
         setSliderValue(value);
         setInputValue(String(value));
         updateGeoJsonHrefWithLimit(value);
@@ -167,17 +171,17 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
             setSliderValue(newValue);
             updateGeoJsonHrefWithLimit(newValue);
         }
-    };
+    };*/
 
-    let sharedUrl: URL | null = null; // Shared URL instance
+    const sharedUrl = useRef<URL | null>(null);
 
     const getOrCreateUrl = (): URL => {
-        if (!sharedUrl) {
-            sharedUrl = updatedGeoJsonHref
+        if (!sharedUrl.current) {
+            sharedUrl.current = updatedGeoJsonHref
                 ? new URL(updatedGeoJsonHref)
                 : new URL(geoJsonHref);
         }
-        return sharedUrl;
+        return sharedUrl.current;
     };
     
     const updateGeoJsonHrefWithQueryable = () => {
@@ -188,13 +192,13 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
         }
     };
     
-    const updateGeoJsonHrefWithLimit = (limit: number) => {
+    /*const updateGeoJsonHrefWithLimit = (limit: number) => {
         if (geoJsonHref && geoJsonHref.includes("/items")) {
             const url = getOrCreateUrl();
             url.searchParams.set("limit", limit.toString());
             setUpdatedGeoJsonHref(url.toString());
         }
-    };
+    };*/
     
     const updateGeoJsonHrefWithBbox = (bbox: number[]) => {
         if (geoJsonHref) {
@@ -204,15 +208,15 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
             } else {
                 url.searchParams.delete("bbox");
             }
+            console.log(url);
             setUpdatedGeoJsonHref(url.toString());
-            fetchGeoJsonData(url.toString());
+            //fetchGeoJsonData(url.toString());
         }
     };
     
-    // Clear the shared URL when necessary
     const clearSharedUrl = () => {
-        sharedUrl = null;
-    };    
+        sharedUrl.current = null;
+    };  
 
     const handleCreateTxtFile = () => {
         if (updatedGeoJsonHref) {
@@ -221,104 +225,98 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
         }
     };
 
+    const closeBuilder = () => {
+        reset();
+        onClose();
+    };
+
     return (
-        <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="outside">
+        <Modal isOpen={isOpen} onClose={closeBuilder} scrollBehavior="outside">
             <ModalOverlay />
             <ModalContent width={"40%"} maxW={"700px"} minW={"500px"} maxHeight="90vh" overflow="auto" padding="4">
                 <ModalHeader>OGC API Features Subsetting</ModalHeader>
                 <ModalCloseButton />
-                {isLoaded ? (
-                    <ModalBody>
-                        <Box>
-                            <p><b>Title:</b> {metadata.title}</p>
-                            <p><b>Description:</b> {metadata.description}</p>
-                        </Box>
+                <ModalBody>
+                    <Box>
+                        <p><b>Title:</b> {metadata.title}</p>
+                        <p><b>Description:</b> {metadata.description}</p>
+                    </Box>
 
-                        <Box padding={"22px 0px 0px"}>
-                            <BBoxMap mapId="ogc" onBboxChange={updateBbox} ogcFeaturesExtent={ogcFeaturesExtent} />
-                        </Box>
+                    <Box padding={"22px 0px 0px"}>
+                        <BBoxMap mapId="ogc" onBboxChange={updateBbox} ogcFeaturesExtent={ogcFeaturesExtent} />
+                    </Box>
 
-                        {maxValIsLoaded ? <DataPointsSelector
-                            maxSliderValue={maxSliderValue}
-                            sliderValue={sliderValue}
-                            inputValue={inputValue}
-                            onSliderChange={handleSliderChange}
-                            onInputChange={handleInputChange}
-                            onInputBlur={handleInputBlur}
+                    {/*maxValIsLoaded ? <DataPointsSelector
+                        maxSliderValue={maxSliderValue}
+                        sliderValue={sliderValue}
+                        inputValue={inputValue}
+                        onSliderChange={handleSliderChange}
+                        onInputChange={handleInputChange}
+                        onInputBlur={handleInputBlur}
+                    />
+                        :
+                        <Box marginBottom={"15"}>
+                            <Stack>
+                                <Box>Loading...</Box>
+                                <Skeleton height='30px' />
+                                <Skeleton height='30px'/>
+                                <Skeleton height='30px'/>
+                            </Stack>
+                        </Box>
+                    */}
+
+                    <Box mt={4}>
+                        <Select
+                            placeholder="Select Queryable"
+                            value={selectedQueryable || ""}
+                            onChange={handleQueryableChange}
+                        >
+                            {queryablesArray.map((queryable, index) => (
+                                <option key={index} value={queryable.title}>
+                                    {queryable.title} ({queryable.type})
+                                </option>
+                            ))}
+                        </Select>
+                        <Input
+                            mt={2}
+                            placeholder="Enter value for queryable"
+                            value={queryableValue}
+                            onChange={handleQueryableValueChange}
                         />
-                            :
-                            <Box marginBottom={"15"}>
-                                <Stack>
-                                    <Box>Loading...</Box>
-                                    <Skeleton height='30px' />
-                                    <Skeleton height='30px'/>
-                                    <Skeleton height='30px'/>
-                                </Stack>
-                            </Box>
-                        }
+                        <Button
+                            mt={2}
+                            onClick={updateGeoJsonHrefWithQueryable}
+                            isDisabled={!selectedQueryable || !queryableValue}
+                            marginBottom={2}
+                        >
+                            Apply Queryable
+                        </Button>
+                    </Box>
 
-                        <Box mt={4}>
-                            <Select
-                                placeholder="Select Queryable"
-                                value={selectedQueryable || ""}
-                                onChange={handleQueryableChange}
-                            >
-                                {queryablesArray.map((queryable, index) => (
-                                    <option key={index} value={queryable.title}>
-                                        {queryable.title} ({queryable.type})
-                                    </option>
-                                ))}
-                            </Select>
-                            <Input
-                                mt={2}
-                                placeholder="Enter value for queryable"
-                                value={queryableValue}
-                                onChange={handleQueryableValueChange}
-                            />
-                            <Button
-                                mt={2}
-                                onClick={updateGeoJsonHrefWithQueryable}
-                                isDisabled={!selectedQueryable || !queryableValue}
-                                marginBottom={2}
-                            >
-                                Apply Queryable
-                            </Button>
-                        </Box>
+                    <Box mb={4} p={2} border="1px solid #ccc" borderRadius="md">
+                        <strong>Generated URL: </strong>
+                        <Button size="xs" w={"fit-content"} paddingLeft={"10px"} paddingRight={"10px"} marginRight={"10px"}>Regenerate</Button>
+                        <Button size="xs" w={"fit-content"} paddingLeft={"10px"} paddingRight={"10px"} onClick={()=>{reset();}}>Reset</Button>
+                        <Box wordBreak="break-all">{updatedGeoJsonHref}</Box>
+                    </Box>
 
-                        <Box mb={4} p={2} border="1px solid #ccc" borderRadius="md">
-                            <strong>Generated URL: </strong>
-                            <Button size="xs" w={"fit-content"} paddingLeft={"10px"} paddingRight={"10px"} marginRight={"10px"}>Regenerate</Button>
-                            <Button size="xs" w={"fit-content"} paddingLeft={"10px"} paddingRight={"10px"} onClick={()=>{reset();}}>Reset</Button>
-                            <Box wordBreak="break-all">{updatedGeoJsonHref}</Box>
-                        </Box>
-
-                        <Box display="flex" justifyContent="space-between" mt={4}>
-                            <Button
-                                onClick={handleCreateTxtFile}
-                                isDisabled={!updatedGeoJsonHref}
-                                width="80%"
-                                mr={2}
-                            >
-                                Import to Galaxy
-                            </Button>
-                            <CopyToClipboardButton
-                                data={updatedGeoJsonHref ? updatedGeoJsonHref : geoJsonHref}
-                                label={copyUrlText}
-                            />
-                        </Box>
-                    </ModalBody>
-                ) : (
-                    <ModalBody>
-                        <Stack pt={3}>
-                            <Box>Loading...</Box>
-                            <Skeleton height="30px" />
-                            <Skeleton height="30px" />
-                            <Skeleton height="30px" />
-                        </Stack>
-                    </ModalBody>
-                )}
+                    <Box display="flex" justifyContent="space-between" mt={4}>
+                        <Button
+                            onClick={handleCreateTxtFile}
+                            isDisabled={!updatedGeoJsonHref}
+                            width="80%"
+                            mr={2}
+                        >
+                            Import to Galaxy
+                        </Button>
+                        <CopyToClipboardButton
+                            data={updatedGeoJsonHref ? updatedGeoJsonHref : geoJsonHref}
+                            label={copyUrlText}
+                        />
+                    </Box>
+                </ModalBody>
                 <ModalFooter>
-                    <Button onClick={onClose}>Close</Button>
+                    <Button onClick={closeBuilder}>Close</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

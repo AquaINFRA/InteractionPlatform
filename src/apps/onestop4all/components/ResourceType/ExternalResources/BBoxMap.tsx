@@ -35,7 +35,11 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCover
         })
     );
 
-    const [bboxActive, setBboxActive] = useState(false);
+    //const [bboxActive, setBboxActive] = useState(false);
+
+    useEffect(()=>{
+        selectBbox();
+    });
 
     useEffect(() => {
         const coords = [1489200, 6894026, 1489200, 6894026];
@@ -91,19 +95,14 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCover
     
 
     function selectBbox(): void {
-        if (bboxActive) {
-            removeInteraction();
-            setBboxActive(false);
-        } else {
-            addInteraction(
-                new Draw({
-                    source: source,
-                    type: "Circle",
-                    geometryFunction: createBox(),
-                })
-            );
-            setBboxActive(true);
-        }
+        removeInteraction();
+        addInteraction(
+            new Draw({
+                source: source,
+                type: "Circle",
+                geometryFunction: createBox(),
+            })
+        );
     }
 
     function addInteraction(newDraw: Draw) {
@@ -127,12 +126,13 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCover
         if (draw.current) {
             map?.removeInteraction(draw.current);
         }
-        source.clear();
+        //source.clear();
     }
 
     function handleDeleteBbox() {
         removeInteraction();
-        setBboxActive(false);
+        source.clear();
+        //setBboxActive(false);
         onBboxChange([]);
     }
 
@@ -141,7 +141,7 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCover
             <FacetBase title="Spatial Coverage" expanded={true}>
                 <Box position="relative">
                     <Box height="200px" marginBottom="16px" position="relative">
-                        <DrawBboxButton bboxActive={bboxActive} onClick={selectBbox} />
+                        {/*<DrawBboxButton bboxActive={bboxActive} onClick={selectBbox} />*/}
                         <DeleteBbox onClick={handleDeleteBbox} />
                         <MapContainer mapId={mapId} />
                     </Box>
