@@ -137,14 +137,6 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
         setQueryableValue(e.target.value);
     };
 
-    const updateGeoJsonHrefWithQueryable = () => {
-        if (selectedQueryable && queryableValue) {
-            const url = updatedGeoJsonHref ? new URL(updatedGeoJsonHref) : new URL(geoJsonHref);
-            url.searchParams.set(selectedQueryable, queryableValue);
-            setUpdatedGeoJsonHref(url.toString());
-        }
-    };
-
     const updateBbox = (newBbox: number[]) => {
         setBbox(newBbox);
         updateGeoJsonHrefWithBbox(newBbox);
@@ -177,17 +169,36 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
         }
     };
 
+    let sharedUrl: URL | null = null; // Shared URL instance
+
+    const getOrCreateUrl = (): URL => {
+        if (!sharedUrl) {
+            sharedUrl = updatedGeoJsonHref
+                ? new URL(updatedGeoJsonHref)
+                : new URL(geoJsonHref);
+        }
+        return sharedUrl;
+    };
+    
+    const updateGeoJsonHrefWithQueryable = () => {
+        if (selectedQueryable && queryableValue) {
+            const url = getOrCreateUrl();
+            url.searchParams.set(selectedQueryable, queryableValue);
+            setUpdatedGeoJsonHref(url.toString());
+        }
+    };
+    
     const updateGeoJsonHrefWithLimit = (limit: number) => {
         if (geoJsonHref && geoJsonHref.includes("/items")) {
-            const url = updatedGeoJsonHref ? new URL(updatedGeoJsonHref) : new URL(geoJsonHref);
+            const url = getOrCreateUrl();
             url.searchParams.set("limit", limit.toString());
             setUpdatedGeoJsonHref(url.toString());
         }
     };
-
+    
     const updateGeoJsonHrefWithBbox = (bbox: number[]) => {
         if (geoJsonHref) {
-            const url = updatedGeoJsonHref ? new URL(updatedGeoJsonHref) : new URL(geoJsonHref);
+            const url = getOrCreateUrl();
             if (bbox && bbox.length === 4) {
                 url.searchParams.set("bbox", bbox.join(","));
             } else {
@@ -197,6 +208,11 @@ export const UrlBuilderPopup = ({ isOpen, onClose, href, createTxtFile }: UrlBui
             fetchGeoJsonData(url.toString());
         }
     };
+    
+    // Clear the shared URL when necessary
+    const clearSharedUrl = () => {
+        sharedUrl = null;
+    };    
 
     const handleCreateTxtFile = () => {
         if (updatedGeoJsonHref) {
