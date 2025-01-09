@@ -62,6 +62,7 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
 
     const reset = () => {
         setRequestUrl(baseUrl);
+        generateSliderMaxValue(baseUrl);
         setSliderValue(10);
         setQueryableValue("");
         setSelectedQueryable(null);
