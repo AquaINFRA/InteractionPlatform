@@ -1,6 +1,7 @@
 import { Box, Container, Flex } from "@open-pioneer/chakra-integration";
 
 import { SearchBar } from "../../components/SearchBar";
+import { DemonstratorEntries } from "./Demonstrator/DemonstratorEntries";
 
 export function StartView() {
 
@@ -39,6 +40,12 @@ export function StartView() {
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
                 <Box className="mission">
                     <Box className="text-centered-box">
+                        
+                        <Container maxW={{ base: "100%", custombreak: "80%" }}>
+                            <Box height="80px"></Box>
+                            <DemonstratorEntries/>
+                        </Container>
+
                         <Box paddingTop={10} id="introVideo1">
                             <Box marginBottom={2} marginTop={10}><b>Video 6: The AquaINFRA Interaction Platform - Integration with Galaxy and DDAS</b></Box>
                             <iframe

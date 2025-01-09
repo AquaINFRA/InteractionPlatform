@@ -1,35 +1,35 @@
-/* eslint-disable */
-import { Box, Flex, SimpleGrid } from "@open-pioneer/chakra-integration";
+import { Box, SimpleGrid } from "@open-pioneer/chakra-integration";
+import { useIntl } from "open-pioneer:react-hooks";
+
 import { DemonstratorEntry } from "./DemonstratorEntry";
 
 export const DemonstratorEntries = () => {
-    const demonstratorEntries = ["Title 1", "Title 2", "Title 3"];
+    const intl = useIntl();
 
-    if (demonstratorEntries.length > 2) {
-        return (
-            <Box className="how-to">
-                <Box className="text-centered-box">
-                    <Box className="text-centered-box-header">
-                        Here you will find more content in the upcoming weeks.
-                    </Box>
-                    {/*<Box className="text-centered-box-header">
-                        Browse through our ready-to-use demonstrators
-                    </Box>
-                    <Box className="text-centered-box-text">
-                        The demonstrators showcase the features provided by the Virtual Research
-                        Environment and can be combined with a training.
-                    </Box>*/}
+    return (
+        <Box className="how-to">
+            <Box className="text-centered-box" marginBottom={{ base: "5%", custombreak: "0%" }}>
+                <Box className="text-centered-box-header">
+                    Browse through our ready-to-use demonstrators
                 </Box>
-                {/*<SimpleGrid columns={[1, 2, 3]} spacing={10} padding={"0px 100px"} marginTop={"1%"}>
-                    {demonstratorEntries.map((demonstrator, index) => (
-                        <Flex key={index}>
-                            <DemonstratorEntry demonstratorEntryTitle={demonstrator} key={index} />
-                        </Flex>
-                    ))}
-                    </SimpleGrid>*/}
             </Box>
-        );
-    } else {
-        return null;
-    }
+            <SimpleGrid
+                columns={[1, 2, 3]}
+                spacing={5}
+                //padding={"0px 0px"}
+                marginTop={"1%"}
+            >
+                <DemonstratorEntry 
+                    title={"Daugava use case"} 
+                    subheading={"Investigating the ..."} 
+                    id={"data"} 
+                />
+                <DemonstratorEntry 
+                    title={"pyOWT"} 
+                    subheading={"python library for Optical Water Type classification"} 
+                    id={"tools"} 
+                />
+            </SimpleGrid>
+        </Box>
+    );
 };

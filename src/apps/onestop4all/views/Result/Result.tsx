@@ -41,6 +41,7 @@ export function Result() {
                 if (result.provider === "zenodo") {
                     result.response.provider = "Zenodo";
                     setSearchResult(result.response);
+                    console.log(result.response.metadata.keywords);
                     setResourceType(getResourceType(result.response.metadata.resource_type.type));
                     setLoading(false);
                 } else {
