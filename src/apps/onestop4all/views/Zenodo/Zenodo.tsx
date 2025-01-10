@@ -16,6 +16,11 @@ export interface ZenodoMetadataResponse {
     updated: string;
     doi_url: string;
     provider: string;
+    files: [{
+        links:{
+            self: string;
+        }
+    }];
     links?: {
         self: string;
         doi: string;
