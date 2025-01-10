@@ -1,10 +1,24 @@
 import { Box, SimpleGrid } from "@open-pioneer/chakra-integration";
-import { useIntl } from "open-pioneer:react-hooks";
+import { useService } from "open-pioneer:react-hooks";
 
 import { DemonstratorEntry } from "./DemonstratorEntry";
+import { SearchService } from "../../../services";
+import { useEffect, useState } from "react";
+import { ZenodoMetadataResponse } from "../../Zenodo/Zenodo";
 
 export const DemonstratorEntries = () => {
-    const intl = useIntl();
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService;
+    const [demonstrators, setDemonstrators] = useState<ZenodoMetadataResponse[]>([]);
+
+    useEffect(() => {
+        searchSrvc.getLatestAdditionsFromZenodo().then((result: any) => {
+            if (result && result.hits && result.hits.hits) {
+                setDemonstrators(result.hits.hits);
+            } else {
+                console.error("Unexpected response:", result);
+            }
+        });
+    }, [searchSrvc]);
 
     return (
         <Box className="how-to">
@@ -16,19 +30,15 @@ export const DemonstratorEntries = () => {
             <SimpleGrid
                 columns={[1, 2, 3]}
                 spacing={5}
-                //padding={"0px 0px"}
                 marginTop={"1%"}
             >
-                <DemonstratorEntry 
-                    title={"Daugava use case"} 
-                    subheading={"Investigating the ..."} 
-                    id={"data"} 
-                />
-                <DemonstratorEntry 
-                    title={"pyOWT"} 
-                    subheading={"python library for Optical Water Type classification"} 
-                    id={"tools"} 
-                />
+                {demonstrators.map((demonstrator: any, index: number) => (
+                    <DemonstratorEntry
+                        key={index}
+                        title={demonstrator.metadata.title || "Untitled"}
+                        id={demonstrator.doi}
+                    />
+                ))}
             </SimpleGrid>
         </Box>
     );

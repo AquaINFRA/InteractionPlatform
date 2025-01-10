@@ -1,9 +1,7 @@
 import { Box } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useService } from "open-pioneer:react-hooks";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import Skeleton from "../../../components/Skeleton/Skeleton";
-import { SearchService } from "../../../services";
+import { Badge } from "@chakra-ui/react";
 
 export interface DemonstratorEntryMetadata {
     name: string;
@@ -23,14 +21,14 @@ export interface DemonstratorEntryResult {
     };
 }
 
-export const DemonstratorEntry = (props: { title: string; subheading: string; id: string; }) => {
+export const DemonstratorEntry = (props: { title: string; id: string; }) => {
     const [hovered, setHovered] = useState(false);
     const navigate = useNavigate();
     
-    const {title, subheading, id} = props;
+    const {title, id} = props;
 
     const handleClick = (id: string) => {
-        navigate(`/demonstrator/` + id);
+        navigate(`/result/` + id.split("/")[1]);
         window.scroll(0, 0);
     };
 
@@ -50,7 +48,7 @@ export const DemonstratorEntry = (props: { title: string; subheading: string; id
             >
                 <Box className="frame" display="flex" flexDirection="column" height="100%">
                     <Box className="heading" fontSize="lg">{title}</Box>
-                    <Box className="abstract" fontSize="md" marginTop="0.5rem">{subheading}</Box>
+                    <Badge colorScheme="purple">Data-to-Knowledge Package</Badge>
                 </Box>
             </Box>
         </Box>
