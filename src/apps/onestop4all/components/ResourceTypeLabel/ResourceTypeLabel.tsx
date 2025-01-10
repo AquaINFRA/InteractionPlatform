@@ -55,6 +55,7 @@ export function ResourceTypeLabel(props: {
                 return <WorkflowIcon />;
             case ResourceType.Publication:
             case ResourceType.Poster:
+            case ResourceType.DKP:
             case ResourceType.Presentation:
                 return <DocumentsIcon />;
             case ResourceType.Image:

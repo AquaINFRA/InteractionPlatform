@@ -17,6 +17,7 @@ import { OtherHandler } from "./search/result-handler/other-handler";
 import { LessonHandler } from "./search/result-handler/lesson-handler";
 import { PhysicalObejctHandler } from "./search/result-handler/physicalobject-handler";
 import { EventHandler } from "./search/result-handler/event-handler";
+import { DkpHandler } from "./search/result-handler/dkp-handler";
 
 export enum ResourceType {
     Dataset = "dataset",
@@ -38,8 +39,8 @@ export enum ResourceType {
     Poster = "poster",
     Video = "video",
     PhysicalObject = "physicalobject",
-    Event = "event"
-
+    Event = "event",
+    DKP = "data-to-knowledge package"
 }
 
 const mapping = [
@@ -72,10 +73,6 @@ const mapping = [
         identifier: "model"
     },
     {
-        type: ResourceType.NonGeoData,
-        identifier: "nonGeographicDataset"
-    },
-    {
         type: ResourceType.Unknown,
         identifier: "unknown"
     },
@@ -90,6 +87,10 @@ const mapping = [
     {
         type: ResourceType.Publication,
         identifier: "publication"
+    },
+    {
+        type: ResourceType.DKP,
+        identifier: "data-to-knowledge package"
     },
     {
         type: ResourceType.Presentation,
@@ -159,7 +160,8 @@ const searchResultHandlers: SearchResultHandler[] = [
     new OtherHandler(),
     new LessonHandler(),
     new PhysicalObejctHandler(),
-    new EventHandler()
+    new EventHandler(),
+    new DkpHandler()
 ];
 
 export function getHandler(result: string): SearchResultHandler {

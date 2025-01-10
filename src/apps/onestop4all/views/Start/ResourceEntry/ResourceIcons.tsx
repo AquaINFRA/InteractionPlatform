@@ -166,6 +166,7 @@ export const ResourceIcon = (props: ResourceIconProps) => {
                 </svg>
             );
         case ResourceType.Publication:
+        case ResourceType.DKP:
         case ResourceType.Poster:
         case ResourceType.Presentation:
             return (
