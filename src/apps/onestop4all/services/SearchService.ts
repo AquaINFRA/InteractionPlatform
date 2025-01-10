@@ -147,12 +147,21 @@ export class SearchService {
         );
     }
 
-    getLatestAdditionsFromZenodo() {
-        const url = `https://zenodo.org/api/records?communities=aquainfra`;
+    //ONLY A TEMPORARY SANDBOX FUNCTION
+    getMetadataSandbox(resourceId: string) {
+        const id = resourceId.split(".")[1];
+        const queryParams = this.createQueryParams();
+        let url = "";
+        if (resourceId) {
+            queryParams.set("ids", resourceId);
+        }
+        const baseUrl = "https://sandbox.zenodo.org/api/records";
+        url = `${baseUrl}/${id}`;
+        console.log(url);
         return fetch(url).then((response) =>
-            response.json().then((responseData: object) => {
+            response.json().then((responseData) => {
                 if (responseData) {
-                    return responseData;
+                    return { response: responseData, provider: "data-to-knowledge package" };
                 } else {
                     throw new Error("Unexpected response: " + JSON.stringify(responseData));
                 }
@@ -160,8 +169,8 @@ export class SearchService {
         );
     }
 
-    zenodoTestFetch(zenodo_url: string) {
-        const url = zenodo_url;
+    getLatestAdditionsFromZenodo() {
+        const url = `https://sandbox.zenodo.org/api/records?communities=aquainfra&q=keywords:%22Data-To-Knowledge%20Package%22`;
         return fetch(url).then((response) =>
             response.json().then((responseData: object) => {
                 if (responseData) {
@@ -220,6 +229,20 @@ export class SearchService {
                 }
             }))
             .catch((error) => console.error(error));
+    }
+
+    getKnowledgePackages() {
+        const url = "https://sandbox.zenodo.org/api/records?communities=aquainfra&q=keywords:%22Data-To-Knowledge%20Package%22";
+
+        return fetch(url).then((response) =>
+            response.json().then((responseData: object) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
     }
 
     processCatchment(lon:number, lat: number) {

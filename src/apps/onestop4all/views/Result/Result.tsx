@@ -12,6 +12,7 @@ import { useSearchState } from "../Search/SearchState";
 import { BackToSearchLink } from "../../components/BackToSearchLink/BackToSearchLink";
 import { ResourceTypeLabel } from "../../components/ResourceTypeLabel/ResourceTypeLabel";
 import { ZenodoMetadataResponse, ZenodoView } from "../Zenodo/Zenodo";
+import { DkpView } from "../Zenodo/DkpView";
 
 export function Result() {
     const resultId = useParams().id as string;
@@ -44,6 +45,16 @@ export function Result() {
                     console.log(result.response.metadata.keywords);
                     setResourceType(getResourceType(result.response.metadata.resource_type.type));
                     setLoading(false);
+                } else if (result.provider?.includes("zenodo")) { //ONLY A TEMPORARY FUNCTION
+                    searchSrvc.getMetadataSandbox(resultId).then((result) => {
+                        if (result) {
+                            //result.response.provider = "Zenodo";
+                            setSearchResult(result.response);
+                            //console.log(result);
+                            setResourceType(getResourceType("data-to-knowledge package"));
+                            setLoading(false);
+                        }
+                    });
                 } else {
                     fetch("https://vm4072.kaj.pouta.csc.fi/ddas/oapir/collections/" + result.provider).then((res) => 
                         res.json().then((res) => {
@@ -69,6 +80,7 @@ export function Result() {
     }, []);
 
     function getResourceView(): import("react").ReactNode {
+        console.log(resourceType);
         switch (resourceType) {
             case ResourceType.Dataset: {
                 if (searchResult?.provider === "Zenodo") {
@@ -101,6 +113,10 @@ export function Result() {
             case ResourceType.Event: {
                 const item = searchResult as ZenodoMetadataResponse;
                 return <ZenodoView item={item} />;
+            }
+            case ResourceType.DKP: {
+                const item = searchResult as ZenodoMetadataResponse;
+                return <DkpView item={item} />;
             }
             default:
                 throw new Error(`Unknown resourceType: '${resourceType}'`);
