@@ -2,6 +2,7 @@ import { Box, Container, Flex } from "@open-pioneer/chakra-integration";
 
 import { SearchBar } from "../../components/SearchBar";
 import { DemonstratorEntries } from "./Demonstrator/DemonstratorEntries";
+import { Videos } from "./Videos/Videos";
 
 export function StartView() {
 
@@ -38,116 +39,10 @@ export function StartView() {
             </Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Box className="mission">
-                    <Box className="text-centered-box">
-                        
-                        <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                            <Box height="80px"></Box>
-                            <DemonstratorEntries/>
-                        </Container>
-
-                        <Box paddingTop={10} id="introVideo1">
-                            <Box marginBottom={2} marginTop={10}><b>Video 6: The AquaINFRA Interaction Platform - Integration with Galaxy and DDAS</b></Box>
-                            <iframe
-                                width="760"
-                                height="409"
-                                src="https://www.youtube.com/embed/KPdFnbUIASU?si=pJ7eZisduX9dutRK"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                            <Box marginBottom={2} marginTop={10}><b>Video 5: Ontology-based search and further filter options</b></Box>
-                            <iframe
-                                width="760"
-                                height="409"
-                                src="https://www.youtube.com/embed/D4gWc-RXUsU?si=qN3DZWOvqYFhhBIw"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                            <Box marginBottom={2} marginTop={10}><b>Video 4: Importing data to Galaxy, option 2</b></Box>
-                            <iframe
-                                width="760"
-                                height="409"
-                                src="https://www.youtube.com/embed/roDOc1qkJdc?si=yN3F5ulDs9uRYKBl&amp;start=1"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                            <Box marginBottom={2} marginTop={10}><b>Video 3: Searching with the help of catchment areas</b></Box>
-                            <iframe
-                                width="760"
-                                height="409"
-                                src="https://www.youtube.com/embed/fpaEtw35MoI?si=9Wikv8JGvH0BgM4M"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                            <Box marginBottom={2} marginTop={10}><b>Video 2: Importing data to Galaxy, option 1</b></Box>
-                            <iframe
-                                width="760"
-                                height="409"
-                                src="https://www.youtube.com/embed/92VtJhJZA_Q?si=6SKcccEVXYdfuPhQ"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                            <Box marginBottom={2} marginTop={10}><b>Video 1: Searching for datasets</b></Box>
-                            <iframe
-                                width="760"
-                                height="409"
-                                src="https://www.youtube.com/embed/-SRh9k44IRo?si=5VsH34-Qs6RZdvGc"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                        </Box>
-                        <Box paddingTop={10} id="introVideo2">
-                            <Box marginBottom={2}><b>Video 6: The AquaINFRA Interaction Platform - Integration with Galaxy and DDAS</b></Box>
-                            <iframe
-                                width="330"
-                                height="190"
-                                src="https://www.youtube.com/embed/KPdFnbUIASU?si=pJ7eZisduX9dutRK"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                            <Box marginBottom={2} marginTop={10}><b>Video 5: Ontology-based search and further filter options</b></Box>
-                            <iframe
-                                width="330"
-                                height="190"
-                                src="https://www.youtube.com/embed/D4gWc-RXUsU?si=qN3DZWOvqYFhhBIw"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                            <Box marginBottom={2} marginTop={10}><b>Video 4: Importing data to Galaxy, option 2</b></Box>
-                            <iframe
-                                width="330"
-                                height="190"
-                                src="https://www.youtube.com/embed/roDOc1qkJdc?si=yN3F5ulDs9uRYKBl&amp;start=1"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                            <Box marginBottom={2} marginTop={10}><b>Video 3: Searching with the help of catchment areas</b></Box>
-                            <iframe
-                                width="330"
-                                height="190"
-                                src="https://www.youtube.com/embed/fpaEtw35MoI?si=9Wikv8JGvH0BgM4M"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                            <Box marginBottom={2} marginTop={10}><b>Video 2: Importing data to Galaxy, option 1</b></Box>
-                            <iframe
-                                width="330"
-                                height="190"
-                                src="https://www.youtube.com/embed/92VtJhJZA_Q?si=6SKcccEVXYdfuPhQ"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                            <Box marginBottom={2} marginTop={10}><b>Video 1: Searching for datasets</b></Box>
-                            <iframe
-                                width="330"
-                                height="190"
-                                src="https://www.youtube.com/embed/-SRh9k44IRo?si=5VsH34-Qs6RZdvGc"
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            />
-                        </Box>
-                    </Box>
-                </Box>
+                <Box height="130px"></Box>
+                <DemonstratorEntries/>
+                <Box height="80px"></Box>
+                <Videos />
             </Container>
         </Box>
     );
