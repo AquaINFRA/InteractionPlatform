@@ -59,6 +59,19 @@
             padding-right: 60px;
         }
     }
+
+    &.hover2 {
+        background-color: #0aa032;
+        border-color: var(--primary-primary-main);
+
+        cursor: pointer;
+
+        .chakra-button {
+            transition: padding 300ms ease-out;
+            padding-left: 60px;
+            padding-right: 60px;
+        }
+    }
 }
 
 .notFound {
