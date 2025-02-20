@@ -28,7 +28,7 @@ export const DemonstratorEntry = (props: { title: string; id: string; }) => {
     const {title, id} = props;
 
     const handleClick = (id: string) => {
-        navigate(`/result/` + id.split("/")[1]);
+        navigate(`/result/` + id.split("/")[1]?.replace(".", ":")); //replace is needed as DDAS separates by colon, zenodo by point
         window.scroll(0, 0);
     };
 
@@ -36,7 +36,7 @@ export const DemonstratorEntry = (props: { title: string; id: string; }) => {
         <Box 
             display="flex" 
             width="100%" 
-            flexWrap="wrap" // If you want multiple boxes to wrap in the same container
+            flexWrap="wrap"
         >
             <Box
                 className={`how-to-entry ${hovered ? "hover" : "default"}`}

@@ -36,40 +36,33 @@ export function Result() {
 
     useEffect(() => {
         setLoading(true);
-        searchSrvc.getMetadata(resultId).then((result) => {
-            console.log(resultId);
-            if (result) {
-                if (result.provider === "zenodo") {
-                    result.response.provider = "Zenodo";
+        const [provider, id] = resultId.split(":");
+        if (!provider || !id) {
+            throw new Error("Was not able to find a provider or an ID!");
+        }
+        if (id && provider === "zenodo") {
+            searchSrvc.getZenodoMetadata(provider, id).then((result) => {
+                if (result) {
+                    result.response.provider = provider;
                     setSearchResult(result.response);
-                    console.log(result.response.metadata.keywords);
-                    setResourceType(getResourceType(result.response.metadata.resource_type.type));
+                    if (result.response.metadata.keywords?.includes("Data-to-Knowledge Package")) {
+                        setResourceType(getResourceType("data-to-knowledge package"));
+                    } else {
+                        setResourceType(getResourceType(result.response.metadata.resource_type.type));
+                    }
                     setLoading(false);
-                } else if (result.provider?.includes("zenodo")) { //ONLY A TEMPORARY FUNCTION
-                    searchSrvc.getMetadataSandbox(resultId).then((result) => {
-                        if (result) {
-                            //result.response.provider = "Zenodo";
-                            setSearchResult(result.response);
-                            //console.log(result);
-                            setResourceType(getResourceType("data-to-knowledge package"));
-                            setLoading(false);
-                        }
-                    });
-                } else {
-                    fetch("https://vm4072.kaj.pouta.csc.fi/ddas/oapir/collections/" + result.provider).then((res) => 
-                        res.json().then((res) => {
-                            result.response.provider = res.description;
-                            setSearchResult(result.response);
-                            setResourceType(getResourceType(result.response.properties.type));
-                            setLoading(false);
-                        })
-                    );
-                    
                 }
-            } else {
-                throw new Error("Unexpected response: " + JSON.stringify(result));
-            }
-        });
+            });
+        }
+        else {
+            searchSrvc.getDdasMetadata(provider, id).then((result) => {
+                if (result) {
+                    setSearchResult(result.response);
+                    setResourceType(getResourceType(result.response.properties.type));
+                    setLoading(false);
+                }
+            });
+        }
     }, [resultId, searchSrvc]);
 
     useEffect(() => {
@@ -80,10 +73,9 @@ export function Result() {
     }, []);
 
     function getResourceView(): import("react").ReactNode {
-        console.log(resourceType);
         switch (resourceType) {
             case ResourceType.Dataset: {
-                if (searchResult?.provider === "Zenodo") {
+                if (searchResult?.provider === "zenodo") {
                     const item = searchResult as ZenodoMetadataResponse;
                     return <ZenodoView item={item} />;
                 } else {

@@ -11,8 +11,8 @@ export const DemonstratorEntries = () => {
     const [demonstrators, setDemonstrators] = useState<ZenodoMetadataResponse[]>([]);
 
     useEffect(() => {
-        searchSrvc.getLatestAdditionsFromZenodo().then((result: any) => {
-            if (result && result.hits && result.hits.hits) {
+        searchSrvc.getDataToKnowledgePackages().then((result: any) => {
+            if (result) {
                 setDemonstrators(result.hits.hits);
             } else {
                 console.error("Unexpected response:", result);
