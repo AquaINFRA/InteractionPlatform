@@ -82,7 +82,7 @@ export const ZenodoResources = (props: { metadata: string, repo: string; downloa
                         </Box>
                     </Flex>
                 </Box>
-                <Box pt={3}>
+                {/*<Box pt={3}>
                     <Flex flexDirection="column"> 
                         <Box pt={3}>
                             <ActionButton
@@ -93,7 +93,7 @@ export const ZenodoResources = (props: { metadata: string, repo: string; downloa
                             />
                         </Box>
                     </Flex>
-                </Box>
+                </Box>*/}
             </Box>
             <Box pt={3}>
                 <div className="seperator" />

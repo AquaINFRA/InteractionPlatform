@@ -11,7 +11,8 @@ import {
     SeriesIcon,
     ToolSoftwareIcon,
     VideoIcon,
-    WorkflowIcon
+    WorkflowIcon,
+    DkpIcon
 } from "../Icons";
 
 export function ResourceTypeLabel(props: {
@@ -51,6 +52,8 @@ export function ResourceTypeLabel(props: {
                 return <SeriesIcon />;
             case ResourceType.Software:
                 return <ToolSoftwareIcon />;
+            case ResourceType.DKP:
+                return <DkpIcon />;
             case ResourceType.Workflow:
                 return <WorkflowIcon />;
             case ResourceType.Publication:

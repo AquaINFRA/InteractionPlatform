@@ -83,6 +83,7 @@ export interface TextFileResponse {
 }
 
 const oapirUrl = import.meta.env.VITE_OAPIR_URL;
+const zenodoUrl = "https://zenodo.org/api/records";
 
 export class SearchService {
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
@@ -121,21 +122,11 @@ export class SearchService {
         );
     }
 
-    getMetadata(resourceId: string) {
-        const provider = resourceId.split(":")[0];
-        const id = resourceId.substring(resourceId.indexOf(":") + 1);
-        const queryParams = this.createQueryParams();
-        let url = "";
-        if (resourceId) {
-            queryParams.set("ids", resourceId);
+    getZenodoMetadata(provider: string, id: string) {
+        if (!provider || !id) {
+            return Promise.reject(new Error("Invalid resourceId"));
         }
-        if (provider === "zenodo") {
-            const baseUrl = "https://zenodo.org/api/records";
-            url = `${baseUrl}/${id}`;
-        } else {
-            const baseUrl = oapirUrl + "/collections";
-            url = `${baseUrl}/${provider}/items/${id}`;
-        }
+        const url = `${zenodoUrl}/${id}`;
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 if (responseData) {
@@ -147,12 +138,15 @@ export class SearchService {
         );
     }
 
-    getLatestAdditionsFromZenodo() {
-        const url = `https://zenodo.org/api/records?communities=aquainfra`;
+    getDdasMetadata(provider: string, id: string) {
+        if (!provider || !id) {
+            return Promise.reject(new Error("Invalid resourceId"));
+        }
+        const url = `${oapirUrl}/collections/${provider}/items/${id}`;
         return fetch(url).then((response) =>
-            response.json().then((responseData: object) => {
+            response.json().then((responseData) => {
                 if (responseData) {
-                    return responseData;
+                    return { response: responseData, provider: provider };
                 } else {
                     throw new Error("Unexpected response: " + JSON.stringify(responseData));
                 }
@@ -160,10 +154,10 @@ export class SearchService {
         );
     }
 
-    zenodoTestFetch(zenodo_url: string) {
-        const url = zenodo_url;
+    getDataToKnowledgePackages() {
+        const url = `${zenodoUrl}/?communities=aquainfra&q=keywords:%22Data-To-Knowledge%20Package%22`;
         return fetch(url).then((response) =>
-            response.json().then((responseData: object) => {
+            response.json().then((responseData) => {
                 if (responseData) {
                     return responseData;
                 } else {
@@ -220,6 +214,20 @@ export class SearchService {
                 }
             }))
             .catch((error) => console.error(error));
+    }
+
+    getKnowledgePackages() {
+        const url = "https://sandbox.zenodo.org/api/records?communities=aquainfra&q=keywords:%22Data-To-Knowledge%20Package%22";
+
+        return fetch(url).then((response) =>
+            response.json().then((responseData: object) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
     }
 
     processCatchment(lon:number, lat: number) {
