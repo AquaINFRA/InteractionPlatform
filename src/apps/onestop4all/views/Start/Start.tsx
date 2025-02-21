@@ -39,8 +39,8 @@ export function StartView() {
             </Box>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                <Box height="130px"></Box>
-                <DemonstratorEntries/>
+                {/*<Box height="130px"></Box>
+                <DemonstratorEntries/>*/}
                 <Box height="80px"></Box>
                 <Videos />
             </Container>
