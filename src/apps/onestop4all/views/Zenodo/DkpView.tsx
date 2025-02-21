@@ -90,6 +90,7 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
                         <Abstract abstractText={metadata.metadata.description} />
                     </Box>
                 )}
+                <Box pt="30px">{renderDkpComponent()}</Box>
                 {metadata.links?.doi && (
                     <Box pt="40px">
                         <ZenodoResources metadata={metadata.links.self} repo={metadata.links.doi} download={metadata.links.archive} />
