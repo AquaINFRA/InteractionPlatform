@@ -5,7 +5,7 @@ interface QuestionmarkProps {
     label: string;
     size: string;
 }
-/* Displays a questionmark icon and an explanatory text when hovering over the icon*/
+
 export const Questionmark = (props: QuestionmarkProps) => {
     const { label, size } = props;
     return (

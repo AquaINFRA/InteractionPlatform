@@ -1,20 +1,7 @@
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-
-import {
-    Box,
-    Button,
-    Flex,
-    HStack,
-    IconButton,
-    Input
-} from "@open-pioneer/chakra-integration";
-
-import {
-    UrlSearchParameterType,
-    UrlSearchParams,
-    useSearchState
-} from "../views/Search/SearchState";
+import { Box, Button, Flex, IconButton, Input } from "@open-pioneer/chakra-integration";
+import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "../views/Search/SearchState";
 import { SearchIcon } from "./Icons";
 
 export function SearchBar() {
@@ -23,89 +10,46 @@ export function SearchBar() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    useEffect(() => setSearchTerm(searchState.searchTerm), [searchState.searchTerm]);
+    useEffect(() => {
+        setSearchTerm(searchState.searchTerm);
+    }, [searchState.searchTerm]);
 
-    function startSearch(): void {
+    const startSearch = () => {
         searchState.setSearchTerm(searchTerm);
         if (!location.pathname.endsWith("search")) {
-            const params: UrlSearchParams = {};
-            params[UrlSearchParameterType.Searchterm] = searchTerm;
-            navigate({
-                pathname: "/search",
-                search: `?${createSearchParams({ ...params })}`
-            });
+            const params: UrlSearchParams = { [UrlSearchParameterType.Searchterm]: searchTerm };
+            navigate({ pathname: "/search", search: `?${createSearchParams({...params})}` });
         }
-    }
-
-    function handleKeyDown(key: string): void {
-        if (key === "Enter") {
-            startSearch();
-        }
-    }
+    };
 
     return (
-        <Box
-            borderWidth={{ base: "10px", custombreak: "15px" }}
-            borderColor="rgb(5, 102, 141, 0.7)"
-        >
-            <div id="searchbar">
-                <HStack padding={{ base: "5px 10px", custombreak: "8px 15px" }} w="100%" bg="white">
-                    <Input
-                        placeholder="Search for research data"
-                        value={searchTerm}
-                        onChange={(event) => setSearchTerm(event.target.value)}
-                        onKeyDown={(event) => handleKeyDown(event.key)}
-                        borderColor="white"
-                    />
-                    <Button
-                        leftIcon={<SearchIcon boxSize={6} />}
-                        variant="solid"
-                        hideBelow="custombreak"
-                        onClick={() => startSearch()}
-                    >
-                        Search
-                    </Button>
-                    <IconButton
-                        aria-label="start search"
-                        size="sm"
-                        hideFrom="custombreak"
-                        onClick={() => startSearch()}
-                        icon={<SearchIcon />}
-                    />
-                </HStack>
-            </div>
-            <div id="searchbarResponsive">
-                <Flex bg="white" direction={"column"}>
-                    <Flex alignItems="center">
-                        <Input
-                            placeholder="Search for research data"
-                            value={searchTerm}
-                            onChange={(event) => setSearchTerm(event.target.value)}
-                            onKeyDown={(event) => handleKeyDown(event.key)}
-                            margin={"2% 2% 2% 2%"}
-                            outline={"1px solid #05668d"}
-                        />
-                        <Button
-                            leftIcon={<SearchIcon boxSize={6} />}
-                            variant="solid"
-                            hideBelow="custombreak"
-                            onClick={() => startSearch()}
-                        >
-                            <Box>
-                                Search
-                            </Box>
-                        </Button>
-                        <IconButton
-                            aria-label="start search"
-                            size="sm"
-                            hideFrom="custombreak"
-                            onClick={() => startSearch()}
-                            icon={<SearchIcon />}
-                            marginRight={"1%"}
-                        />
-                    </Flex>
-                </Flex>
-            </div>
+        <Box borderWidth={{ base: "10px", custombreak: "15px" }} borderColor="rgba(5, 102, 141, 0.7)">
+            <Flex direction={{ base: "column", custombreak: "row" }} bg="white" align="center" p={2} gap={2}>
+                <Input
+                    placeholder="Search for research data"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && startSearch()}
+                    borderColor="gray.300"
+                    flex={1}
+                    px={4}
+                />
+                <Button
+                    leftIcon={<SearchIcon boxSize={6} />}
+                    variant="solid"
+                    hideBelow="custombreak"
+                    onClick={startSearch}
+                >
+                    Search
+                </Button>
+                <IconButton
+                    aria-label="start search"
+                    size="sm"
+                    hideFrom="custombreak"
+                    onClick={startSearch}
+                    icon={<SearchIcon />}
+                />
+            </Flex>
         </Box>
     );
 }

@@ -1,4 +1,4 @@
-import { Box, SimpleGrid } from "@open-pioneer/chakra-integration";
+import { Box, SimpleGrid, Text } from "@open-pioneer/chakra-integration";
 
 export const Videos = () => {
     const videos = [
@@ -30,23 +30,28 @@ export const Videos = () => {
 
     return (
         <Box>
-            <Box className="text-centered-box" marginBottom={{ base: "5%", custombreak: "1%" }}>
-                <Box className="text-centered-box-header">
+            {/* Header Section */}
+            <Box textAlign="center" mb={{ base: "5%", custombreak: "2%" }}>
+                <Text fontSize="xl" fontWeight="bold" color="gray.700">
                     Check out some videos explaining the key features of this platform
-                </Box>
+                </Text>
             </Box>
-            <SimpleGrid columns={[1, 2]} spacing={20}>
+
+            {/* Video Grid */}
+            <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={6}>
                 {videos.map((video, index) => (
                     <Box key={index}>
-                        <Box marginBottom={2}>
-                            <b>{video.title}</b>
-                        </Box>
+                        <Text fontSize="md" fontWeight="semibold" mb={2}>
+                            {video.title}
+                        </Text>
                         <iframe
                             width="100%"
                             height="315"
                             src={video.src}
                             title={`YouTube video player - ${video.title}`}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                            style={{ borderRadius: "8px", boxShadow: "0px 2px 8px rgba(0,0,0,0.15)" }}
                         />
                     </Box>
                 ))}

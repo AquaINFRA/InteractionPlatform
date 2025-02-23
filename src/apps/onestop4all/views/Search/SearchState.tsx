@@ -145,21 +145,10 @@ export const SearchState = (props: PropsWithChildren) => {
                     dataProvider: selectedDataProvider.map((e:any) => e.id ? e.id : e),
                     downloadOption,
                     spatialFilter,
-                    //pageSize,
-                    //pageStart,
                     sorting: sorting?.term
                 })
                 .then((result) => {
                     setIsLoaded(true);
-                    /*result.results.pop();
-                    result.results.push({
-                        id: "zenodo:123424",
-                        properties: {
-                            type: "software",
-                            title: "AquaINFRA's Daugava Workflow",
-                            aicollection: "Zenodo"
-                        }
-                    });*/
                     setSearchResults(result);
                     const dataProviderFacet = result.facets.provider.map((dataprovider) => {
                         return {
