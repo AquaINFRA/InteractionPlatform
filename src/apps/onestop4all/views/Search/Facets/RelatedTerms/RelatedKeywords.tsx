@@ -148,7 +148,7 @@ export const RelatedKeywords = (props: {
                     </Stack>
                 ) : shortList
                     .filter((item) => {
-                        return filterCategories.includes(item.type!);
+                        return item.type && filterCategories.includes(item.type);
                     })
                     .map((item: SearchTermItem, j: number) => (
                         <Box
@@ -156,7 +156,9 @@ export const RelatedKeywords = (props: {
                             style={{ border: itemBorder(item) }}
                             key={j}
                             onClick={() => {
-                                updateSelectedItems(item.value!);
+                                if (item.value !== undefined) {
+                                    updateSelectedItems(item.value);
+                                }
                             }}
                             _hover={{ cursor: "pointer" }}
                         >

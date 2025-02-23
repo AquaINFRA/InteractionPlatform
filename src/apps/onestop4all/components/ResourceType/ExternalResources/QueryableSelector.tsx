@@ -1,5 +1,4 @@
 import { Box, Button, Select, Input } from "@open-pioneer/chakra-integration";
-import { useState } from "react";
 import { FacetBase } from "../../../views/Search/Facets/FacetBase/FacetBase";
 
 interface QueryableSelectorProps {

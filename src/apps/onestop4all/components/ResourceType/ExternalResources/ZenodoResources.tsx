@@ -1,14 +1,12 @@
 import { Box, Flex, Input } from "@open-pioneer/chakra-integration";
 import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-import { useEffect, useState, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import { useService } from "open-pioneer:react-hooks";
 
-import { LinkObject } from "../../../views/Dataset/Dataset";
 import { ActionButton } from "../ActionButton/ActionButton";
 import { isUrl } from "../Metadata/PersonalInfo";
 import { SearchService } from "../../../services";
 import { TextFileResponse } from "../../../services/SearchService";
-import { UrlBuilderPopup } from "./UrlBuilderPopup";
 
 export const ZenodoResources = (props: { metadata: string, repo: string; download: string; }) => {
     const { metadata, repo, download } = props;
