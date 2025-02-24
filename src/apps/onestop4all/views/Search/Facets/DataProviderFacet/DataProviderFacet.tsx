@@ -99,20 +99,16 @@ export function DataProviderFacet() {
         }
     }
 
-    function changeAllSelection() {
+    const toggleAllSelection = () => {
         if (allSelected) {
             searchState.setSelectedDataProvider([]);
-            setAllSelected(false);
         } else {
-            const dataProviderIds = entries.map(obj => obj.id);
-            searchState.setSelectedDataProvider(dataProviderIds);
-            setAllSelected(true);
+            searchState.setSelectedDataProvider(entries.map(({ id }) => id));
         }
-    }
+        setAllSelected(!allSelected);
+    };
 
-    if (loading) {
-        return null;
-    }
+    if (loading) return null;
 
     return (
         entries.length > 0 ? (
@@ -136,7 +132,7 @@ export function DataProviderFacet() {
                 </SimpleGrid>
                 {entries.length > 0 ? (
                     <Box pt={5}>
-                        <Button w={"100%"} onClick={changeAllSelection}>
+                        <Button w={"100%"} onClick={toggleAllSelection}>
                             {allSelected ? "Uncheck all data providers" : "Select all data providers"}
                         </Button>
                     </Box>
