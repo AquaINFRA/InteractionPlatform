@@ -39,18 +39,18 @@ const router = createBrowserRouter([
 ]);
 
 export function AppUI() {
-    return <RouterProvider router={router}></RouterProvider>;
+    return <RouterProvider router={router} />;
 }
 
 function Layout() {
     return (
         <>
             <ChakraProvider theme={Theme}>
-                <BaseMenu></BaseMenu>
+                <BaseMenu />
                 <SearchState>
                     <Flex as="header" position="fixed" w="100%" bg="white" zIndex="1000">
                         <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                            <Header></Header>
+                            <Header />
                         </Container>
                     </Flex>
 
@@ -61,7 +61,7 @@ function Layout() {
                     </Box>
                 </SearchState>
                 <Box as="footer" w="100%">
-                    <Footer></Footer>
+                    <Footer />
                 </Box>
             </ChakraProvider>
         </>
