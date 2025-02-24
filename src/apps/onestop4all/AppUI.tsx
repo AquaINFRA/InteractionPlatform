@@ -53,11 +53,8 @@ function Layout() {
                             <Header />
                         </Container>
                     </Flex>
-
                     <Box as="main" w="100%" pt="152px">
-                        
-                        <Outlet />
-                        
+                        <Outlet />       
                     </Box>
                 </SearchState>
                 <Box as="footer" w="100%">
