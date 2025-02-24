@@ -51,6 +51,10 @@ export interface ISearchState {
     setSelectedDataProvider(dataProvider: string[]): void;
     selectedDataProviderTmp: string[];
     setSelectedDataProviderTmp(dataProvider: string[]): void;
+    relatedTerms: any;
+    setRelatedTerms(obj: any): void;
+    relatedTermsKeyword: string | undefined;
+    setRelatedTermsKeyword(rtkw: string): void;
     dataProviderTitles: string[];
     setDataProviderTitles(dataProviderTitles: string[]): void;
     selectableDataProvider: SelectableDataProvider[];
@@ -117,6 +121,9 @@ export const SearchState = (props: PropsWithChildren) => {
     }
     const [selectedDataProvider, setSelectedDataProvider] = useState<string[]>(dPr);
     const [selectedDataProviderTmp, setSelectedDataProviderTmp] = useState<string[]>(dPr);
+
+    const [relatedTerms, setRelatedTerms] = useState<any>();
+    const [relatedTermsKeyword, setRelatedTermsKeyword] = useState<string>();
 
     //init download option
     const [downloadOption, setDownloadOption] = useState<boolean>(false);
@@ -204,6 +211,10 @@ export const SearchState = (props: PropsWithChildren) => {
         selectedDataProvider,
         selectedDataProviderTmp,
         setSelectedDataProviderTmp,
+        relatedTerms,
+        setRelatedTerms,
+        relatedTermsKeyword,
+        setRelatedTermsKeyword,
         selectableDataProvider,
         setDataProviderTitles,
         dataProviderTitles,
