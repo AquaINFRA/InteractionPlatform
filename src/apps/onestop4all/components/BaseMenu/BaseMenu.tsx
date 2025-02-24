@@ -17,31 +17,12 @@ import { MenuHandler } from "../../services";
 
 export function BaseMenu() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-
     const menuHandler = useService("onestop4all.MenuHandler") as MenuHandler;
 
     useEffect(() => {
-        const openMenuListener = menuHandler.on("open-menu", () => onOpen());
+        const openMenuListener = menuHandler.on("open-menu", onOpen);
         return () => openMenuListener.destroy();
-    });
-
-    function createBlock(header: string, children: ReactNode): ReactNode {
-        return (
-            <Box
-                className="block"
-                padding={{ base: "30px 20px 10px 20px;", custombreak: "10px 10px 0.px" }}
-            >
-                <Box
-                    className="block-header"
-                    fontSize={{ base: "20px", custombreak: "30px" }}
-                    padding={{ base: "10px 20px 10px 0px;", custombreak: "30px 0px" }}
-                >
-                    {header}
-                </Box>
-                <div className="block-content">{children}</div>
-            </Box>
-        );
-    }
+    }, [menuHandler, onOpen]);
 
     return (
         <Drawer
@@ -50,46 +31,65 @@ export function BaseMenu() {
             onClose={onClose}
             size={{ base: "customMenu", custombreak: "xs" }}
         >
-            <DrawerOverlay bg={"var(--chakra-colors-blackAlpha-200)"} />
+            <DrawerOverlay bg="var(--chakra-colors-blackAlpha-200)" />
             <DrawerContent className="navigation-menu">
                 <HStack padding={{ base: "22px 22px 10px 0px", custombreak: "32px 52px 20px" }}>
-                    <Spacer></Spacer>
+                    <Spacer />
                     <IconButton
-                        aria-label="Search database"
+                        aria-label="Close menu"
                         variant="ghost"
                         colorScheme="teal"
                         icon={<MenuCloseIcon boxSize={8} />}
                         onClick={onClose}
                     />
                 </HStack>
-                <div className="seperator"></div>
+
+                <Box className="separator" />
+
                 {createBlock(
                     "Get connected",
                     <>
-                        <Link href="https://aquainfra.eu/about" target="_blank" rel="noreferrer">
-                            About us
-                        </Link>
-                        <Link href="https://aquainfra.eu/partners" target="_blank" rel="noreferrer">
-                            Partners
-                        </Link>
-                        <Link href="https://aquainfra.eu/contact" target="_blank" rel="noreferrer">
-                            Contact
-                        </Link>
+                        <MenuLink href="https://aquainfra.eu/about">About us</MenuLink>
+                        <MenuLink href="https://aquainfra.eu/partners">Partners</MenuLink>
+                        <MenuLink href="https://aquainfra.eu/contact">Contact</MenuLink>
                     </>
                 )}
-                <div className="seperator"></div>
+
+                <Box className="separator" />
+
                 {createBlock(
                     "AquaINFRA Platform",
                     <>
-                        <Link href="https://aquainfra.dev.52north.org/search" target="_blank" rel="noreferrer">
+                        <MenuLink href="https://aquainfra.dev.52north.org/search">
                             Search for research data
-                        </Link>
-                        <Link href="https://aqua.usegalaxy.eu/" target="_blank" rel="noreferrer">
-                            AquaINFRA&#39;s Galaxy
-                        </Link>
+                        </MenuLink>
+                        <MenuLink href="https://aqua.usegalaxy.eu/">AquaINFRA&#39;s Galaxy</MenuLink>
                     </>
                 )}
             </DrawerContent>
         </Drawer>
+    );
+}
+
+function createBlock(header: string, children: ReactNode): ReactNode {
+    return (
+        <Box className="block" padding={{ base: "30px 20px 10px 20px", custombreak: "10px 10px 0px" }}>
+            <Box
+                className="block-header"
+                fontSize={{ base: "20px", custombreak: "30px" }}
+                padding={{ base: "10px 20px 10px 0px", custombreak: "30px 0px" }}
+            >
+                {header}
+            </Box>
+            <Box className="block-content">{children}</Box>
+        </Box>
+    );
+}
+
+function MenuLink({ href, children }: { href: string; children: ReactNode }) {
+    return (
+        <Link href={href} target="_blank" rel="noreferrer">
+            {children}
+        </Link>
     );
 }
