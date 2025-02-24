@@ -15,7 +15,6 @@ import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "./Searc
 import { RelatedTerms } from "./Facets/RelatedTerms/RelatedTerms";
 import { DownloadOptionFacet } from "./Facets/DownloadOptionFacet/DownloadOptionFacet";
 import { PrimaryFont } from "../../Theme";
-//import { SortedBySelector } from "./SortedBySelector/SortedBySelector";
 
 export function SearchView() {
     const searchState = useSearchState();
@@ -99,10 +98,6 @@ export function SearchView() {
                             <Box className="relatedTermsBox">
                                 {searchState.searchTerm != "" ? <RelatedTerms /> : null}
                             </Box>
-                            {/* Mobile view */}
-                            {/*<Box className="relatedTermsBox" id="mobileRelatedTerms">
-                                <RelatedTerms />
-                            </Box>*/}
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
                                 <Box className="results-count" style={{fontFamily: PrimaryFont}}>
                                     {searchState.selectedDataProvider.length > 0 &&
@@ -169,51 +164,35 @@ export function SearchView() {
                             </Box>
                         </Box>
                     ) : (
-                        <Box
-                            flex="1 1 100%"
-                            overflow="hidden"
-                            paddingTop={{ base: "7%", custombreak: "0%" }}
-                        >
+                        <Box flex="1 1 100%" overflow="hidden" pt={{ base: "7%", custombreak: "0%" }}>
                             Your request is currently being processed and may take a few seconds. 
-                            For performance reasons, the number of search results are limited to a maximum of 100 prioritized hits.
+                            For performance reasons, the number of search results is limited to a maximum of 100 prioritized hits. 
                             Hence, there might be more search results than shown.
-                            <Stack pt={3}>
-                                <Skeleton height='50px' />
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                <Skeleton height='50px' marginTop={"20px"}/>
-                                
+
+                            <Stack pt={3} spacing={5}>
+                                {Array(14).fill(null).map((_, index) => (
+                                    <Skeleton key={index} height="50px" />
+                                ))}
                             </Stack>
                         </Box>
                     )}
-
-                    <Flex flex="0 0 35%" hideBelow="custombreak" flexDirection="column">
-                        <Box>
-                            <ResultPaging />
-                        </Box>
-                        <Box padding={"22px 0px"}>
-                            <DataProviderFacet />
-                        </Box>
-                        <Box padding={"22px 0px"}>
-                            <DownloadOptionFacet />
-                        </Box>
+                    <Flex 
+                        flex="0 0 35%" 
+                        hideBelow="custombreak" 
+                        flexDirection="column" 
+                        gap={7} 
+                        position="sticky" 
+                        top="150px" 
+                        zIndex="1"
+                    >
+                        <ResultPaging />
+                        <DataProviderFacet />
+                        <DownloadOptionFacet />
                         <Box marginBottom={"50px"} position="sticky" top="150px" zIndex="1">
                             <SpatialCoverageFacet mapId="spatial-filter-map" />
                         </Box>
                         <Spacer />
-                        <Box>
-                            <ResultPaging />
-                        </Box>
+                        <ResultPaging />
                     </Flex>
                 </Flex>
                 <MobileFilterMenu
