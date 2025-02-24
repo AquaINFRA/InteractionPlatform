@@ -49,6 +49,8 @@ export interface ISearchState {
     setDownloadOption(downloadOption: boolean): void;
     selectedDataProvider: string[];
     setSelectedDataProvider(dataProvider: string[]): void;
+    selectedDataProviderTmp: string[];
+    setSelectedDataProviderTmp(dataProvider: string[]): void;
     dataProviderTitles: string[];
     setDataProviderTitles(dataProviderTitles: string[]): void;
     selectableDataProvider: SelectableDataProvider[];
@@ -114,6 +116,7 @@ export const SearchState = (props: PropsWithChildren) => {
         urlDp.forEach((e) => e && dPr.push(e));
     }
     const [selectedDataProvider, setSelectedDataProvider] = useState<string[]>(dPr);
+    const [selectedDataProviderTmp, setSelectedDataProviderTmp] = useState<string[]>(dPr);
 
     //init download option
     const [downloadOption, setDownloadOption] = useState<boolean>(false);
@@ -199,6 +202,8 @@ export const SearchState = (props: PropsWithChildren) => {
         search,
         setSelectedDataProvider,
         selectedDataProvider,
+        selectedDataProviderTmp,
+        setSelectedDataProviderTmp,
         selectableDataProvider,
         setDataProviderTitles,
         dataProviderTitles,

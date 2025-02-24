@@ -16,10 +16,20 @@ export function SearchBar() {
 
     const startSearch = () => {
         searchState.setSearchTerm(searchTerm);
-        if (!location.pathname.endsWith("search")) {
-            const params: UrlSearchParams = { [UrlSearchParameterType.Searchterm]: searchTerm };
-            navigate({ pathname: "/search", search: `?${createSearchParams({...params})}` });
-        }
+        searchState.setSelectedDataProviderTmp(searchState.selectedDataProvider);
+    
+        if (location.pathname.endsWith("/search")) return;
+    
+        const params: UrlSearchParams = {
+            [UrlSearchParameterType.Searchterm]: searchTerm,
+            [UrlSearchParameterType.DataProvider]: searchState.selectedDataProvider,
+            [UrlSearchParameterType.DownloadOption]: `${searchState.downloadOption}`
+        };
+    
+        navigate({
+            pathname: "/search",
+            search: `?${createSearchParams({...params})}`
+        });
     };
 
     return (

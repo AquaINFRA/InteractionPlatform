@@ -38,6 +38,7 @@ export function DataProviderFacet() {
                 const ids = filteredEntries.map((entry: any) => entry.id);
                 if (searchState.selectedDataProvider.length === 0) {
                     searchState.setSelectedDataProvider(ids);
+                    searchState.setSelectedDataProviderTmp(ids);
                 }
                 setAllSelected(true);
                 const providerTitles = filteredEntries.map((se: any) => {

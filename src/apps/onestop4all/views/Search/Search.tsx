@@ -67,7 +67,7 @@ export function SearchView() {
         searchState.searchTerm,
         searchState.spatialFilter,
         searchState.sorting,
-        searchState.selectedDataProvider,
+        searchState.selectedDataProviderTmp,
         searchState.downloadOption
     ]);
 
