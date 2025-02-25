@@ -11,12 +11,17 @@ export interface ZenodoViewProps {
     item: ZenodoMetadataResponse;
 }
 
+export interface Identifier {
+    res_type: string;
+    identifier: string[];
+}
+
 export function DkpView({ item: metadata }: ZenodoViewProps) {
     const roCrateUrl = "https://zenodo.org/api/records/"+metadata.recid+"/files/ro-crate-metadata.json/content";
     const [roCrate, setRoCrate] = useState<any[]>([]);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const [showPopup, setShowPopup] = useState<boolean>(false);
-    const [identifier, setIdentifier] = useState<string[]>();
+    const [identifier, setIdentifier] = useState<Identifier>();
 
     useEffect(() => {
         async function fetchRoCrate() {
@@ -105,9 +110,23 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
                 <Box position="fixed" top="0" left="0" right="0" bottom="0" bg="rgba(0, 0, 0, 0.5)" zIndex="10">
                     <Box bg="white" p="20px" borderRadius="8px" maxWidth="430px" margin="auto" marginTop="20%">
                         <Box padding={3} textAlign="center">
-                            <b>Where do you want to check the resource?</b>
+                            <b>
+                                Where do you want to check the 
+                                {identifier?.res_type === "ComputationalWorkflow" 
+                                    ? " Workflow" 
+                                    : identifier?.res_type === "WebAPI" 
+                                        ? " Web API" 
+                                        : identifier?.res_type === "SoftwareSourceCode"
+                                            ? " Toolbox"
+                                            : identifier?.res_type === "SoftwareApplication"
+                                                ? " Virtual lab"
+                                                : identifier?.res_type === "Dataset"
+                                                    ? " Dataset"
+                                                    : " " + identifier?.res_type
+                                }
+                            </b>
                         </Box>
-                        {identifier && identifier.map((id, index) => {
+                        {identifier?.identifier && identifier.identifier.map((id, index) => {
                             let label: any;
                             
                             if (id.includes("github.com")) {
@@ -156,7 +175,7 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
                                 </Box>
                             );
                         })}
-                        
+
                         <Box mt="10px" display="flex" justifyContent="center">
                             <Box as="button" onClick={() => setShowPopup(false)} style={{ width: "70%", padding: "10px", backgroundColor: "#ff6347", color: "white", borderRadius: "5px", textAlign: "center" }}>
                                 Close
@@ -207,11 +226,11 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
         );
     }
 
-    function handleIdentifier(identifier: string[]) {
+    function handleIdentifier(type: string, identifier: string[]) {
         if (!identifier) return null;
         if (identifier.length > 1) {
             setShowPopup(true);
-            setIdentifier(identifier);
+            setIdentifier({res_type: type, identifier: identifier});
         } else {
             window.open(identifier[0], "_blank");
         }
@@ -236,7 +255,7 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
                             onMouseEnter={() => setHoveredIndex(index + startIndex)}
                             onMouseLeave={() => setHoveredIndex(null)}
                             cursor="pointer"
-                            onClick={() => handleIdentifier(component.identifier)}
+                            onClick={() => handleIdentifier(component.type, component.identifier)}
                         >
                             <Box bg="white" borderRadius="full" p={2}>
                                 <Image
