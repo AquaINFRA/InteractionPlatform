@@ -108,19 +108,22 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
                             <b>Where do you want to check the resource?</b>
                         </Box>
                         {identifier && identifier.map((id, index) => {
-                            let label = id;
+                            let label: any;
+                            
                             if (id.includes("github.com")) {
-                                label = "GitHub";
+                                label = <img src="/github_btn.png" alt="Galaxy" style={{ height: "45px" }} />;
                             } else if (id.includes("usegalaxy")) {
-                                label = "Galaxy";
+                                label = <img src="/galaxy_btn.png" alt="Galaxy" style={{ height: "35px" }} />;
                             } else if (id.includes("aquainfra.dev")) {
-                                label = "AquaINFRA";
+                                label = <img src="/aqua_btn.png" alt="Galaxy" style={{ height: "30px" }} />;
                             } else if (id.includes("zenodo")) {
-                                label = "Zenodo";
+                                label = <img src="/zenodo_btn.png" alt="Galaxy" style={{ height: "60px" }} />;
                             } else if (id.includes("aquainfra.ogc")) {
-                                label = "Server";
+                                label = <img src="/pygeoapi_btn.png" alt="Galaxy" style={{ height: "45px" }} />;
+                            } else {
+                                label = id.length > 20 ? id.substring(0, 30) + "..." : id;
                             }
-                
+
                             return (
                                 <Box key={index} mb="10px" display="flex" justifyContent="center">
                                     <Box 
@@ -129,10 +132,23 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
                                         style={{ 
                                             width: "70%", 
                                             padding: "10px", 
-                                            backgroundColor: "#05668D", 
-                                            color: "white", 
-                                            borderRadius: "5px", 
-                                            textAlign: "center" 
+                                            backgroundColor: "#5CE65C",
+                                            color: "black", 
+                                            //borderRadius: "5px", 
+                                            textAlign: "center", 
+                                            display: "flex", 
+                                            justifyContent: "center", 
+                                            alignItems: "center",
+                                            maxHeight: "45px",
+                                            transition: "background-color 0.3s, transform 0.2s",
+                                        }}
+                                        onMouseOver={(e:any) => {
+                                            e.currentTarget.style.backgroundColor = "#BFF4BE";
+                                            e.currentTarget.style.transform = "scale(1.05)";
+                                        }}
+                                        onMouseOut={(e:any) => {
+                                            e.currentTarget.style.backgroundColor = "#5CE65C";
+                                            e.currentTarget.style.transform = "scale(1)";
                                         }}
                                     >
                                         {label}
