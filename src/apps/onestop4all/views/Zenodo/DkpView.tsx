@@ -14,6 +14,8 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
     const roCrateUrl = "https://zenodo.org/api/records/"+metadata.recid+"/files/ro-crate-metadata.json/content";
     const [roCrate, setRoCrate] = useState<any[]>([]);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [showPopup, setShowPopup] = useState<boolean>(false);
+    const [identifier, setIdentifier] = useState<string[]>();
 
     useEffect(() => {
         async function fetchRoCrate() {
@@ -24,7 +26,7 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
                 setRoCrate(parseRoCrate(roCrateData));
             } catch (error) {
                 console.error(error);
-            }
+            } 
         }
         fetchRoCrate();
     }, []);
@@ -97,6 +99,42 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
                     </Box>
                 )}
             </Box>
+
+            {showPopup && (
+                <Box position="fixed" top="0" left="0" right="0" bottom="0" bg="rgba(0, 0, 0, 0.5)" zIndex="10">
+                    <Box bg="white" p="20px" borderRadius="8px" maxWidth="400px" margin="auto" marginTop="20%">
+                        {identifier && identifier.map((id, index) => {
+                            let label = id;
+                            if (id.includes("github.com")) {
+                                label = "Visit GitHub";
+                            } else if (id.includes("usegalaxy")) {
+                                label = "Visit Galaxy";
+                            } else if (id.includes("aquainfra.dev")) {
+                                label = "Visit AquaINFRA";
+                            } else if (id.includes("zenodo")) {
+                                label = "Visit Zenodo";
+                            } else if (id.includes("aquainfra.ogc")) {
+                                label = "Visit server";
+                            }
+                
+                            return (
+                                <Box key={index} mb="10px">
+                                    <Box as="button" onClick={() => window.open(id, "_blank")} style={{ width: "100%", padding: "10px", backgroundColor: "#05668D", color: "white", borderRadius: "5px", textAlign: "center" }}>
+                                        {label}
+                                    </Box>
+                                </Box>
+                            );
+                        })}
+                        
+                        {/* Close button */}
+                        <Box mt="10px" display="flex" justifyContent="space-between">
+                            <Box as="button" onClick={() => setShowPopup(false)} style={{ padding: "10px", backgroundColor: "#ff6347", color: "white", borderRadius: "5px", textAlign: "center" }}>
+                                Close
+                            </Box>
+                        </Box>
+                    </Box>
+                </Box>            
+            )}
         </Box>
     );
 
@@ -139,6 +177,16 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
         );
     }
 
+    function handleIdentifier(identifier: string[]) {
+        if (!identifier) return null;
+        if (identifier.length > 1) {
+            setShowPopup(true);
+            setIdentifier(identifier);
+        } else {
+            window.open(identifier[0], "_blank");
+        }
+    }
+
     function renderComponents(components: any[], startIndex: number, priority: string) {
         const sortedComponents = [...components].sort((a, b) =>
             a.type === priority ? -1 : b.type === priority ? 1 : 0
@@ -158,7 +206,7 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
                             onMouseEnter={() => setHoveredIndex(index + startIndex)}
                             onMouseLeave={() => setHoveredIndex(null)}
                             cursor="pointer"
-                            onClick={() => window.open(component.identifier, "_blank")}
+                            onClick={() => handleIdentifier(component.identifier)}
                         >
                             <Box bg="white" borderRadius="full" p={2}>
                                 <Image
@@ -213,8 +261,25 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
     
         const dkp_components = rootDataset?.hasPart?.map((part: any) => {
             const resource = findById(part["@id"]);
+            let identifier: string[] = [];
+            
+            if (resource?.identifier) {
+                if (typeof resource.identifier === "string") {
+                    identifier = [resource.identifier];
+                } else if (Array.isArray(resource.identifier)) {
+                    identifier = resource.identifier.map((id: any) =>
+                        typeof id === "string" ? id : findById(id["@id"])?.name || null
+                    ).filter(Boolean);
+                } else if (resource.identifier["@id"]) {
+                    const resolvedIdentifier = findById(resource.identifier["@id"])?.name || null;
+                    if (resolvedIdentifier) identifier.push(resolvedIdentifier);
+                }
+            }
+
+            identifier.sort();
+    
             return {
-                identifier: findById(resource?.identifier?.["@id"])?.name || null,
+                identifier,
                 name: resource?.name || null,
                 type: resource?.["@type"]?.[0] || null,
                 image: findById(resource?.image?.["@id"])?.name || null

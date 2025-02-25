@@ -12,7 +12,7 @@ export interface SearchResultProps {
 
 export function SearchResult(props: SearchResultProps) {
     const { item } = props;
-    const dkpRegistry = ["14891982"];
+    const dkpRegistry = ["14922019"];
     let itemType = item.properties.type;
     if (dkpRegistry.includes(item.id.split(":").pop() as string)) {
         itemType = "data-to-knowledge package";
