@@ -5,6 +5,7 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ZenodoResources } from "../../components/ResourceType/ExternalResources/ZenodoResources";
 import { RelatedContent } from "../../components/ResourceType/RelatedIdentifier/RelatedIdentifier";
 import { ZenodoMetadataResponse } from "./Zenodo";
+import { getComponentIcon, getComponentLabel, parseRoCrate } from "../../services/DkpUtils";
 
 export interface ZenodoViewProps {
     item: ZenodoMetadataResponse;
@@ -102,33 +103,46 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
 
             {showPopup && (
                 <Box position="fixed" top="0" left="0" right="0" bottom="0" bg="rgba(0, 0, 0, 0.5)" zIndex="10">
-                    <Box bg="white" p="20px" borderRadius="8px" maxWidth="400px" margin="auto" marginTop="20%">
+                    <Box bg="white" p="20px" borderRadius="8px" maxWidth="430px" margin="auto" marginTop="20%">
+                        <Box padding={3} textAlign="center">
+                            <b>Where do you want to check the resource?</b>
+                        </Box>
                         {identifier && identifier.map((id, index) => {
                             let label = id;
                             if (id.includes("github.com")) {
-                                label = "Visit GitHub";
+                                label = "GitHub";
                             } else if (id.includes("usegalaxy")) {
-                                label = "Visit Galaxy";
+                                label = "Galaxy";
                             } else if (id.includes("aquainfra.dev")) {
-                                label = "Visit AquaINFRA";
+                                label = "AquaINFRA";
                             } else if (id.includes("zenodo")) {
-                                label = "Visit Zenodo";
+                                label = "Zenodo";
                             } else if (id.includes("aquainfra.ogc")) {
-                                label = "Visit server";
+                                label = "Server";
                             }
                 
                             return (
-                                <Box key={index} mb="10px">
-                                    <Box as="button" onClick={() => window.open(id, "_blank")} style={{ width: "100%", padding: "10px", backgroundColor: "#05668D", color: "white", borderRadius: "5px", textAlign: "center" }}>
+                                <Box key={index} mb="10px" display="flex" justifyContent="center">
+                                    <Box 
+                                        as="button" 
+                                        onClick={() => window.open(id, "_blank")} 
+                                        style={{ 
+                                            width: "70%", 
+                                            padding: "10px", 
+                                            backgroundColor: "#05668D", 
+                                            color: "white", 
+                                            borderRadius: "5px", 
+                                            textAlign: "center" 
+                                        }}
+                                    >
                                         {label}
                                     </Box>
                                 </Box>
                             );
                         })}
                         
-                        {/* Close button */}
-                        <Box mt="10px" display="flex" justifyContent="space-between">
-                            <Box as="button" onClick={() => setShowPopup(false)} style={{ padding: "10px", backgroundColor: "#ff6347", color: "white", borderRadius: "5px", textAlign: "center" }}>
+                        <Box mt="10px" display="flex" justifyContent="center">
+                            <Box as="button" onClick={() => setShowPopup(false)} style={{ width: "70%", padding: "10px", backgroundColor: "#ff6347", color: "white", borderRadius: "5px", textAlign: "center" }}>
                                 Close
                             </Box>
                         </Box>
@@ -230,62 +244,4 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
             </SimpleGrid>
         );
     }    
-
-    function getComponentIcon(type: string) {
-        const icons: Record<string, string> = {
-            SoftwareSourceCode: "/toolbox.svg",
-            SoftwareApplication: "/virtuallab.svg",
-            WebAPI: "/cloud.svg",
-            ComputationalWorkflow: "/workflow.svg",
-            Dataset: "/data.svg"
-        };
-        return icons[type] || "";
-    }
-
-    function getComponentLabel(type: string) {
-        return type === "SoftwareSourceCode" 
-            ? "Toolbox"
-            : type === "SoftwareApplication" 
-                ? "Virtual Lab"
-                : type === "WebAPI" 
-                    ? "Web API" 
-                    : type === "ComputationalWorkflow"
-                        ? "Workflow"
-                        : type;
-    }
-
-    function parseRoCrate(roCrate: any) {
-        const graph = roCrate["@graph"];
-        const findById = (id: string) => graph.find((item: any) => item["@id"] === id);
-        const rootDataset = graph.find((item: any) => item["@id"] === "./");
-    
-        const dkp_components = rootDataset?.hasPart?.map((part: any) => {
-            const resource = findById(part["@id"]);
-            let identifier: string[] = [];
-            
-            if (resource?.identifier) {
-                if (typeof resource.identifier === "string") {
-                    identifier = [resource.identifier];
-                } else if (Array.isArray(resource.identifier)) {
-                    identifier = resource.identifier.map((id: any) =>
-                        typeof id === "string" ? id : findById(id["@id"])?.name || null
-                    ).filter(Boolean);
-                } else if (resource.identifier["@id"]) {
-                    const resolvedIdentifier = findById(resource.identifier["@id"])?.name || null;
-                    if (resolvedIdentifier) identifier.push(resolvedIdentifier);
-                }
-            }
-
-            identifier.sort();
-    
-            return {
-                identifier,
-                name: resource?.name || null,
-                type: resource?.["@type"]?.[0] || null,
-                image: findById(resource?.image?.["@id"])?.name || null
-            };
-        });
-    
-        return dkp_components;
-    }
 }
