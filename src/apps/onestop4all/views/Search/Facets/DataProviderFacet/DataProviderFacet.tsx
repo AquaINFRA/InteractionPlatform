@@ -2,10 +2,11 @@ import { Box, Button, Flex } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { SimpleGrid } from "@chakra-ui/react";
-import { SelectableDataProvider, useSearchState } from "../../SearchState";
+import { SelectableDataProvider, UrlSearchParameterType, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
 import { SearchService } from "../../../../services";
+import { useSearchParams } from "react-router-dom";
 
 export interface DataProvider {
     title: string;
@@ -23,6 +24,7 @@ export function DataProviderFacet() {
     const [providerWithResults, setProviderWithResults] = useState<ProviderWithResults[]>();
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const [loading, setLoading] = useState(true);
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         searchSrvc.getDataProvider().then((res) => {
@@ -90,6 +92,7 @@ export function DataProviderFacet() {
     ]);
 
     function dataProviderToggled(checked: boolean, entry: any) {
+        searchState.setDataProviderTriggered(false);
         if (checked) {
             searchState.setSelectedDataProvider([...searchState.selectedDataProvider, entry.id]);
         } else {
@@ -99,7 +102,21 @@ export function DataProviderFacet() {
         }
     }
 
+    useEffect(() => {
+        const checkedDataProvider = searchState.selectedDataProvider;
+        const requestDataProvider = searchParams.getAll(UrlSearchParameterType.DataProvider);
+    
+        const areArraysEqual = (arr1: string[], arr2: string[]) => {
+            if (arr1.length !== arr2.length) return false;
+            return new Set(arr1).size === new Set([...arr1, ...arr2]).size;
+        };
+    
+        searchState.setDataProviderTriggered(areArraysEqual(checkedDataProvider, requestDataProvider));
+    }, [searchState.selectedDataProvider, searchParams]);
+    
+
     const toggleAllSelection = () => {
+        searchState.setDataProviderTriggered(false);
         if (allSelected) {
             searchState.setSelectedDataProvider([]);
         } else {
@@ -112,7 +129,7 @@ export function DataProviderFacet() {
 
     return (
         entries.length > 0 ? (
-            <FacetBase title="Data provider" expanded>
+            <FacetBase  title={searchState.dataProviderTriggered ? "Data provider" : <span style={{color: "red"}}>*Click on search to update request!*</span>} expanded>
                 <SimpleGrid columns={[1, 2]} spacing={3} marginTop={"1%"}>
                     {entries.map((entry: any, i) =>
                         entry.id !== "dataeurope" ? (

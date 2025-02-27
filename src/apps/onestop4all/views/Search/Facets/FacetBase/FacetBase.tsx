@@ -11,7 +11,7 @@ import { CSSProperties, PropsWithChildren } from "react";
 import { DropdownArrowIcon } from "../../../../components/Icons";
 
 export interface FacetBaseProps {
-    title: string;
+    title: string | React.ReactNode;
     expanded?: boolean;
 }
 

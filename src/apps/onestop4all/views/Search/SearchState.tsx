@@ -51,6 +51,8 @@ export interface ISearchState {
     setSelectedDataProvider(dataProvider: string[]): void;
     selectedDataProviderTmp: string[];
     setSelectedDataProviderTmp(dataProvider: string[]): void;
+    dataProviderTriggered: boolean;
+    setDataProviderTriggered(dataProviderTriggered: boolean): void;
     relatedTerms: any;
     setRelatedTerms(obj: any): void;
     relatedTermsKeyword: string | undefined;
@@ -125,6 +127,8 @@ export const SearchState = (props: PropsWithChildren) => {
     const [relatedTerms, setRelatedTerms] = useState<any>();
     const [relatedTermsKeyword, setRelatedTermsKeyword] = useState<string>();
 
+    const [dataProviderTriggered, setDataProviderTriggered] = useState<boolean>(true);
+
     //init download option
     const [downloadOption, setDownloadOption] = useState<boolean>(false);
 
@@ -148,6 +152,7 @@ export const SearchState = (props: PropsWithChildren) => {
 
     function search() {
         setIsLoaded(false);
+        setDataProviderTriggered(true);
         selectedDataProvider.length > 0 && searchTerm.trim() !== ""
             ? searchSrvc
                 .doSearch({
@@ -213,6 +218,8 @@ export const SearchState = (props: PropsWithChildren) => {
         setSelectedDataProviderTmp,
         relatedTerms,
         setRelatedTerms,
+        dataProviderTriggered,
+        setDataProviderTriggered,
         relatedTermsKeyword,
         setRelatedTermsKeyword,
         selectableDataProvider,

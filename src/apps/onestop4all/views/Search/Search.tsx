@@ -99,16 +99,33 @@ export function SearchView() {
                                 {searchState.searchTerm != "" ? <RelatedTerms /> : null}
                             </Box>
                             <Flex flexDirection={{ base: "column", custombreak: "row" }}>
-                                <Box className="results-count" style={{fontFamily: PrimaryFont}}>
-                                    {searchState.selectedDataProvider.length > 0 &&
-                                    !searchState.searchResults?.count &&
-                                    searchState.searchTerm.trim() !== ""
-                                        ? "0"
-                                        : searchState.searchResults?.count}{" "}
-                                    {searchState.searchResults?.count ||
-                                    (searchState.selectedDataProvider.length > 0 && searchState.searchTerm.trim() !== "")
-                                        ? "Results for your search"
-                                        : "Select a data provider on the right and type in a search term"}
+                                <Box 
+                                    className="results-count" 
+                                    style={{ fontFamily: PrimaryFont, color: "red" }}
+                                >
+                                    {(() => {
+                                        const { selectedDataProvider, searchResults, searchTerm } = searchState;
+                                        const hasProvider = selectedDataProvider.length > 0;
+                                        const hasSearchTerm = searchTerm.trim() !== "";
+                                        const resultsCount = searchResults?.count;
+
+                                        if (hasProvider && !resultsCount && hasSearchTerm) {
+                                            return <span style={{ color: "black" }}>0 Results for your search</span>;
+                                        }
+                                        if (resultsCount) {
+                                            return <span style={{ color: "black" }}>{resultsCount} Results for your search</span>;
+                                        }
+                                        if (!hasProvider && !hasSearchTerm) {
+                                            return "Select a data provider on the right and type in a search term";
+                                        }
+                                        if (!hasProvider && hasSearchTerm) {
+                                            return "Select a data provider on the right";
+                                        }
+                                        if (hasProvider && !hasSearchTerm) {
+                                            return "Type in a search term";
+                                        }
+                                        return null;
+                                    })()}
                                 </Box>
                                 <Box hideFrom="custombreak" padding="20px 0px">
                                     <ResultPaging />
