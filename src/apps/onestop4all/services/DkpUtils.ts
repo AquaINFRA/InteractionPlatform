@@ -66,7 +66,7 @@ export function findAssociatedDkp(dkps: any[], resource_id: string): any[] {
                 return true;
             } else if (typeof obj[key] === "object" && obj[key] !== null) {
                 if (Array.isArray(obj[key])) {
-                    if (obj[key].some(item => 
+                    if (obj[key].some((item:any) => 
                         (typeof item === "string" && item.includes(resource_id)) || 
                         (typeof item === "object" && item !== null && searchObject(item))
                     )) {

@@ -9,12 +9,12 @@ import { fetchAndStoreDkps } from "../../services/DkpUtils";
 
 export function StartView() {
 
-    /*const searchSrvc = useService("onestop4all.SearchService") as SearchService;
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const searchState = useSearchState();
 
     useEffect(() => {
         fetchAndStoreDkps(searchSrvc, searchState);
-    }, [searchSrvc]);*/
+    }, [searchSrvc]);
 
     return (
         <Box className="start-view">
