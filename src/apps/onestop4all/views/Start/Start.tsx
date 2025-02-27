@@ -1,8 +1,21 @@
 import { Box, Container, Flex } from "@open-pioneer/chakra-integration";
 import { SearchBar } from "../../components/SearchBar";
 import { Videos } from "./Videos/Videos";
+import { useEffect } from "react";
+import { useService } from "open-pioneer:react-hooks";
+import { SearchService } from "../../services";
+import { useSearchState } from "../Search/SearchState";
+import { fetchAndStoreDkps } from "../../services/DkpUtils";
 
 export function StartView() {
+
+    /*const searchSrvc = useService("onestop4all.SearchService") as SearchService;
+    const searchState = useSearchState();
+
+    useEffect(() => {
+        fetchAndStoreDkps(searchSrvc, searchState);
+    }, [searchSrvc]);*/
+
     return (
         <Box className="start-view">
             <Box position="relative">

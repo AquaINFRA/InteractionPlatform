@@ -51,6 +51,8 @@ export interface ISearchState {
     setSelectedDataProvider(dataProvider: string[]): void;
     selectedDataProviderTmp: string[];
     setSelectedDataProviderTmp(dataProvider: string[]): void;
+    dkps: any[] | undefined;
+    setDkps(dkps: any[]): void;
     dataProviderTriggered: boolean;
     setDataProviderTriggered(dataProviderTriggered: boolean): void;
     relatedTerms: any;
@@ -127,6 +129,7 @@ export const SearchState = (props: PropsWithChildren) => {
     const [relatedTerms, setRelatedTerms] = useState<any>();
     const [relatedTermsKeyword, setRelatedTermsKeyword] = useState<string>();
 
+    const [dkps, setDkps] = useState<any[]>();
     const [dataProviderTriggered, setDataProviderTriggered] = useState<boolean>(true);
 
     //init download option
@@ -218,6 +221,8 @@ export const SearchState = (props: PropsWithChildren) => {
         setSelectedDataProviderTmp,
         relatedTerms,
         setRelatedTerms,
+        dkps,
+        setDkps,
         dataProviderTriggered,
         setDataProviderTriggered,
         relatedTermsKeyword,

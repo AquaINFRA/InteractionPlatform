@@ -4,6 +4,7 @@ import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ZenodoResources } from "../../components/ResourceType/ExternalResources/ZenodoResources";
 import { RelatedContent } from "../../components/ResourceType/RelatedIdentifier/RelatedIdentifier";
+import { DkpResources } from "../../components/ResourceType/ExternalResources/DkpResources";
 
 export interface RelatedIdentifier {
     identifier: string;
@@ -16,6 +17,7 @@ export interface ZenodoMetadataResponse {
     updated: string;
     doi_url: string;
     provider: string;
+    dkps: any;
     recid: string;
     files: [{
         links:{
@@ -106,6 +108,11 @@ export function ZenodoView(props: ZenodoViewProps) {
                     </Box> : null}
                 </Box>
                 <Box w="25%">
+                    {metadata.dkps ? (
+                        <Box pt="8px">
+                            <DkpResources dkps={metadata.dkps} />
+                        </Box>
+                    ) : "null"}
                     {metadata.links && metadata.links.doi ? (
                         <Box pt="40px">
                             <ZenodoResources metadata={metadata.links.self} repo={metadata.links.doi} download={metadata.links.archive}/>
@@ -126,6 +133,11 @@ export function ZenodoView(props: ZenodoViewProps) {
                         <Abstract abstractText={metadata.metadata.description} />
                     </Box>
                 ) : null}
+                {metadata.dkps ? (
+                    <Box pt="8px">
+                        <DkpResources dkps={metadata.dkps} />
+                    </Box>
+                ) : "null"}
                 {metadata.links && metadata.links.doi ? (
                     <Box pt="40px">
                         <ZenodoResources metadata={metadata.links.self} repo={metadata.links.doi} download={metadata.links.archive}/>

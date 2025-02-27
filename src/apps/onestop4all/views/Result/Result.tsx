@@ -13,6 +13,7 @@ import { BackToSearchLink } from "../../components/BackToSearchLink/BackToSearch
 import { ResourceTypeLabel } from "../../components/ResourceTypeLabel/ResourceTypeLabel";
 import { ZenodoMetadataResponse, ZenodoView } from "../Zenodo/Zenodo";
 import { DkpView } from "../Zenodo/DkpView";
+import { fetchAndStoreDkps, findAssociatedDkp } from "../../services/DkpUtils";
 
 export function Result() {
     const resultId = useParams().id as string;
@@ -33,6 +34,10 @@ export function Result() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history.state.usr]);
+    
+    useEffect(() => {
+        fetchAndStoreDkps(searchSrvc, searchState);
+    }, [searchSrvc]);
 
     useEffect(() => {
         setLoading(true);
@@ -43,6 +48,12 @@ export function Result() {
         if (id && provider === "zenodo") {
             searchSrvc.getZenodoMetadata(provider, id).then((result) => {
                 if (result) {
+                    const associatedDkps = findAssociatedDkp(searchState.dkps ?? [], result.response.doi_url);
+
+                    if (associatedDkps.length > 0) {
+                        result.response.dkps = associatedDkps;
+                    }
+
                     result.response.provider = provider;
                     setSearchResult(result.response);
                     if (result.response.metadata.keywords?.includes("Data-to-Knowledge Package")) {
@@ -57,6 +68,12 @@ export function Result() {
         else {
             searchSrvc.getDdasMetadata(provider, id).then((result) => {
                 if (result) {
+                    const associatedDkps = findAssociatedDkp(searchState.dkps ?? [], result.response.id);
+            
+                    if (associatedDkps.length > 0) {
+                        result.response.dkps = associatedDkps;
+                    }
+            
                     setSearchResult(result.response);
                     setResourceType(getResourceType(result.response.properties.type));
                     setLoading(false);
