@@ -49,6 +49,8 @@ export function SearchBar() {
                     variant="solid"
                     hideBelow="custombreak"
                     onClick={startSearch}
+                    isLoading={!searchState.isLoaded}
+                    loadingText="Searching..."
                 >
                     Search
                 </Button>

@@ -97,7 +97,7 @@ export const SearchState = (props: PropsWithChildren) => {
 
     // init search results and loading state
     const [searchResults, setSearchResults] = useState<SearchResult>();
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(true);
 
     // init search term
     const [searchTerm, setSearchTerm] = useState<string>(
