@@ -134,7 +134,7 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
                             } else if (id.includes("usegalaxy")) {
                                 label = <img src="/galaxy_btn.png" alt="Galaxy" style={{ height: "35px" }} />;
                             } else if (id.includes("aquainfra.dev")) {
-                                label = <img src="/aqua_btn.png" alt="Galaxy" style={{ height: "30px" }} />;
+                                label = <img src="/aqua_btn.png" alt="Galaxy" style={{ height: "25px" }} />;
                             } else if (id.includes("zenodo")) {
                                 label = <img src="/zenodo_btn.png" alt="Galaxy" style={{ height: "60px" }} />;
                             } else if (id.includes("aquainfra.ogc")) {
