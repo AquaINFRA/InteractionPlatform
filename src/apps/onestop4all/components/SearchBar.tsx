@@ -47,20 +47,12 @@ export function SearchBar() {
                 <Button
                     leftIcon={<SearchIcon boxSize={6} />}
                     variant="solid"
-                    hideBelow="custombreak"
                     onClick={startSearch}
                     isLoading={!searchState.isLoaded}
                     loadingText="Searching..."
                 >
                     Search
                 </Button>
-                <IconButton
-                    aria-label="start search"
-                    size="sm"
-                    hideFrom="custombreak"
-                    onClick={startSearch}
-                    icon={<SearchIcon />}
-                />
             </Flex>
         </Box>
     );
