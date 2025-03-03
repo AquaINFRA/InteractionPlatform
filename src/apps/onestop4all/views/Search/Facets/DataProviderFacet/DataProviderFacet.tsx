@@ -129,7 +129,7 @@ export function DataProviderFacet() {
 
     return (
         entries.length > 0 ? (
-            <FacetBase  title={searchState.dataProviderTriggered ? "Data provider" : <span style={{color: "red"}}>*Click on search to update request!*</span>} expanded>
+            <FacetBase  title={searchState.dataProviderTriggered ? "Data provider" : <span style={{color: "red"}}>*Press &quot;search&quot; to update request!*</span>} expanded>
                 <SimpleGrid columns={[1, 2]} spacing={3} marginTop={"1%"}>
                     {entries.map((entry: any, i) =>
                         entry.id !== "dataeurope" ? (

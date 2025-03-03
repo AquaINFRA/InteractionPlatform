@@ -116,13 +116,13 @@ export function SearchView() {
                                             return <span style={{ color: "black" }}>{resultsCount} Results for your search</span>;
                                         }
                                         if (!hasProvider && !hasSearchTerm) {
-                                            return "Select a data provider on the right and type in a search term";
+                                            return "Select a data provider on the right, type in a search term & press \"search\"";
                                         }
                                         if (!hasProvider && hasSearchTerm) {
-                                            return "Select a data provider on the right";
+                                            return "Select a data provider on the right and press \"search\"";
                                         }
                                         if (hasProvider && !hasSearchTerm) {
-                                            return "Type in a search term";
+                                            return "Type in a search term and press \"search\"";
                                         }
                                         return null;
                                     })()}
