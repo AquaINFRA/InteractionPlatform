@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, Skeleton, Spacer, Stack } from "@open-pioneer/chakra-integration";
+import { Box, Button, Container, Flex, Skeleton, Spacer, Stack, Text } from "@open-pioneer/chakra-integration";
 import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate, useSearchParams } from "react-router-dom";
 
@@ -20,11 +20,22 @@ export function SearchView() {
     const searchState = useSearchState();
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
+    const [searchTimeout, setSearchTimeout] = useState(false);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() =>  {
         searchState.search();
     }, [searchParams]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (!searchState.isLoaded) {
+                setSearchTimeout(true);
+            }
+        }, 45000);
+
+        return () => clearTimeout(timer);
+    }, [searchState.isLoaded]);
 
     useEffect(() => {
         const params: UrlSearchParams = {};
@@ -179,6 +190,12 @@ export function SearchView() {
                             <Box hideFrom="custombreak" padding="40px 0px">
                                 <ResultPaging />
                             </Box>
+                        </Box>
+                    ) : searchTimeout ? (
+                        <Box flex="1 1 100%" overflow="hidden" pt={{ base: "7%", custombreak: "0%" }}>
+                            <Text fontSize="lg" fontWeight="bold" color="red">
+                                Search is taking longer than expected. Please refresh page (press F5).
+                            </Text>
                         </Box>
                     ) : (
                         <Box flex="1 1 100%" overflow="hidden" pt={{ base: "7%", custombreak: "0%" }}>
