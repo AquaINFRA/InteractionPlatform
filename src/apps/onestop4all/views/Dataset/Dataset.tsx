@@ -76,7 +76,7 @@ export function DatasetView(props: DatasetViewProps) {
                         <Box pt="8px">
                             <DkpResources dkps={metadata.dkps} />
                         </Box>
-                    ) : "null"}
+                    ) : null}
                     {metadata.links ? (
                         <Box pt="8px">
                             <ExternalResources links={metadata.links} />
@@ -111,7 +111,7 @@ export function DatasetView(props: DatasetViewProps) {
                     <Box pt="8px">
                         <DkpResources dkps={metadata.dkps} />
                     </Box>
-                ) : "null"}
+                ) : null}
                 {metadata.links ? (
                     <Box pt="40px">
                         <ExternalResources links={metadata.links} />
