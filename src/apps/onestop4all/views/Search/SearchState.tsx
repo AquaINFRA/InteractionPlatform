@@ -70,6 +70,8 @@ export interface ISearchState {
     setPageStart(pageSize: number): void;
     searchResults: SearchResult | undefined;
     isLoaded: boolean;
+    bboxActive: boolean;
+    setBboxActive(bboxActive:boolean): void;
     sorting: SortOption | undefined;
     setSorting(sortOption: SortOption): unknown;
     search(): void;
@@ -98,6 +100,7 @@ export const SearchState = (props: PropsWithChildren) => {
     // init search results and loading state
     const [searchResults, setSearchResults] = useState<SearchResult>();
     const [isLoaded, setIsLoaded] = useState(true);
+    const [bboxActive, setBboxActive] = useState(false);
 
     // init search term
     const [searchTerm, setSearchTerm] = useState<string>(
@@ -209,6 +212,8 @@ export const SearchState = (props: PropsWithChildren) => {
         setPageStart,
         searchResults,
         isLoaded,
+        bboxActive,
+        setBboxActive,
         sorting,
         setSorting(sortOption) {
             setSorting(sortOption);

@@ -230,13 +230,13 @@ export class SearchService {
         );
     }
 
-    processCatchment(lon:number, lat: number) {
+    processCatchment(lonLat:number[]) {
         const url = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
         
         const data = {
             inputs: {
-                lon: lon,
-                lat: lat,
+                lon: lonLat[0],
+                lat: lonLat[1],
                 comment: "..."
             }
         };

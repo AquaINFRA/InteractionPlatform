@@ -23,7 +23,7 @@ import Select from "ol/interaction/Select.js";
 import { hoverStyle, selectStyle } from "./Styles";
 import { click, pointerMove } from "ol/events/condition";
 import { useNavigate } from "react-router-dom";
-import { DrawBboxButton } from "./DrawBboxButton";
+import { DrawBboxButton } from "./CatchmentComponents/DrawBboxButton";
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
@@ -308,7 +308,9 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                                 label="You can draw a bounding box to find resources relevant for that area by using the button above or by setting a catchment area."
                             />
                         </Box>
-                        <DrawBboxButton bboxActive={bboxActive} onClick={selectBbox} />
+                        <Box position="absolute" bottom="75px" right="10px" zIndex="10">
+                            <DrawBboxButton bboxActive={bboxActive} onClick={selectBbox} />
+                        </Box>
                         <MapContainer mapId={mapId} />
                         <Tooltip
                             label={tooltipContent}
