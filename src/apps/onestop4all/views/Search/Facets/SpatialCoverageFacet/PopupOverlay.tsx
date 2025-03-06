@@ -404,7 +404,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                     {showErrorMessage && <ErrorMessage message="Computation failed! The selected point either resulted in too many subcatchments or is not in Europe."/>}
 
                     {selectedOption === "full" && (
-                        <Box position="absolute" top="100px" right="10px" zIndex="10">
+                        <Box position="absolute" bottom="-45px" right="10px" zIndex="10">
                             <DrawBboxButton bboxActive={bboxActive} onClick={selectBbox} />
                         </Box>
                     )}

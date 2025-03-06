@@ -25,7 +25,7 @@ export function CatchmentOptions(props: CatchmentOptionsProps) {
                 <HStack>
                     <Box>
                         {selectedOption === "full" 
-                            ? "Select a polygon and click on 'Apply Bounding Box'. Press 'shift' to select multiple polygons." 
+                            ? "Select a polygon, click 'Apply Bounding Box', and use 'Shift' or a selection box for multiple selections." 
                             : "Set a point on the map and click on 'Compute Catchment', then on 'Apply Bounding Box'."}
                     </Box>
                     {loading && <HStack>
