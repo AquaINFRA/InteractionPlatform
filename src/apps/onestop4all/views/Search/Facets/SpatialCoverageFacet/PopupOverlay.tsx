@@ -160,9 +160,23 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     /**Shows BBox containing all selected areas*/
     function getBBox(features: any) {
         cleanUpLayers();
+        if (!map) return;
+
         const coordinates = computeBBox(features);
         const bboxLayer = createBboxLayer(coordinates);
-        map?.addLayer(bboxLayer.layer);
+
+        const source = new VectorSource({
+            features: features, // Add intersecting features
+        });
+    
+        const vectorLayer = new VectorLayer({
+            source: source,
+            style: selectStyle, // Apply select style globally
+        });
+
+        map.addLayer(vectorLayer);
+        map.addLayer(bboxLayer.layer);
+
         setBBoxVectorLayer(bboxLayer.layer);
         setBBox(bboxLayer.features);
     }
@@ -341,6 +355,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
             }
         /** Upstream catchment mode */
         } else {
+            cleanUpLayers();
             deselectAll();
             map?.getInteractions().clear(); // This deletes ALL interactions! (zoom and drag as well)
             defaultInteractions().forEach((interaction) => map?.addInteraction(interaction));
@@ -361,7 +376,6 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     if (!showPopup) return null;
     
     const isDeleteActive = (bBox && bBox?.length > 0) || markerSource?.getFeatures().length > 0;
-    const isCatchmentActive = selectedOption === "upstream" && markerLonLat && markerLonLat.length > 0;
 
     return (
         <Box className="popup-background-transparent">
