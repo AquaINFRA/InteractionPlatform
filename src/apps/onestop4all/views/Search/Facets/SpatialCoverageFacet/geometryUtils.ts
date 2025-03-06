@@ -1,12 +1,12 @@
-import { Polygon, Geometry } from "ol/geom";
+import { Geometry } from "ol/geom";
 import GeoJSON from "ol/format/GeoJSON";
-import { transformExtent } from "ol/proj";
-import { intersects } from "ol/extent";
 import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
 import { Feature } from "ol";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 import { bBoxStyle } from "./Styles";
+import * as turf from "@turf/turf";
+import { transform } from "ol/proj";
 
 /**
  * Checks if any feature in the dataset intersects with the given bounding box.
@@ -14,21 +14,24 @@ import { bBoxStyle } from "./Styles";
  * @returns Array of intersecting features.
  */
 export function intersectsBBox(bboxCoords: number[][]) {
-    const bboxPolygon = new Polygon([bboxCoords]);
-    const bboxExtent = bboxPolygon.getExtent();
     const geoJsonFormat = new GeoJSON();
+    const bboxPolygon = turf.polygon([bboxCoords]);
     const features = geoJsonFormat.readFeatures(dataNew, {
-        featureProjection: "EPSG:4326" // Ensure features are in EPSG:4326
+        featureProjection: "EPSG:4326", // Ensure features are in EPSG:4326
     });
 
-    return features.filter((feature) => {
+    return features.filter((feature, key) => {
         const featureGeometry = feature.getGeometry();
         if (!featureGeometry) return false;
 
-        const featureExtent = featureGeometry.getExtent();
-        const transformedFeatureExtent = transformExtent(featureExtent, "EPSG:3857", "EPSG:4326");
+        let featureCoords = featureGeometry.getCoordinates();
+        featureCoords = featureCoords[0].length === 1 ? featureCoords[0] : featureCoords;
+        const transformedCoords = featureCoords[0].map((coord: any) =>
+            transform(coord, "EPSG:3857", "EPSG:4326")
+        );
+        const poly = turf.polygon([transformedCoords]);
 
-        return intersects(bboxExtent, transformedFeatureExtent);
+        return turf.intersect(turf.featureCollection([bboxPolygon, poly]));
     });
 }
 
