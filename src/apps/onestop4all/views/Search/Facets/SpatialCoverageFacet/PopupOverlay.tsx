@@ -135,6 +135,18 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         map?.addInteraction(newDraw);
     }
 
+    const [renderState, setRenderState] = useState(false);
+
+    const toggleRenderState = () => setRenderState((prev) => !prev);
+    
+    useEffect(() => {
+        if (map) {
+            map.render();
+            toggleRenderState();
+        }
+    }, [showPopup, map]);
+    
+
     function removeInteraction() {
         if (draw.current) map?.removeInteraction(draw.current);
     }
