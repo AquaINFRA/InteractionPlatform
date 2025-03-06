@@ -122,10 +122,11 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     
         newDraw.on("drawend", (event) => {
             const feature = event.feature;
-            const geometry = feature.getGeometry();
+            const geometry = feature.getGeometry() as Polygon;
         
             if (geometry) {
                 const coords = geometry.getCoordinates()[0];
+                if (!coords) return;
                 const geoCoords = coords.map((coord: any) => transform(coord, "EPSG:3857", "EPSG:4326"));
                 const intersectingFeatures = intersectsBBox(geoCoords);
                 getBBox(intersectingFeatures);

@@ -1,4 +1,4 @@
-import { Geometry } from "ol/geom";
+import { Geometry, Polygon } from "ol/geom";
 import GeoJSON from "ol/format/GeoJSON";
 import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
 import { Feature } from "ol";
@@ -20,11 +20,10 @@ export function intersectsBBox(bboxCoords: number[][]) {
         featureProjection: "EPSG:4326", // Ensure features are in EPSG:4326
     });
 
-    return features.filter((feature, key) => {
-        const featureGeometry = feature.getGeometry();
-        if (!featureGeometry) return false;
-
-        let featureCoords = featureGeometry.getCoordinates();
+    return features.filter((feature) => {
+        const featureGeometry = feature.getGeometry() as Polygon;
+        let featureCoords = featureGeometry.getCoordinates() as any;
+        if (!featureGeometry || !featureCoords || !featureCoords[0]) return;
         featureCoords = featureCoords[0].length === 1 ? featureCoords[0] : featureCoords;
         const transformedCoords = featureCoords[0].map((coord: any) =>
             transform(coord, "EPSG:3857", "EPSG:4326")
