@@ -42,10 +42,9 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
     //Center to Europe
     useEffect(() => {
-        if (map) {
-            map.getView().setCenter([1169191, 6606967]);
-            map.getView().setZoom(4);
-        }
+        if (!map) return;
+        map.getView().setCenter([1169191, 6606967]);
+        map.getView().setZoom(4);
     }, [showPopup]);
 
     const [bboxActive, setBboxActive] = useState(false);
@@ -104,14 +103,6 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         style: selectStyle
     });
 
-    useEffect(() => {
-        console.log("bboxActive changed: ", bboxActive);
-    }, [bboxActive]);
-
-    function selectBbox(): void {
-        setBboxActive(!bboxActive);
-    }
-
     function addInteraction(newDraw: Draw) {
         draw.current = newDraw;
     
@@ -141,13 +132,10 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     const toggleRenderState = () => setRenderState((prev) => !prev);
     
     useEffect(() => {
-        if (map) {
-            map.render();
-            toggleRenderState();
-        }
+        if (!map) return;
+        map.render();
+        toggleRenderState();
     }, [showPopup, map]);
-    
-
     function removeInteraction() {
         if (draw.current) map?.removeInteraction(draw.current);
     }
@@ -194,20 +182,15 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         setBBox(bboxLayer.features);
     }
 
-    /**HANDLER: Starts a new search with the spatial filter given by the bbox*/
     function setSearchArea(): void {
-        const features = bBox;
-        if (features) {
-            const geom = features[0]?.getGeometry();
-            if (geom && map) {
-                const sourceEPSG = map.getView().getProjection().getCode();
-                const transformedGeom = geom.clone().transform(sourceEPSG, "EPSG:4326");
-                if (transformedGeom instanceof Polygon) {
-                    const extent = transformedGeom.getExtent();
-                    closeMap();
-                    searchState.setSpatialFilter(extent);
-                }
-            }
+        if (!bBox || !map) return;
+        const geom = bBox[0]?.getGeometry();
+        const sourceEPSG = map.getView().getProjection().getCode();
+        const transformedGeom = geom.clone().transform(sourceEPSG, "EPSG:4326");
+        if (transformedGeom instanceof Polygon) {
+            const extent = transformedGeom.getExtent();
+            closeMap();
+            searchState.setSpatialFilter(extent);
         }
     }
 
@@ -306,10 +289,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     };
 
     const addCatchmentFeaturesToMap = (features: Feature<Geometry>[], bbox: number[][]) => {
-        if (!map) {
-            console.error("Map not found!");
-            return;
-        }
+        if (!map) return;
 
         const catchmentFeatures = createCatchmentLayer(bbox, features);
 
@@ -323,9 +303,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
         if (source) {
             const extent = source.getExtent();
-            if (extent) {
-                map.getView().fit(extent, { duration: 1000 });
-            }
+            map.getView().fit(extent, { duration: 1000 });
         }
 
         setBBox(catchmentFeatures.bboxFeatures);
@@ -406,7 +384,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
                     {selectedOption === "full" && (
                         <Box position="absolute" bottom="-45px" right="10px" zIndex="10">
-                            <DrawBboxButton bboxActive={bboxActive} onClick={selectBbox} />
+                            <DrawBboxButton bboxActive={bboxActive} onClick={()=>setBboxActive(!bboxActive)} />
                         </Box>
                     )}
                     <MapContainer mapId={mapId} />
