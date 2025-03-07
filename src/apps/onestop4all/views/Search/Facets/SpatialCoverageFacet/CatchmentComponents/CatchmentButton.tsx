@@ -13,7 +13,7 @@ export function CatchmentButton({ onClick, active, text, loading }: CatchmentBut
     return (
         <Button
             bg={active ? PrimaryColor : lineGrey}
-            _hover={active ? { bg: lineBlue } : lineGrey}
+            _hover={active ? { bg: lineBlue } : { bg: lineGrey }}
             onClick={active ? onClick : undefined}
             className="catchment-button"
             isLoading={loading}

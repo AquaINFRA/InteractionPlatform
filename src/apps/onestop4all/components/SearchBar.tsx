@@ -51,7 +51,7 @@ export function SearchBar() {
                     onClick={startSearch}
                     isLoading={!searchState.isLoaded}
                     loadingText="Searching..."
-                    _hover={searchState.isLoaded ? { bg: lineBlue } : lineGrey}
+                    _hover={searchState.isLoaded ? { bg: lineBlue } : { bg: lineGrey}}
                 >
                     Search
                 </Button>
