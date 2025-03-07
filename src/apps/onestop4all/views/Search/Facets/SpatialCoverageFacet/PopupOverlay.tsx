@@ -257,6 +257,11 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         markerLonLat ? processCatchment(markerLonLat) : null;
     }
 
+    function resetInteractions() {
+        map?.getInteractions().clear(); // This deletes ALL interactions! (zoom and drag as well)
+        defaultInteractions().forEach((interaction) => map?.addInteraction(interaction));
+    }
+
     const processCatchment = async (lonLat: number[]) => {
         setLoading(true);
         try{
@@ -317,6 +322,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         /**Full catchment mode */
         if (selectedOption === "full") {
             cleanUpLayers();
+            resetInteractions();
             if (bboxActive) {
                 const drawInteraction = new Draw({
                     source,
@@ -350,8 +356,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         } else {
             cleanUpLayers();
             deselectAll();
-            map?.getInteractions().clear(); // This deletes ALL interactions! (zoom and drag as well)
-            defaultInteractions().forEach((interaction) => map?.addInteraction(interaction));
+            resetInteractions();
             addMarker();
         }
     
