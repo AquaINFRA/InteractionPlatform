@@ -20,7 +20,7 @@ import { SolrSearchResultItem } from "../../../../services/SearchService";
 import { ResourceType, getResourceType } from "../../../../services/ResourceTypeUtils";
 import GeoJSON from "ol/format/GeoJSON";
 import Select from "ol/interaction/Select.js";
-import { hoverStyle, selectStyle } from "./Styles";
+import { hoverStyle, lineBlue, selectStyle, lineRed } from "./Styles";
 import { click, pointerMove } from "ol/events/condition";
 import { useNavigate } from "react-router-dom";
 import { DrawBboxButton } from "./CatchmentComponents/DrawBboxButton";
@@ -333,11 +333,11 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         </Tooltip>
                     </Box>
                     <Box>
-                        <Button width="100%" onClick={() => setSearchArea()}>
+                        <Button width="100%" onClick={() => setSearchArea()} _hover={{ bg: lineBlue }}>
                             set search area
                         </Button>
                     </Box>
-                    <Button width="100%" onClick={() => setShowPopup(true)} marginTop="8px">
+                    <Button width="100%" onClick={() => setShowPopup(true)} marginTop="8px" _hover={{ bg: lineBlue }}>
                         set catchment area
                     </Button>
                     <Button
@@ -346,6 +346,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         marginTop="8px"
                         backgroundColor="red"
                         isDisabled={!(searchState.spatialFilter.length > 0)}
+                        _hover={{ bg: lineRed }}
                     >
                         Delete selection
                     </Button>

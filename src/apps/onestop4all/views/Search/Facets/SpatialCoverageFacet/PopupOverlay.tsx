@@ -135,6 +135,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         if (!map) return;
         map.render();
         toggleRenderState();
+        selectedOption === "upstream" ? addMarker() : null;
     }, [showPopup, map]);
     function removeInteraction() {
         if (draw.current) map?.removeInteraction(draw.current);
@@ -214,7 +215,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         catchmentSource?.clear();
         catchmentBBoxSource?.clear();
         setBboxActive(false);
-        setMarkerLonLat([]);
+        //setMarkerLonLat([]);
     }
 
     /**Remove all but the first two layers */
@@ -231,7 +232,8 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         });
     }
 
-    function addMarker(): void {      
+    function addMarker(): void {
+        if (!map) return;
         const newDraw = new Draw({
             source: markerSource,
             type: "Point"
@@ -246,7 +248,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                 setMarkerLonLat(lonLat);
             }
         });
-        map?.addInteraction(newDraw);
+        map.addInteraction(newDraw);
     }
 
     function getCatchmentWrap(): void {
@@ -377,7 +379,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
                 <Box className="map-container" position="relative">
                     <HStack spacing={4}>
-                        <CatchmentOptions onChange={setSelectedOption} selectedOption={selectedOption} loading={loading} />
+                        <CatchmentOptions onChange={setSelectedOption} selectedOption={selectedOption} />
                     </HStack>
 
                     {showErrorMessage && <ErrorMessage message="Computation failed! The selected point either resulted in too many subcatchments or is not in Europe."/>}
@@ -398,7 +400,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                 <XButton handleClose={closeMap} />
                 <Flex className="catchment-button-container">
                     <CatchmentButton active={isDeleteActive} onClick={deselectAll} text="Delete selection" />
-                    {selectedOption === "upstream" && <CatchmentButton active={markerLonLat && markerLonLat.length > 0 ? true : false} onClick={getCatchmentWrap} text="Compute catchment" />}
+                    {selectedOption === "upstream" && <CatchmentButton active={markerLonLat && markerLonLat.length > 0 && !loading ? true : false} onClick={getCatchmentWrap} text="Compute catchment" loading={loading}/>}
                     <CatchmentButton active={bBox ? true : false} onClick={setSearchArea} text="Apply bounding box" />
                 </Flex>
             </Box>

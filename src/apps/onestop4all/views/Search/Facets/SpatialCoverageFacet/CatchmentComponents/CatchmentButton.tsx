@@ -1,24 +1,25 @@
 import { Button } from "@open-pioneer/chakra-integration";
 import { PrimaryColor } from "../../../../../Theme";
-import { lineBlue } from "../Styles";
+import { lineBlue, lineGrey } from "../Styles";
 
-interface DeselectButtonProps {
+interface CatchmentButtonProps {
     onClick: () => void;
     active: boolean;
     text: string;
+    loading?: boolean;
 }
-export function CatchmentButton(props: DeselectButtonProps) {
-    const { onClick, active, text } = props;
-    const bgcolor = active ? PrimaryColor : "rgba(5, 102, 141, 0.6)";
-    const hover = active ? { bg: lineBlue } : { bg: "rgba(5, 102, 141, 0.6)" };
-    // remove onClick if button is deactivated
-    function handleClick() {
-        if (active) {
-            onClick();
-        }
-    }
+
+export function CatchmentButton({ onClick, active, text, loading }: CatchmentButtonProps) {
     return (
-        <Button bg={bgcolor} _hover={hover} onClick={handleClick} className="catchment-button">
+        <Button
+            bg={active ? PrimaryColor : lineGrey}
+            _hover={active ? { bg: lineBlue } : lineGrey}
+            onClick={active ? onClick : undefined}
+            className="catchment-button"
+            isLoading={loading}
+            loadingText="Computing..."
+            isDisabled={!active}
+        >
             {text}
         </Button>
     );

@@ -3,6 +3,7 @@ import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { Box, Button, Flex, IconButton, Input } from "@open-pioneer/chakra-integration";
 import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "../views/Search/SearchState";
 import { SearchIcon } from "./Icons";
+import { lineBlue, lineGrey } from "../views/Search/Facets/SpatialCoverageFacet/Styles";
 
 export function SearchBar() {
     const [searchTerm, setSearchTerm] = useState<string>("");
@@ -50,6 +51,7 @@ export function SearchBar() {
                     onClick={startSearch}
                     isLoading={!searchState.isLoaded}
                     loadingText="Searching..."
+                    _hover={searchState.isLoaded ? { bg: lineBlue } : lineGrey}
                 >
                     Search
                 </Button>
