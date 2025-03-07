@@ -15,8 +15,8 @@ export function TooltipBox (props: {content: string}) {
         >
             <Box
                 position="absolute"
-                top="10%"
-                right="12%"
+                top="110px"
+                right="120px"
                 zIndex="9999"
                 pointerEvents="none"
                 bg="black"
