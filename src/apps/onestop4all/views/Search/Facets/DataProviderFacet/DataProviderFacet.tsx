@@ -85,7 +85,6 @@ export function DataProviderFacet() {
             });
         }
     }, [
-        searchState.dataProviderTitles,
         searchState.searchTerm,
         searchState.downloadOption,
         searchState.spatialFilter
