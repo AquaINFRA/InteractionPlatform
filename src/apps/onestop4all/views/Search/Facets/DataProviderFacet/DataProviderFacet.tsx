@@ -7,6 +7,7 @@ import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
 import { SearchService } from "../../../../services";
 import { useSearchParams } from "react-router-dom";
+import { areSearchParamsEqualDp } from "../../../../services/SearchUtils";
 
 export interface DataProvider {
     title: string;
@@ -58,37 +59,48 @@ export function DataProviderFacet() {
     }, []);
 
     useEffect(() => {
-        setProviderWithResults([]);
-        if (searchState.selectedDataProvider.length > 0) {
-            const pwr: ProviderWithResults[] = [];
-            const providerTitles = searchState.dataProviderTitles;
-            const { searchTerm, downloadOption, spatialFilter } = searchState;
-            let i = 0;
-            providerTitles.length && searchState.searchTerm.trim() !== "" && providerTitles.map((elem: any, key: number) => {
-                searchSrvc.doSearch({
-                    searchTerm,
-                    dataProvider: [elem.id],
-                    downloadOption,
-                    spatialFilter
-                }).then((res) => {
-                    i++;
-                    if (res.count > 0) {
-                        pwr.push({ id: elem.id, count: res.count });
-                    }
-                    if (providerTitles.length === i) {
-                        setProviderWithResults(pwr);
-                    }
-                }).catch((e: any) => {
-                    console.log(e);
-                    i++;
-                });
-            });
+        if (!searchParams || searchParams.size === 0) return;
+
+        if (areSearchParamsEqualDp(searchParams, searchState.searchParamsOld)) {
+            if (searchState.providerWithResults) {
+                setProviderWithResults(searchState.providerWithResults);
+            }
+            return;
         }
-    }, [
-        searchState.searchTerm,
-        searchState.downloadOption,
-        searchState.spatialFilter
-    ]);
+
+        setProviderWithResults([]);
+
+        if (searchState.selectedDataProvider.length < 1) return;
+
+        const pwr: ProviderWithResults[] = [];
+        const providerTitles = searchState.dataProviderTitles;
+        const { searchTerm, downloadOption, spatialFilter } = searchState;
+        
+        if (!providerTitles.length && searchState.searchTerm.trim() === "") return;
+        
+        let completedRequests = 0;
+
+        providerTitles.map((elem: any, key: number) => {
+            searchSrvc.doSearch({
+                searchTerm,
+                dataProvider: [elem.id],
+                downloadOption,
+                spatialFilter
+            }).then((res) => {
+                if (res.count > 0) {
+                    pwr.push({ id: elem.id, count: res.count });
+                }
+            }).catch((e: any) => {
+                console.log(e);
+            }).finally(() => {
+                completedRequests++;
+                if (completedRequests === providerTitles.length) {
+                    setProviderWithResults([...pwr]);
+                    searchState.setProviderWithResults([...pwr]);
+                }
+            });
+        });
+    }, [searchParams]);
 
     function dataProviderToggled(checked: boolean, entry: any) {
         searchState.setDataProviderTriggered(false);

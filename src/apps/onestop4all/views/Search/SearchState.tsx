@@ -3,6 +3,7 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { SearchResult, SearchService } from "../../services/SearchService";
+import { ProviderWithResults } from "./Facets/DataProviderFacet/DataProviderFacet";
 
 export enum UrlSearchParameterType {
     Searchterm = "searchterm",
@@ -74,6 +75,9 @@ export interface ISearchState {
     search(): void;
     searchParamsOld: any;
     setSearchParamsOld(searchParamsOld: any): void;
+    searchParams: any;
+    providerWithResults: ProviderWithResults[] | undefined;
+    setProviderWithResults(providerWithResults: ProviderWithResults[]): void;
 }
 
 export const SearchStateContext = createContext<ISearchState | undefined>(undefined);
@@ -100,7 +104,7 @@ export const SearchState = (props: PropsWithChildren) => {
     const [searchResults, setSearchResults] = useState<SearchResult>();
     const [isLoaded, setIsLoaded] = useState(true);
     const [searchParamsOld, setSearchParamsOld] = useState<any>();
-
+    const [providerWithResults, setProviderWithResults] = useState<ProviderWithResults[]>();
     // init search term
     const [searchTerm, setSearchTerm] = useState<string>(
         searchParams.get(UrlSearchParameterType.Searchterm) || ""
@@ -235,7 +239,10 @@ export const SearchState = (props: PropsWithChildren) => {
         downloadOption,
         setDownloadOption,
         searchParamsOld,
-        setSearchParamsOld
+        setSearchParamsOld,
+        searchParams,
+        providerWithResults,
+        setProviderWithResults
     };
 
     return (
