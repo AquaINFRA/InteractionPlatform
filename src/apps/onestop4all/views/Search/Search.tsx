@@ -15,6 +15,7 @@ import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "./Searc
 import { RelatedTerms } from "./Facets/RelatedTerms/RelatedTerms";
 import { DownloadOptionFacet } from "./Facets/DownloadOptionFacet/DownloadOptionFacet";
 import { PrimaryFont } from "../../Theme";
+import { areSearchParamsDifferent } from "../../services/SearchUtils";
 
 export function SearchView() {
     const searchState = useSearchState();
@@ -23,7 +24,15 @@ export function SearchView() {
     const [searchTimeout, setSearchTimeout] = useState(false);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() =>  {
+    useEffect(() => {
+        const currentParams = searchParams;
+        const previousParams = searchState?.searchParamsOld;
+    
+        if (!currentParams || currentParams.size === 0 || !areSearchParamsDifferent(currentParams, previousParams)) {
+            return;
+        }
+    
+        searchState.setSearchParamsOld(searchParams);
         searchState.search();
     }, [searchParams]);
 
@@ -232,7 +241,7 @@ export function SearchView() {
                 <MobileFilterMenu
                     openMenu={openMenu}
                     menuClosed={() => setOpenMenu(false)}
-                ></MobileFilterMenu>
+                />
             </Container>
         </Box>
     );

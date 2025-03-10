@@ -2,7 +2,6 @@ import { useService } from "open-pioneer:react-hooks";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { ResourceType } from "../../services/ResourceTypeUtils";
 import { SearchResult, SearchService } from "../../services/SearchService";
 
 export enum UrlSearchParameterType {
@@ -70,11 +69,11 @@ export interface ISearchState {
     setPageStart(pageSize: number): void;
     searchResults: SearchResult | undefined;
     isLoaded: boolean;
-    bboxActive: boolean;
-    setBboxActive(bboxActive:boolean): void;
     sorting: SortOption | undefined;
     setSorting(sortOption: SortOption): unknown;
     search(): void;
+    searchParamsOld: any;
+    setSearchParamsOld(searchParamsOld: any): void;
 }
 
 export const SearchStateContext = createContext<ISearchState | undefined>(undefined);
@@ -100,7 +99,7 @@ export const SearchState = (props: PropsWithChildren) => {
     // init search results and loading state
     const [searchResults, setSearchResults] = useState<SearchResult>();
     const [isLoaded, setIsLoaded] = useState(true);
-    const [bboxActive, setBboxActive] = useState(false);
+    const [searchParamsOld, setSearchParamsOld] = useState<any>();
 
     // init search term
     const [searchTerm, setSearchTerm] = useState<string>(
@@ -212,8 +211,6 @@ export const SearchState = (props: PropsWithChildren) => {
         setPageStart,
         searchResults,
         isLoaded,
-        bboxActive,
-        setBboxActive,
         sorting,
         setSorting(sortOption) {
             setSorting(sortOption);
@@ -236,7 +233,9 @@ export const SearchState = (props: PropsWithChildren) => {
         setDataProviderTitles,
         dataProviderTitles,
         downloadOption,
-        setDownloadOption
+        setDownloadOption,
+        searchParamsOld,
+        setSearchParamsOld
     };
 
     return (
