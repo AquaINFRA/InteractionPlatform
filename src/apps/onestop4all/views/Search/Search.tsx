@@ -15,7 +15,7 @@ import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "./Searc
 import { RelatedTerms } from "./Facets/RelatedTerms/RelatedTerms";
 import { DownloadOptionFacet } from "./Facets/DownloadOptionFacet/DownloadOptionFacet";
 import { PrimaryFont } from "../../Theme";
-import { areSearchParamsDifferent } from "../../services/SearchUtils";
+import { areSearchParamsEqual } from "../../services/SearchUtils";
 
 export function SearchView() {
     const searchState = useSearchState();
@@ -28,7 +28,7 @@ export function SearchView() {
         const currentParams = searchParams;
         const previousParams = searchState?.searchParamsOld;
     
-        if (!currentParams || currentParams.size === 0 || !areSearchParamsDifferent(currentParams, previousParams)) {
+        if (!currentParams || currentParams.size === 0 || areSearchParamsEqual(currentParams, previousParams)) {
             return;
         }
     

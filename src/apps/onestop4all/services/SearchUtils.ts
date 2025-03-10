@@ -1,4 +1,4 @@
-export const areSearchParamsDifferent = (currentParams: any, previousParams: any) => {
+export const areSearchParamsEqual = (currentParams: any, previousParams: any) => {
     const searchTermNew = currentParams.get("searchterm");
     const searchTermOld = previousParams?.get("searchterm") || null;
 
@@ -16,7 +16,7 @@ export const areSearchParamsDifferent = (currentParams: any, previousParams: any
         return arr1.slice().sort().join() === arr2.slice().sort().join(); // Sort a copy to avoid mutation
     };
 
-    return !(
+    return (
         searchTermNew === searchTermOld &&
         arraysAreEqual(dataProviderNew, dataProviderOld) &&
         downloadLinkNew === downloadLinkOld &&
