@@ -60,7 +60,7 @@ export function DataProviderFacet() {
     useEffect(() => {
         setProviderWithResults([]);
         if (searchState.selectedDataProvider.length > 0) {
-            const providerWithResults: ProviderWithResults[] = [];
+            const pwr: ProviderWithResults[] = [];
             const providerTitles = searchState.dataProviderTitles;
             const { searchTerm, downloadOption, spatialFilter } = searchState;
             let i = 0;
@@ -73,10 +73,10 @@ export function DataProviderFacet() {
                 }).then((res) => {
                     i++;
                     if (res.count > 0) {
-                        providerWithResults.push({ id: elem.id, count: res.count });
+                        pwr.push({ id: elem.id, count: res.count });
                     }
                     if (providerTitles.length === i) {
-                        setProviderWithResults(providerWithResults);
+                        setProviderWithResults(pwr);
                     }
                 }).catch((e: any) => {
                     console.log(e);
