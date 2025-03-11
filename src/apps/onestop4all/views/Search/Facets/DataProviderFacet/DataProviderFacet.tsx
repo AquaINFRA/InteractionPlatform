@@ -61,13 +61,12 @@ export function DataProviderFacet() {
     useEffect(() => {
         if (!searchParams || searchParams.size === 0) return;
 
-        if (areSearchParamsEqualDp(searchParams, searchState.searchParamsOld)) {
+        if (areSearchParamsEqualDp(searchParams, searchState.searchParamsOld) && searchState.providerWithResults) {
             if (searchState.providerWithResults) {
                 setProviderWithResults(searchState.providerWithResults);
             }
             return;
         }
-
         setProviderWithResults([]);
 
         if (searchState.selectedDataProvider.length < 1) return;
@@ -75,11 +74,10 @@ export function DataProviderFacet() {
         const pwr: ProviderWithResults[] = [];
         const providerTitles = searchState.dataProviderTitles;
         const { searchTerm, downloadOption, spatialFilter } = searchState;
-        
+
         if (!providerTitles.length && searchState.searchTerm.trim() === "") return;
         
         let completedRequests = 0;
-
         providerTitles.map((elem: any, key: number) => {
             searchSrvc.doSearch({
                 searchTerm,
@@ -100,7 +98,7 @@ export function DataProviderFacet() {
                 }
             });
         });
-    }, [searchParams]);
+    }, [searchParams, searchState.dataProviderTitles, searchState.selectedDataProvider]);
 
     function dataProviderToggled(checked: boolean, entry: any) {
         searchState.setDataProviderTriggered(false);
