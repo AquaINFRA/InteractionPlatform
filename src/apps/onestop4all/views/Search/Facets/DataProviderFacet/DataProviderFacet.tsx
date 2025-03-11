@@ -2,7 +2,7 @@ import { Box, Button, Flex } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { SimpleGrid } from "@chakra-ui/react";
-import { SelectableDataProvider, UrlSearchParameterType, useSearchState } from "../../SearchState";
+import { SearchState, SelectableDataProvider, UrlSearchParameterType, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
 import { SearchService } from "../../../../services";
@@ -58,7 +58,7 @@ export function DataProviderFacet() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (!searchParams || searchParams.size === 0) return;
 
         if (areSearchParamsEqualDp(searchParams, searchState.searchParamsOld) && searchState.providerWithResults) {
@@ -98,7 +98,7 @@ export function DataProviderFacet() {
                 }
             });
         });
-    }, [searchParams, searchState.dataProviderTitles, searchState.selectedDataProvider]);
+    }, [searchParams, searchState.dataProviderTitles, searchState.selectedDataProvider]);*/
 
     function dataProviderToggled(checked: boolean, entry: any) {
         searchState.setDataProviderTriggered(false);
