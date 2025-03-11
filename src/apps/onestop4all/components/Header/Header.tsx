@@ -14,6 +14,7 @@ export const Header = () => {
     const backToStart = () => {
         searchState.setSearchTerm("");
         searchState.setSelectedDataProvider([]);
+        searchState.setSpatialFilter([]);
         navigate("/");
     };
 
