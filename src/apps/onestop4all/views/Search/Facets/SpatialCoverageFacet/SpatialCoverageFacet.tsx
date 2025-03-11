@@ -38,11 +38,15 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     const searchState = useSearchState();
     const [tooltipContent, setTooltipContent] = useState("");
     const [tooltipPos, setTooltipPos] = useState({ x: "0", y: "0" });
+    const [bboxOnMap, setBboxOnMap] = useState(false);
+    const [spatialFilter, setSpatialFilter] = useState<number[]>();
 
     const coords = [1489200, 6894026, 1489200, 6894026];
 
     const delSelection = () => {
         searchState.setSpatialFilter([]);
+        setSpatialFilter([]);
+        setBboxOnMap(false);
     };
 
     // VectorLayer to display the Spatial filter
@@ -116,7 +120,6 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
 
     const [bboxActive, setBboxActive] = useState(false);
     const [disabled, setDisable] = useState(false);
-    const [bboxOnMap, setBboxOnMap] = useState<Draw>();
     const [showPopup, setShowPopup] = useState(false);
     const [selectedOption, setSelectedOption] = useState("full");
     const navigate = useNavigate();
@@ -199,6 +202,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
             if (transformedGeom instanceof Polygon) {
                 const extent = transformedGeom.getExtent();
                 searchState.setSpatialFilter(extent);
+                setSpatialFilter(extent);
             }
         }
     }
@@ -224,10 +228,16 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
         draw.current = newDraw;
         newDraw.on("drawstart", () => {
             source.clear();
+            setBboxOnMap(false);
+            setSpatialFilter([]);
         });
         map?.addInteraction(newDraw);
-        newDraw.on("drawend", () => setBboxOnMap(newDraw));
+        newDraw.on("drawend", () => setBboxOnMap(true));
     }
+
+    useEffect(()=>{
+        if (searchState.spatialFilter.length === 0) setBboxOnMap(false);
+    }, [searchState.spatialFilter, spatialFilter]);
 
     function removeInteraction() {
         if (draw.current) {
@@ -337,7 +347,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         </Tooltip>
                     </Box>
                     <Box>
-                        <Button width="100%" onClick={() => setSearchArea()} _hover={{ bg: lineBlue }} isDisabled={!bboxOnMap}>
+                        <Button width="100%" onClick={() => setSearchArea()} _hover={{ bg: lineBlue }} isDisabled={!bboxOnMap || (spatialFilter?.length !== 0)}>
                             set search area
                         </Button>
                     </Box>
