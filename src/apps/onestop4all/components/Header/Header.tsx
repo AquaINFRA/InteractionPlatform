@@ -16,6 +16,7 @@ export const Header = () => {
         searchState.setSelectedDataProvider([]);
         searchState.setSpatialFilter([]);
         navigate("/");
+        window.scrollTo(0, 0);
     };
 
     return (
