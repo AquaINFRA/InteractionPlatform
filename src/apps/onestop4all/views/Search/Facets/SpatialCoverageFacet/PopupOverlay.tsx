@@ -137,6 +137,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         toggleRenderState();
         selectedOption === "upstream" ? addMarker() : null;
     }, [showPopup, map]);
+    
     function removeInteraction() {
         if (draw.current) map?.removeInteraction(draw.current);
     }
@@ -321,7 +322,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     
         /**Full catchment mode */
         if (selectedOption === "full") {
-            cleanUpLayers();
+            //cleanUpLayers();
             resetInteractions();
             if (bboxActive) {
                 const drawInteraction = new Draw({
