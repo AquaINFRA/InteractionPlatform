@@ -347,6 +347,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         
                 selectClick.on("select", handleSelect);
                 hoverName.on("select", handleHover);
+                setBBox(undefined);
         
                 return () => {
                     selectClick.un("select", handleSelect);
