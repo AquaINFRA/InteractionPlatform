@@ -43,6 +43,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
 
     const delSelection = () => {
         searchState.setSpatialFilter([]);
+        setBboxOnMap(false);
     };
 
     // VectorLayer to display the Spatial filter
@@ -116,6 +117,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
 
     const [bboxActive, setBboxActive] = useState(false);
     const [disabled, setDisable] = useState(false);
+    const [bboxOnMap, setBboxOnMap] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedOption, setSelectedOption] = useState("full");
     const navigate = useNavigate();
@@ -221,9 +223,18 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     function addInteraction(newDraw: Draw) {
         removeInteraction();
         draw.current = newDraw;
-        newDraw.on("drawstart", () => source.clear());
+        newDraw.on("drawstart", () => {
+            source.clear();
+            setBboxOnMap(false);
+            searchState.setSpatialFilter([]);
+        });
         map?.addInteraction(newDraw);
+        newDraw.on("drawend", () => setBboxOnMap(true));
     }
+
+    useEffect(()=>{
+        if (searchState.spatialFilter.length === 0) setBboxOnMap(false);
+    }, [searchState.spatialFilter]);
 
     function removeInteraction() {
         if (draw.current) {
@@ -333,8 +344,8 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         </Tooltip>
                     </Box>
                     <Box>
-                        <Button width="100%" onClick={() => setSearchArea()} _hover={{ bg: lineBlue }}>
-                            set search area
+                        <Button width="100%" onClick={() => setSearchArea()} _hover={{ bg: lineBlue }} isDisabled={!bboxOnMap || searchState.spatialFilter.length !== 0}>
+                            {searchState.spatialFilter.length === 0 ? "set search area" : "search area successfully added"}
                         </Button>
                     </Box>
                     <Button width="100%" onClick={() => setShowPopup(true)} marginTop="8px" _hover={{ bg: lineBlue }}>
