@@ -40,8 +40,9 @@ export function Result() {
     }, [searchSrvc]);
 
     useEffect(() => {
-        setLoading(true);
-        const [provider, id] = resultId.split(":");
+
+        const [provider, ...rest] = resultId.split(":");
+        const id = rest.join(":");
         if (!provider || !id) {
             throw new Error("Was not able to find a provider or an ID!");
         }
