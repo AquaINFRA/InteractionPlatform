@@ -40,7 +40,7 @@ export function Result() {
     }, [searchSrvc]);
 
     useEffect(() => {
-
+        setLoading(true);
         const [provider, ...rest] = resultId.split(":");
         const id = rest.join(":");
         if (!provider || !id) {
