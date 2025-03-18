@@ -3,6 +3,10 @@ import { Box, SimpleGrid, Text } from "@open-pioneer/chakra-integration";
 export const Videos = () => {
     const videos = [
         {
+            title: "Video 7: The AquaINFRA Interaction Platform - The Data-to-Knowledge Package",
+            src: "https://www.youtube.com/embed/ffApW0BK_Hg?si=Les1Wo_Y238lNVCZ",
+        },
+        {
             title: "Video 6: The AquaINFRA Interaction Platform - Integration with Galaxy and DDAS",
             src: "https://www.youtube.com/embed/KPdFnbUIASU?si=pJ7eZisduX9dutRK",
         },
