@@ -94,15 +94,6 @@ export function ZenodoView(props: ZenodoViewProps) {
                             <Abstract abstractText={metadata.metadata.description} />
                         </Box>
                     ) : null}
-                    {useGalaxyIdentifier && (
-                        <Box pt="40px">
-                            <iframe
-                                title="Galaxy Workflow Embed"
-                                style={{ width: "100%", height: "700px", border: "none" }}
-                                src={useGalaxyIdentifier.identifier + "&embed=true&buttons=true&about=false&heading=false&minimap=true&zoom_controls=true&initialX=-20&initialY=-20&zoom=0.6"}
-                            ></iframe>
-                        </Box>
-                    )}
                     {metadata.metadata.related_identifiers ? <Box pt={10}>
                         <RelatedContent relatedContentItems={metadata.metadata.related_identifiers} />
                     </Box> : null}
