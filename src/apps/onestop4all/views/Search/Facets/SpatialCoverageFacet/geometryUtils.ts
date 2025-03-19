@@ -7,6 +7,7 @@ import VectorLayer from "ol/layer/Vector";
 import { bBoxStyle } from "./Styles";
 import * as turf from "@turf/turf";
 import { transform } from "ol/proj";
+import { Coordinate } from "ol/coordinate";
 
 /**
  * Checks if any feature in the dataset intersects with the given bounding box.
@@ -22,15 +23,24 @@ export function intersectsBBox(bboxCoords: number[][]) {
 
     return features.filter((feature) => {
         const featureGeometry = feature.getGeometry() as Polygon;
-        let featureCoords = featureGeometry.getCoordinates() as any;
+        const featureCoords = featureGeometry.getCoordinates() as Coordinate[][];
         if (!featureGeometry || !featureCoords || !featureCoords[0]) return;
-        featureCoords = featureCoords[0].length === 1 ? featureCoords[0] : featureCoords;
-        const transformedCoords = featureCoords[0].map((coord: any) =>
-            transform(coord, "EPSG:3857", "EPSG:4326")
-        );
-        const poly = turf.polygon([transformedCoords]);
-
-        return turf.intersect(turf.featureCollection([bboxPolygon, poly]));
+        if (featureGeometry.getType() === "MultiPolygon") {
+            return featureCoords.some((poly: any) => {
+                const transformedCoords = poly[0].map((coord: Coordinate) =>
+                    transform(coord, "EPSG:3857", "EPSG:4326")
+                );
+                const polygon = turf.polygon([transformedCoords]);
+                return turf.intersect(turf.featureCollection([bboxPolygon, polygon]));
+            });
+        } else {
+            const poly = featureCoords[0];
+            const transformedCoords = poly.map((coord: Coordinate) =>
+                transform(coord, "EPSG:3857", "EPSG:4326")
+            );
+            const polygon = turf.polygon([transformedCoords]);    
+            return turf.intersect(turf.featureCollection([bboxPolygon, polygon]));
+        }
     });
 }
 
