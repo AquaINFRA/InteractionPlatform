@@ -103,7 +103,7 @@ export function ZenodoView(props: ZenodoViewProps) {
                         <Box pt="8px">
                             <DkpResources dkps={metadata.dkps} />
                         </Box>
-                    ) : "null"}
+                    ) : null}
                     {metadata.links && metadata.links.doi ? (
                         <Box pt="40px">
                             <ZenodoResources metadata={metadata.links.self} repo={metadata.links.doi} download={metadata.links.archive}/>
@@ -128,7 +128,7 @@ export function ZenodoView(props: ZenodoViewProps) {
                     <Box pt="8px">
                         <DkpResources dkps={metadata.dkps} />
                     </Box>
-                ) : "null"}
+                ) : null}
                 {metadata.links && metadata.links.doi ? (
                     <Box pt="40px">
                         <ZenodoResources metadata={metadata.links.self} repo={metadata.links.doi} download={metadata.links.archive}/>

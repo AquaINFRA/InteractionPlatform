@@ -36,51 +36,58 @@ export function Result() {
     }, [history.state.usr]);
     
     useEffect(() => {
-        fetchAndStoreDkps(searchSrvc, searchState);
+        //fetchAndStoreDkps(searchSrvc, searchState);
     }, [searchSrvc]);
 
     useEffect(() => {
+        if (!resultId) return;
         setLoading(true);
-        const [provider, ...rest] = resultId.split(":");
-        const id = rest.join(":");
-        if (!provider || !id) {
-            throw new Error("Was not able to find a provider or an ID!");
-        }
-        if (id && provider === "zenodo") {
-            searchSrvc.getZenodoMetadata(provider, id).then((result) => {
-                if (result) {
-                    const associatedDkps = findAssociatedDkp(searchState.dkps ?? [], result.response.doi_url);
-
-                    if (associatedDkps.length > 0) {
-                        result.response.dkps = associatedDkps;
-                    }
-
-                    result.response.provider = provider;
-                    setSearchResult(result.response);
-                    if (result.response.metadata.keywords?.includes("Data-to-Knowledge Package")) {
-                        setResourceType(getResourceType("data-to-knowledge package"));
-                    } else {
-                        setResourceType(getResourceType(result.response.metadata.resource_type.type));
-                    }
-                    setLoading(false);
+        const fetchData = async () => {
+            await fetchAndStoreDkps(searchSrvc, searchState);
+            setTimeout(()=>{
+                const [provider, ...rest] = resultId.split(":");
+                const id = rest.join(":");
+                if (!provider || !id) {
+                    throw new Error("Was not able to find a provider or an ID!");
                 }
-            });
-        }
-        else {
-            searchSrvc.getDdasMetadata(provider, id).then((result) => {
-                if (result) {
-                    const associatedDkps = findAssociatedDkp(searchState.dkps ?? [], result.response.id);
-            
-                    if (associatedDkps.length > 0) {
-                        result.response.dkps = associatedDkps;
-                    }
-            
-                    setSearchResult(result.response);
-                    setResourceType(getResourceType(result.response.properties.type));
-                    setLoading(false);
+                if (id && provider === "zenodo") {
+                    searchSrvc.getZenodoMetadata(provider, id).then((result) => {
+                        if (result) {
+                            const associatedDkps = findAssociatedDkp(searchState.dkps ?? [], result.response.doi_url);
+                            console.log(searchState.dkps);
+                            if (associatedDkps.length > 0) {
+                                result.response.dkps = associatedDkps;
+                            }
+
+                            result.response.provider = provider;
+                            setSearchResult(result.response);
+                            if (result.response.metadata.keywords?.includes("Data-to-Knowledge Package")) {
+                                setResourceType(getResourceType("data-to-knowledge package"));
+                            } else {
+                                setResourceType(getResourceType(result.response.metadata.resource_type.type));
+                            }
+                            setLoading(false);
+                        }
+                    });
                 }
-            });
-        }
+                else {
+                    searchSrvc.getDdasMetadata(provider, id).then((result) => {
+                        if (result) {
+                            const associatedDkps = findAssociatedDkp(searchState.dkps ?? [], result.response.id);
+                    
+                            if (associatedDkps.length > 0) {
+                                result.response.dkps = associatedDkps;
+                            }
+                    
+                            setSearchResult(result.response);
+                            setResourceType(getResourceType(result.response.properties.type));
+                            setLoading(false);
+                        }
+                    });
+                }
+            },1000);
+        };
+        fetchData();
     }, [resultId, searchSrvc]);
 
     useEffect(() => {
