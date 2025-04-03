@@ -40,7 +40,6 @@ export function Result() {
         setLoading(true);
         const fetchData = async () => {
             const dkps = await fetchAndStoreDkps(searchSrvc, searchState);
-            //console.log(tmp);
             dkps ? searchState.setDkps(dkps) : null;
             const [provider, ...rest] = resultId.split(":");
             const id = rest.join(":");
@@ -51,7 +50,7 @@ export function Result() {
                 searchSrvc.getZenodoMetadata(provider, id).then((result) => {
                     if (result) {
                         const associatedDkps = findAssociatedDkp(dkps ?? [], result.response.doi_url);
-                        //console.log(searchState.dkps);
+                        
                         if (associatedDkps.length > 0) {
                             result.response.dkps = associatedDkps;
                         }
