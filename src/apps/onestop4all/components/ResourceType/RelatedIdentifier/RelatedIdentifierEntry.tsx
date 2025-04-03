@@ -19,10 +19,14 @@ export const RelatedContentEntry = (props: RelatedIdentifier) => {
         backgroundColor: "var(--primary-primary-transparent-background)"
     };
 
+    const formatRelation = (relation: any) => {
+        return relation.replace(/([a-z])([A-Z])/g, "$1 $2");
+    };
+
     return (
         <Box className="relatedContentEntry" _hover={hoverStyle} onClick={direct}>
             <Box className="relatedContentTitle">
-                {item.relation}
+                {formatRelation(item.relation)}
             </Box>
             <Flex className="relatedContentLink" rel="noreferrer">
                 <Button className="relatedContentButton">
