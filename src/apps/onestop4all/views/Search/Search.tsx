@@ -57,10 +57,6 @@ export function SearchView() {
             params[UrlSearchParameterType.SpatialFilter] = searchState.spatialFilter.join(",");
         }
 
-        if (searchState.pageSize && searchState.pageSize !== 10) {
-            params[UrlSearchParameterType.PageSize] = `${searchState.pageSize}`;
-        }
-
         if (searchState.pageStart && searchState.pageStart !== 0) {
             params[UrlSearchParameterType.PageStart] = `${searchState.pageStart}`;
         }
@@ -152,9 +148,7 @@ export function SearchView() {
                                     justifyContent="space-between"
                                     padding={{ base: "0 0 15px", custombreak: "0" }}
                                 >
-                                    {/*<ResultCountSelector />*/}
                                     <Box bgColor={BorderColor} alignSelf="stretch" />
-                                    {/*<SortedBySelector />*/}
                                     <Box hideFrom="custombreak">
                                         <Button
                                             leftIcon={<FilterIcon />}

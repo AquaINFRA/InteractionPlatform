@@ -26,8 +26,6 @@ export interface SearchRequestParams {
     subjects?: string[];
     dataProvider?: string[];
     downloadOption: boolean;
-    //pageSize?: number;
-    //pageStart?: number;
     spatialFilter?: number[];
     temporalFilter?: TemporalFilter;
     temporalConfig?: TemporalConfig;
@@ -277,8 +275,6 @@ export class SearchService {
     }
 
     private addSearchResultsLimit(
-        /*pageSize: number | undefined,
-        pageStart: number | undefined,*/
         queryParams: URLSearchParams
     ) {
         queryParams.set("limit", "100");

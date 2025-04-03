@@ -8,7 +8,6 @@ import { ProviderWithResults } from "./Facets/DataProviderFacet/DataProviderFace
 export enum UrlSearchParameterType {
     Searchterm = "searchterm",
     SpatialFilter = "spatialfilter",
-    PageSize = "pageSize",
     PageStart = "pageStart",
     DataProvider = "dataProvider",
     DownloadOption = "rdl"
@@ -17,7 +16,6 @@ export enum UrlSearchParameterType {
 export interface UrlSearchParams {
     [UrlSearchParameterType.Searchterm]?: string;
     [UrlSearchParameterType.SpatialFilter]?: string;
-    [UrlSearchParameterType.PageSize]?: string;
     [UrlSearchParameterType.PageStart]?: string;
     [UrlSearchParameterType.DataProvider]?: string[];
     [UrlSearchParameterType.DownloadOption]?: string;
@@ -101,7 +99,7 @@ export const SearchState = (props: PropsWithChildren) => {
     );
 
     // init page size
-    const pSize = parseInt(searchParams.get(UrlSearchParameterType.PageSize) || "20");
+    const pSize = 20;
     const [pageSize, setPageSize] = useState<number>(pSize);
 
     // init page start
