@@ -34,58 +34,54 @@ export function Result() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [history.state.usr]);
-    
-    useEffect(() => {
-        //fetchAndStoreDkps(searchSrvc, searchState);
-    }, [searchSrvc]);
 
     useEffect(() => {
         if (!resultId) return;
         setLoading(true);
         const fetchData = async () => {
-            await fetchAndStoreDkps(searchSrvc, searchState);
-            setTimeout(()=>{
-                const [provider, ...rest] = resultId.split(":");
-                const id = rest.join(":");
-                if (!provider || !id) {
-                    throw new Error("Was not able to find a provider or an ID!");
-                }
-                if (id && provider === "zenodo") {
-                    searchSrvc.getZenodoMetadata(provider, id).then((result) => {
-                        if (result) {
-                            const associatedDkps = findAssociatedDkp(searchState.dkps ?? [], result.response.doi_url);
-                            console.log(searchState.dkps);
-                            if (associatedDkps.length > 0) {
-                                result.response.dkps = associatedDkps;
-                            }
+            const dkps = await fetchAndStoreDkps(searchSrvc, searchState);
+            //console.log(tmp);
+            dkps ? searchState.setDkps(dkps) : null;
+            const [provider, ...rest] = resultId.split(":");
+            const id = rest.join(":");
+            if (!provider || !id) {
+                throw new Error("Was not able to find a provider or an ID!");
+            }
+            if (id && provider === "zenodo") {
+                searchSrvc.getZenodoMetadata(provider, id).then((result) => {
+                    if (result) {
+                        const associatedDkps = findAssociatedDkp(dkps ?? [], result.response.doi_url);
+                        //console.log(searchState.dkps);
+                        if (associatedDkps.length > 0) {
+                            result.response.dkps = associatedDkps;
+                        }
 
-                            result.response.provider = provider;
-                            setSearchResult(result.response);
-                            if (result.response.metadata.keywords?.includes("Data-to-Knowledge Package")) {
-                                setResourceType(getResourceType("data-to-knowledge package"));
-                            } else {
-                                setResourceType(getResourceType(result.response.metadata.resource_type.type));
-                            }
-                            setLoading(false);
+                        result.response.provider = provider;
+                        setSearchResult(result.response);
+                        if (result.response.metadata.keywords?.includes("Data-to-Knowledge Package")) {
+                            setResourceType(getResourceType("data-to-knowledge package"));
+                        } else {
+                            setResourceType(getResourceType(result.response.metadata.resource_type.type));
                         }
-                    });
-                }
-                else {
-                    searchSrvc.getDdasMetadata(provider, id).then((result) => {
-                        if (result) {
-                            const associatedDkps = findAssociatedDkp(searchState.dkps ?? [], result.response.id);
-                    
-                            if (associatedDkps.length > 0) {
-                                result.response.dkps = associatedDkps;
-                            }
-                    
-                            setSearchResult(result.response);
-                            setResourceType(getResourceType(result.response.properties.type));
-                            setLoading(false);
+                        setLoading(false);
+                    }
+                });
+            }
+            else {
+                searchSrvc.getDdasMetadata(provider, id).then((result) => {
+                    if (result) {
+                        const associatedDkps = findAssociatedDkp(dkps ?? [], result.response.id);
+                
+                        if (associatedDkps.length > 0) {
+                            result.response.dkps = associatedDkps;
                         }
-                    });
-                }
-            },1000);
+                
+                        setSearchResult(result.response);
+                        setResourceType(getResourceType(result.response.properties.type));
+                        setLoading(false);
+                    }
+                });
+            }
         };
         fetchData();
     }, [resultId, searchSrvc]);

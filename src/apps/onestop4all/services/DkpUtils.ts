@@ -108,7 +108,9 @@ export async function fetchAndStoreDkps(searchSrvc: any, searchState: any) {
                 }
             })
         );
-        searchState.setDkps(fetchedDkps);
+        //searchState.setDkps(fetchedDkps);
+        //console.log("fun", fetchedDkps);
+        return fetchedDkps;
     } catch (error) {
         console.error("Error fetching DKPs:", error);
     }
