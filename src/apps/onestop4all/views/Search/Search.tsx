@@ -65,10 +65,6 @@ export function SearchView() {
             params[UrlSearchParameterType.PageStart] = `${searchState.pageStart}`;
         }
 
-        if (searchState.sorting) {
-            params[UrlSearchParameterType.SortingFilter] = `${searchState.sorting.term}`;
-        }
-
         if (searchState.selectedDataProvider.length > 0) {
             params[UrlSearchParameterType.DataProvider] = searchState.selectedDataProvider;
         }
@@ -85,7 +81,6 @@ export function SearchView() {
     }, [
         searchState.searchTerm,
         searchState.spatialFilter,
-        searchState.sorting,
         searchState.selectedDataProviderTmp,
         searchState.downloadOption
     ]);

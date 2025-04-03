@@ -31,7 +31,6 @@ export interface SearchRequestParams {
     spatialFilter?: number[];
     temporalFilter?: TemporalFilter;
     temporalConfig?: TemporalConfig;
-    sorting?: string;
 }
 
 export interface TemporalConfig {

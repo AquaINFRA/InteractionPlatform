@@ -10,7 +10,6 @@ export enum UrlSearchParameterType {
     SpatialFilter = "spatialfilter",
     PageSize = "pageSize",
     PageStart = "pageStart",
-    SortingFilter = "sort",
     DataProvider = "dataProvider",
     DownloadOption = "rdl"
 }
@@ -20,16 +19,9 @@ export interface UrlSearchParams {
     [UrlSearchParameterType.SpatialFilter]?: string;
     [UrlSearchParameterType.PageSize]?: string;
     [UrlSearchParameterType.PageStart]?: string;
-    [UrlSearchParameterType.SortingFilter]?: string;
     [UrlSearchParameterType.DataProvider]?: string[];
     [UrlSearchParameterType.DownloadOption]?: string;
 }
-
-export const SortOptions: SortOption[] = [
-    { label: "Relevanz", term: "" },
-    { label: "Title (A-Z)", term: "mainTitle asc" },
-    { label: "Title (Z-A)", term: "mainTitle desc" }
-];
 
 export interface SelectableDataProvider {
     id: string;
@@ -70,8 +62,6 @@ export interface ISearchState {
     setPageStart(pageSize: number): void;
     searchResults: SearchResult | undefined;
     isLoaded: boolean;
-    sorting: SortOption | undefined;
-    setSorting(sortOption: SortOption): unknown;
     search(): void;
     searchParamsOld: any;
     setSearchParamsOld(searchParamsOld: any): void;
@@ -153,12 +143,6 @@ export const SearchState = (props: PropsWithChildren) => {
     const [spatialFilter, setSpatialFilter] = useState(sp);
     const [dataProviderTitles, setDataProviderTitles] = useState<string[]>([]);
 
-    // sorting
-    const sortString = searchParams.get(UrlSearchParameterType.SortingFilter);
-    const sortMatch = SortOptions.find((so) => so.term === sortString);
-    const sort = sortMatch || SortOptions[0];
-    const [sorting, setSorting] = useState<SortOption | undefined>(sort);
-
     function search() {
         setIsLoaded(false);
         setDataProviderTriggered(true);
@@ -168,8 +152,7 @@ export const SearchState = (props: PropsWithChildren) => {
                     searchTerm,
                     dataProvider: selectedDataProvider.map((e:any) => e.id ? e.id : e),
                     downloadOption,
-                    spatialFilter,
-                    sorting: sorting?.term
+                    spatialFilter
                 })
                 .then((result) => {
                     setIsLoaded(true);
@@ -215,11 +198,6 @@ export const SearchState = (props: PropsWithChildren) => {
         setPageStart,
         searchResults,
         isLoaded,
-        sorting,
-        setSorting(sortOption) {
-            setSorting(sortOption);
-            setPageStart(0);
-        },
         search,
         setSelectedDataProvider,
         selectedDataProvider,
