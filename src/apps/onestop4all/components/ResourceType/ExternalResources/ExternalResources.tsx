@@ -63,15 +63,17 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
         isUrl(event.target.value) ? setDisableImportToGalaxy(false) : setDisableImportToGalaxy(true);
     };
 
-    const handleGalaxyImport = async (href: string) => {
+    const openBuilder = async (href: string) => {
         if (href.includes("https://vm4072.kaj.pouta.csc.fi/ddas/oapif/collections")) {
-            setOgcApiFeatureService(href); // Set the href to be used by the UrlBuilderPopup
-            openUrlBuilder(true); // Open the URL Builder popup
-        } else {
-            const txt = await createTxtFile(href);
-            if (txt) {
-                window.open(`https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=${txt}`, "_blank");
-            }
+            setOgcApiFeatureService(href);
+            openUrlBuilder(true);
+        }
+    };
+
+    const sendToGalaxy = async (href: string) => {
+        const txt = await createTxtFile(href);
+        if (txt) {
+            window.open(`https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=${txt}`, "_blank");
         }
     };
 
@@ -122,7 +124,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                                         label="Import to Galaxy"
                                         icon={<DownloadIcon color="white" />}
                                         variant="solid"
-                                        fun={() => handleGalaxyImport(link.href)} 
+                                        fun={() => openBuilder(link.href)} 
                                     />
                                 </Box>
                             ) : null}
@@ -147,7 +149,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                         disabled={disableImportToGalaxy}
                         icon={<DownloadIcon color="white" />}
                         variant="solid"
-                        fun={() => handleGalaxyImport(urlToImport)} 
+                        fun={() => sendToGalaxy(urlToImport)} 
                     />
                 </Box>
             </Box>
