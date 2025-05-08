@@ -30,6 +30,9 @@ export interface Properties {
     language: string;
     rights: string;
     formats: string;
+    license: string;
+    updated: string;
+    providers: string[];
 }
 
 export interface DatasetMetadataResponse extends SolrSearchResultItem {
@@ -48,6 +51,7 @@ export interface DatasetViewProps {
 
 export function DatasetView(props: DatasetViewProps) {
     const metadata = props.item;
+    console.log(metadata);
     
     return (
         <Box>
@@ -131,6 +135,16 @@ export function DatasetView(props: DatasetViewProps) {
                         val: metadata.provider
                     },
                     {
+                        element: "type",
+                        tag: "Type",
+                        val: metadata.properties.type
+                    },
+                    {
+                        element: "License",
+                        tag: "License",
+                        val: metadata.properties.license
+                    },
+                    {
                         element: "keyword",
                         tag: metadata.properties.keywords?.length > 1 ? "Keywords" : "Keyword",
                         val: metadata.properties.keywords
@@ -139,11 +153,6 @@ export function DatasetView(props: DatasetViewProps) {
                         element: "language",
                         tag: metadata.properties.language?.length > 1 ? "Languages" : "Language",
                         val: metadata.properties.language
-                    },
-                    {
-                        element: "type",
-                        tag: "Type",
-                        val: metadata.properties.type
                     },
                     {
                         element: "datePublished",
@@ -159,9 +168,24 @@ export function DatasetView(props: DatasetViewProps) {
                         element: "Formats",
                         tag: metadata.properties.formats?.length > 1 ? "Formats" : "Format",
                         val: metadata.properties.formats
+                    },
+                    {
+                        element: "Created",
+                        tag: "Created",
+                        val: metadata.properties.created
+                    },
+                    {
+                        element: "Updated",
+                        tag: "Updated",
+                        val: metadata.properties.updated
+                    },
+                    {
+                        element: "Formats",
+                        tag: metadata.properties.providers?.length > 1 ? "Providers" : "Provider",
+                        val: metadata.properties.providers
                     }
                 ]}
-                visibleElements={2}
+                visibleElements={4}
                 expandedByDefault={false}
             />
         );

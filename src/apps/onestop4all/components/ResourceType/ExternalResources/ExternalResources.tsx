@@ -19,6 +19,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
     const [disableImportToGalaxy, setDisableImportToGalaxy] = useState(true);
     const [urlBuilder, openUrlBuilder] = useState(false);
     const [ogcApiFeatureService, setOgcApiFeatureService] = useState<string | null>(null);
+    const [isSendingToGalaxy, setIsSendingToGalaxy] = useState(false);
 
     useEffect(() => {
         const newLinks = new Array<LinkObject>();
@@ -71,9 +72,16 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
     };
 
     const sendToGalaxy = async (href: string) => {
-        const txt = await createTxtFile(href);
-        if (txt) {
-            window.open(`https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=${txt}`, "_blank");
+        setIsSendingToGalaxy(true);
+        try {
+            const txt = await createTxtFile(href);
+            if (txt) {
+                window.open(`https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=${txt}`, "_blank");
+            }
+        } catch (error) {
+            console.error("Error sending to Galaxy:", error);
+        } finally {
+            setIsSendingToGalaxy(false);
         }
     };
 
@@ -145,11 +153,11 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                         />
                     </Box>
                     <ActionButton
-                        label="Import to Galaxy"
-                        disabled={disableImportToGalaxy}
+                        label={isSendingToGalaxy ? "Importing..." : "Import to Galaxy"}
+                        disabled={disableImportToGalaxy || isSendingToGalaxy}
                         icon={<DownloadIcon color="white" />}
                         variant="solid"
-                        fun={() => sendToGalaxy(urlToImport)} 
+                        fun={() => sendToGalaxy(urlToImport)}
                     />
                 </Box>
             </Box>
