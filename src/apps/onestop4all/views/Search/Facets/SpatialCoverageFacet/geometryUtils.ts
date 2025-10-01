@@ -1,6 +1,7 @@
 import { Geometry, Polygon } from "ol/geom";
 import GeoJSON from "ol/format/GeoJSON";
-import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
+//import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
+import dataNew from "../../../../services/sea_areas_catchments.json";
 import { Feature } from "ol";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";

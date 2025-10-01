@@ -23,7 +23,8 @@ import { useSearchState } from "../../SearchState";
 import { SearchService } from "../../../../services";
 import { computeBBox, createBboxLayer, createCatchmentLayer, intersectsBBox } from "./geometryUtils";
 import GeoJSON from "ol/format/GeoJSON";
-import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
+//import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
+import dataNew from "../../../../services/sea_areas_catchments.json";
 import { defaults as defaultInteractions } from "ol/interaction.js";
 
 
@@ -72,7 +73,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     // Display the Catchment areas
     const geoJSONFormat = new GeoJSON();
     const features = geoJSONFormat.readFeatures(dataNew, {
-        featureProjection: "EPSG:4326"
+        featureProjection: "EPSG:3857"
     });
 
     const vectorSource = new VectorSource({
