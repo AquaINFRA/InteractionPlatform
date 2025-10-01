@@ -14,7 +14,7 @@ export function CatchmentOptions({ onChange, selectedOption }: CatchmentOptionsP
     return (
         <RadioGroup defaultValue={selectedOption} onChange={onChange} my="1%">
             <Stack spacing={5} direction="row">
-                <Radio value="full"><b>Full catchment</b></Radio>
+                <Radio value="full"><b>Full catchments and sea regions</b></Radio>
                 <Radio value="upstream"><b>Upstream catchment</b></Radio>
             </Stack>
             <Box pt={1}>
