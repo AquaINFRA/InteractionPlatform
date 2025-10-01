@@ -211,17 +211,21 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
     }
 
     function renderDkpComponent() {
+        // filter roCrate by type
+        const reproducibleBasis = roCrate.filter(item => item["type"] === "Dataset" || item["type"] === "SoftwareSourceCode");
+        const vre = roCrate.filter(item => item["type"] === "SoftwareApplication" || item["type"] === "WebAPI" || item["type"] === "ComputationalWorkflow");
+
         return (
             <>
                 <Box className="metadataSectionHeader" pt={5} mb={5}>
                     <b>Virtual Research Environment</b>
                 </Box>
-                {renderComponents(roCrate.slice(3, 6), 0, "ComputationalWorkflow")}
+                {renderComponents(vre, 0, "ComputationalWorkflow")}
 
                 <Box className="metadataSectionHeader" pt={50} mb={5}>
                     <b>Reproducible Basis</b>
                 </Box>
-                {renderComponents(roCrate.slice(0, 3), 3, "SoftwareSourceCode")}
+                {renderComponents(reproducibleBasis, vre.length, "SoftwareSourceCode")}
             </>
         );
     }
