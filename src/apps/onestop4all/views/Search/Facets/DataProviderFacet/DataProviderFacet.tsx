@@ -34,17 +34,17 @@ export function DataProviderFacet() {
                     (a: DataProvider, b: DataProvider) =>
                         a.title.toLocaleUpperCase().localeCompare(b.title.toLocaleUpperCase())
                 );
-                let filteredEntries = sortedEntries.filter((entry: any) => entry.id !== "dataeurope");
-                filteredEntries = filteredEntries.filter((entry: any) => entry.id !== "gbif");
-                setEntries(filteredEntries);
+                //let filteredEntries = sortedEntries.filter((entry: any) => entry.id !== "dataeurope");
+                //filteredEntries = filteredEntries.filter((entry: any) => entry.id !== "gbif");
+                setEntries(sortedEntries);
 
-                const ids = filteredEntries.map((entry: any) => entry.id);
+                const ids = sortedEntries.map((entry: any) => entry.id);
                 if (searchState.selectedDataProvider.length === 0) {
                     searchState.setSelectedDataProvider(ids);
                     searchState.setSelectedDataProviderTmp(ids);
                 }
                 setAllSelected(true);
-                const providerTitles = filteredEntries.map((se: any) => {
+                const providerTitles = sortedEntries.map((se: any) => {
                     return { title: se.title, id: se.id, description: se.description };
                 });
                 searchState.setDataProviderTitles(providerTitles);
@@ -141,7 +141,7 @@ export function DataProviderFacet() {
             <FacetBase  title={searchState.dataProviderTriggered ? "Data provider" : <span style={{color: "red"}}>*Press &quot;search&quot; to update request!*</span>} expanded>
                 <SimpleGrid columns={[1, 2]} spacing={3} marginTop={"1%"}>
                     {entries.map((entry: any, i) =>
-                        entry.id !== "dataeurope" ? (
+                        (
                             <Flex key={i}>
                                 <FacetCheckbox
                                     label={entry.title}
@@ -153,7 +153,7 @@ export function DataProviderFacet() {
                                     count={providerWithResults?.find(result => result.id === entry.id)?.count}
                                 />
                             </Flex>
-                        ) : null
+                        )
                     )}
                 </SimpleGrid>
                 {entries.length > 0 ? (
