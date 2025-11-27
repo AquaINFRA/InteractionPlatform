@@ -108,6 +108,7 @@ export function Result() {
             case ResourceType.Service:
             case ResourceType.DownloadableData:
             case ResourceType.OfflineData:
+            case ResourceType.DatasetPublicationSeries:
             case ResourceType.LiveData: {
                 const item = searchResult as DatasetMetadataResponse;
                 return <DatasetView item={item} />;

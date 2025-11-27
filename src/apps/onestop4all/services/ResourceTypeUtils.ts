@@ -18,6 +18,7 @@ import { LessonHandler } from "./search/result-handler/lesson-handler";
 import { PhysicalObejctHandler } from "./search/result-handler/physicalobject-handler";
 import { EventHandler } from "./search/result-handler/event-handler";
 import { DkpHandler } from "./search/result-handler/dkp-handler";
+import { DatasetPublicationSeriesHandler } from "./search/result-handler/dataset-publication-series-handler";
 
 export enum ResourceType {
     Dataset = "dataset",
@@ -40,7 +41,8 @@ export enum ResourceType {
     Video = "video",
     PhysicalObject = "physicalobject",
     Event = "event",
-    DKP = "data-to-knowledge package"
+    DKP = "data-to-knowledge package",
+    DatasetPublicationSeries = "dataset publication series"
 }
 
 const mapping = [
@@ -123,11 +125,16 @@ const mapping = [
     {
         type: ResourceType.Event,
         identifier: "event"
+    },
+    {
+        type: ResourceType.DatasetPublicationSeries,
+        identifier: "dataset publication series"
     }
 ];
 
 export function mapToResourceType(identifier: string): ResourceType {
     const match = mapping.find((e) => e.identifier === identifier);
+    console.log(identifier);
     if (match) {
         return match.type;
     }
@@ -161,7 +168,8 @@ const searchResultHandlers: SearchResultHandler[] = [
     new LessonHandler(),
     new PhysicalObejctHandler(),
     new EventHandler(),
-    new DkpHandler()
+    new DkpHandler(),
+    new DatasetPublicationSeriesHandler()
 ];
 
 export function getHandler(result: string): SearchResultHandler {

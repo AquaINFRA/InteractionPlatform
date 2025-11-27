@@ -281,6 +281,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
             ResourceType.Poster,
             ResourceType.PhysicalObject,
             ResourceType.Event,
+            ResourceType.DatasetPublicationSeries
         ]);
     
         if (nullReturningTypes.has(resourceType)) {
