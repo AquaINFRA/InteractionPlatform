@@ -134,7 +134,6 @@ const mapping = [
 
 export function mapToResourceType(identifier: string): ResourceType {
     const match = mapping.find((e) => e.identifier === identifier);
-    console.log(identifier);
     if (match) {
         return match.type;
     }
