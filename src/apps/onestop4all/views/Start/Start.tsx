@@ -6,6 +6,7 @@ import { useService } from "open-pioneer:react-hooks";
 import { SearchService } from "../../services";
 import { useSearchState } from "../Search/SearchState";
 import { fetchAndStoreDkps } from "../../services/DkpUtils";
+import { DemonstratorEntries } from "./Demonstrator/DemonstratorEntries";
 
 export function StartView() {
 
@@ -46,6 +47,11 @@ export function StartView() {
                     <SearchBar />
                 </Container>
             </Box>
+
+            <Container maxW={{ base: "100%", custombreak: "80%" }}>
+                <Box h="80px" />
+                <DemonstratorEntries />
+            </Container>
 
             <Container maxW={{ base: "100%", custombreak: "80%" }}>
                 <Box h="80px" />
