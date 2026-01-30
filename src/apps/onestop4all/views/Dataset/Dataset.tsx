@@ -6,6 +6,7 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ExternalResources } from "../../components/ResourceType/ExternalResources/ExternalResources";
 import { Map } from "../../components/ResourceType/Map/Map";
 import { DkpResources } from "../../components/ResourceType/ExternalResources/DkpResources";
+import { formatDate } from "../../services/ResourceTypeUtils";
 
 export interface LinkObject {
     href: string;
@@ -130,14 +131,19 @@ export function DatasetView(props: DatasetViewProps) {
             <Metadata
                 metadataElements={[
                     {
-                        element: "provider",
-                        tag: "Provider",
-                        val: metadata.provider
+                        element: "providers",
+                        tag: metadata.properties.providers?.length > 1 ? "Providers" : "Provider",
+                        val: metadata.properties.providers
                     },
                     {
-                        element: "type",
-                        tag: "Type",
-                        val: metadata.properties.type
+                        element: "Created",
+                        tag: "Created",
+                        val: metadata.properties.created ? formatDate(new Date(metadata.properties.created)) : null
+                    },
+                    {
+                        element: "keywords",
+                        tag: metadata.properties.keywords?.length > 1 ? "Keywords" : "Keyword",
+                        val: metadata.properties.keywords
                     },
                     {
                         element: "License",
@@ -145,19 +151,14 @@ export function DatasetView(props: DatasetViewProps) {
                         val: metadata.properties.license
                     },
                     {
-                        element: "keyword",
-                        tag: metadata.properties.keywords?.length > 1 ? "Keywords" : "Keyword",
-                        val: metadata.properties.keywords
+                        element: "Updated",
+                        tag: "Updated",
+                        val: metadata.properties.updated ? formatDate(new Date(metadata.properties.updated)) : null
                     },
                     {
                         element: "language",
                         tag: metadata.properties.language?.length > 1 ? "Languages" : "Language",
                         val: metadata.properties.language
-                    },
-                    {
-                        element: "datePublished",
-                        tag: "Published",
-                        val: new Date(metadata.properties.created).toLocaleDateString()
                     },
                     {
                         element: "Rights",
@@ -168,21 +169,6 @@ export function DatasetView(props: DatasetViewProps) {
                         element: "Formats",
                         tag: metadata.properties.formats?.length > 1 ? "Formats" : "Format",
                         val: metadata.properties.formats
-                    },
-                    {
-                        element: "Created",
-                        tag: "Created",
-                        val: metadata.properties.created
-                    },
-                    {
-                        element: "Updated",
-                        tag: "Updated",
-                        val: metadata.properties.updated
-                    },
-                    {
-                        element: "Formats",
-                        tag: metadata.properties.providers?.length > 1 ? "Providers" : "Provider",
-                        val: metadata.properties.providers
                     }
                 ]}
                 visibleElements={4}

@@ -24,11 +24,13 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
     useEffect(() => {
         const newLinks = new Array<LinkObject>();
         links.forEach((link) => {
-            if (link.title !== "The landing page of this server as HTML" &&
-                link.title !== "This document as GeoJSON" &&
-                link.title !== "This document as RDF (JSON-LD)" &&
-                link.title !== "The landing page of this server as JSON" &&
-                link.title !== "This document as HTML") {
+            if (
+                (
+                    link.title === "Original resource" ||
+                    link.title === "Original metadata" ||
+                    link.title?.toLowerCase().includes("data download")
+                ) && link.href?.trim() !== ""
+            ) {
                 newLinks.push(link);
             }
         });
@@ -95,18 +97,6 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                         <div>
                             <span className="metadataTag">Title: </span>
                             <span className="metadataValue">{link.title}</span>
-                        </div>
-                    ) : null}
-                    {link.description ? (
-                        <div>
-                            <span className="metadataTag">Description: </span>
-                            <span className="metadataValue">{link.description}</span>
-                        </div>
-                    ) : null}
-                    {link.protocol ? (
-                        <div>
-                            <span className="metadataTag">Protocol: </span>
-                            <span className="metadataValue">{link.protocol}</span>
                         </div>
                     ) : null}
                     <Flex flexDirection="column"> 

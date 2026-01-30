@@ -188,3 +188,21 @@ export function getHandler(result: string): SearchResultHandler {
 export function getResourceType(result: string): ResourceType {
     return getHandler(result).resourceType;
 }
+
+export function formatDate(date: Date) {
+    const pad = (n: number) => n.toString().padStart(2, "0");
+
+    const day = pad(date.getDate());
+    const month = pad(date.getMonth() + 1);
+    const year = date.getFullYear();
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+
+    const offset = date.getTimezoneOffset();
+    const sign = offset <= 0 ? "+" : "-";
+    const absOffset = Math.abs(offset);
+    const offHours = pad(Math.floor(absOffset / 60));
+    const offMinutes = pad(absOffset % 60);
+
+    return `${day}/${month}/${year} ${hours}:${minutes} (GMT${sign}${offHours}:${offMinutes})`;
+}
