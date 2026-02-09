@@ -9,22 +9,26 @@ import {
     ModalBody,
     ModalFooter,
     Skeleton,
-    Stack
+    Stack,
+    Tooltip,
+    Icon
 } from "@open-pioneer/chakra-integration";
 import { useState, useEffect, useRef } from "react";
 import { CopyToClipboardButton } from "../ActionButton/CopyToClipboardButton";
 import { BBoxMap } from "./BBoxMap";
 import DataPointsSelector from "./DataPointSelector";
 import QueryableSelector from "./QueryableSelector";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
 interface UrlBuilderPopupProps {
     isOpen: boolean;
     onClose: () => void;
     ogc_features_url: string;
     createTxtFile: (url: string) => void;
+    disabled: boolean;
 }
 
-export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFile }: UrlBuilderPopupProps) => {
+export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFile, disabled }: UrlBuilderPopupProps) => {
     const [sliderValue, setSliderValue] = useState(10);
     const [maxSliderValue, setMaxSliderValue] = useState(0);
     const [inputValue, setInputValue] = useState("10");
@@ -227,7 +231,24 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
         <Modal isOpen={isOpen} onClose={closeBuilder} scrollBehavior="outside">
             <ModalOverlay />
             <ModalContent width={"40%"} maxW={"700px"} minW={"500px"} maxHeight="90vh" overflow="auto" padding="1">
-                <ModalHeader>OGC API Features Subsetting</ModalHeader>
+                <ModalHeader>
+                    OGC API Features Subsetting
+                    <Tooltip
+                        label="In this modal, you can build a URL based on an OGC API Features services. You can limit the number of data points, set a bounding box, or query single attributes. You can then copy the resulting URL or import it to Galaxy."
+                        placement="right"
+                        hasArrow
+                    >
+                        <span>
+                            <Icon
+                                as={QuestionOutlineIcon}
+                                boxSize={7}
+                                cursor="pointer"
+                                color="gray.500"
+                                marginLeft={2}
+                            />
+                        </span>
+                    </Tooltip>
+                </ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                     <Box>
@@ -259,16 +280,18 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
                         )}
                     </Box>
                     
-                    <Box padding={"0px 0px 20px"}>
-                        <QueryableSelector
-                            queryablesArray={queryablesArray}
-                            onApply={requestUrlWithQueryables}
-                            selectedQueryable={selectedQueryable}
-                            setSelectedQueryable={setSelectedQueryable}
-                            queryableValue={queryableValue}
-                            setQueryableValue={setQueryableValue}
-                        />
-                    </Box>
+                    {queryablesArray.length > 0 ?
+                        <Box padding={"0px 0px 20px"}>
+                            <QueryableSelector
+                                queryablesArray={queryablesArray}
+                                onApply={requestUrlWithQueryables}
+                                selectedQueryable={selectedQueryable}
+                                setSelectedQueryable={setSelectedQueryable}
+                                queryableValue={queryableValue}
+                                setQueryableValue={setQueryableValue}
+                            />
+                        </Box> : null
+                    }
 
                     <Box mb={4} p={2} border="1px solid #ccc" borderRadius="md">
                         <strong>Generated URL: </strong>
@@ -280,11 +303,11 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
                     <Box display="flex" justifyContent="space-between" mt={4}>
                         <Button
                             onClick={handleCreateTxtFile}
-                            isDisabled={!requestUrl}
+                            isDisabled={!requestUrl || disabled}
                             width="80%"
                             mr={2}
                         >
-                            Import to Galaxy
+                            {disabled ? "Importing..." : "Import to Galaxy"}
                         </Button>
                         <CopyToClipboardButton
                             data={requestUrl ? requestUrl : baseUrl}
