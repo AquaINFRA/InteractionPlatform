@@ -2,10 +2,10 @@ import { Box } from "@open-pioneer/chakra-integration";
 
 export const Keywords = (props: { list: Array<string>; tag: string; element: string }) => {
     const { list, tag, element } = props;
-    if (list.values.length === 0) return;
+    if (list.length === 0) return;
 
     const createQuery = (element: string, elem: string) => {
-        if (element === "keyword") {
+        if (element === "keywords") {
             return "/search?searchterm=" + elem;
         } else if (element === "theme") {
             return "/search?subjects=" + elem;
