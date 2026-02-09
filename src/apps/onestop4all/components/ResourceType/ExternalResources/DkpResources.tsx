@@ -14,7 +14,6 @@ export const DkpResources = ({ dkps }: { dkps: any[] }) => {
 
                 return (
                     <Box key={i} pt={3}>
-                        <div className="seperator" />
                         {graph.name && (
                             <div>
                                 <span className="metadataTag">Title: </span>
@@ -29,7 +28,6 @@ export const DkpResources = ({ dkps }: { dkps: any[] }) => {
                                 fun={() => window.open(graph.url?.["@id"], "_blank")}
                             />
                         </Box>
-                        <div className="seperator" style={{ marginTop: "10px" }} />
                     </Box>
                 );
             })}

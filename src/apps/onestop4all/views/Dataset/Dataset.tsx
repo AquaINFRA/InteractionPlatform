@@ -14,6 +14,7 @@ export interface LinkObject {
     description: string;
     protocol: string;
     type: string;
+    rel: string;
 }
 
 export interface ResourceGeometry {
@@ -77,14 +78,14 @@ export function DatasetView(props: DatasetViewProps) {
                     ) : null}
                 </Box>
                 <Box w="25%">
-                    {metadata.dkps ? (
-                        <Box pt="8px">
-                            <DkpResources dkps={metadata.dkps} />
-                        </Box>
-                    ) : null}
                     {metadata.links ? (
                         <Box pt="8px">
                             <ExternalResources links={metadata.links} />
+                        </Box>
+                    ) : null}
+                    {metadata.dkps ? (
+                        <Box pt="8px">
+                            <DkpResources dkps={metadata.dkps} />
                         </Box>
                     ) : null}
                 </Box>
@@ -112,14 +113,14 @@ export function DatasetView(props: DatasetViewProps) {
                         <Abstract abstractText={metadata.description} />
                     </Box>
                 ) : null}
-                {metadata.dkps ? (
-                    <Box pt="8px">
-                        <DkpResources dkps={metadata.dkps} />
-                    </Box>
-                ) : null}
                 {metadata.links ? (
                     <Box pt="40px">
                         <ExternalResources links={metadata.links} />
+                    </Box>
+                ) : null}
+                {metadata.dkps ? (
+                    <Box pt="8px">
+                        <DkpResources dkps={metadata.dkps} />
                     </Box>
                 ) : null}
             </Box>
