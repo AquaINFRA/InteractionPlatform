@@ -216,7 +216,6 @@ export function Result() {
                             <BackToSearchLink
                                 visible={result !== undefined && resultCount !== undefined}
                             />
-                            <Divider className="resTypeHeaderLine" />
                             <ResourceTypeLabel
                                 resType={resourceType}
                                 loading={loading}
@@ -250,8 +249,8 @@ export function Result() {
                     </>
                 )}
                 {/* Desktop footer */}
-                <Flex gap="10%" alignItems="center" pt="120px" hideBelow="custombreak">
-                    <Divider className="seperator" w="65%" />
+                <Flex gap="10%" alignItems="center" hideBelow="custombreak">
+                    <Box w="65%" />
                     <Box w="25%">{renderPaging()}</Box>
                 </Flex>
 
@@ -259,11 +258,9 @@ export function Result() {
                 <Box hideFrom="custombreak">
                     <Box pt={"10"}>{renderPaging()}</Box>
                     <Flex alignItems="center" gap="12px" pt="25px">
-                        <Divider />
                         <BackToSearchLink
                             visible={result !== undefined && resultCount !== undefined}
                         />
-                        <Divider />
                     </Flex>
                 </Box>
             </Container>
