@@ -29,7 +29,7 @@ export interface SpatialCoverageFacetProps {
     mapId: string;
 }
 
-const usedEPSGCode = "EPSG:4326";
+export const USED_EPSG_CODE = "EPSG:4326";
 
 export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     const { map } = useMap(mapId);
@@ -181,7 +181,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
             const mapEPSG = map.getView().getProjection().getCode();
             source.clear();
             if (searchState.spatialFilter.length === 4) {
-                const bbox = fromExtent(searchState.spatialFilter).transform(usedEPSGCode, mapEPSG);
+                const bbox = fromExtent(searchState.spatialFilter).transform(USED_EPSG_CODE, mapEPSG);
                 const bboxFeature = new Feature<Polygon>(bbox);
                 source.addFeature(bboxFeature);
             }
@@ -198,7 +198,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
         const geom = features[0]?.getGeometry();
         if (geom && map) {
             const sourceEPSG = map.getView().getProjection().getCode();
-            const transformedGeom = geom.clone().transform(sourceEPSG, usedEPSGCode);
+            const transformedGeom = geom.clone().transform(sourceEPSG, USED_EPSG_CODE);
             if (transformedGeom instanceof Polygon) {
                 const extent = transformedGeom.getExtent();
                 searchState.setSpatialFilter(extent);

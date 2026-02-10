@@ -8,8 +8,8 @@ interface CatchmentOptionsProps {
 export function CatchmentOptions({ onChange, selectedOption }: CatchmentOptionsProps) {
     const instructionText =
         selectedOption === "full"
-            ? "Select a polygon, click 'Apply Bounding Box', and use 'Shift' or a selection box for multiple selections."
-            : "Set a point on the map and click 'Compute Catchment', then 'Apply Bounding Box'.";
+            ? "Select one or more polygons by clicking them directly or by drawing a bounding box. When finished, click ‘Apply Bounding Box’."
+            : "Place a point on the map, then click ‘Compute Catchment’. Once the catchment is calculated, click ‘Apply Bounding Box’.";
 
     return (
         <RadioGroup defaultValue={selectedOption} onChange={onChange} my="1%">

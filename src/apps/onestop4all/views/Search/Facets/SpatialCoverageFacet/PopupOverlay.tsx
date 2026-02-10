@@ -26,6 +26,7 @@ import GeoJSON from "ol/format/GeoJSON";
 //import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
 import dataNew from "../../../../services/sea_areas_catchments.json";
 import { defaults as defaultInteractions } from "ol/interaction.js";
+import { USED_EPSG_CODE } from "./SpatialCoverageFacet";
 
 
 interface PopupOverlayProps {
@@ -120,7 +121,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
             
             if (!coords) return;
             
-            const coords4326 = coords.map((coord: any) => transform(coord, "EPSG:3857", "EPSG:4326"));
+            const coords4326 = coords.map((coord: any) => transform(coord, "EPSG:3857", USED_EPSG_CODE));
             const intersectingFeatures = intersectsBBox(coords4326);
             getBBox(intersectingFeatures);
         });
@@ -161,7 +162,6 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         };
     }, [map]);
 
-    /**Shows BBox containing all selected areas*/
     function getBBox(features: any) {
         cleanUpLayers();
         if (!map) return;
@@ -170,12 +170,12 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         const bboxLayer = createBboxLayer(coordinates);
 
         const source = new VectorSource({
-            features: features, // Add intersecting features
+            features: features
         });
     
         const vectorLayer = new VectorLayer({
             source: source,
-            style: selectStyle, // Apply select style globally
+            style: selectStyle,
         });
 
         map.addLayer(vectorLayer);
@@ -189,7 +189,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         if (!bBox || !map) return;
         const geom = bBox[0]?.getGeometry();
         const sourceEPSG = map.getView().getProjection().getCode();
-        const transformedGeom = geom.clone().transform(sourceEPSG, "EPSG:4326");
+        const transformedGeom = geom.clone().transform(sourceEPSG, USED_EPSG_CODE);
         if (transformedGeom instanceof Polygon) {
             const extent = transformedGeom.getExtent();
             closeMap();
@@ -203,7 +203,6 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         onClose();
     }
 
-    /**HANDLER: Deselects all selectClick and hoverName (hover doesnt work yet)*/
     function deselectAll(): void {
         const selected = selectClick.getFeatures();
         setShowErrorMessage(false);
@@ -211,16 +210,14 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         const selectedHover = hoverName.getFeatures();
         if (selectedHover.getLength() > 0) selectedHover.clear();
         map?.removeLayer(bBoxVectorLayer);
-        setBBoxVectorLayer(new VectorLayer()); // clean up?
+        setBBoxVectorLayer(new VectorLayer());
         setBBox(undefined);
         markerSource.clear();
         catchmentSource?.clear();
         catchmentBBoxSource?.clear();
         setBboxActive(false);
-        //setMarkerLonLat([]);
     }
 
-    /**Remove all but the first two layers */
     function cleanUpLayers(): void {
         if (!map) return;
     
@@ -323,7 +320,6 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     
         /**Full catchment mode */
         if (selectedOption === "full") {
-            //cleanUpLayers();
             resetInteractions();
             if (bboxActive) {
                 const drawInteraction = new Draw({
@@ -355,7 +351,6 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                     selectClick.un("select", handleSelect);
                 };
             }
-        /** Upstream catchment mode */
         } else {
             cleanUpLayers();
             deselectAll();
@@ -387,14 +382,20 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
                 <Box className="map-container" position="relative">
                     <HStack spacing={4}>
-                        <CatchmentOptions onChange={setSelectedOption} selectedOption={selectedOption} />
+                        <CatchmentOptions 
+                            onChange={setSelectedOption} 
+                            selectedOption={selectedOption} 
+                        />
                     </HStack>
 
                     {showErrorMessage && <ErrorMessage message="Computation failed! The selected point either resulted in too many subcatchments or is not in Europe."/>}
 
                     {selectedOption === "full" && (
                         <Box position="absolute" bottom="-45px" right="10px" zIndex="10">
-                            <DrawBboxButton bboxActive={bboxActive} onClick={()=>setBboxActive(!bboxActive)} />
+                            <DrawBboxButton 
+                                bboxActive={bboxActive} 
+                                onClick={()=>setBboxActive(!bboxActive)} 
+                            />
                         </Box>
                     )}
                     <MapContainer mapId={mapId} />
@@ -406,10 +407,27 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                 </Box>
 
                 <XButton handleClose={closeMap} />
+
                 <Flex className="catchment-button-container">
-                    <CatchmentButton active={isDeleteActive} onClick={deselectAll} text="Delete selection" />
-                    {selectedOption === "upstream" && <CatchmentButton active={markerLonLat && markerLonLat.length > 0 && !loading ? true : false} onClick={getCatchmentWrap} text="Compute catchment" loading={loading}/>}
-                    <CatchmentButton active={bBox ? true : false} onClick={setSearchArea} text="Apply bounding box" />
+                    <CatchmentButton 
+                        active={isDeleteActive} 
+                        onClick={deselectAll} 
+                        text="Delete selection" 
+                    />
+                    {
+                        selectedOption === "upstream" && 
+                            <CatchmentButton 
+                                active={markerLonLat && markerLonLat.length > 0 && !loading ? true : false} 
+                                onClick={getCatchmentWrap} 
+                                text="Compute catchment" 
+                                loading={loading}
+                            />
+                    }
+                    <CatchmentButton 
+                        active={bBox ? true : false} 
+                        onClick={setSearchArea} 
+                        text="Apply bounding box" 
+                    />
                 </Flex>
             </Box>
         </Box>
