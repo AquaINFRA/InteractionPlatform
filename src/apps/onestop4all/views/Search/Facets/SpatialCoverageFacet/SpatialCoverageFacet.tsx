@@ -13,7 +13,7 @@ import { PrimaryColor40 } from "../../../../Theme";
 import { useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { PopupOverlay } from "./PopupOverlay";
-import { Questionmark } from "../../../../components/Questionmark";
+import { Questionmark } from "../../../../components/QuestionMark/Questionmark";
 import { Stroke, Style } from "ol/style";
 import { SolrSearchResultItem } from "../../../../services/SearchService";
 import { ResourceType, getResourceType } from "../../../../services/ResourceTypeUtils";

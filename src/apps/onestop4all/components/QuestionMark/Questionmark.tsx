@@ -1,5 +1,5 @@
 import { IconButton, Tooltip } from "@open-pioneer/chakra-integration";
-import { QuestionmarkIcon } from "./Icons";
+import { QuestionmarkIcon } from "../Icons";
 
 interface QuestionmarkProps {
     label: string;

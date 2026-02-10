@@ -2,7 +2,7 @@ import { Box, Button, Flex, Skeleton, Stack } from "@open-pioneer/chakra-integra
 import { useSearchState } from "../../SearchState";
 import { useState } from "react";
 import { FilterCheckbox } from "./FilterCheckbox";
-import { Questionmark } from "../../../../components/Questionmark";
+import { Questionmark } from "../../../../components/QuestionMark/Questionmark";
 
 interface SearchTermItem {
     value?: string;
