@@ -177,7 +177,7 @@ export function SearchView() {
                                         return (
                                             <Box key={e.id}>
                                                 <Box className="seperator"></Box>
-                                                <Box padding={{ base: "25px 0px" }}>
+                                                <Box padding={{ base: "15px 0px" }}>
                                                     <SearchResult item={e} />
                                                 </Box>
                                             </Box>

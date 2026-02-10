@@ -50,7 +50,6 @@ export function SearchResult(props: SearchResultProps) {
                         <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
                         <Box className="title">{item.properties?.title}</Box>
                     </Flex>
-                    <Box className="abstract">{item.abstract}</Box>
                 </Box>
                 <Box flex="0 0 75px" hideBelow="custombreak">
                     <svg width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
