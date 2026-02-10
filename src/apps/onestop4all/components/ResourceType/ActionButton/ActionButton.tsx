@@ -1,7 +1,7 @@
 import { Button, Icon } from "@open-pioneer/chakra-integration";
 import { PrimaryColor } from "../../../Theme";
 
-export const ActionButton = (props: { label: string; icon: any; variant: string; fun: () => void; disabled?:boolean; }) => {
+export const ActionButton = (props: { label: string; icon?: any; variant: string; fun: () => void; disabled?:boolean; }) => {
     const { label, icon, variant, fun, disabled } = props;
     return (
         <Button
@@ -12,9 +12,9 @@ export const ActionButton = (props: { label: string; icon: any; variant: string;
             w={{ base: "200px", custombreak: "100%" }}
             isDisabled={disabled}
         >
-            <Icon boxSize={6} color={PrimaryColor}>
+            {icon && <Icon boxSize={6} color={PrimaryColor}>
                 {icon}
-            </Icon>
+            </Icon>}
             <div
                 className={
                     variant == "solid" ? "actionButtonLabelSolid" : "actionButtonLabelOutline"

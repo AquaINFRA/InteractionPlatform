@@ -79,8 +79,14 @@ export interface TextFileResponse {
     };
 }
 
-const oapirUrl = import.meta.env.VITE_OAPIR_URL;
-const zenodoUrl = "https://zenodo.org/api/records";
+const OAPIR_URL = import.meta.env.VITE_OAPIR_URL;
+const ZENODO_URL = "https://zenodo.org/api/records";
+const D2K = "/?communities=aquainfra&q=keywords:%22Data-To-Knowledge%20Package%22";
+const PROCESS_CATCHMENT = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
+const RELATED_SEARCHTERM = "https://vm2558.kaj.pouta.csc.fi/rcsearch?keyword=";
+const CREATE_TXT_FILE = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-ddas-galaxy-link-textfile/execution";
+
+const SEARCH_RESULT_LIMIT = "100";
 
 export class SearchService {
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
@@ -96,7 +102,7 @@ export class SearchService {
 
         this.addDownloadOption(searchParams.downloadOption, queryParams);
 
-        const url = `${oapirUrl}/search?${queryParams.toString()}`;
+        const url = `${OAPIR_URL}/search?${queryParams.toString()}`;
 
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
@@ -123,7 +129,7 @@ export class SearchService {
         if (!provider || !id) {
             return Promise.reject(new Error("Invalid resourceId"));
         }
-        const url = `${zenodoUrl}/${id}`;
+        const url = `${ZENODO_URL}/${id}`;
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 if (responseData) {
@@ -139,7 +145,7 @@ export class SearchService {
         if (!provider || !id) {
             return Promise.reject(new Error("Invalid resourceId"));
         }
-        const url = `${oapirUrl}/collections/${provider}/items/${id}`;
+        const url = `${OAPIR_URL}/collections/${provider}/items/${id}`;
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 if (responseData) {
@@ -152,7 +158,7 @@ export class SearchService {
     }
 
     getDataToKnowledgePackages() {
-        const url = `${zenodoUrl}/?communities=aquainfra&q=keywords:%22Data-To-Knowledge%20Package%22`;
+        const url = `${ZENODO_URL}${D2K}`;
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 if (responseData) {
@@ -165,7 +171,7 @@ export class SearchService {
     }
 
     getDataProvider() {
-        const url = oapirUrl + "/collections?f=json&lang=en-US";
+        const url = OAPIR_URL + "/collections?f=json&lang=en-US";
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
@@ -178,7 +184,7 @@ export class SearchService {
     }
 
     getRelatedSearchterms(keyword: string) {
-        const baseUrl = "https://vm2558.kaj.pouta.csc.fi/rcsearch?keyword=";
+        const baseUrl = RELATED_SEARCHTERM;
         const url = baseUrl + keyword + "&broader=true&narrower=true&related=true";
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
@@ -198,7 +204,7 @@ export class SearchService {
             }
         };
 
-        return fetch("https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-ddas-galaxy-link-textfile/execution", {
+        return fetch(CREATE_TXT_FILE, {
             method: "POST",
             mode: "cors",
             body: JSON.stringify(data)
@@ -213,22 +219,8 @@ export class SearchService {
             .catch((error) => console.error(error));
     }
 
-    getKnowledgePackages() {
-        const url = "https://sandbox.zenodo.org/api/records?communities=aquainfra&q=keywords:%22Data-To-Knowledge%20Package%22";
-
-        return fetch(url).then((response) =>
-            response.json().then((responseData: object) => {
-                if (responseData) {
-                    return responseData;
-                } else {
-                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
-                }
-            })
-        );
-    }
-
     processCatchment(lonLat:number[]) {
-        const url = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
+        const url = PROCESS_CATCHMENT;
         
         const data = {
             inputs: {
@@ -277,7 +269,7 @@ export class SearchService {
     private addSearchResultsLimit(
         queryParams: URLSearchParams
     ) {
-        queryParams.set("limit", "100");
+        queryParams.set("limit", SEARCH_RESULT_LIMIT);
     }
 
     private addSearchterm(searchTerm: string | undefined, queryParams: URLSearchParams) {
