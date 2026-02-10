@@ -107,22 +107,22 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     function addInteraction(newDraw: Draw) {
         draw.current = newDraw;
     
-        // Clear previous drawings
         newDraw.on("drawstart", () => {
             source.clear();
         });
     
         newDraw.on("drawend", (event) => {
-            const feature = event.feature;
-            const geometry = feature.getGeometry() as Polygon;
+            const geometry = event.feature.getGeometry() as Polygon;
         
-            if (geometry) {
-                const coords = geometry.getCoordinates()[0];
-                if (!coords) return;
-                const geoCoords = coords.map((coord: any) => transform(coord, "EPSG:3857", "EPSG:4326"));
-                const intersectingFeatures = intersectsBBox(geoCoords);
-                getBBox(intersectingFeatures);
-            }
+            if (!geometry) return;
+            
+            const coords = geometry.getCoordinates()[0];
+            
+            if (!coords) return;
+            
+            const coords4326 = coords.map((coord: any) => transform(coord, "EPSG:3857", "EPSG:4326"));
+            const intersectingFeatures = intersectsBBox(coords4326);
+            getBBox(intersectingFeatures);
         });
     
         map?.addInteraction(newDraw);

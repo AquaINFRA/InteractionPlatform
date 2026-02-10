@@ -1,7 +1,7 @@
 import { Geometry, Polygon } from "ol/geom";
 import GeoJSON from "ol/format/GeoJSON";
 //import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
-import dataNew from "../../../../services/sea_areas_catchments.json";
+import catchments from "../../../../services/sea_areas_catchments.json";
 import { Feature } from "ol";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
@@ -10,40 +10,28 @@ import * as turf from "@turf/turf";
 import { transform } from "ol/proj";
 import { Coordinate } from "ol/coordinate";
 
-/**
- * Checks if any feature in the dataset intersects with the given bounding box.
- * @param bboxCoords - The bounding box coordinates in [lon, lat] format (EPSG:4326).
- * @returns Array of intersecting features.
- */
 export function intersectsBBox(bboxCoords: number[][]) {
-    const geoJsonFormat = new GeoJSON();
+    const geoJson = new GeoJSON();
 
-    const bboxPolygon = turf.polygon([bboxCoords]);
+    const bbox = turf.polygon([bboxCoords]);
     
-    const features = geoJsonFormat.readFeatures(dataNew, {
-        featureProjection: "EPSG:3857",
+    const catchmentsAreas = geoJson.readFeatures(catchments, {
+        featureProjection: "EPSG:3857"
     });
 
-    return features.filter((feature) => {
-        const featureGeometry = feature.getGeometry() as Polygon;
-        const featureCoords = featureGeometry.getCoordinates() as Coordinate[][];
-        if (!featureGeometry || !featureCoords || !featureCoords[0]) return;
-        if (featureGeometry.getType() === "MultiPolygon") {
-            return featureCoords.some((poly: any) => {
-                const transformedCoords = poly[0].map((coord: Coordinate) =>
-                    transform(coord, "EPSG:3857", "EPSG:4326")
-                );
-                const polygon = turf.polygon([transformedCoords]);
-                return turf.intersect(turf.featureCollection([bboxPolygon, polygon]));
-            });
-        } else {
-            const poly = featureCoords[0];
-            const transformedCoords = poly.map((coord: Coordinate) =>
+    return catchmentsAreas.filter((catchmentsArea) => {
+        const geometry = catchmentsArea.getGeometry() as Polygon;
+        const coords = geometry.getCoordinates() as Coordinate[][];
+        
+        if (!geometry || !coords) return false;
+
+        return coords.some((poly: any) => {
+            const transformedCoords = poly[0].map((coord: Coordinate) =>
                 transform(coord, "EPSG:3857", "EPSG:4326")
             );
-            const polygon = turf.polygon([transformedCoords]);    
-            return turf.intersect(turf.featureCollection([bboxPolygon, polygon]));
-        }
+            const polygon = turf.polygon([transformedCoords]);
+            return turf.intersect(turf.featureCollection([bbox, polygon]));
+        });
     });
 }
 
