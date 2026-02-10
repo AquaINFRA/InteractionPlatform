@@ -15,7 +15,6 @@ import { FacetBase } from "../FacetBase/FacetBase";
 import { PopupOverlay } from "./PopupOverlay";
 import { Questionmark } from "../../../../components/Questionmark";
 import { Stroke, Style } from "ol/style";
-import { DatasetMetadataResponse } from "../../../Dataset/Dataset";
 import { SolrSearchResultItem } from "../../../../services/SearchService";
 import { ResourceType, getResourceType } from "../../../../services/ResourceTypeUtils";
 import GeoJSON from "ol/format/GeoJSON";
@@ -24,6 +23,7 @@ import { hoverStyle, lineBlue, selectStyle, lineRed } from "./Styles";
 import { click, pointerMove } from "ol/events/condition";
 import { useNavigate } from "react-router-dom";
 import { DrawBboxButton } from "./CatchmentComponents/DrawBboxButton";
+import { DatasetMetadataResponse } from "../../../../services/interfaces";
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
@@ -254,12 +254,6 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
         // Handle all cases where we need to return geometry
         const geometryResourceTypes = new Set([
             ResourceType.Dataset,
-            ResourceType.Series,
-            ResourceType.Model,
-            ResourceType.Service,
-            ResourceType.DownloadableData,
-            ResourceType.OfflineData,
-            ResourceType.LiveData,
         ]);
     
         // If the resourceType matches one that provides geometry
@@ -280,8 +274,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
             ResourceType.Other,
             ResourceType.Poster,
             ResourceType.PhysicalObject,
-            ResourceType.Event,
-            ResourceType.DatasetPublicationSeries
+            ResourceType.Event
         ]);
     
         if (nullReturningTypes.has(resourceType)) {
