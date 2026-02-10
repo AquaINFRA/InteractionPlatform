@@ -3,7 +3,7 @@ import { Box, Flex, Divider } from "@open-pioneer/chakra-integration";
 import { SimpleGrid } from "@chakra-ui/react";
 
 import { RelatedContentEntry } from "./RelatedIdentifierEntry";
-import { RelatedIdentifier } from "../../../views/Zenodo/Zenodo";
+import { RelatedIdentifier } from "../../../services/interfaces";
 
 export const RelatedContent = (props: { relatedContentItems: RelatedIdentifier[] }) => {
     const relatedContentItemsList = Object.values(props.relatedContentItems);

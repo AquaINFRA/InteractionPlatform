@@ -5,61 +5,7 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ZenodoResources } from "../../components/ResourceType/ExternalResources/ZenodoResources";
 import { RelatedContent } from "../../components/ResourceType/RelatedIdentifier/RelatedIdentifier";
 import { DkpResources } from "../../components/ResourceType/ExternalResources/DkpResources";
-
-export interface RelatedIdentifier {
-    identifier: string;
-    relation: string;
-    resource_type: string;
-    scheme: string;
-}
-export interface ZenodoMetadataResponse {
-    title: string;
-    updated: string;
-    doi_url: string;
-    provider: string;
-    dkps: any;
-    recid: string;
-    files: [{
-        links:{
-            self: string;
-        }
-    }];
-    links?: {
-        self: string;
-        doi: string;
-        archive: string;
-    };
-    metadata: {
-        description: string;
-        creators: [{
-            affiliation: string;
-            orcid: string;
-            name: string;
-        }];
-        keywords: string[];
-        publication_date: string;
-        language: string[];
-        resource_type: {
-            title: string;
-            type: string;
-        };
-        access_right: string;
-        license: {
-            id: string;
-        };
-        version: string;
-        custom?: {
-            "code:codeRepository": string;
-            "code:programmingLanguage": {
-                id: string;
-                title: {
-                    en: string;
-                }
-            }
-        },
-        related_identifiers?: RelatedIdentifier[]
-    };
-}
+import { ZenodoMetadataResponse } from "../../services/interfaces";
 
 export interface ZenodoViewProps {
     item: ZenodoMetadataResponse;
@@ -73,10 +19,6 @@ export function ZenodoView(props: ZenodoViewProps) {
             ? metadata.metadata.custom["code:programmingLanguage"].map(lang => lang.title?.en || "Unknown")
             : [metadata.metadata.custom["code:programmingLanguage"].title?.en || "Unknown"]
         : "";
-
-    const useGalaxyIdentifier = metadata.metadata.related_identifiers?.find(
-        (identifier) => identifier.identifier.includes("usegalaxy") && identifier.identifier.includes("workflow")
-    );
     
     return (
         <Box>

@@ -8,7 +8,6 @@ import {
     ImageIcon,
     LearningResourceIcon,
     OtherIcon,
-    SeriesIcon,
     ToolSoftwareIcon,
     VideoIcon,
     WorkflowIcon,
@@ -50,8 +49,6 @@ function getIcon(resType: ResourceType | undefined) {
     switch (resType) {
         case ResourceType.Dataset:
             return <DatasetIcon />;
-        case ResourceType.Series:
-            return <SeriesIcon />;
         case ResourceType.Software:
             return <ToolSoftwareIcon />;
         case ResourceType.DKP:

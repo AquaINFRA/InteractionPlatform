@@ -1,51 +1,12 @@
 import { Box, Flex } from "@open-pioneer/chakra-integration";
 
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
-import { SolrSearchResultItem } from "../../services/SearchService";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ExternalResources } from "../../components/ResourceType/ExternalResources/ExternalResources";
 import { Map } from "../../components/ResourceType/Map/Map";
 import { DkpResources } from "../../components/ResourceType/ExternalResources/DkpResources";
 import { formatDate } from "../../services/ResourceTypeUtils";
-
-export interface LinkObject {
-    href: string;
-    title: string;
-    description: string;
-    protocol: string;
-    type: string;
-    rel: string;
-}
-
-export interface ResourceGeometry {
-    type: string;
-    coordinates: number[][];
-}
-
-export interface Properties {
-    title: string;
-    type: string;
-    aicollection: string;
-    description: string;
-    created: string;
-    keywords: string;
-    language: string;
-    rights: string;
-    formats: string;
-    license: string;
-    updated: string;
-    providers: string[];
-}
-
-export interface DatasetMetadataResponse extends SolrSearchResultItem {
-    properties: Properties;
-    geometry: ResourceGeometry;
-    id: string;
-    time: string;
-    type: string;
-    links: LinkObject[];
-    dkps?: any[];
-}
+import { DatasetMetadataResponse } from "../../services/interfaces";
 
 export interface DatasetViewProps {
     item: DatasetMetadataResponse;

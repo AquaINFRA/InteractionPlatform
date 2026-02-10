@@ -7,13 +7,14 @@ import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNav
 import { SearchBar } from "../../components/SearchBar";
 import { getResourceType, ResourceType } from "../../services/ResourceTypeUtils";
 import { SearchService, SolrSearchResultItem } from "../../services/SearchService";
-import { DatasetMetadataResponse, DatasetView } from "../Dataset/Dataset";
+import { DatasetView } from "../Dataset/Dataset";
 import { useSearchState } from "../Search/SearchState";
 import { BackToSearchLink } from "../../components/BackToSearchLink/BackToSearchLink";
 import { ResourceTypeLabel } from "../../components/ResourceTypeLabel/ResourceTypeLabel";
-import { ZenodoMetadataResponse, ZenodoView } from "../Zenodo/Zenodo";
+import { ZenodoView } from "../Zenodo/Zenodo";
 import { DkpView } from "../Zenodo/DkpView";
 import { fetchAndStoreDkps, findAssociatedDkp } from "../../services/DkpUtils";
+import { DatasetMetadataResponse, ZenodoMetadataResponse } from "../../services/interfaces";
 
 export function Result() {
     const resultId = useParams().id as string;

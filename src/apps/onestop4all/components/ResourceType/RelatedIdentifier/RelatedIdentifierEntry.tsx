@@ -1,7 +1,7 @@
 import { Box, Button, Flex, SystemStyleObject } from "@open-pioneer/chakra-integration";
 
-import { RelatedIdentifier } from "../../../views/Zenodo/Zenodo";
 import { isUrl } from "../Metadata/PersonalInfo";
+import { RelatedIdentifier } from "../../../services/interfaces";
 
 export const RelatedContentEntry = (props: RelatedIdentifier) => {
     const item = props;

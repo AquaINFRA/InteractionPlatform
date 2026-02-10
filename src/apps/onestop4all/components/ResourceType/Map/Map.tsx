@@ -7,7 +7,7 @@ import { useAsync } from "react-use";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import GeoJSON from "ol/format/GeoJSON";
-import { ResourceGeometry } from "../../../views/Dataset/Dataset";
+import { ResourceGeometry } from "../../../services/interfaces";
 
 export function Map(props: { geometry: ResourceGeometry; mapId: string }) {
     const { geometry, mapId } = props;

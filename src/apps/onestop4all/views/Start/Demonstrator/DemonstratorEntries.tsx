@@ -4,7 +4,7 @@ import { useService } from "open-pioneer:react-hooks";
 import { DemonstratorEntry } from "./DemonstratorEntry";
 import { SearchService } from "../../../services";
 import { useEffect, useState } from "react";
-import { ZenodoMetadataResponse } from "../../Zenodo/Zenodo";
+import { ZenodoMetadataResponse } from "../../../services/interfaces";
 
 export const DemonstratorEntries = () => {
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;

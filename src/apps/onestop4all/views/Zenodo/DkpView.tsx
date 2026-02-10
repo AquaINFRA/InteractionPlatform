@@ -4,8 +4,8 @@ import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ZenodoResources } from "../../components/ResourceType/ExternalResources/ZenodoResources";
 import { RelatedContent } from "../../components/ResourceType/RelatedIdentifier/RelatedIdentifier";
-import { ZenodoMetadataResponse } from "./Zenodo";
 import { getComponentIcon, getComponentLabel, parseRoCrate } from "../../services/DkpUtils";
+import { ZenodoMetadataResponse } from "../../services/interfaces";
 
 export interface ZenodoViewProps {
     item: ZenodoMetadataResponse;

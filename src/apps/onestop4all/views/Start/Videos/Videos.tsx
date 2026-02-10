@@ -34,14 +34,12 @@ export const Videos = () => {
 
     return (
         <Box>
-            {/* Header Section */}
             <Box textAlign="center" mb={{ base: "5%", custombreak: "2%" }}>
                 <Text fontSize="xl" fontWeight="bold" color="gray.700">
                     Check out some videos explaining the key features of this platform
                 </Text>
             </Box>
 
-            {/* Video Grid */}
             <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={6}>
                 {videos.map((video, index) => (
                     <Box key={index}>
