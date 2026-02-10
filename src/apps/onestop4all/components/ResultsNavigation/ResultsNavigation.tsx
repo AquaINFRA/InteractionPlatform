@@ -6,6 +6,7 @@ import {
     ResultsNavigationRight,
     ResultsNavigationRightRight
 } from "../Icons";
+import { useEffect } from "react";
 
 export interface ResultsNavigationProps {
     result: number;
@@ -28,6 +29,10 @@ export const ResultsNavigation = (props: ResultsNavigationProps) => {
     const navigationHoverStyle: SystemStyleObject = {
         cursor: "pointer"
     };
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, [result]);
 
     return (
         <Flex alignItems="center">
