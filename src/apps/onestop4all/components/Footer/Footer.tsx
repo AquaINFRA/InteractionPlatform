@@ -28,8 +28,8 @@ export const Footer = () => {
                         <SocialMediaLink href="https://github.com/AquaINFRA" src="/github.png" alt="GitHub">
                             GITHUB
                         </SocialMediaLink>
-                        <SocialMediaLink href="https://twitter.com/AquainfraEU" src="/twitter.svg" alt="Twitter">
-                            TWITTER
+                        <SocialMediaLink href="https://www.linkedin.com/company/aquainfra/posts/?feedView=all" src="/in.png" alt="LinkedIn">
+                            LinkedIn
                         </SocialMediaLink>
                         <SocialMediaLink href="https://creativecommons.org/licenses/by/4.0/" src="/cc-by.svg" alt="CC BY">
                             CC BY 4.0
