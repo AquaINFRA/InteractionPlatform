@@ -103,16 +103,6 @@ export function Result() {
                     return <DatasetView item={item} />;
                 }
             }
-            case ResourceType.Series:
-            case ResourceType.Model:
-            case ResourceType.Service:
-            case ResourceType.DownloadableData:
-            case ResourceType.OfflineData:
-            case ResourceType.DatasetPublicationSeries:
-            case ResourceType.LiveData: {
-                const item = searchResult as DatasetMetadataResponse;
-                return <DatasetView item={item} />;
-            }
             case ResourceType.Software:
             case ResourceType.Workflow:
             case ResourceType.Publication:
