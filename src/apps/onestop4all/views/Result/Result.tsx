@@ -220,6 +220,7 @@ export function Result() {
                                 resType={resourceType}
                                 loading={loading}
                                 iconAlign="right"
+                                ml="auto"
                             />
                         </Flex>
                         {loading ? <Skeleton /> : <></>}

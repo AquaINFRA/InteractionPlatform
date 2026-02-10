@@ -16,8 +16,8 @@ export const DkpResources = ({ dkps }: { dkps: any[] }) => {
                     <Box key={i} pt={3}>
                         {graph.name && (
                             <div>
-                                <span className="metadataTag">Title: </span>
-                                <span className="metadataValue">{graph.name}</span>
+                                <span className="sideButtonTag">Title: </span>
+                                <span className="sideButtonValue">{graph.name}</span>
                             </div>
                         )}
                         <Box pt={3}>

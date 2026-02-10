@@ -1,4 +1,4 @@
-import { Box, Flex, Skeleton } from "@open-pioneer/chakra-integration";
+import { Box, Flex, FlexProps, Skeleton } from "@open-pioneer/chakra-integration";
 
 import { ResourceType } from "../../services/ResourceTypeUtils";
 import {
@@ -19,11 +19,12 @@ export function ResourceTypeLabel(props: {
     resType: ResourceType | undefined;
     loading: boolean;
     iconAlign: "left" | "right";
-}) {
-    const { resType, loading = false, iconAlign } = props;
+} & FlexProps) {
+    const { resType, loading = false, iconAlign, ...flexProps } = props;
 
     return (
         <Flex
+            {...flexProps}
             whiteSpace="nowrap"
             textTransform="uppercase"
             fontWeight="700"
@@ -36,42 +37,42 @@ export function ResourceTypeLabel(props: {
                 <Skeleton>Loading...</Skeleton>
             ) : (
                 <>
-                    {iconAlign === "left" && <Box>{getIcon()}</Box>}
+                    {iconAlign === "left" && <Box>{getIcon(resType)}</Box>}
                     <Box>{resType}</Box>
-                    {iconAlign === "right" && <Box>{getIcon()}</Box>}
+                    {iconAlign === "right" && <Box>{getIcon(resType)}</Box>}
                 </>
             )}
         </Flex>
     );
+}
 
-    function getIcon() {
-        switch (resType) {
-            case ResourceType.Dataset:
-                return <DatasetIcon />;
-            case ResourceType.Series:
-                return <SeriesIcon />;
-            case ResourceType.Software:
-                return <ToolSoftwareIcon />;
-            case ResourceType.DKP:
-                return <DkpIcon />;
-            case ResourceType.Workflow:
-                return <WorkflowIcon />;
-            case ResourceType.Publication:
-            case ResourceType.Poster:
-            case ResourceType.Presentation:
-                return <DocumentsIcon />;
-            case ResourceType.Image:
-                return <ImageIcon />;
-            case ResourceType.Event:
-                return <EventIcon />;
-            case ResourceType.Other:
-                return <OtherIcon />;
-            case ResourceType.Video:
-                return <VideoIcon />;
-            case ResourceType.Lesson:
-                return <LearningResourceIcon />;
-            default:
-                return <></>;
-        }
+function getIcon(resType: ResourceType | undefined) {
+    switch (resType) {
+        case ResourceType.Dataset:
+            return <DatasetIcon />;
+        case ResourceType.Series:
+            return <SeriesIcon />;
+        case ResourceType.Software:
+            return <ToolSoftwareIcon />;
+        case ResourceType.DKP:
+            return <DkpIcon />;
+        case ResourceType.Workflow:
+            return <WorkflowIcon />;
+        case ResourceType.Publication:
+        case ResourceType.Poster:
+        case ResourceType.Presentation:
+            return <DocumentsIcon />;
+        case ResourceType.Image:
+            return <ImageIcon />;
+        case ResourceType.Event:
+            return <EventIcon />;
+        case ResourceType.Other:
+            return <OtherIcon />;
+        case ResourceType.Video:
+            return <VideoIcon />;
+        case ResourceType.Lesson:
+            return <LearningResourceIcon />;
+        default:
+            return <></>;
     }
 }

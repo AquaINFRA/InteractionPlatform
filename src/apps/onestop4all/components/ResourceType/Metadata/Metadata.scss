@@ -14,17 +14,34 @@
     font-size: 16px;
     font-weight: 700;
     margin-top: 10px;
-    margin-bottom: 10px;
     display: inline-block; /* keeps tag on same line as value */
 }
 
 .metadataValue {
     color: #000;
     font-size: 16px;
-    display: inline;           /* inline with metadataTag */
-    word-break: normal;        /* break only at spaces */
-    overflow-wrap: break-word; /* wrap long words if necessary */
-    margin-left: 5px;          /* small space after label */
+    display: inline;
+    word-break: normal;
+    overflow-wrap: break-word;
+    margin-left: 5px;
+}
+
+.sideButtonTag {
+    color: #666;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.sideButtonValue {
+    color: #000;
+    font-size: 16px;
+    display: inline;
+    word-break: normal;
+    overflow-wrap: break-word;
+    margin-left: 5px;
 }
 
 .metadataSection {

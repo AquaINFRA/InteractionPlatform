@@ -67,12 +67,12 @@ export function DatasetView(props: DatasetViewProps) {
                     ) : null}
                     <Box pt="30px">{getMetadata()}</Box>
                     {metadata.properties.description ? (
-                        <Box pt="80px">
+                        <Box pt="10px">
                             <Abstract abstractText={metadata.properties.description} />
                         </Box>
                     ) : null}
                     {metadata.geometry ? (
-                        <Box pt="80px">
+                        <Box pt="10px">
                             <Map geometry={metadata.geometry} mapId="desktop" />
                         </Box>
                     ) : null}
@@ -132,6 +132,11 @@ export function DatasetView(props: DatasetViewProps) {
             <Metadata
                 metadataElements={[
                     {
+                        element: "Formats",
+                        tag: metadata.properties.formats?.length > 1 ? "Formats" : "Format",
+                        val: metadata.properties.formats
+                    },
+                    {
                         element: "providers",
                         tag: metadata.properties.providers?.length > 1 ? "Providers" : "Provider",
                         val: metadata.properties.providers
@@ -165,11 +170,6 @@ export function DatasetView(props: DatasetViewProps) {
                         element: "Rights",
                         tag: "Rights",
                         val: metadata.properties.rights
-                    },
-                    {
-                        element: "Formats",
-                        tag: metadata.properties.formats?.length > 1 ? "Formats" : "Format",
-                        val: metadata.properties.formats
                     }
                 ]}
                 visibleElements={4}
