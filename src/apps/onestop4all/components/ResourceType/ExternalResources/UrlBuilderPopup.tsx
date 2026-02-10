@@ -19,16 +19,15 @@ import { BBoxMap } from "./BBoxMap";
 import DataPointsSelector from "./DataPointSelector";
 import QueryableSelector from "./QueryableSelector";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
+import { ImportToGalaxyBtn } from "./ImportToGalaxyBtn";
 
 interface UrlBuilderPopupProps {
     isOpen: boolean;
     onClose: () => void;
     ogc_features_url: string;
-    createTxtFile: (url: string) => void;
-    disabled: boolean;
 }
 
-export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFile, disabled }: UrlBuilderPopupProps) => {
+export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url }: UrlBuilderPopupProps) => {
     const [sliderValue, setSliderValue] = useState(10);
     const [maxSliderValue, setMaxSliderValue] = useState(0);
     const [inputValue, setInputValue] = useState("10");
@@ -213,13 +212,6 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
     
     const clearSharedUrl = () => {
         sharedUrl.current = null;
-    };  
-
-    const handleCreateTxtFile = () => {
-        if (requestUrl) {
-            requestUrlWithQueryables();
-            setTimeout(() => createTxtFile(requestUrl), 500);
-        }
     };
 
     const closeBuilder = () => {
@@ -300,15 +292,8 @@ export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url, createTxtFi
                         <Box wordBreak="break-all">{requestUrl}</Box>
                     </Box>
 
-                    <Box display="flex" justifyContent="space-between" mt={4}>
-                        <Button
-                            onClick={handleCreateTxtFile}
-                            isDisabled={!requestUrl || disabled}
-                            width="80%"
-                            mr={2}
-                        >
-                            {disabled ? "Importing..." : "Import to Galaxy"}
-                        </Button>
+                    <Box display="flex" justifyContent="space-between" mt={4} gap={3}>
+                        {requestUrl && <ImportToGalaxyBtn url={requestUrl} disabled={!requestUrl} />}
                         <CopyToClipboardButton
                             data={requestUrl ? requestUrl : baseUrl}
                             label={copyUrlText}
