@@ -2,12 +2,11 @@ import { Box, Button, Flex } from "@open-pioneer/chakra-integration";
 import { useService } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { SimpleGrid } from "@chakra-ui/react";
-import { SearchState, SelectableDataProvider, UrlSearchParameterType, useSearchState } from "../../SearchState";
+import { SelectableDataProvider, UrlSearchParameterType, useSearchState } from "../../SearchState";
 import { FacetBase } from "../FacetBase/FacetBase";
 import { FacetCheckbox } from "../FacetBase/FacetCheckbox";
 import { SearchService } from "../../../../services";
 import { useSearchParams } from "react-router-dom";
-import { areSearchParamsEqualDp } from "../../../../services/SearchUtils";
 
 export interface DataProvider {
     title: string;
@@ -22,7 +21,6 @@ export function DataProviderFacet() {
     const searchState = useSearchState();
     const [entries, setEntries] = useState<SelectableDataProvider[]>([]);
     const [allSelected, setAllSelected] = useState(true);
-    const [providerWithResults, setProviderWithResults] = useState<ProviderWithResults[]>();
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const [loading, setLoading] = useState(true);
     const [searchParams] = useSearchParams();
@@ -57,48 +55,6 @@ export function DataProviderFacet() {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    /*useEffect(() => {
-        if (!searchParams || searchParams.size === 0) return;
-
-        if (areSearchParamsEqualDp(searchParams, searchState.searchParamsOld) && searchState.providerWithResults) {
-            if (searchState.providerWithResults) {
-                setProviderWithResults(searchState.providerWithResults);
-            }
-            return;
-        }
-        setProviderWithResults([]);
-
-        if (searchState.selectedDataProvider.length < 1) return;
-
-        const pwr: ProviderWithResults[] = [];
-        const providerTitles = searchState.dataProviderTitles;
-        const { searchTerm, downloadOption, spatialFilter } = searchState;
-
-        if (!providerTitles.length && searchState.searchTerm.trim() === "") return;
-        
-        let completedRequests = 0;
-        providerTitles.map((elem: any, key: number) => {
-            searchSrvc.doSearch({
-                searchTerm,
-                dataProvider: [elem.id],
-                downloadOption,
-                spatialFilter
-            }).then((res) => {
-                if (res.count > 0) {
-                    pwr.push({ id: elem.id, count: res.count });
-                }
-            }).catch((e: any) => {
-                console.log(e);
-            }).finally(() => {
-                completedRequests++;
-                if (completedRequests === providerTitles.length) {
-                    setProviderWithResults([...pwr]);
-                    searchState.setProviderWithResults([...pwr]);
-                }
-            });
-        });
-    }, [searchParams, searchState.dataProviderTitles, searchState.selectedDataProvider]);*/
 
     function dataProviderToggled(checked: boolean, entry: any) {
         searchState.setDataProviderTriggered(false);
@@ -150,7 +106,6 @@ export function DataProviderFacet() {
                                     onChange={(event) =>
                                         dataProviderToggled(event.target.checked, entry)
                                     }
-                                    count={providerWithResults?.find(result => result.id === entry.id)?.count}
                                 />
                             </Flex>
                         )

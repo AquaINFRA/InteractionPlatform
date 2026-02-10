@@ -5,12 +5,11 @@ import { PrimaryColor, PrimaryFont } from "../../../../Theme";
 export interface FacetCheckboxProps {
     label: string;
     description: string;
-    count?: number;
 }
 
 export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
     const { state, getInputProps, getLabelProps, htmlProps } = useCheckbox(props);
-    const { label, count, description } = props;
+    const { label, description } = props;
 
     return (
         <chakra.label
@@ -65,7 +64,7 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
                 fontWeight={state.isChecked ? "700" : "400"}
                 {...getLabelProps()}
             >
-                {label}{count ? " (" + count + (count === 100 ? "+" : "") + ")" : null}
+                {label}
             </Box>
         </chakra.label>
     );
