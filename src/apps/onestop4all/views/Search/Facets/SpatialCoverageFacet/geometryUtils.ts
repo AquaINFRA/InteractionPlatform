@@ -17,9 +17,11 @@ import { Coordinate } from "ol/coordinate";
  */
 export function intersectsBBox(bboxCoords: number[][]) {
     const geoJsonFormat = new GeoJSON();
+
     const bboxPolygon = turf.polygon([bboxCoords]);
+    
     const features = geoJsonFormat.readFeatures(dataNew, {
-        featureProjection: "EPSG:4326", // Ensure features are in EPSG:4326
+        featureProjection: "EPSG:3857",
     });
 
     return features.filter((feature) => {
