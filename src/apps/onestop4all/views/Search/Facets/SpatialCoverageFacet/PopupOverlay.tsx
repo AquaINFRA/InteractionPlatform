@@ -27,6 +27,7 @@ import GeoJSON from "ol/format/GeoJSON";
 import dataNew from "../../../../services/sea_areas_catchments.json";
 import { defaults as defaultInteractions } from "ol/interaction.js";
 import { USED_EPSG_CODE } from "./SpatialCoverageFacet";
+import { useCatchmentMap } from "./useCatchmentMap";
 
 
 interface PopupOverlayProps {
@@ -49,13 +50,29 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         map.getView().setZoom(4);
     }, [showPopup]);
 
-    const [bboxActive, setBboxActive] = useState(false);
     const [source] = useState(new VectorSource({ wrapX: false }));
     const draw = useRef<Draw>();
-    const [tooltipContent, setTooltipContent] = useState("");
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [markerLonLat, setMarkerLonLat] = useState<number[]>();
+
+    const {
+        bboxActive,
+        setBboxActive,
+        tooltipContent,
+        setTooltipContent,
+        showErrorMessage,
+        setShowErrorMessage,
+        loading,
+        setLoading,
+        markerLonLat,
+        setMarkerLonLat,
+        bBox,
+        setBBox,
+        bBoxVectorLayer,
+        setBBoxVectorLayer,
+        catchmentSource,
+        setCatchmentSource,
+        catchmentBBoxSource,
+        setCatchmentBBoxSource
+    } = useCatchmentMap(map, selectedOption, searchSrvc, searchState);
 
     const markerSource = useMemo(
         () => new VectorSource(),
@@ -75,12 +92,6 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
             }),
         [markerSource]
     );
-
-    // Layer for the bounding boxes
-    const [bBoxVectorLayer, setBBoxVectorLayer] = useState(new VectorLayer());
-    const [catchmentSource, setCatchmentSource] = useState(new VectorSource());
-    const [catchmentBBoxSource, setCatchmentBBoxSource] = useState(new VectorSource());
-    const [bBox, setBBox] = useState<Feature<any>[]>();
 
     // Display the Catchment areas
     const vectorLayer = useMemo(() => {
