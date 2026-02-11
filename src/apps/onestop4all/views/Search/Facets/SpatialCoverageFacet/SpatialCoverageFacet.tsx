@@ -206,6 +206,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                 setSpatialFilter(extent);
             }
         }
+        scrollUp(0);
     }
     // Toggles the drawing of the bbox
     function selectBbox(): void {
