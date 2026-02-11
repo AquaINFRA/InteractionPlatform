@@ -15,7 +15,7 @@ export const LatestAddition = (props: { aquaResource: ZenodoResultItem }) => {
 
     const handleClick = (recid: string) => {
         navigate(`/result/zenodo:${recid}`);
-        window.scroll(0, 0);
+        scrollUp(0);
     };
 
     const stripHtmlTags = (html: string) => {

@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@chakra-ui/react";
+import { scrollUp } from "../../../services/SearchUtils";
 
 export interface DemonstratorEntryMetadata {
     name: string;
@@ -29,7 +30,7 @@ export const DemonstratorEntry = (props: { title: string; id: string; }) => {
 
     const handleClick = (id: string) => {
         navigate(`/result/` + id.split("/")[1]?.replace(".", ":")); //replace is needed as DDAS separates by colon, zenodo by point
-        window.scroll(0, 0);
+        scrollUp(0);
     };
 
     return (

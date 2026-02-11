@@ -6,6 +6,7 @@ import {useSearchState} from "../../views/Search/SearchState";
 import { Logo, LogoSmall } from "./Logo";
 import { MenuButton } from "./MenuButton";
 import { Feedback } from "./Feedback";
+import { scrollUp } from "../../services/SearchUtils";
 
 export const Header = () => {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ export const Header = () => {
         searchState.setSelectedDataProvider([]);
         searchState.setSpatialFilter([]);
         navigate("/");
-        window.scrollTo(0, 0);
+        scrollUp(0);
     };
 
     return (

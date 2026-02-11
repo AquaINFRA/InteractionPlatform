@@ -24,6 +24,7 @@ import { click, pointerMove } from "ol/events/condition";
 import { useNavigate } from "react-router-dom";
 import { DrawBboxButton } from "./CatchmentComponents/DrawBboxButton";
 import { DatasetMetadataResponse } from "../../../../services/interfaces";
+import { scrollUp } from "../../../../services/SearchUtils";
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
@@ -130,7 +131,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
         const idx = searchState.searchResults?.results.findIndex((r) => r.id === itemId) || 0;
         const resultPage = idx + 1; //+ searchState.pageSize * searchState.pageStart;
         navigate(`/result/${itemId}`, { state: { resultPage } });
-        window.scrollTo(0, 0);
+        scrollUp(0);
     }
     // Inititalize map layers
     useEffect(() => {

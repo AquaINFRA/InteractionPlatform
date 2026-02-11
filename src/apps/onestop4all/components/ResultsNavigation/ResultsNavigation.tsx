@@ -7,6 +7,7 @@ import {
     ResultsNavigationRightRight
 } from "../Icons";
 import { useEffect } from "react";
+import { scrollUp } from "../../services/SearchUtils";
 
 export interface ResultsNavigationProps {
     result: number;
@@ -31,7 +32,7 @@ export const ResultsNavigation = (props: ResultsNavigationProps) => {
     };
 
     useEffect(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        scrollUp(0);
     }, [result]);
 
     return (

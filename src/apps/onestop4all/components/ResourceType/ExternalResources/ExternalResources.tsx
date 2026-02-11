@@ -7,6 +7,7 @@ import { UrlBuilderPopup } from "./UrlBuilderPopup";
 import { ImportToGalaxyBtn } from "./ImportToGalaxyBtn";
 import { DatasetUrlInput } from "./InsertUrl";
 import { LinkObject } from "../../../services/interfaces";
+import { scrollUp } from "../../../services/SearchUtils";
 
 const EXCLUDED_TITLES = new Set([
     "The landing page of this server as HTML",
@@ -122,10 +123,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
         if (showAllLinks) {
             setShowAllLinks(false);
             requestAnimationFrame(() => {
-                window.scrollTo({
-                    top: 100,
-                    behavior: "smooth"
-                });
+                scrollUp(100);
             });
             return;
         }

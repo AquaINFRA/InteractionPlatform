@@ -33,3 +33,10 @@ export const areSearchParamsEqualDp = (currentParams: any, previousParams: any) 
         spatialFilterNew === spatialFilterOld
     );
 };
+
+export const scrollUp = (top: number) => {
+    window.scrollTo({
+        top: top,
+        behavior: "smooth"
+    });
+};
