@@ -39,13 +39,13 @@ interface PopupOverlayProps {
 export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOption }: PopupOverlayProps) {
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const searchState = useSearchState();
-    const mapId = "popup";
-    const map = useMap(mapId).map;
 
-    //Center to Europe
+    const MAPID = "popup";
+    const map = useMap(MAPID).map;
+
     useEffect(() => {
         if (!map) return;
-        map.getView().setCenter([1169191, 6606967]);
+        map.getView().setCenter([1169191, 6606967]); //Center to Europe
         map.getView().setZoom(4);
     }, [showPopup]);
 
@@ -128,15 +128,10 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     
         map?.addInteraction(newDraw);
     }
-
-    const [renderState, setRenderState] = useState(false);
-
-    const toggleRenderState = () => setRenderState((prev) => !prev);
     
     useEffect(() => {
         if (!map) return;
         map.render();
-        toggleRenderState();
         selectedOption === "upstream" ? addMarker() : null;
     }, [showPopup, map]);
     
@@ -216,6 +211,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         catchmentSource?.clear();
         catchmentBBoxSource?.clear();
         setBboxActive(false);
+        setMarkerLonLat([]);
     }
 
     function cleanUpLayers(): void {
@@ -398,7 +394,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                             />
                         </Box>
                     )}
-                    <MapContainer mapId={mapId} />
+                    <MapContainer mapId={MAPID} />
                     <TooltipBox content={tooltipContent} />
 
                     <Box className="legend">
