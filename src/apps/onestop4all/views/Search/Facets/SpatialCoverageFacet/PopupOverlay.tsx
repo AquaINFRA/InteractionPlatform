@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { useService } from "open-pioneer:react-hooks";
 import { MapContainer, useMap } from "@open-pioneer/experimental-ol-map";
 import Draw, { createBox } from "ol/interaction/Draw";
@@ -57,13 +57,24 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     const [loading, setLoading] = useState(false);
     const [markerLonLat, setMarkerLonLat] = useState<number[]>();
 
-    const markerSource = new VectorSource();
-    const markerVector = new VectorLayer({
-        source: markerSource,
-        style: new Style({
-            image: new Icon({ src: "/marker.svg", anchor: [0.5, 1] })
-        })
-    });
+    const markerSource = useMemo(
+        () => new VectorSource(),
+        []
+    );
+
+    const markerVector = useMemo(
+        () =>
+            new VectorLayer({
+                source: markerSource,
+                style: new Style({
+                    image: new Icon({
+                        src: "/marker.svg",
+                        anchor: [0.5, 1],
+                    }),
+                }),
+            }),
+        [markerSource]
+    );
 
     // Layer for the bounding boxes
     const [bBoxVectorLayer, setBBoxVectorLayer] = useState(new VectorLayer());
@@ -72,38 +83,44 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     const [bBox, setBBox] = useState<Feature<any>[]>();
 
     // Display the Catchment areas
-    const geoJSONFormat = new GeoJSON();
-    const features = geoJSONFormat.readFeatures(dataNew, {
-        featureProjection: "EPSG:3857"
-    });
+    const vectorLayer = useMemo(() => {
+        const geoJSONFormat = new GeoJSON();
 
-    const vectorSource = new VectorSource({
-        features: features
-    });
+        const features = geoJSONFormat.readFeatures(dataNew, {
+            featureProjection: "EPSG:3857",
+        });
 
-    const [vectorLayer, setVectorLayer] = useState(
-        new VectorLayer({
-            source: vectorSource,
-            style: function (feature) {
-                style.getFill().setColor("rgba(0,0,0,0");
+        const source = new VectorSource({
+            features,
+        });
+
+        return new VectorLayer({
+            source,
+            style: (feature) => {
+                style.getFill().setColor("rgba(0,0,0,0)");
                 return style;
-            }
-        })
+            },
+        });
+    }, []);
+
+    const hoverName = useMemo(
+        () =>
+            new Select({
+                condition: pointerMove,
+                style: hoverStyle,
+                toggleCondition: () => false,
+            }),
+        []
     );
 
-    const hoverName = new Select({
-        condition: pointerMove,
-        style: hoverStyle,
-        toggleCondition: function (event) {
-            return false;
-        },
-        layers: [vectorLayer]
-    });
-
-    const selectClick = new Select({
-        condition: click,
-        style: selectStyle
-    });
+    const selectClick = useMemo(
+        () =>
+            new Select({
+                condition: click,
+                style: selectStyle,
+            }),
+        []
+    );
 
     function addInteraction(newDraw: Draw) {
         draw.current = newDraw;
@@ -200,12 +217,16 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
     function deselectAll(): void {
         const selected = selectClick.getFeatures();
-        setShowErrorMessage(false);
         if (selected.getLength() > 0) selected.clear();
+
         const selectedHover = hoverName.getFeatures();
         if (selectedHover.getLength() > 0) selectedHover.clear();
+
+        setShowErrorMessage(false);
+        
         map?.removeLayer(bBoxVectorLayer);
         setBBoxVectorLayer(new VectorLayer());
+
         setBBox(undefined);
         markerSource.clear();
         catchmentSource?.clear();
@@ -249,7 +270,9 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     function getCatchmentWrap(): void {
         deselectAll();
         setShowErrorMessage(false);
-        markerLonLat ? processCatchment(markerLonLat) : null;
+        if (markerLonLat) {
+            processCatchment(markerLonLat);
+        }
     }
 
     function resetInteractions() {
@@ -259,34 +282,40 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
     const processCatchment = async (lonLat: number[]) => {
         setLoading(true);
-        try{
-            searchSrvc.processCatchment(lonLat)
-                .then((response) => {
-                    if (response) {
-                        const polygon_url = response.outputs.polygon.href;
-                        fetch(polygon_url).then((response2) => {
-                            response2.json().then((polygon) => {
-                                const geoJSONFormat = new GeoJSON();
-                                const features = geoJSONFormat.readFeatures(polygon, {
-                                    featureProjection: "EPSG:3857"
-                                });
-                                addCatchmentFeaturesToMap(features, computeBBox(features));
-                                setLoading(false);
-                            });
-                        });
-                    } else {
-                        setLoading(false);
-                        throw new Error("Unexpected response: " + JSON.stringify(response));
-                    }
-                })
-                .catch ((err) => {
-                    console.log(err);
-                    setLoading(false);
-                    setShowErrorMessage(true);
-                });
+        setShowErrorMessage(false);
+
+        try {
+            const response = await searchSrvc.processCatchment(lonLat);
+
+            if (!response?.outputs?.polygon?.href) {
+                throw new Error("Invalid catchment response structure");
+            }
+
+            const polygonUrl = response.outputs.polygon.href;
+
+            const polygonResponse = await fetch(polygonUrl);
+
+            if (!polygonResponse.ok) {
+                throw new Error(`Failed to fetch polygon: ${polygonResponse.status}`);
+            }
+
+            const polygonGeoJson = await polygonResponse.json();
+
+            const geoJSONFormat = new GeoJSON();
+
+            const features = geoJSONFormat.readFeatures(polygonGeoJson, {
+                featureProjection: "EPSG:3857",
+            });
+
+            const bbox = computeBBox(features);
+
+            addCatchmentFeaturesToMap(features, bbox);
+
         } catch (error) {
-            setLoading(false);
             console.error("Error processing catchment:", error);
+            setShowErrorMessage(true);
+        } finally {
+            setLoading(false);
         }
     };
 
