@@ -5,7 +5,7 @@ import { isUrl } from "../Metadata/PersonalInfo";
 type DatasetUrlInputProps = {
     value: string;
     onChange: (url: string, isValid: boolean) => void;
-    imported: boolean;
+    imported?: boolean;
 };
 
 export const DatasetUrlInput = ({ value, onChange, imported }: DatasetUrlInputProps) => {
