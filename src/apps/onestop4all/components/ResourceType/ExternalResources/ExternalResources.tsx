@@ -42,6 +42,8 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
         : externalLinks.slice(0, MAX_VISIBLE_LINKS);
     const hasMoreLinks = externalLinks.length > MAX_VISIBLE_LINKS;
 
+    const [imported, setImported] = useState(false);
+
     useEffect(() => {
         setExternalLinks(
             links.filter((link) =>
@@ -175,10 +177,12 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                         <DatasetUrlInput
                             value={urlToImport}
                             onChange={handleDatasetUrlChange}
+                            imported={imported}
                         />
                         <ImportToGalaxyBtn 
                             url={urlToImport} 
-                            disabled={disableImportToGalaxy} 
+                            disabled={disableImportToGalaxy}
+                            setImported={setImported}
                         />
                     </Box>
                 </Box>

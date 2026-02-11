@@ -8,12 +8,13 @@ import { isUrl } from "../Metadata/PersonalInfo";
 interface ImportToGalaxyBtnProps {
     url: string;
     disabled: boolean;
+    setImported?: (imported: boolean) => void;
 }
 
 const GALAXY_IMPORT_URL = "https://aqua.usegalaxy.eu/tool_runner?tool_id=aquainfra_importer&URL=";
 
 export const ImportToGalaxyBtn = (props: ImportToGalaxyBtnProps) => {
-    const { url, disabled } = props;
+    const { url, disabled, setImported } = props;
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
 
     const [isSendingToGalaxy, setIsSendingToGalaxy] = useState(false);
@@ -51,6 +52,7 @@ export const ImportToGalaxyBtn = (props: ImportToGalaxyBtnProps) => {
             variant="solid"
             fun={() => setTimeout(() => {
                 createTxtFile(url);
+                setImported?.(true);
             }, 500)}
         />
     );
