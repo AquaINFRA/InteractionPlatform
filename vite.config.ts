@@ -19,17 +19,6 @@ const targets = ["chrome92", "edge92", "firefox91", "safari14"];
 // See also: https://github.com/btd/rollup-plugin-visualizer
 const visualize = false;
 
-const sampleSites = [
-    "samples/api-sample",
-    "samples/chakra-sample",
-    "samples/extension-sample",
-    "samples/map-sample",
-    "samples/properties-sample",
-    "samples/styling-sample",
-    "samples/i18n-sample",
-    "samples/i18n-howto"
-];
-
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     const devMode = mode === "development";
@@ -58,10 +47,7 @@ export default defineConfig(({ mode }) => {
 
                 // Additional directories to include as html (must contain index.html files)
                 sites: [
-                    "sites/onestop4all",
-
-                    // Include sample sites in the build
-                    ...sampleSites
+                    "sites/onestop4all"
                 ],
 
                 // Apps to distribute as .js files for embedded use cases
