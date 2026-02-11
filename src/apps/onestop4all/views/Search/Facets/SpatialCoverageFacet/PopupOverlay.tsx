@@ -8,7 +8,6 @@ import { Geometry, Point, Polygon } from "ol/geom";
 import { click, pointerMove } from "ol/events/condition";
 import { Select } from "ol/interaction";
 import { Feature } from "ol";
-import { Icon, Style } from "ol/style";
 import { toLonLat, transform } from "ol/proj";
 import { Box, Flex, HStack } from "@open-pioneer/chakra-integration";
 import { Legend } from "./PopupComponents/Legend";
@@ -18,7 +17,7 @@ import { ErrorMessage } from "./PopupComponents/ErrorMessage";
 import { CatchmentOptions } from "./CatchmentComponents/CatchmentOptions";
 import { CatchmentButton } from "./CatchmentComponents/CatchmentButton";
 import { DrawBboxButton } from "./CatchmentComponents/DrawBboxButton";
-import { hoverStyle, style, selectStyle } from "./Styles";
+import { hoverStyle, selectStyle } from "./Styles";
 import { useSearchState } from "../../SearchState";
 import { SearchService } from "../../../../services";
 import { computeBBox, createBboxLayer, createCatchmentLayer, intersectsBBox } from "./geometryUtils";
@@ -71,48 +70,10 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         catchmentSource,
         setCatchmentSource,
         catchmentBBoxSource,
-        setCatchmentBBoxSource
+        setCatchmentBBoxSource,
+        markerVector,
+        vectorLayer
     } = useCatchmentMap(map, selectedOption, searchSrvc, searchState);
-
-    const markerSource = useMemo(
-        () => new VectorSource(),
-        []
-    );
-
-    const markerVector = useMemo(
-        () =>
-            new VectorLayer({
-                source: markerSource,
-                style: new Style({
-                    image: new Icon({
-                        src: "/marker.svg",
-                        anchor: [0.5, 1],
-                    }),
-                }),
-            }),
-        [markerSource]
-    );
-
-    // Display the Catchment areas
-    const vectorLayer = useMemo(() => {
-        const geoJSONFormat = new GeoJSON();
-
-        const features = geoJSONFormat.readFeatures(dataNew, {
-            featureProjection: "EPSG:3857",
-        });
-
-        const source = new VectorSource({
-            features,
-        });
-
-        return new VectorLayer({
-            source,
-            style: (feature) => {
-                style.getFill().setColor("rgba(0,0,0,0)");
-                return style;
-            },
-        });
-    }, []);
 
     const hoverName = useMemo(
         () =>
@@ -239,7 +200,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         setBBoxVectorLayer(new VectorLayer());
 
         setBBox(undefined);
-        markerSource.clear();
+        markerVector.getSource()?.clear();
         catchmentSource?.clear();
         catchmentBBoxSource?.clear();
         setBboxActive(false);
@@ -262,11 +223,11 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     function addMarker(): void {
         if (!map) return;
         const newDraw = new Draw({
-            source: markerSource,
+            source: markerVector.getSource() ?? undefined,
             type: "Point"
         });
         draw.current = newDraw;
-        newDraw.on("drawstart", () => markerSource.clear());
+        newDraw.on("drawstart", () => source.clear());
         newDraw.on("drawend", (event) => {
             const geom = event.feature.getGeometry();
             if (geom instanceof Point) {
@@ -375,7 +336,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                 const handleHover = () => {
                     setTooltipContent("");
                     if (hoverName.getFeatures().getLength() > 0) {
-                        setTooltipContent(hoverName.getFeatures().item(0).getProperties().rb_name);
+                        setTooltipContent(hoverName.getFeatures().item(0).getProperties().name);
                     }
                 };
         
@@ -407,7 +368,9 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
     if (!showPopup) return null;
     
-    const isDeleteActive = (bBox && bBox?.length > 0) || markerSource?.getFeatures().length > 0;
+    const isDeleteActive =
+        (bBox && bBox.length > 0) ||
+        (markerVector.getSource()?.getFeatures().length ?? 0) > 0;
 
     return (
         <Box className="popup-background-transparent">
