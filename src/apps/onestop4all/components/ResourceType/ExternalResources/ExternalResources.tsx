@@ -32,7 +32,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
     
     const hasOgcApiFeatures = externalLinks?.some(link => link.type === "OGC API - Features");
     const hasDownloadableData = externalLinks?.some(link => 
-        ["application/zip", "ZIP", "TIFF", "SHAPE-ZIP", "JSON", "GPKG", "application/x-netcdf", "application/geopackage+sqlite3", "application/json", "dBase", "VRT", "CSV", "application/x-ipynb+json", "text/x-python"]
+        ["application/zip", "ZIP", "TIFF", "SHAPE-ZIP", "JSON", "GPKG", "application/x-netcdf", "application/geopackage+sqlite3", "application/json", "dBase", "VRT", "CSV", "application/x-ipynb+json", "text/x-python", "json"]
             .includes(link.type)
     );
 
@@ -93,6 +93,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
             case "CSV":
             case "application/x-ipynb+json":
             case "text/x-python": 
+            case "json":
             case "application/json":
                 return (
                     <Box>

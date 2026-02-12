@@ -108,6 +108,11 @@ export function DatasetView(props: DatasetViewProps) {
                         val: metadata.properties.created ? formatDate(new Date(metadata.properties.created)) : null
                     },
                     {
+                        element: "Type",
+                        tag: "Type",
+                        val: metadata.properties.type
+                    },
+                    {
                         element: "keywords",
                         tag: metadata.properties.keywords?.length > 1 ? "Keywords" : "Keyword",
                         val: metadata.properties.keywords
