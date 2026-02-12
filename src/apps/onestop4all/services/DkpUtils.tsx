@@ -1,3 +1,5 @@
+import { Box } from "@chakra-ui/react";
+
 export function getComponentLabel(type: string) {
     return type === "SoftwareSourceCode" 
         ? "Toolbox"
@@ -89,6 +91,9 @@ export function findAssociatedDkp(dkps: any[], resource_id: string): any[] {
     return associatedDkps;
 }
 
+export const ZENODO_RECORDS = "https://zenodo.org/api/records/";
+export const EGI_REPLAY_URL = "https://replay.notebooks.egi.eu/hub/hub/login";
+
 export async function fetchAndStoreDkps(searchSrvc: any, searchState: any) {
     try {
         const result = await searchSrvc.getDataToKnowledgePackages();
@@ -97,7 +102,7 @@ export async function fetchAndStoreDkps(searchSrvc: any, searchState: any) {
         const dkps = result.hits.hits;
         const fetchedDkps = await Promise.all(
             dkps.map(async (element: any) => {
-                const roCrateUrl = `https://zenodo.org/api/records/${element.recid}/files/ro-crate-metadata.json/content`;
+                const roCrateUrl = `${ZENODO_RECORDS}${element.recid}/files/ro-crate-metadata.json/content`;
                 try {
                     const response = await fetch(roCrateUrl);
                     if (!response.ok) throw new Error(`Failed to fetch RO-Crate: ${response.statusText}`);
@@ -112,4 +117,45 @@ export async function fetchAndStoreDkps(searchSrvc: any, searchState: any) {
     } catch (error) {
         console.error("Error fetching DKPs:", error);
     }
+}
+
+
+export const renderPopupTitle = (type?: string) => {
+    if (!type) return null;
+
+    const typeLabelMap: Record<string, string> = {
+        ComputationalWorkflow: "Workflow",
+        WebAPI: "Web API",
+        SoftwareSourceCode: "Toolbox",
+        SoftwareApplication: "Virtual lab",
+        Dataset: "Dataset",
+    };
+
+    const label = typeLabelMap[type] ?? type;
+
+    return (
+        <Box padding={3} textAlign="center">
+            <b>
+                Where do you want to check the {label}
+            </b>
+        </Box>
+    );
+};
+
+export function extractProgrammingLanguages(metadata: any): string[] {
+    const languages = metadata.metadata.custom?.["code:programmingLanguage"];
+    if (!languages) return [];
+    return Array.isArray(languages) ? languages.map(lang => lang.title?.en || "Unknown") : [languages.title?.en || "Unknown"];
+}
+
+export function renderGalaxyEmbed(identifier: any) {
+    return (
+        <Box pt="40px">
+            <iframe
+                title="Galaxy Workflow Embed"
+                style={{ width: "100%", height: "700px", border: "none" }}
+                src={`${identifier}&embed=true&buttons=true&about=false&heading=false&minimap=true&zoom_controls=true&initialX=-20&initialY=-20&zoom=0.6`}
+            />
+        </Box>
+    );
 }

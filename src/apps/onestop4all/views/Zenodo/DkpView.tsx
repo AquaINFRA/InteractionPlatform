@@ -4,8 +4,9 @@ import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ZenodoResources } from "../../components/ResourceType/ExternalResources/ZenodoResources";
 import { RelatedContent } from "../../components/ResourceType/RelatedIdentifier/RelatedIdentifier";
-import { getComponentIcon, getComponentLabel, parseRoCrate } from "../../services/DkpUtils";
+import { EGI_REPLAY_URL, extractProgrammingLanguages, getComponentIcon, getComponentLabel, parseRoCrate, renderGalaxyEmbed, renderPopupTitle, ZENODO_RECORDS } from "../../services/DkpUtils";
 import { ZenodoMetadataResponse } from "../../services/interfaces";
+import { IdentifierPopup } from "./IdentifierPopup";
 
 export interface ZenodoViewProps {
     item: ZenodoMetadataResponse;
@@ -17,7 +18,7 @@ export interface Identifier {
 }
 
 export function DkpView({ item: metadata }: ZenodoViewProps) {
-    const roCrateUrl = "https://zenodo.org/api/records/"+metadata.recid+"/files/ro-crate-metadata.json/content";
+    const roCrateUrl = ZENODO_RECORDS + metadata.recid + "/files/ro-crate-metadata.json/content";
     const [roCrate, setRoCrate] = useState<any[]>([]);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const [showPopup, setShowPopup] = useState<boolean>(false);
@@ -40,25 +41,7 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
     const programmingLanguages = extractProgrammingLanguages(metadata);
     const useGalaxyIdentifier = metadata.metadata.related_identifiers?.find(id =>
         id.identifier.includes("usegalaxy") && id.identifier.includes("workflow")
-    );
-
-    function extractProgrammingLanguages(metadata: any): string[] {
-        const languages = metadata.metadata.custom?.["code:programmingLanguage"];
-        if (!languages) return [];
-        return Array.isArray(languages) ? languages.map(lang => lang.title?.en || "Unknown") : [languages.title?.en || "Unknown"];
-    }
-
-    function renderGalaxyEmbed(identifier: any) {
-        return (
-            <Box pt="40px">
-                <iframe
-                    title="Galaxy Workflow Embed"
-                    style={{ width: "100%", height: "700px", border: "none" }}
-                    src={`${identifier}&embed=true&buttons=true&about=false&heading=false&minimap=true&zoom_controls=true&initialX=-20&initialY=-20&zoom=0.6`}
-                />
-            </Box>
-        );
-    }
+    );        
 
     return (
         <Box>
@@ -107,82 +90,11 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
             </Box>
 
             {showPopup && (
-                <Box position="fixed" top="0" left="0" right="0" bottom="0" bg="rgba(0, 0, 0, 0.5)" zIndex="10">
-                    <Box bg="white" p="20px" borderRadius="8px" maxWidth="430px" margin="auto" marginTop="20%">
-                        <Box padding={3} textAlign="center">
-                            <b>
-                                Where do you want to check the 
-                                {identifier?.res_type === "ComputationalWorkflow" 
-                                    ? " Workflow" 
-                                    : identifier?.res_type === "WebAPI" 
-                                        ? " Web API" 
-                                        : identifier?.res_type === "SoftwareSourceCode"
-                                            ? " Toolbox"
-                                            : identifier?.res_type === "SoftwareApplication"
-                                                ? " Virtual lab"
-                                                : identifier?.res_type === "Dataset"
-                                                    ? " Dataset"
-                                                    : " " + identifier?.res_type
-                                }
-                            </b>
-                        </Box>
-                        {identifier?.identifier && identifier.identifier.map((id, index) => {
-                            let label: any;
-                            
-                            if (id.includes("github.com")) {
-                                label = <img src="/github_btn.png" alt="Galaxy" style={{ height: "45px" }} />;
-                            } else if (id.includes("usegalaxy")) {
-                                label = <img src="/galaxy_btn.png" alt="Galaxy" style={{ height: "35px" }} />;
-                            } else if (id.includes("aquainfra.dev")) {
-                                label = <img src="/aqua_btn.png" alt="Galaxy" style={{ height: "25px" }} />;
-                            } else if (id.includes("zenodo")) {
-                                label = <img src="/zenodo_btn.png" alt="Galaxy" style={{ height: "60px" }} />;
-                            } else if (id.includes("aquainfra.ogc")) {
-                                label = <img src="/pygeoapi_btn.png" alt="Galaxy" style={{ height: "45px" }} />;
-                            } else {
-                                label = id.length > 20 ? id.substring(0, 30) + "..." : id;
-                            }
-
-                            return (
-                                <Box key={index} mb="10px" display="flex" justifyContent="center">
-                                    <Box 
-                                        as="button" 
-                                        onClick={() => window.open(id, "_blank")} 
-                                        style={{ 
-                                            width: "70%", 
-                                            padding: "10px", 
-                                            backgroundColor: "#5CE65C",
-                                            color: "black", 
-                                            //borderRadius: "5px", 
-                                            textAlign: "center", 
-                                            display: "flex", 
-                                            justifyContent: "center", 
-                                            alignItems: "center",
-                                            maxHeight: "45px",
-                                            transition: "background-color 0.3s, transform 0.2s",
-                                        }}
-                                        onMouseOver={(e:any) => {
-                                            e.currentTarget.style.backgroundColor = "#BFF4BE";
-                                            e.currentTarget.style.transform = "scale(1.05)";
-                                        }}
-                                        onMouseOut={(e:any) => {
-                                            e.currentTarget.style.backgroundColor = "#5CE65C";
-                                            e.currentTarget.style.transform = "scale(1)";
-                                        }}
-                                    >
-                                        {label}
-                                    </Box>
-                                </Box>
-                            );
-                        })}
-
-                        <Box mt="10px" display="flex" justifyContent="center">
-                            <Box as="button" onClick={() => setShowPopup(false)} style={{ width: "70%", padding: "10px", backgroundColor: "#ff6347", color: "white", borderRadius: "5px", textAlign: "center" }}>
-                                Close
-                            </Box>
-                        </Box>
-                    </Box>
-                </Box>            
+                <IdentifierPopup
+                    identifier={identifier}
+                    onClose={() => setShowPopup(false)}
+                    renderPopupTitle={renderPopupTitle}
+                />
             )}
         </Box>
     );
@@ -241,10 +153,23 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
     }
 
     function renderComponents(components: any[], startIndex: number, priority: string) {
-        const sortedComponents = [...components].sort((a, b) =>
+        
+        const updatedComponents = components.map(component => {
+            if (component.type === "SoftwareApplication") {
+                return {
+                    ...component,
+                    identifier: [...(component.identifier || []), EGI_REPLAY_URL]
+                };
+            }
+            return component;
+        });
+
+        const sortedComponents = [...updatedComponents].sort((a, b) =>
             a.type === priority ? -1 : b.type === priority ? 1 : 0
         );
-    
+
+        console.log("After adding identifier:", sortedComponents);
+
         return (
             <SimpleGrid columns={[1, 2, 3]} gap={10}>
                 {sortedComponents.length > 0 ? (
