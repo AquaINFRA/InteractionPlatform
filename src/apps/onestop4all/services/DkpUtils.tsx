@@ -1,13 +1,82 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Image } from "@chakra-ui/react";
+import { RelatedIdentifier } from "./interfaces";
+
+export enum D2K_COMPONENT {
+    Dataset = "Dataset",
+    Toolbox = "SoftwareSourceCode",
+    Workflow = "ComputationalWorkflow",
+    VirtualLab = "SoftwareApplication",
+    WebApi = "WebAPI"
+}
+
+export interface ZenodoViewProps {
+    item: ZenodoMetadataResponse;
+}
+
+export interface ZenodoMetadataResponse {
+    title: string;
+    doi: string;
+    updated: string;
+    doi_url: string;
+    provider: string;
+    dkps: any;
+    recid: string;
+    files: [{
+        links:{
+            self: string;
+        }
+    }];
+    links?: {
+        self: string;
+        doi: string;
+        archive: string;
+    };
+    metadata: {
+        title: string;
+        description: string;
+        creators: [{
+            affiliation: string;
+            orcid: string;
+            name: string;
+        }];
+        keywords: string[];
+        publication_date: string;
+        language: string[];
+        resource_type: {
+            title: string;
+            type: string;
+        };
+        access_right: string;
+        license: {
+            id: string;
+        };
+        version: string;
+        custom?: {
+            "code:codeRepository": string;
+            "code:programmingLanguage": {
+                id: string;
+                title: {
+                    en: string;
+                }
+            }
+        },
+        related_identifiers?: RelatedIdentifier[]
+    };
+}
+
+export interface Identifier {
+    res_type: string;
+    identifier: string[];
+}
 
 export function getComponentLabel(type: string) {
-    return type === "SoftwareSourceCode" 
+    return type === D2K_COMPONENT.Toolbox 
         ? "Toolbox"
-        : type === "SoftwareApplication" 
+        : type === D2K_COMPONENT.VirtualLab 
             ? "Virtual Lab"
-            : type === "WebAPI" 
+            : type === D2K_COMPONENT.WebApi 
                 ? "Web API" 
-                : type === "ComputationalWorkflow"
+                : type === D2K_COMPONENT.Workflow
                     ? "Workflow"
                     : type;
 }
@@ -22,6 +91,24 @@ export function getComponentIcon(type: string) {
     };
     return icons[type] || "";
 }
+
+export function ComponentIcon(props:{ type: string, name: string}) {
+    const {type, name} = props;
+    return (
+        <Box bg="white" borderRadius="full" p={2}>
+            <Image
+                src={getComponentIcon(type)}
+                alt={name || "Component"}
+                borderRadius="full"
+                w="40%"
+                maxH="170px"
+                m="0 auto"
+            />
+        </Box>
+    );
+}
+
+
 
 export function parseRoCrate(roCrate: any) {
     const graph = roCrate["@graph"];

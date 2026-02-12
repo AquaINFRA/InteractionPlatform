@@ -5,11 +5,7 @@ import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ZenodoResources } from "../../components/ResourceType/ExternalResources/ZenodoResources";
 import { RelatedContent } from "../../components/ResourceType/RelatedIdentifier/RelatedIdentifier";
 import { DkpResources } from "../../components/ResourceType/ExternalResources/DkpResources";
-import { ZenodoMetadataResponse } from "../../services/interfaces";
-
-export interface ZenodoViewProps {
-    item: ZenodoMetadataResponse;
-}
+import { ZenodoViewProps } from "../../services/DkpUtils";
 
 export function ZenodoView(props: ZenodoViewProps) {
     const metadata = props.item;

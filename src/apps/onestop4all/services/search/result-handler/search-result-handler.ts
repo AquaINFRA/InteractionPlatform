@@ -1,4 +1,4 @@
-import { ZenodoMetadataResponse } from "../../interfaces";
+import { ZenodoMetadataResponse } from "../../DkpUtils";
 import { mapFromResourceType, ResourceType } from "../../ResourceTypeUtils";
 import { SearchResultItem, SolrSearchResultItem } from "../../SearchService";
 

@@ -7,57 +7,6 @@ export interface RelatedIdentifier {
     scheme: string;
 }
 
-export interface ZenodoMetadataResponse {
-    title: string;
-    doi: string;
-    updated: string;
-    doi_url: string;
-    provider: string;
-    dkps: any;
-    recid: string;
-    files: [{
-        links:{
-            self: string;
-        }
-    }];
-    links?: {
-        self: string;
-        doi: string;
-        archive: string;
-    };
-    metadata: {
-        title: string;
-        description: string;
-        creators: [{
-            affiliation: string;
-            orcid: string;
-            name: string;
-        }];
-        keywords: string[];
-        publication_date: string;
-        language: string[];
-        resource_type: {
-            title: string;
-            type: string;
-        };
-        access_right: string;
-        license: {
-            id: string;
-        };
-        version: string;
-        custom?: {
-            "code:codeRepository": string;
-            "code:programmingLanguage": {
-                id: string;
-                title: {
-                    en: string;
-                }
-            }
-        },
-        related_identifiers?: RelatedIdentifier[]
-    };
-}
-
 export interface LinkObject {
     href: string;
     title: string;

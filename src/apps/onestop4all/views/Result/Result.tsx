@@ -13,8 +13,8 @@ import { BackToSearchLink } from "../../components/BackToSearchLink/BackToSearch
 import { ResourceTypeLabel } from "../../components/ResourceTypeLabel/ResourceTypeLabel";
 import { ZenodoView } from "../Zenodo/Zenodo";
 import { DkpView } from "../Zenodo/DkpView";
-import { fetchAndStoreDkps, findAssociatedDkp } from "../../services/DkpUtils";
-import { DatasetMetadataResponse, ZenodoMetadataResponse } from "../../services/interfaces";
+import { fetchAndStoreDkps, findAssociatedDkp, ZenodoMetadataResponse } from "../../services/DkpUtils";
+import { DatasetMetadataResponse } from "../../services/interfaces";
 
 export function Result() {
     const resultId = useParams().id as string;

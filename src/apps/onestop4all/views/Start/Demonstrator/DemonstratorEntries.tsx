@@ -4,7 +4,7 @@ import { useService } from "open-pioneer:react-hooks";
 import { DemonstratorEntry } from "./DemonstratorEntry";
 import { SearchService } from "../../../services";
 import { useEffect, useState } from "react";
-import { ZenodoMetadataResponse } from "../../../services/interfaces";
+import { ZenodoMetadataResponse } from "../../../services/DkpUtils";
 
 interface ZenodoSearchResponse {
     hits: {

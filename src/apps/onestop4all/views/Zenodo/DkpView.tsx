@@ -1,21 +1,11 @@
-import { Box, Flex, Image, SimpleGrid, Heading, Text } from "@open-pioneer/chakra-integration";
+import { Box, Flex, SimpleGrid, Heading, Text } from "@open-pioneer/chakra-integration";
 import { useEffect, useState } from "react";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ZenodoResources } from "../../components/ResourceType/ExternalResources/ZenodoResources";
 import { RelatedContent } from "../../components/ResourceType/RelatedIdentifier/RelatedIdentifier";
-import { EGI_REPLAY_URL, extractProgrammingLanguages, getComponentIcon, getComponentLabel, parseRoCrate, renderGalaxyEmbed, renderPopupTitle, ZENODO_RECORDS } from "../../services/DkpUtils";
-import { ZenodoMetadataResponse } from "../../services/interfaces";
+import { ComponentIcon, D2K_COMPONENT, EGI_REPLAY_URL, extractProgrammingLanguages, getComponentLabel, Identifier, parseRoCrate, renderGalaxyEmbed, renderPopupTitle, ZENODO_RECORDS, ZenodoViewProps } from "../../services/DkpUtils";
 import { IdentifierPopup } from "./IdentifierPopup";
-
-export interface ZenodoViewProps {
-    item: ZenodoMetadataResponse;
-}
-
-export interface Identifier {
-    res_type: string;
-    identifier: string[];
-}
 
 export function DkpView({ item: metadata }: ZenodoViewProps) {
     const roCrateUrl = ZENODO_RECORDS + metadata.recid + "/files/ro-crate-metadata.json/content";
@@ -123,21 +113,20 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
     }
 
     function renderDkpComponent() {
-        // filter roCrate by type
-        const reproducibleBasis = roCrate.filter(item => item["type"] === "Dataset" || item["type"] === "SoftwareSourceCode");
-        const vre = roCrate.filter(item => item["type"] === "SoftwareApplication" || item["type"] === "WebAPI" || item["type"] === "ComputationalWorkflow");
+        const reproducibleBasis = roCrate.filter(item => item["type"] === D2K_COMPONENT.Dataset || item["type"] === D2K_COMPONENT.Toolbox);
+        const vre = roCrate.filter(item => item["type"] === D2K_COMPONENT.VirtualLab || item["type"] === D2K_COMPONENT.WebApi || item["type"] === D2K_COMPONENT.Workflow);
 
         return (
             <>
                 <Box className="metadataSectionHeader" pt={5} mb={5}>
                     <b>Virtual Research Environment</b>
                 </Box>
-                {renderComponents(vre, 0, "ComputationalWorkflow")}
+                {renderComponents(vre, 0, D2K_COMPONENT.Workflow)}
 
                 <Box className="metadataSectionHeader" pt={50} mb={5}>
                     <b>Reproducible Basis</b>
                 </Box>
-                {renderComponents(reproducibleBasis, vre.length, "SoftwareSourceCode")}
+                {renderComponents(reproducibleBasis, vre.length, D2K_COMPONENT.Toolbox)}
             </>
         );
     }
@@ -155,7 +144,7 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
     function renderComponents(components: any[], startIndex: number, priority: string) {
         
         const updatedComponents = components.map(component => {
-            if (component.type === "SoftwareApplication") {
+            if (component.type === D2K_COMPONENT.VirtualLab) {
                 return {
                     ...component,
                     identifier: [...(component.identifier || []), EGI_REPLAY_URL]
@@ -186,16 +175,10 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
                             cursor="pointer"
                             onClick={() => handleIdentifier(component.type, component.identifier)}
                         >
-                            <Box bg="white" borderRadius="full" p={2}>
-                                <Image
-                                    src={getComponentIcon(component.type)}
-                                    alt={component.name || "Component"}
-                                    borderRadius="full"
-                                    w="40%"
-                                    maxH="170px"
-                                    m="0 auto"
-                                />
-                            </Box>
+                            <ComponentIcon 
+                                type={component.type}
+                                name={component.name}
+                            />
                             <Box color="white" fontSize={25}>
                                 <b><u>{getComponentLabel(component.type)}</u></b>
                             </Box>

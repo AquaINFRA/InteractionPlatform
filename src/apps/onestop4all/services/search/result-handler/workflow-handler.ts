@@ -1,4 +1,4 @@
-import { ZenodoMetadataResponse } from "../../interfaces";
+import { ZenodoMetadataResponse } from "../../DkpUtils";
 import { ResourceType } from "../../ResourceTypeUtils";
 import { SearchResultItem } from "../../SearchService";
 import { MinSearchResultItem, SearchResultHandler } from "./search-result-handler";
