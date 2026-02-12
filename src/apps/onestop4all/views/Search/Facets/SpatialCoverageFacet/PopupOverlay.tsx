@@ -23,7 +23,6 @@ import { SearchService } from "../../../../services";
 import { computeBBox, createBboxLayer, createCatchmentLayer, intersectsBBox } from "./geometryUtils";
 import GeoJSON from "ol/format/GeoJSON";
 //import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
-import dataNew from "../../../../services/sea_areas_catchments.json";
 import { defaults as defaultInteractions } from "ol/interaction.js";
 import { USED_EPSG_CODE } from "./SpatialCoverageFacet";
 import { useCatchmentMap } from "./useCatchmentMap";
@@ -73,7 +72,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         setCatchmentBBoxSource,
         markerVector,
         vectorLayer
-    } = useCatchmentMap(map, selectedOption, searchSrvc, searchState);
+    } = useCatchmentMap(map);
 
     const hoverName = useMemo(
         () =>

@@ -5,13 +5,10 @@ import { Feature } from "ol";
 import { Icon, Style } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
 import dataNew from "../../../../services/sea_areas_catchments.json";
-import { hoverStyle, style, selectStyle } from "./Styles";
+import { style } from "./Styles";
 
 export function useCatchmentMap(
-    _map: any,
-    selectedOption: string,
-    searchSrvc: any,
-    searchState: any
+    _map: any
 ) {
     const [bboxActive, setBboxActive] = useState(false);
     const [tooltipContent, setTooltipContent] = useState("");
