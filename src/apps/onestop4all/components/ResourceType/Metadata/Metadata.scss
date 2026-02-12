@@ -13,15 +13,35 @@
     color: #666;
     font-size: 16px;
     font-weight: 700;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    margin-top: 10px;
+    display: inline-block; /* keeps tag on same line as value */
 }
 
 .metadataValue {
-    color: #000000;
+    color: #000;
     font-size: 16px;
-    padding-top: 10px;
-    display: inline-flex;
+    display: inline;
+    word-break: normal;
+    overflow-wrap: break-word;
+    margin-left: 5px;
+}
+
+.sideButtonTag {
+    color: #666;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.sideButtonValue {
+    color: #000;
+    font-size: 16px;
+    display: inline;
+    word-break: normal;
+    overflow-wrap: break-word;
+    margin-left: 5px;
 }
 
 .metadataSection {
@@ -31,11 +51,18 @@
 .metadataKeyword {
     border-radius: 50px;
     background: rgba(34, 192, 210, 0.2);
-    padding: 0px 8px;
+    padding: 0px 6px;
     display: inline-block;
-    text-decoration: underline;
-    margin-right: 5px;
-    margin-top: 10px;
+    margin-top: 5px;
+}
+.metadataKeywordNarrower {
+    background: rgb(255, 222, 173);
+}
+.metadataKeywordBroader {
+    background: rgb(230, 230, 250);
+}
+.metadataKeywordRelated {
+    background: rgb(210, 180, 140);
 }
 
 .metadataAuthors {
@@ -46,6 +73,13 @@
     display: inline-block;
     margin-right: 5px;
     margin-top: 10px;
+}
+
+.author {
+    color: #000000;
+    font-size: 16px;
+    padding-top: 0px;
+    display: inline-flex;
 }
 
 .metadataTheme {

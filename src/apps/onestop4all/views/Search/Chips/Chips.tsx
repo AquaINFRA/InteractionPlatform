@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { SystemStyleObject } from "@open-pioneer/chakra-integration";
 
-import { PrimaryColor, PrimaryColor40 } from "../../../Theme";
+import { PrimaryColor, PrimaryColor40, PrimaryFont } from "../../../Theme";
 import { useSearchState } from "../SearchState";
 
 interface ChipsEntry {
@@ -12,40 +12,35 @@ interface ChipsEntry {
 
 export function Chips() {
     const searchState = useSearchState();
-
     const chips: ChipsEntry[] = [];
 
-    // TODO: remove later searchterm
     const st = searchState.searchTerm;
     if (st) {
         chips.push({
-            title: "SearchTerm",
+            title: "Search term",
             values: [st],
             deleteCb: () => searchState.setSearchTerm("")
         });
     }
 
-    // resourceTypes
-    const resourceTypes = searchState.selectedResourceTypes;
-    if (resourceTypes.length) {
+    const dataProvider = searchState.selectedDataProvider;
+    if (dataProvider.length) {
+        const titles = [] as string[];
+
+        dataProvider.forEach((dp) => {
+            searchState.dataProviderTitles.forEach((dpt: any) => {
+                if (dp === dpt.id) {
+                    titles.push(dpt.title);
+                }
+            });
+        });
         chips.push({
-            title: "Resource Type",
-            values: resourceTypes,
-            deleteCb: () => searchState.setSelectedResourceTypes([])
+            title: "Data provider",
+            values: titles,
+            deleteCb: () => searchState.setSelectedDataProvider([])
         });
     }
 
-    // subject
-    const subjects = searchState.selectedSubjects;
-    if (subjects.length) {
-        chips.push({
-            title: "Subject",
-            values: subjects,
-            deleteCb: () => searchState.setSelectedSubjects([])
-        });
-    }
-
-    // spatial coverage
     const spatialFilter = searchState.spatialFilter;
     if (spatialFilter.length) {
         chips.push({
@@ -55,19 +50,9 @@ export function Chips() {
         });
     }
 
-    // temporal coverage
-    const temporalFilter = searchState.temporalFilter;
-    if (temporalFilter) {
-        chips.push({
-            title: "Temporal Coverage",
-            values: [`${temporalFilter.startYear} - ${temporalFilter.endYear}`],
-            deleteCb: () => searchState.setTemporalFilter(undefined)
-        });
-    }
-
     const titleStyles = {
         color: PrimaryColor,
-        fontFamily: "Open Sans",
+        fontFamily: PrimaryFont,
         fontSize: "14px",
         fontWeight: 700,
         lineHeight: "24px"
@@ -94,7 +79,7 @@ export function Chips() {
                 gap={"8px"}
                 border={"1px solid"}
                 borderColor={PrimaryColor}
-                borderRadius="50px"
+                borderRadius="30px"
                 padding="6px 8px 6px 12px;"
             >
                 <Box __css={titleStyles}>{title}: </Box>

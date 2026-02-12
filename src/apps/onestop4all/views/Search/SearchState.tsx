@@ -2,63 +2,29 @@ import { useService } from "open-pioneer:react-hooks";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { ResourceType } from "../../services/ResourceTypeUtils";
-import {
-    SearchResult,
-    SubjectEntry,
-    TemporalFacet,
-    TemporalFilter
-} from "../../services/SearchService";
+import { SearchResult, SearchService } from "../../services/SearchService";
+import { ProviderWithResults } from "./Facets/DataProviderFacet/DataProviderFacet";
 
 export enum UrlSearchParameterType {
     Searchterm = "searchterm",
-    ResourceType = "resourcetype",
-    Subjects = "subjects",
     SpatialFilter = "spatialfilter",
-    PageSize = "pageSize",
     PageStart = "pageStart",
-    TemporalFilter = "temporalfilter",
-    SortingFilter = "sort"
+    DataProvider = "dataProvider",
+    DownloadOption = "rdl"
 }
 
 export interface UrlSearchParams {
     [UrlSearchParameterType.Searchterm]?: string;
-    [UrlSearchParameterType.ResourceType]?: string[];
-    [UrlSearchParameterType.Subjects]?: string[];
     [UrlSearchParameterType.SpatialFilter]?: string;
-    [UrlSearchParameterType.PageSize]?: string;
     [UrlSearchParameterType.PageStart]?: string;
-    [UrlSearchParameterType.TemporalFilter]?: string;
-    [UrlSearchParameterType.SortingFilter]?: string;
+    [UrlSearchParameterType.DataProvider]?: string[];
+    [UrlSearchParameterType.DownloadOption]?: string;
 }
 
-export const SpatialFilterEnableForResourceTypes = [ResourceType.Organisations];
-export const TemporalFilterEnableForResourceTypes = [
-    ResourceType.Articles,
-    ResourceType.Learning_Resource
-];
-
-export const SortOptions: SortOption[] = [
-    { label: "Relevanz", term: "" },
-    { label: "Title (A-Z)", term: "mainTitle asc" },
-    { label: "Title (Z-A)", term: "mainTitle desc" }
-];
-
-export const TemporalFacetStartYear = 2000;
-export const TemporalFacetEndYear = 2023;
-export const TemporalFacetGap = "+1YEAR";
-
-export interface SelectableResourceType {
-    resourceType: ResourceType;
-    count: number;
+export interface SelectableDataProvider {
+    id: string;
     selected: boolean;
-}
-
-export interface SelectableSubject {
-    label: string;
-    children: SelectableSubject[];
-    count?: number;
-    selected?: boolean;
+    title: string;
 }
 
 export interface SortOption {
@@ -69,28 +35,37 @@ export interface SortOption {
 export interface ISearchState {
     searchTerm: string;
     setSearchTerm(searchTerm: string): void;
-    selectedResourceTypes: string[];
-    setSelectedResourceTypes(types: string[]): void;
-    selectableResourceTypes: SelectableResourceType[];
-    selectedSubjects: string[];
-    setSelectedSubjects(subjects: string[]): void;
-    selectableSubjects: SelectableSubject[];
+    downloadOption: boolean;
+    setDownloadOption(downloadOption: boolean): void;
+    selectedDataProvider: string[];
+    setSelectedDataProvider(dataProvider: string[]): void;
+    selectedDataProviderTmp: string[];
+    setSelectedDataProviderTmp(dataProvider: string[]): void;
+    dkps: any[] | undefined;
+    setDkps(dkps: any[]): void;
+    dataProviderTriggered: boolean;
+    setDataProviderTriggered(dataProviderTriggered: boolean): void;
+    relatedTerms: any;
+    setRelatedTerms(obj: any): void;
+    relatedTermsKeyword: string | undefined;
+    setRelatedTermsKeyword(rtkw: string): void;
+    dataProviderTitles: string[];
+    setDataProviderTitles(dataProviderTitles: string[]): void;
+    selectableDataProvider: SelectableDataProvider[];
     spatialFilter: number[];
     setSpatialFilter(sf: number[]): void;
-    spatialFilterDisabled: boolean;
-    temporalFilter: TemporalFilter | undefined;
-    setTemporalFilter(tf?: TemporalFilter): void;
-    temporalFacets: TemporalFacet[];
-    temporalFilterDisabled: boolean;
     pageSize: number;
     setPageSize(pageSize: number): void;
     pageStart: number;
     setPageStart(pageSize: number): void;
     searchResults: SearchResult | undefined;
     isLoaded: boolean;
-    sorting: SortOption | undefined;
-    setSorting(sortOption: SortOption): unknown;
     search(): void;
+    searchParamsOld: any;
+    setSearchParamsOld(searchParamsOld: any): void;
+    searchParams: any;
+    providerWithResults: ProviderWithResults[] | undefined;
+    setProviderWithResults(providerWithResults: ProviderWithResults[]): void;
 }
 
 export const SearchStateContext = createContext<ISearchState | undefined>(undefined);
@@ -110,55 +85,49 @@ export const useSearchState = () => {
 };
 
 export const SearchState = (props: PropsWithChildren) => {
-    const searchSrvc = useService("onestop4all.SearchService");
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const [searchParams] = useSearchParams();
 
     // init search results and loading state
     const [searchResults, setSearchResults] = useState<SearchResult>();
-    const [isLoaded, setIsLoaded] = useState(false);
-
+    const [isLoaded, setIsLoaded] = useState(true);
+    const [searchParamsOld, setSearchParamsOld] = useState<any>();
+    const [providerWithResults, setProviderWithResults] = useState<ProviderWithResults[]>();
     // init search term
     const [searchTerm, setSearchTerm] = useState<string>(
         searchParams.get(UrlSearchParameterType.Searchterm) || ""
     );
 
     // init page size
-    const pSize = parseInt(searchParams.get(UrlSearchParameterType.PageSize) || "10");
+    const pSize = 20;
     const [pageSize, setPageSize] = useState<number>(pSize);
 
     // init page start
     const pStart = parseInt(searchParams.get(UrlSearchParameterType.PageStart) || "0");
     const [pageStart, setPageStart] = useState<number>(pStart);
 
-    // init selectable resourceTypes
-    const [selectableResourceTypes, setSelecteableResourceTypes] = useState<
-        SelectableResourceType[]
-    >([]);
-
-    // init selected resourceTypes
-    const sRt: string[] = [];
-    const urlRt = searchParams.getAll(UrlSearchParameterType.ResourceType);
-    if (urlRt?.length) {
-        urlRt.forEach((e) => e && sRt.push(e));
-    }
-    const [selectedResourceTypes, setSelectedResourceTypes] = useState<string[]>(sRt);
-
-    // check disabling spatial filter
-    const matches = SpatialFilterEnableForResourceTypes.filter(
-        (res) => selectedResourceTypes.findIndex((e) => e === res) >= 0
+    // init selected dataProvider
+    const [selectableDataProvider, setSelectableDataProvider] = useState<SelectableDataProvider[]>(
+        []
     );
-    const spatialFilterDisabled = matches.length === 0 && selectedResourceTypes.length > 0;
 
-    // init selectable subjects
-    const [selectableSubjects, setSelecteableSubjects] = useState<SelectableSubject[]>([]);
-
-    // init selected subjects
-    const subjects: string[] = [];
-    const urlSubs = searchParams.getAll(UrlSearchParameterType.Subjects);
-    if (urlSubs?.length) {
-        urlSubs.forEach((e) => e && subjects.push(e));
+    // init selected data provider
+    const dPr: string[] = [];
+    const urlDp = searchParams.getAll(UrlSearchParameterType.DataProvider);
+    if (urlDp?.length) {
+        urlDp.forEach((e) => e && dPr.push(e));
     }
-    const [selectedSubjects, setSelectedSubjects] = useState<string[]>(subjects);
+    const [selectedDataProvider, setSelectedDataProvider] = useState<string[]>(dPr);
+    const [selectedDataProviderTmp, setSelectedDataProviderTmp] = useState<string[]>(dPr);
+
+    const [relatedTerms, setRelatedTerms] = useState<any>();
+    const [relatedTermsKeyword, setRelatedTermsKeyword] = useState<string>();
+
+    const [dkps, setDkps] = useState<any[]>();
+    const [dataProviderTriggered, setDataProviderTriggered] = useState<boolean>(true);
+
+    //init download option
+    const [downloadOption, setDownloadOption] = useState<boolean>(false);
 
     // init spatial filter
     let sp: number[] = [];
@@ -170,99 +139,41 @@ export const SearchState = (props: PropsWithChildren) => {
         }
     }
     const [spatialFilter, setSpatialFilter] = useState(sp);
-
-    // init temporal filter
-    const tempFilterString = searchParams.get(UrlSearchParameterType.TemporalFilter);
-    let tf: TemporalFilter | undefined = undefined;
-    if (tempFilterString) {
-        const [s, e] = tempFilterString.split(",");
-        if (s && e) {
-            const start = parseInt(s, 10);
-            const end = parseInt(e, 10);
-            if (!isNaN(start) && !isNaN(end)) {
-                tf = { startYear: start, endYear: end };
-            }
-        }
-    }
-    const [temporalFilter, setTemporalFilter] = useState<TemporalFilter | undefined>(tf);
-    const [temporalFacets, setTemporalFacets] = useState<TemporalFacet[]>([]);
-
-    // check disabling spatial filter
-    const tempMatches = TemporalFilterEnableForResourceTypes.filter(
-        (res) => selectedResourceTypes.findIndex((e) => e === res) >= 0
-    );
-    const temporalFilterDisabled = tempMatches.length === 0 && selectedResourceTypes.length > 0;
-
-    // sorting
-    const sortString = searchParams.get(UrlSearchParameterType.SortingFilter);
-    const sortMatch = SortOptions.find((so) => so.term === sortString);
-    const sort = sortMatch || SortOptions[0];
-    const [sorting, setSorting] = useState<SortOption | undefined>(sort);
+    const [dataProviderTitles, setDataProviderTitles] = useState<string[]>([]);
 
     function search() {
         setIsLoaded(false);
-        searchSrvc
-            .doSearch({
-                searchTerm,
-                resourceTypes: selectedResourceTypes,
-                subjects: selectedSubjects,
-                spatialFilter,
-                pageSize,
-                pageStart,
-                temporalFilter,
-                temporalConfig: {
-                    startYear: TemporalFacetStartYear,
-                    endYear: TemporalFacetEndYear,
-                    gap: TemporalFacetGap
-                },
-                sorting: sorting?.term
-            })
-            .then((result) => {
-                setIsLoaded(true);
-                setSearchResults(result);
-                const resourceTypeFacet = result.facets.resourceType.map((e) => {
-                    return {
-                        resourceType: e.resourceType,
-                        count: e.count,
-                        selected: selectedResourceTypes.findIndex((r) => r === e.resourceType) >= 0
-                    } as SelectableResourceType;
-                });
-                setSelecteableResourceTypes(resourceTypeFacet);
-                handleSubjects(result.facets.subjects);
-                handleTemporalFacets(result.facets.temporal);
-            })
-            .catch((error) => {
-                setIsLoaded(true);
-                console.error(error);
-            });
-
-        function handleSubjects(subjects: SubjectEntry[]) {
-            function removeZeroCounts(subjectConf: SelectableSubject[]): SelectableSubject[] {
-                subjectConf.forEach((e) => (e.children = removeZeroCounts(e.children)));
-                return subjectConf.filter((e) => e.count !== undefined);
-            }
-
-            function adjustEntry(entry: SubjectEntry, tree: SelectableSubject[]) {
-                tree.find((e) => adjustEntry(entry, e.children));
-                const match = tree.find((e) => e.label === entry.label);
-                if (match) {
-                    match.count = entry.count;
-                    match.selected = selectedSubjects.findIndex((s) => s === entry.label) >= 0;
-                }
-            }
-
-            fetch("./subject-config.json").then((result) => {
-                result.json().then((subjectConf: SelectableSubject[]) => {
-                    subjects.forEach((entry) => adjustEntry(entry, subjectConf));
-                    removeZeroCounts(subjectConf);
-                    setSelecteableSubjects(subjectConf);
-                });
-            });
-        }
-
-        function handleTemporalFacets(facets: TemporalFacet[]) {
-            setTemporalFacets(facets);
-        }
+        setDataProviderTriggered(true);
+        selectedDataProvider.length > 0 && searchTerm.trim() !== ""
+            ? searchSrvc
+                .doSearch({
+                    searchTerm,
+                    dataProvider: selectedDataProvider,
+                    downloadOption,
+                    spatialFilter
+                })
+                .then((result) => {
+                    setIsLoaded(true);
+                    setSearchResults(result);
+                    const dataProviderFacet = result.facets.provider.map((dataprovider) => {
+                        return {
+                            id: dataprovider.title,
+                            title: dataprovider.title,
+                            selected:
+                                selectableDataProvider.findIndex(
+                                    (selectabledataprovider) =>
+                                        selectabledataprovider.title === dataprovider.title
+                                ) >= 0
+                        };
+                    });
+                    setSelectableDataProvider(dataProviderFacet);
+                })
+                .catch((error) => {
+                    setIsLoaded(true);
+                    console.error(error);
+                })
+            : setIsLoaded(true);
+        setSearchResults(undefined);
     }
 
     const state: ISearchState = {
@@ -271,25 +182,11 @@ export const SearchState = (props: PropsWithChildren) => {
             setSearchTerm(value);
             setPageStart(0);
         },
-        selectedResourceTypes,
-        setSelectedResourceTypes: (values) => {
-            setSelectedResourceTypes(values);
-            setPageStart(0);
-        },
-        selectableResourceTypes,
         spatialFilter,
         setSpatialFilter: (value) => {
             setSpatialFilter(value);
             setPageStart(0);
         },
-        spatialFilterDisabled,
-        temporalFilter,
-        setTemporalFilter: (tf) => {
-            setTemporalFilter(tf);
-            setPageStart(0);
-        },
-        temporalFacets,
-        temporalFilterDisabled,
         pageSize,
         setPageSize: (value) => {
             setPageSize(value);
@@ -299,15 +196,29 @@ export const SearchState = (props: PropsWithChildren) => {
         setPageStart,
         searchResults,
         isLoaded,
-        sorting,
-        setSorting(sortOption) {
-            setSorting(sortOption);
-            setPageStart(0);
-        },
         search,
-        selectedSubjects,
-        setSelectedSubjects,
-        selectableSubjects
+        setSelectedDataProvider,
+        selectedDataProvider,
+        selectedDataProviderTmp,
+        setSelectedDataProviderTmp,
+        relatedTerms,
+        setRelatedTerms,
+        dkps,
+        setDkps,
+        dataProviderTriggered,
+        setDataProviderTriggered,
+        relatedTermsKeyword,
+        setRelatedTermsKeyword,
+        selectableDataProvider,
+        setDataProviderTitles,
+        dataProviderTitles,
+        downloadOption,
+        setDownloadOption,
+        searchParamsOld,
+        setSearchParamsOld,
+        searchParams,
+        providerWithResults,
+        setProviderWithResults
     };
 
     return (

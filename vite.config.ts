@@ -5,7 +5,7 @@
 import { pioneer } from "@open-pioneer/vite-plugin-pioneer";
 import react from "@vitejs/plugin-react-swc";
 import { resolve } from "node:path";
-import { defineConfig, PluginOption } from "vite";
+import { loadEnv, defineConfig, PluginOption } from "vite";
 import eslint from "vite-plugin-eslint";
 import { visualizer } from "rollup-plugin-visualizer";
 
@@ -19,23 +19,13 @@ const targets = ["chrome92", "edge92", "firefox91", "safari14"];
 // See also: https://github.com/btd/rollup-plugin-visualizer
 const visualize = false;
 
-const sampleSites = [
-    "samples/api-sample",
-    "samples/chakra-sample",
-    "samples/extension-sample",
-    "samples/map-sample",
-    "samples/properties-sample",
-    "samples/styling-sample",
-    "samples/i18n-sample",
-    "samples/i18n-howto"
-];
-
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     const devMode = mode === "development";
 
     // Allowed values are "DEBUG", "INFO", "WARN", "ERROR"
     const logLevel = devMode ? "INFO": "WARN";
+    process.env = {...process.env, ...loadEnv(mode, process.cwd())};
 
     return {
         root: resolve(__dirname, "src"),
@@ -57,10 +47,7 @@ export default defineConfig(({ mode }) => {
 
                 // Additional directories to include as html (must contain index.html files)
                 sites: [
-                    "sites/onestop4all",
-
-                    // Include sample sites in the build
-                    ...sampleSites
+                    "sites/onestop4all"
                 ],
 
                 // Apps to distribute as .js files for embedded use cases
@@ -75,7 +62,8 @@ export default defineConfig(({ mode }) => {
         // define global constants
         // See also: https://vitejs.dev/config/shared-options.html#define
         define: {
-            __LOG_LEVEL__: JSON.stringify(logLevel)
+            __LOG_LEVEL__: JSON.stringify(logLevel),
+            VITE_OAPIR_URL: JSON.stringify(process.env.VITE_OAPIR_URL || "https://vm4072.kaj.pouta.csc.fi/ddas/oapir")
         },
 
         // https://vitest.dev/config/

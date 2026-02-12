@@ -16,20 +16,32 @@ messages:
   search:
     search-bar:
       button-label: "Search"
-      placeholder: "Search for data repositories, software tools, information or research data materials"
+      placeholder: "Search for research data"
       dropdownPlaceholder: "All resources"
   start:
     banner:
-      slogan: "Your One-Stop to FAIR, open and innovative Research Data Management in <bold>Earth System Sciences</bold>."
+      slogan: "<bold></bold>"
     mission:
-      slogan: "The <bold>OneStop4All</bold> is the primary visual and user-friendly {NFDI4EarthLink} access point. It offers a coherent view on and points to all relevant Earth System Sciences (ESS) RDM resources provided by NFDI4Earth members and the ESS community, such as data repositories, software tools, information on Research Data Management (RDM), education and training materials. Learn more about our {MissionLink} and the {ResourcesLink}."
+      slogan: "The <bold>AquaINFRA Interaction Platform (AIP)</bold> is a user-friendly access point to resources from the aquatic realm, such as research data, software, and training materials."
       links:
-        NFDI4EarthLinkUrl: https://www.nfdi4earth.de/
-        NFDI4EarthLinkLabel: NFDI4Earth
-        MissionLinkUrl: https://www.nfdi4earth.de/about-us
-        MissionLinkLabel: Mission
-        ResourcesLinkUrl: /
-        ResourcesLinkLabel: Resources
+        #NFDI4EarthLinkUrl: https://www.nfdi4earth.de/
+        #NFDI4EarthLinkLabel: NFDI4Earth
+        MissionLinkUrl: https://aquainfra.eu/
+        MissionLinkLabel: AquaINFRA
+        #ResourcesLinkUrl: /
+        #ResourcesLinkLabel: Resources
+        TrainingLinkUrl: /
+        TrainingLinkLabel: Training
+
+    caseStudy:
+      oneTitle: "<bold>Case study 1: Baltic Sea region use case</bold>"
+      oneText: "The aim of the Baltic Sea region use case is to develop environmental action plans in relation to fresh water and marine environments (HELCOM BSAP, WFD, MSFD etc), set management targets and follow up their implementation and build (scalable) national data flow models depicting social, economic, and environmental effectiveness of measures for two use cases – river basins in southern Finland and the Daugava river- Gulf Riga, Latvia."
+      twoTitle: "<bold>Case study 2: North Sea region use case</bold>"
+      twoText: "The aim of the NSR use case (Elbe catchment / Wadden sea and Oslo Fjord) demonstrates how to overcome fragmentation in water quality monitoring along the aquatic continuum from lakes, rivers to the sea by application of an optical water type specific and neural network-based processing scheme for Copernicus satellite data. Different earth observation data will be combined with products from the Copernicus Marine, Land and Climate Change Services and complementary heterogeneous in situ data."
+      threeTitle: "<bold>Case study 3: Mediterranean region use case</bold>"
+      threeText: "This use case (Maresme county and Llobregat delta, Catalonia, Spain; and Malta) tests the developed AquaINFRA services in an inland and coastal water continuum environment; integrating in-situ and remote sensing data in order to analyse the land (surface and ground) processes with impact on the marine water quality and quantity, affecting aquatic systems and their provision of ecosystems services."
+      fourTitle: "<bold>Case study 4: Pan-European Biodiversity use case</bold>"
+      fourText: "This use case addresses Pan-European integration of the upstream spatio-temporal connectivity across the hydrography towards range-wide biodiversity related estimates contributing to EU environmental policies concerning the restoration of healthy oceans and inland waters. Links between drivers, pressures, and states as well as management priorities and restoration needs will be highlighted, with emphasis on the distribution of flagship and invasive species, species migration corridors in European rivers, as well as freshwater biodiversity facets related to the seamless hydrography network."
     how-to:
       title: We provide guidance on Research Data Management in ESS
       description: Here, you will find introductory articles to research data management in the ESS.

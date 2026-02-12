@@ -1,54 +1,91 @@
-import { ArticleSearchHandler } from "./search/result-handler/article-handler";
-import { Learning_ResourceHandler } from "./search/result-handler/learning_resource-handler";
-import { LHB_ArticleSearchHandler } from "./search/result-handler/lhb_article-handler";
-import { OrganizationSearchHandler } from "./search/result-handler/organization-handler";
-import { RepositorySearchHandler } from "./search/result-handler/repository-handler";
 import { SearchResultHandler } from "./search/result-handler/search-result-handler";
-import { SoftwareSearchHandler } from "./search/result-handler/software-handler";
-import { StandardSearchHandler } from "./search/result-handler/standard-handler";
-import { SolrSearchResultItem } from "./SearchService";
+import { DatasetHandler } from "./search/result-handler/dataset-handler";
+import { WorkflowHandler } from "./search/result-handler/workflow-handler";
+import { SoftwareHandler } from "./search/result-handler/software-zenodo-handler";
+import { PublicationHandler } from "./search/result-handler/publication-handler";
+import { PresentationHandler } from "./search/result-handler/presentation-handler";
+import { ImageHandler } from "./search/result-handler/image-handler";
+import { VideoHandler } from "./search/result-handler/video-handler";
+import { PosterHandler } from "./search/result-handler/poster-handler";
+import { OtherHandler } from "./search/result-handler/other-handler";
+import { LessonHandler } from "./search/result-handler/lesson-handler";
+import { PhysicalObejctHandler } from "./search/result-handler/physicalobject-handler";
+import { EventHandler } from "./search/result-handler/event-handler";
+import { DkpHandler } from "./search/result-handler/dkp-handler";
 
 export enum ResourceType {
-    Repos = "Repository / Archive",
-    Articles = "Article",
-    // Educational = "Educational resource",
-    // Datasets = "Dataset",
-    Tools = "Tool/Software",
-    Organisations = "Organisation",
-    // Services = "Service",
-    Standards = "Standard",
-    LHB_Articles = "Living Handbook Article",
-    Learning_Resource = "Learning resource"
+    Dataset = "dataset",
+    Unknown = "unknown",
+    Software = "software",
+    Workflow = "workflow",
+    Publication = "publication",
+    Presentation = "presentation",
+    Image = "image",
+    Lesson = "lesson",
+    Other = "other",
+    Poster = "poster",
+    Video = "video",
+    PhysicalObject = "physicalobject",
+    Event = "event",
+    DKP = "data-to-knowledge package"
 }
 
 const mapping = [
     {
-        type: ResourceType.Articles,
-        identifier: "http://schema.org/Article"
+        type: ResourceType.Dataset,
+        identifier: "dataset"
     },
     {
-        type: ResourceType.Organisations,
-        identifier: "http://xmlns.com/foaf/0.1/Organization"
+        type: ResourceType.Unknown,
+        identifier: "unknown"
     },
     {
-        type: ResourceType.Repos,
-        identifier: "http://nfdi4earth.de/ontology/Repository"
+        type: ResourceType.Software,
+        identifier: "software"
     },
     {
-        type: ResourceType.Standards,
-        identifier: "http://nfdi4earth.de/ontology/MetadataStandard"
+        type: ResourceType.Workflow,
+        identifier: "workflow"
     },
     {
-        type: ResourceType.Tools,
-        identifier: "http://schema.org/SoftwareSourceCode"
+        type: ResourceType.Publication,
+        identifier: "publication"
     },
     {
-        type: ResourceType.LHB_Articles,
-        identifier: "http://nfdi4earth.de/ontology/LHBArticle"
+        type: ResourceType.DKP,
+        identifier: "data-to-knowledge package"
     },
     {
-        type: ResourceType.Learning_Resource,
-        identifier: "http://schema.org/LearningResource"
+        type: ResourceType.Presentation,
+        identifier: "presentation"
+    },
+    {
+        type: ResourceType.Other,
+        identifier: "other"
+    },
+    {
+        type: ResourceType.Poster,
+        identifier: "poster"
+    },
+    {
+        type: ResourceType.Image,
+        identifier: "image"
+    },
+    {
+        type: ResourceType.Video,
+        identifier: "video"
+    },
+    {
+        type: ResourceType.Lesson,
+        identifier: "lesson"
+    },
+    {
+        type: ResourceType.PhysicalObject,
+        identifier: "physicalobject"
+    },
+    {
+        type: ResourceType.Event,
+        identifier: "event"
     }
 ];
 
@@ -56,8 +93,9 @@ export function mapToResourceType(identifier: string): ResourceType {
     const match = mapping.find((e) => e.identifier === identifier);
     if (match) {
         return match.type;
+    } else {
+        return ResourceType.Dataset;
     }
-    throw new Error(`Could not find a ResourceType to the given identifier: ${identifier}`);
 }
 
 export function mapFromResourceType(resourceType: ResourceType): string {
@@ -69,26 +107,51 @@ export function mapFromResourceType(resourceType: ResourceType): string {
 }
 
 const searchResultHandlers: SearchResultHandler[] = [
-    new RepositorySearchHandler(),
-    new OrganizationSearchHandler(),
-    new LHB_ArticleSearchHandler(),
-    new ArticleSearchHandler(),
-    new StandardSearchHandler(),
-    new SoftwareSearchHandler(),
-    new Learning_ResourceHandler()
+    new DatasetHandler(),
+    new WorkflowHandler(),
+    new SoftwareHandler(),
+    new PublicationHandler(),
+    new PresentationHandler(),
+    new ImageHandler(),
+    new VideoHandler(),
+    new PosterHandler(),
+    new OtherHandler(),
+    new LessonHandler(),
+    new PhysicalObejctHandler(),
+    new EventHandler(),
+    new DkpHandler()
 ];
 
-export function getHandler(result: SolrSearchResultItem): SearchResultHandler {
+export function getHandler(result: string): SearchResultHandler {
+    if (!result) {
+        result = "dataset";
+    }
     const match = searchResultHandlers.find((h) => h.canHandle(result));
     if (match) {
         return match;
     } else {
-        throw new Error(
-            "Unknown search item, please implement a handler: " + JSON.stringify(result)
-        );
+        return new DatasetHandler();
     }
 }
 
-export function getResourceType(result: SolrSearchResultItem): ResourceType {
+export function getResourceType(result: string): ResourceType {
     return getHandler(result).resourceType;
+}
+
+export function formatDate(date: Date) {
+    const pad = (n: number) => n.toString().padStart(2, "0");
+
+    const day = pad(date.getDate());
+    const month = pad(date.getMonth() + 1);
+    const year = date.getFullYear();
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+
+    const offset = date.getTimezoneOffset();
+    const sign = offset <= 0 ? "+" : "-";
+    const absOffset = Math.abs(offset);
+    const offHours = pad(Math.floor(absOffset / 60));
+    const offMinutes = pad(absOffset % 60);
+
+    return `${day}/${month}/${year} ${hours}:${minutes} (GMT${sign}${offHours}:${offMinutes})`;
 }

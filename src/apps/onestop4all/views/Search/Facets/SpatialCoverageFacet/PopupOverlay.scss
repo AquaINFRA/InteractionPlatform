@@ -1,0 +1,151 @@
+#popupOverlay1 {
+    display: block;
+}
+
+#popupOverlay2 {
+    display: none;
+}
+
+/* Adjust for small screens */
+
+.draw-polygon {
+    top: 65px;
+    left: 0.5em;
+    //background: url(/polygon.svg);
+}
+.draw-circle {
+    top: 88px;
+    left: 0.5em;
+}
+.draw-marker {
+    top: 111px;
+    left: 0.5em;
+}
+
+.popup-background-transparent {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.popup-background {
+    width: 45%;
+    min-width: 600px;
+    height: 75%;
+    background-color: white;
+    padding: 1vw;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.popup-header {
+    font-size: 24px;
+    color: #05668d;
+}
+
+.active-button {
+    background-color: "PrimaryColor";
+}
+.inactive-button {
+    background-color: "grey";
+}
+.map-container {
+    height: 86%;
+    width: 100%;
+}
+.legend {
+    position: absolute;
+    bottom: -50px;
+    left: 10px;
+}
+.legend-box {
+    background: rgba(255, 255, 255, 0.7);
+    //border-radius: 2%;
+    padding: 1.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.legend-header {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 5%;
+}
+.legend-entry {
+    font-size: 16px;
+    font-weight: 700;
+}
+.catchment-button {
+    width: 50%;
+    font-size: 16px !important;
+    padding: 2% !important;
+    margin-bottom: 0px !important;
+}
+.catchment-button-container {
+    width: 100%;
+    flex-direction: row;
+    gap: 1vw;
+    justify-content: space-between;
+    margin-top: 100px;
+}
+@media only screen and (max-width: $customBreakpoint) {
+    #popupOverlay1 {
+        display: none;
+    }
+
+    #popupOverlay2 {
+        display: block;
+    }
+    .popup-background {
+        width: 90%;
+        height: 70%;
+        background-color: white;
+        padding: 10px;
+        position: relative;
+    }
+    .popup-header {
+        font-size: 20px;
+        color: #05668d;
+    }
+    .map-container {
+        height: 75%;
+        width: 100%;
+    }
+    .legend {
+        position: absolute;
+        bottom: 31%;
+        left: 4%;
+    }
+    .legend-box {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 2%;
+        padding: 0.5rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+    }
+    .legend-header {
+        font-weight: bold;
+        font-size: 15px;
+        margin-bottom: 0%;
+    }
+    .legend-entry {
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .catchment-button {
+        width: 100%;
+        font-size: 12px !important;
+    }
+    .catchment-button-container {
+        margin-top: 2vh;
+        flex-direction: column;
+        gap: 1vh;
+        justify-content: space-between;
+    }
+}

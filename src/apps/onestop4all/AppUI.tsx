@@ -1,16 +1,14 @@
 import { Box, ChakraProvider, Container, Flex } from "@open-pioneer/chakra-integration";
-import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import { BaseMenu } from "./components/BaseMenu/BaseMenu";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
-import { HowToEntryContent } from "./views/Start/HowTo/HowToEntryContent";
 import { Theme } from "./Theme";
 import { Result } from "./views/Result/Result";
 import { SearchView } from "./views/Search/Search";
 import { SearchState } from "./views/Search/SearchState";
 import { StartView } from "./views/Start/Start";
-import { Faq } from "./views/Start/Faq/Faq";
 import { FourOFour } from "./views/FourOFour/FourOFour";
 
 const basePath = "/";
@@ -33,14 +31,6 @@ const router = createBrowserRouter([
                 element: <Result />
             },
             {
-                path: `faq/:faq`,
-                element: <Faq />
-            },
-            {
-                path: `howtoentry/:content`,
-                element: <HowToEntryContent />
-            },
-            {
                 path: "*",
                 element: <FourOFour />
             }
@@ -49,29 +39,26 @@ const router = createBrowserRouter([
 ]);
 
 export function AppUI() {
-    return <RouterProvider router={router}></RouterProvider>;
+    return <RouterProvider router={router} />;
 }
 
 function Layout() {
     return (
         <>
             <ChakraProvider theme={Theme}>
-                <BaseMenu></BaseMenu>
-
-                <Flex as="header" position="fixed" w="100%" bg="white" zIndex="1000">
-                    <Container maxW={{ base: "100%", custombreak: "80%" }}>
-                        <Header></Header>
-                    </Container>
-                </Flex>
-
-                <Box as="main" w="100%" pt="152px">
-                    <SearchState>
-                        <Outlet />
-                    </SearchState>
-                </Box>
-
+                <BaseMenu />
+                <SearchState>
+                    <Flex as="header" position="fixed" w="100%" bg="white" zIndex="1000">
+                        <Container maxW={{ base: "100%", custombreak: "80%" }}>
+                            <Header />
+                        </Container>
+                    </Flex>
+                    <Box as="main" w="100%" pt="152px">
+                        <Outlet />       
+                    </Box>
+                </SearchState>
                 <Box as="footer" w="100%">
-                    <Footer></Footer>
+                    <Footer />
                 </Box>
             </ChakraProvider>
         </>

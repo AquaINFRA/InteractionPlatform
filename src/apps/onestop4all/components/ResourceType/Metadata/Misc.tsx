@@ -3,6 +3,9 @@ import { isUrl, isEmail, MetadataUrl } from "./PersonalInfo";
 
 export const Misc = (props: { tag: string; val: Array<string> }) => {
     const { tag, val } = props;
+    if (Array.isArray(val) && val.length === 0) {
+        return null;
+    }
 
     return (
         <Box className="metadataSection">

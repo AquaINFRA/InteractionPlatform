@@ -1,29 +1,39 @@
 .search-view {
     padding-bottom: 80px;
 
+    @media only screen and (max-width: $customBreakpoint) {
+        padding-bottom: 40px;
+    }
+
     .header-image {
         width: 100%;
-        height: 80px;
+        height: 170px;
         flex-shrink: 0;
         background-image: url("/small-header_desktop.png");
         background-position-x: 0;
-        background-position-y: center;
+        background-position-y: top;
         background-size: cover;
+        opacity: 0.5;
 
         @media only screen and (max-width: $customBreakpoint) {
-            background-image: url("/small-header_mobile.png");
+            background-image: url("/small-header_desktop.png");
         }
     }
 
     .results-count {
-        font-family: Open Sans;
+        font-family: Arial;
         font-size: 24px;
         line-height: 26px;
         text-transform: uppercase;
+        padding-top: 0%;
 
         @media only screen and (max-width: $customBreakpoint) {
             text-align: center;
-            font-size: 14px;
+            color: var(--grey-grey, #272727);
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.7px;
+            font-family: Arial;
         }
     }
 }

@@ -1,11 +1,20 @@
 import { Box } from "@open-pioneer/chakra-integration";
+import parse from "html-react-parser";
+import { LinkItUrl } from "react-linkify-it";
 
-export const Abstract = (props: { abstractText: string }) => {
-    const { abstractText } = props;
+export const Abstract = ({ abstractText }: { abstractText: string }) => {
     return (
         <Box>
             <div className="abstractSectionHeader">Abstract</div>
-            <div className="abstractText">{abstractText}</div>
+            <Box className="abstractText">
+                {parse(abstractText, {
+                    replace: (domNode: any) => {
+                        if (domNode.type === "text") {
+                            return <LinkItUrl>{domNode.data}</LinkItUrl>;
+                        }
+                    }
+                })}
+            </Box>
         </Box>
     );
 };

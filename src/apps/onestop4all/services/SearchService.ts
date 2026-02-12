@@ -1,34 +1,34 @@
 import "@open-pioneer/runtime";
 
-import { ServiceOptions } from "@open-pioneer/runtime";
-import {
-    ResourceType,
-    getHandler,
-    mapFromResourceType,
-    mapToResourceType
-} from "./ResourceTypeUtils";
+import { ResourceType } from "./ResourceTypeUtils";
+import { DataProvider } from "../views/Search/Facets/DataProviderFacet/DataProviderFacet";
 
 export interface SearchResultItem {
     id: string;
-    title: string;
-    resourceType: ResourceType;
+    title?: string;
+    resourceType?: ResourceType;
     publishDate?: Date;
     updateDate?: Date;
     locality?: string;
-    abstract: string;
-    url: string;
+    abstract?: string;
+    url?: string;
+    properties: {
+        title: string;
+        type: string;
+        aicollection: string;
+        description?: string;
+    };
 }
 
 export interface SearchRequestParams {
     searchTerm?: string;
     resourceTypes?: string[];
     subjects?: string[];
-    pageSize?: number;
-    pageStart?: number;
+    dataProvider?: string[];
+    downloadOption: boolean;
     spatialFilter?: number[];
     temporalFilter?: TemporalFilter;
     temporalConfig?: TemporalConfig;
-    sorting?: string;
 }
 
 export interface TemporalConfig {
@@ -49,39 +49,21 @@ export interface TemporalFacet {
 
 export interface SolrSearchResultItem {
     id: string;
-    type: string[];
+    type: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
-}
-
-interface SolrSearchResponse {
-    numFound?: number;
-    docs: SolrSearchResultItem[];
-}
-
-interface SolrFacetResponse {
-    facet_fields: {
-        [key: string]: [];
+    time: string;
+    provider: string;
+    properties: {
+        title: string;
+        type: string;
+        aicollection: string;
+        description: string;
     };
-    facet_ranges: {
-        [key: string]: {
-            counts: [];
-        };
-    };
-}
-
-export interface SubjectEntry {
-    label: string;
-    count: number;
 }
 
 export interface Facets {
-    subjects: SubjectEntry[];
-    resourceType: {
-        resourceType: ResourceType;
-        count: number;
-    }[];
-    temporal: TemporalFacet[];
+    provider: DataProvider[];
 }
 
 export interface SearchResult {
@@ -90,97 +72,52 @@ export interface SearchResult {
     facets: Facets;
 }
 
-export interface SolrConfig {
-    url: string;
-    coreSelector: string;
+export interface TextFileResponse {
+    jobID: string,
+    textfile: {
+        href: string;
+    };
 }
 
-const SOLR_SUBJECT_FACET_FIELD = "theme_str";
-const SOLR_RESOURCE_TYPE_FACET_FIELD = "type";
-const SOLR_TEMPORAL_FACET_RANGE_FIELD = "datePublished";
-export const proxy = "http://localhost:8080/";
-export const supportForm = "http://localhost/html/nfdi/";
+const OAPIR_URL = import.meta.env.VITE_OAPIR_URL;
+const ZENODO_URL = "https://zenodo.org/api/records";
+const D2K = "/?communities=aquainfra&q=keywords:%22Data-To-Knowledge%20Package%22";
+const PROCESS_CATCHMENT = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
+const RELATED_SEARCHTERM = "https://vm2558.kaj.pouta.csc.fi/rcsearch?keyword=";
+const CREATE_TXT_FILE = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-ddas-galaxy-link-textfile/execution";
+
+const SEARCH_RESULT_LIMIT = "100";
 
 export class SearchService {
-    private config: SolrConfig;
-
-    private resourceTypeFacetBlacklist: string[] = ["person_nested"];
-
-    constructor(opts: ServiceOptions) {
-        if (opts.properties.solr) {
-            this.config = opts.properties.solr as SolrConfig;
-        } else {
-            throw new Error("Configuration for solr is missing.");
-        }
-    }
-
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
-        console.log("Search with following parameters: " + JSON.stringify(searchParams));
-
         const queryParams = this.createQueryParams();
 
         this.addSearchterm(searchParams.searchTerm, queryParams);
 
-        this.addPaging(searchParams.pageSize, searchParams.pageStart, queryParams);
-
-        this.addFacet(queryParams);
-
-        this.addResourceTypes(searchParams.resourceTypes, queryParams);
-
-        this.addSubjects(searchParams.subjects, queryParams);
+        this.addSearchResultsLimit(queryParams);
 
         this.addSpatialFilter(searchParams.spatialFilter, queryParams);
 
-        this.addSorting(searchParams.sorting, queryParams);
+        this.addDataProvider(searchParams.dataProvider, queryParams);
 
-        this.addTemporalFilter(
-            searchParams.temporalFilter,
-            queryParams,
-            searchParams.temporalConfig
-        );
+        this.addDownloadOption(searchParams.downloadOption, queryParams);
 
-        const url = `${this.config.url}/${
-            this.config.coreSelector
-        }/select?${queryParams.toString()}`;
+        const url = `${OAPIR_URL}/search?${queryParams.toString()}`;
+
         return fetch(url).then((response) =>
-            response
-                .json()
-                .then(
-                    (responseData: {
-                        response: SolrSearchResponse;
-                        facet_counts: SolrFacetResponse;
-                    }) => {
-                        const { response } = responseData;
-                        if (response.numFound !== undefined && response.docs !== undefined) {
-                            return {
-                                count: response.numFound,
-                                results: this.createResultEntries(response.docs),
-                                facets: this.createFacets(responseData.facet_counts)
-                            };
-                        } else {
-                            throw new Error("Unexpected response: " + JSON.stringify(responseData));
-                        }
-                    }
-                )
-        );
-    }
+            response.json().then((responseData) => {
+                const response = responseData;
 
-    getMetadata(resourceId: string) {
-        console.log("Get metadata for the following resource ID " + resourceId);
-        const queryParams = this.createQueryParams();
-        if (resourceId) {
-            queryParams.set("ids", resourceId);
-            this.addChildQueryParams(queryParams);
-        }
-        const url = `${this.config.url}/${this.config.coreSelector}/get?${queryParams.toString()}`;
-        return fetch(url).then((response) =>
-            response.json().then((responseData: { response: SolrSearchResponse }) => {
-                const { response } = responseData;
-                if (response.numFound !== undefined && response.docs !== undefined) {
+                if (response.numberMatched !== undefined && response.features !== undefined) {
                     return {
-                        count: response.numFound,
-                        results: response.docs
-                    };
+                        count: response.features.length,
+                        results: response.features,
+                        facets: {
+                            provider: searchParams.dataProvider?.map((dp) => {
+                                return { title: dp };
+                            })
+                        }
+                    } as SearchResult;
                 } else {
                     throw new Error("Unexpected response: " + JSON.stringify(responseData));
                 }
@@ -188,19 +125,53 @@ export class SearchService {
         );
     }
 
-    sendSupportRequest(name: string, email: string, subject: string, content: string) {
-        console.log("Send support form request");
-        const url =
-            proxy +
-            supportForm +
-            `?name=` +
-            name +
-            `&email=` +
-            email +
-            `&subject=` +
-            subject +
-            `&message=` +
-            content;
+    getZenodoMetadata(provider: string, id: string) {
+        if (!provider || !id) {
+            return Promise.reject(new Error("Invalid resourceId"));
+        }
+        const url = `${ZENODO_URL}/${id}`;
+        return fetch(url).then((response) =>
+            response.json().then((responseData) => {
+                if (responseData) {
+                    return { response: responseData, provider: provider };
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
+    }
+
+    getDdasMetadata(provider: string, id: string) {
+        if (!provider || !id) {
+            return Promise.reject(new Error("Invalid resourceId"));
+        }
+        const url = `${OAPIR_URL}/collections/${provider}/items/${id}`;
+        return fetch(url).then((response) =>
+            response.json().then((responseData) => {
+                if (responseData) {
+                    return { response: responseData, provider: provider };
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
+    }
+
+    getDataToKnowledgePackages() {
+        const url = `${ZENODO_URL}${D2K}`;
+        return fetch(url).then((response) =>
+            response.json().then((responseData) => {
+                if (responseData) {
+                    return responseData;
+                } else {
+                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                }
+            })
+        );
+    }
+
+    getDataProvider() {
+        const url = OAPIR_URL + "/collections?f=json&lang=en-US";
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
@@ -212,10 +183,9 @@ export class SearchService {
         );
     }
 
-    getFaqList() {
-        const url =
-            proxy +
-            `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2fFAQ.md/raw`;
+    getRelatedSearchterms(keyword: string) {
+        const baseUrl = RELATED_SEARCHTERM;
+        const url = baseUrl + keyword + "&broader=true&narrower=true&related=true";
         return fetch(url).then((response) =>
             response.text().then((responseData: string) => {
                 if (responseData) {
@@ -227,222 +197,90 @@ export class SearchService {
         );
     }
 
-    getFaq(faqId: string) {
-        const url =
-            proxy +
-            `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
-            faqId +
-            `/raw`;
-        return fetch(url).then((response) =>
-            response.text().then((responseData: string) => {
+    createTxtFile(url: string) {
+        const data = {
+            inputs: {
+                link_from_ddas: url
+            }
+        };
+
+        return fetch(CREATE_TXT_FILE, {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json().then((responseData: TextFileResponse) => {
                 if (responseData) {
                     return responseData;
                 } else {
                     throw new Error("Unexpected response: " + JSON.stringify(responseData));
                 }
-            })
-        );
+            }))
+            .catch((error) => console.error(error));
     }
 
-    getHowToEntry(howToEntry: string) {
-        //console.log("start fetching entry point for id: " + howToEntry);
-        const url =
-            proxy +
-            `https://git.rwth-aachen.de/api/v4/projects/79252/repository/files/docs%2f` +
-            howToEntry +
-            `/raw`;
-        return fetch(url).then((response) =>
-            response.text().then((responseData: string) => {
-                if (responseData) {
-                    return responseData;
-                } else {
-                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
-                }
-            })
-        );
-    }
+    processCatchment(lonLat:number[]) {
+        const url = PROCESS_CATCHMENT;
+        
+        const data = {
+            inputs: {
+                lon: lonLat[0],
+                lat: lonLat[1],
+                comment: "..."
+            }
+        };
 
-    getLhbStructure() {
-        const url =
-            proxy +
-            `https://git.rwth-aachen.de/nfdi4earth/livinghandbook/livinghandbook/-/raw/main/mkdocs.yml`;
-        return fetch(url).then((response) =>
-            response.text().then((responseData: string) => {
-                if (responseData) {
-                    return responseData;
+        return fetch(url, {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json().then((result) => {
+                if (result) {
+                    return result;
                 } else {
-                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
+                    throw new Error("Unexpected response: " + JSON.stringify(result));
                 }
-            })
-        );
-    }
-
-    getChapter(chapter: string) {
-        const url =
-            `${this.config.url}/${this.config.coreSelector}/select?ident=true&q.op=OR&q=sourceSystem_id%3A"` +
-            chapter +
-            `"`;
-        return fetch(url).then((response) =>
-            response.json().then((responseData: { response: object }) => {
-                if (responseData) {
-                    return responseData;
-                } else {
-                    throw new Error("Unexpected response: " + JSON.stringify(responseData));
-                }
-            })
-        );
+            }))
+            .catch((error) => console.error(error));
     }
 
     private addSpatialFilter(spatialFilter: number[] | undefined, queryParams: URLSearchParams) {
         if (spatialFilter && spatialFilter.length > 0) {
             if (spatialFilter.length === 4) {
-                const [minLon, minLat, maxLon, maxLat] = spatialFilter;
-                queryParams.set("fq", `geometry:[${minLat},${minLon} TO ${maxLat},${maxLon}]`);
+                const [minLat, minLon, maxLat, maxLon] = spatialFilter;
+                queryParams.set("bbox", `${minLat},${minLon},${maxLat},${maxLon}`);
             }
         }
     }
 
-    private addTemporalFilter(
-        temporalFilter: TemporalFilter | undefined,
-        queryParams: URLSearchParams,
-        temporalConfig?: TemporalConfig
-    ) {
-        if (temporalFilter) {
-            queryParams.set(
-                "fq",
-                `datePublished:[${temporalFilter.startYear} TO ${temporalFilter.endYear}]`
-            );
-        }
-        if (temporalConfig) {
-            queryParams.set("facet.range", SOLR_TEMPORAL_FACET_RANGE_FIELD);
-            queryParams.set("facet.range.start", `${temporalConfig.startYear}-01-01T00:00:00Z`);
-            queryParams.set("facet.range.end", `${temporalConfig.endYear + 1}-01-01T00:00:00Z`);
-            queryParams.set("facet.range.gap", temporalConfig.gap);
+    private addDataProvider(dataProvider: string[] | undefined, queryParams: URLSearchParams) {
+        if (dataProvider?.length) {
+            queryParams.set("collections", `${dataProvider.map((e) => `${e}`).join(",")}`);
         }
     }
 
-    private addResourceTypes(resourceTypes: string[] | undefined, queryParams: URLSearchParams) {
-        if (resourceTypes?.length) {
-            const mapping = resourceTypes.map((e) => mapFromResourceType(e as ResourceType));
-            queryParams.set(
-                "fq",
-                `${SOLR_RESOURCE_TYPE_FACET_FIELD}:(${mapping.map((e) => `"${e}"`).join(" OR ")})`
-            );
+    private addDownloadOption(downloadOption: boolean, queryParams: URLSearchParams) {
+        if (downloadOption) {
+            queryParams.set("rdl", `${downloadOption}`);
         }
     }
 
-    private addSubjects(subjects: string[] | undefined, queryParams: URLSearchParams) {
-        if (subjects?.length) {
-            queryParams.set(
-                "fq",
-                `${SOLR_SUBJECT_FACET_FIELD}:(${subjects.map((e) => `"${e}"`).join(" OR ")})`
-            );
-        }
-    }
-
-    private addFacet(queryParams: URLSearchParams) {
-        // add parameter to request facets
-        queryParams.set("facet", "true");
-        // parameter to get facet for resource type
-        queryParams.set("facet.field", SOLR_RESOURCE_TYPE_FACET_FIELD);
-        queryParams.append("facet.field", SOLR_SUBJECT_FACET_FIELD);
-    }
-
-    private addPaging(
-        pageSize: number | undefined,
-        pageStart: number | undefined,
+    private addSearchResultsLimit(
         queryParams: URLSearchParams
     ) {
-        if (pageSize !== undefined) {
-            queryParams.set("rows", pageSize.toString());
-            if (pageStart !== undefined) {
-                queryParams.set("start", (pageStart * pageSize).toString());
-            }
-        }
-    }
-
-    private addSorting(sorting: string | undefined, queryParams: URLSearchParams) {
-        if (sorting !== undefined && sorting !== "") {
-            queryParams.set("sort", sorting);
-        }
+        queryParams.set("limit", SEARCH_RESULT_LIMIT);
     }
 
     private addSearchterm(searchTerm: string | undefined, queryParams: URLSearchParams) {
         if (searchTerm) {
             queryParams.set("q", searchTerm);
-            queryParams.set("df", "collector");
-        } else {
-            queryParams.set("q", "*:*");
         }
-        this.addChildQueryParams(queryParams);
-    }
-
-    private addChildQueryParams(queryParams: URLSearchParams) {
-        queryParams.set("fl", "*, [child author]");
-        queryParams.set("fq", '-type:"person_nested"');
     }
 
     private createQueryParams(): URLSearchParams {
         const queryParams: URLSearchParams = new URLSearchParams();
-        queryParams.set("ident", "true");
-        queryParams.set("q.op", "OR");
         return queryParams;
-    }
-
-    private createFacets(facet_counts: SolrFacetResponse): Facets {
-        return {
-            subjects: this.createSubjectFacets(facet_counts),
-            resourceType: this.createResourceTypeFacet(facet_counts),
-            temporal: this.createTemporalFacet(facet_counts)
-        };
-    }
-
-    private createSubjectFacets(
-        facet_counts: SolrFacetResponse
-    ): { label: string; count: number }[] {
-        const themeFacets = facet_counts.facet_fields[SOLR_SUBJECT_FACET_FIELD];
-        return themeFacets ? this.createFragments(themeFacets) : [];
-    }
-
-    private createResourceTypeFacet(facet_counts: SolrFacetResponse) {
-        const resourceTypeFacet = facet_counts.facet_fields["type"];
-        if (resourceTypeFacet) {
-            return this.createFragments(resourceTypeFacet).map((e) => ({
-                resourceType: mapToResourceType(e.label),
-                count: e.count
-            }));
-        }
-        return [];
-    }
-
-    private createTemporalFacet(facet_counts: SolrFacetResponse) {
-        const facetCounts = facet_counts.facet_ranges[SOLR_TEMPORAL_FACET_RANGE_FIELD]?.counts;
-        if (facetCounts) {
-            return this.createFragments(facetCounts).map((e) => ({
-                dateStr: e.label.substring(0, 4),
-                count: e.count
-            }));
-        }
-        return [];
-    }
-
-    private createFragments(facetResponse: Array<string | number>) {
-        type FacetFragment = { label: string; count: number };
-        const entries: FacetFragment[] = [];
-        for (let i = 0; i < facetResponse.length; i += 2) {
-            const [label, count] = facetResponse.slice(i, i + 2);
-            if (typeof label === "string" && typeof count === "number") {
-                const idx = this.resourceTypeFacetBlacklist.findIndex((e) => e === label);
-                if (idx === -1) {
-                    entries.push({ label, count });
-                }
-            }
-        }
-        return entries;
-    }
-
-    private createResultEntries(docs: SolrSearchResultItem[]): SearchResultItem[] {
-        return docs.map((item) => getHandler(item).handle(item));
     }
 }
 

@@ -1,3 +1,4 @@
+import { ZenodoMetadataResponse } from "../../DkpUtils";
 import { mapFromResourceType, ResourceType } from "../../ResourceTypeUtils";
 import { SearchResultItem, SolrSearchResultItem } from "../../SearchService";
 
@@ -10,15 +11,15 @@ export type MinSearchResultItem = {
 export abstract class SearchResultHandler {
     public abstract readonly resourceType: ResourceType;
 
-    public canHandle(item: SolrSearchResultItem): boolean {
-        if (item.type.length) {
-            return item.type.findIndex((e) => e === mapFromResourceType(this.resourceType)) > -1;
+    public canHandle(item: string): boolean {
+        if (item) {
+            return item === (mapFromResourceType(this.resourceType) as string);
         }
         return false;
     }
 
     protected abstract handleExplicit(
-        item: SolrSearchResultItem
+        item: SolrSearchResultItem | ZenodoMetadataResponse
     ): Partial<SearchResultItem> & MinSearchResultItem;
 
     public handle(item: SolrSearchResultItem): SearchResultItem {

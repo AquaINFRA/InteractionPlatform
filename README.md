@@ -1,14 +1,14 @@
 # AquaINFRA Interaction Platform
 The AquaINFRA Interaction Platform (AIP) will be the central gateway for scientific communities in the aquatic realm to interact with EOSC and access the AquaINFRA resources (harmonisation and processing services, research products, visualisation, virtual research environment and training platform).
 
-## Very quick installation guide
+## Installation guide
 
 ```bash
 $ git clone https://github.com/AquaINFRA/InteractionPlatform.git
 $ cd InteractionPlatform
 $ git checkout dev
-$ docker compose build --no-cache //Only needed if there any changes in the source Code
-$ docker compose up
+$ pnpm install
+$ pnpm run dev
 ```
 
 ## License
@@ -21,7 +21,7 @@ $ docker compose up
 
 ## Contributors
 
-Christin Henzen, Auriol Degbelo, Markus Konkol, Simon Jirka, Jan Schulte, Arne Vogt, Christoph Wagner, Jonas Grieb, Ralf Klammer.
+Christin Henzen, Auriol Degbelo, Markus Konkol, Simon Jirka, Jan Schulte, Arne Vogt, Christoph Wagner, Jonas Grieb, Ralf Klammer, Jakob Bernd.
 
 ## Funding
 This project has received funding from the European Commission’s Horizon Europe Research and Innovation programme under grant agreement No 101094434. Project coordinator: Aalborg Universitet (AAU). The information and views of this website lie entirely with the authors. The European Commission is not responsible for any use that may be made of the information it contains.

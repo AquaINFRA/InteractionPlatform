@@ -19,6 +19,14 @@ export const Metadata = (props: {
     const [expanded, setExpanded] = useState(expandedByDefault);
     const metadataElements = Object.values(props.metadataElements);
 
+    const allValuesUndefined = metadataElements.every(
+        (item) => item.val === undefined || item.val === null
+    );
+
+    if (allValuesUndefined) {
+        return null;
+    }
+
     return (
         <Box>
             <Box>
@@ -44,7 +52,10 @@ export const Metadata = (props: {
                     </AccordionPanel>
                     {visibleElements < metadataElements.length ? (
                         <div>
-                            <AccordionButton onClick={() => setExpanded(!expanded)}>
+                            <AccordionButton
+                                justifyContent="center"
+                                onClick={() => setExpanded(!expanded)}
+                            >
                                 <Flex
                                     alignItems="center"
                                     direction="column"
@@ -56,11 +67,11 @@ export const Metadata = (props: {
                                             <Box>
                                                 <UpIcon />
                                             </Box>
-                                            <Box className="metadataShowHide">Hide metadata</Box>
+                                            <Box className="metadataShowHide">Show less</Box>
                                         </>
                                     ) : (
                                         <>
-                                            <Box className="metadataShowHide">Show full list</Box>
+                                            <Box className="metadataShowHide">All metadata</Box>
                                             <Box>
                                                 <DownIcon />
                                             </Box>

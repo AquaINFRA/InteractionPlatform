@@ -1,59 +1,53 @@
-import { Box, Hide, HStack } from "@open-pioneer/chakra-integration";
+import { Box, Divider, Flex, HStack } from "@open-pioneer/chakra-integration";
 import { useNavigate } from "react-router-dom";
-import { useIntl } from "open-pioneer:react-hooks";
 
-import { BorderColor } from "../../Theme";
-import { LanguageToggler } from "./LanguageToggler";
-//import { Login } from "./Login";
-import { Logo } from "./Logo";
+import {useSearchState} from "../../views/Search/SearchState";
+
+import { Logo, LogoSmall } from "./Logo";
 import { MenuButton } from "./MenuButton";
-import { UserSupportLink } from "./UserSupportLink";
+import { Feedback } from "./Feedback";
+import { scrollUp } from "../../services/SearchUtils";
 
 export const Header = () => {
-    const intl = useIntl();
     const navigate = useNavigate();
+    const searchState = useSearchState();
 
     const backToStart = () => {
+        searchState.setSearchTerm("");
+        searchState.setSelectedDataProvider([]);
+        searchState.setSpatialFilter([]);
         navigate("/");
+        scrollUp(0);
     };
 
     return (
-        <HStack
-            gap="20px"
-            margin="6px 0px"
-            padding="36px 0px"
-            borderBottom="1px solid"
-            borderBottomColor={BorderColor}
-        >
-            <Box _hover={{ cursor: "pointer" }} onClick={backToStart}>
-                <Logo />
-            </Box>
-            <Box w="100%">
-                <div style={{ textAlign: "center", fontSize: "16pt" }}>
-                    {intl.formatMessage({
-                        id: "header.feedback"
-                    })}
-                    &nbsp;
-                    <a
-                        href="https://docs.google.com/document/d/1AbH2EOsxC2kddhmSnqpSaRkmfvrtbd0658rr8N05Vc8/edit"
-                        className="link"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        {intl.formatMessage({
-                            id: "header.feedbackLink"
-                        })}
-                    </a>
+        <>
+            <HStack
+                justifyContent="space-between"
+                alignItems="center"
+                margin="6px 0px"
+                padding={{ base: "6px 1px 0px", custombreak: "36px 1px 10px" }}
+            >
+                <Box _hover={{ cursor: "pointer" }} onClick={backToStart} id = "logoBig">
+                    <Logo />
+                </Box>
+                <Box _hover={{ cursor: "pointer" }} onClick={backToStart} id = "logoSmall">
+                    <LogoSmall />
+                </Box>
+                <div id="feedback1">
+                    <Feedback fontSize="16pt" />
                 </div>
-            </Box>
-            <Hide below="custombreak">
-                <UserSupportLink></UserSupportLink>
-            </Hide>
-            {/*<Hide below="custombreak">
-                <Login></Login>
-            </Hide>*/}
-            <LanguageToggler></LanguageToggler>
-            <MenuButton></MenuButton>
-        </HStack>
+                <Flex gap={{ base: "10px", custombreak: "30px" }}>
+                    <MenuButton />
+                </Flex>
+            </HStack>
+            <Divider className="separator" />
+            <div id="feedback2">
+                <div className="feedbackText">
+                    <Feedback fontSize="12pt" />
+                </div>
+                <Divider className="separator" />
+            </div>
+        </>
     );
 };

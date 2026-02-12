@@ -1,23 +1,15 @@
 import { Box, CheckboxProps, chakra, useCheckbox } from "@open-pioneer/chakra-integration";
 
-import { PrimaryColor } from "../../../../Theme";
+import { PrimaryColor, PrimaryFont } from "../../../../Theme";
 
 export interface FacetCheckboxProps {
     label: string;
-    count?: number;
+    description: string;
 }
 
 export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
     const { state, getInputProps, getLabelProps, htmlProps } = useCheckbox(props);
-    const { label, count } = props;
-
-    const countStyles = {
-        color: PrimaryColor,
-        opacity: 0.5,
-        fontFamily: "Open Sans",
-        fontSize: "14px",
-        fontWeight: 400
-    };
+    const { label, description } = props;
 
     return (
         <chakra.label
@@ -25,10 +17,11 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
             flexDirection="row"
             alignItems="center"
             gridColumnGap={2}
-            rounded="lg"
+            borderRadius="8px"
             cursor="pointer"
             onClick={(event) => event.stopPropagation()}
             {...htmlProps}
+            title={description}
         >
             <input {...getInputProps()} hidden />
             <Box width="19px">
@@ -66,14 +59,13 @@ export const FacetCheckbox = (props: CheckboxProps & FacetCheckboxProps) => {
             </Box>
             <Box
                 color={PrimaryColor}
-                fontFamily="Open Sans"
+                fontFamily={PrimaryFont}
                 fontSize="14px"
                 fontWeight={state.isChecked ? "700" : "400"}
                 {...getLabelProps()}
             >
                 {label}
             </Box>
-            {count !== undefined ? <Box __css={countStyles}>({count})</Box> : <></>}
         </chakra.label>
     );
 };

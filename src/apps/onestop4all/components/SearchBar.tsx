@@ -1,120 +1,61 @@
-import { Box, Button, HStack, IconButton, Input, Select } from "@open-pioneer/chakra-integration";
-import { useIntl } from "open-pioneer:react-hooks";
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-
-import { ResourceType } from "../services/ResourceTypeUtils";
-import { BorderColor, PrimaryColor } from "../Theme";
-import {
-    UrlSearchParameterType,
-    UrlSearchParams,
-    useSearchState
-} from "../views/Search/SearchState";
-import { DropdownArrowIcon, SearchIcon } from "./Icons";
+import { Box, Button, Flex, Input } from "@open-pioneer/chakra-integration";
+import { UrlSearchParameterType, UrlSearchParams, useSearchState } from "../views/Search/SearchState";
+import { SearchIcon } from "./Icons";
+import { lineBlue, lineGrey } from "../views/Search/Facets/SpatialCoverageFacet/Styles";
 
 export function SearchBar() {
     const [searchTerm, setSearchTerm] = useState<string>("");
-    const intl = useIntl();
-    const [selectedResource, setSelectResource] = useState("");
-    const resourceTypes = Object.values(ResourceType).sort((a, b) => a.localeCompare(b));
     const searchState = useSearchState();
     const navigate = useNavigate();
     const location = useLocation();
 
-    useEffect(() => setSearchTerm(searchState.searchTerm), [searchState.searchTerm]);
-
     useEffect(() => {
-        if (
-            searchState.selectedResourceTypes.length === 1 &&
-            searchState.selectedResourceTypes[0]
-        ) {
-            setSelectResource(searchState.selectedResourceTypes[0]);
-        } else {
-            setSelectResource("");
-        }
-    }, [searchState.selectedResourceTypes]);
+        setSearchTerm(searchState.searchTerm);
+    }, [searchState.searchTerm]);
 
-    function startSearch(): void {
+    const startSearch = () => {
         searchState.setSearchTerm(searchTerm);
-        if (selectedResource === "") {
-            searchState.setSelectedResourceTypes([]);
-        } else {
-            searchState.setSelectedResourceTypes([selectedResource]);
-        }
-        if (!location.pathname.endsWith("search")) {
-            const params: UrlSearchParams = {};
-            params[UrlSearchParameterType.Searchterm] = searchTerm;
-            if (!selectedResource) {
-                searchState.setSelectedResourceTypes([]);
-            }
-            navigate({
-                pathname: "/search",
-                search: `?${createSearchParams({ ...params })}`
-            });
-        }
-    }
-
-    function handleKeyDown(key: string): void {
-        if (key === "Enter") {
-            startSearch();
-        }
-    }
+        searchState.setSelectedDataProviderTmp(searchState.selectedDataProvider);
+    
+        if (location.pathname.endsWith("/search")) return;
+    
+        const params: UrlSearchParams = {
+            [UrlSearchParameterType.Searchterm]: searchTerm,
+            [UrlSearchParameterType.DataProvider]: searchState.selectedDataProvider,
+            [UrlSearchParameterType.DownloadOption]: `${searchState.downloadOption}`
+        };
+    
+        navigate({
+            pathname: "/search",
+            search: `?${createSearchParams({...params})}`
+        });
+    };
 
     return (
-        <Box
-            borderWidth={{ base: "10px", custombreak: "15px" }}
-            borderColor="rgb(5, 102, 141, 0.7)"
-        >
-            <HStack padding={{ base: "5px 10px", custombreak: "8px 15px" }} w="100%" bg="white">
-                <Select
-                    icon={<DropdownArrowIcon />}
-                    iconSize="12"
-                    variant="unstyled"
-                    textTransform="uppercase"
-                    color={PrimaryColor}
-                    placeholder={intl.formatMessage({
-                        id: "search.search-bar.dropdownPlaceholder"
-                    })}
-                    borderColor="white"
-                    flex={{ base: "0 0 100px", custombreak: "0 0 250px" }}
-                    value={selectedResource}
-                    onChange={(event) => setSelectResource(event.target.value)}
-                    _hover={{ cursor: "pointer" }}
-                >
-                    {createResourceTypeSelectOptions()}
-                </Select>
-                <Box flex="0 0 1px" bgColor={BorderColor} alignSelf="stretch" />
+        <Box borderWidth={{ base: "10px", custombreak: "15px" }} borderColor="rgba(5, 102, 141, 0.7)">
+            <Flex direction={{ base: "column", custombreak: "row" }} bg="white" align="center" p={2} gap={2}>
                 <Input
-                    placeholder={intl.formatMessage({ id: "search.search-bar.placeholder" })}
+                    placeholder="Search for research data"
                     value={searchTerm}
-                    onChange={(event) => setSearchTerm(event.target.value)}
-                    onKeyDown={(event) => handleKeyDown(event.key)}
-                    borderColor="white"
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && startSearch()}
+                    borderColor="gray.300"
+                    flex={1}
+                    px={4}
                 />
                 <Button
                     leftIcon={<SearchIcon boxSize={6} />}
                     variant="solid"
-                    hideBelow="custombreak"
-                    onClick={() => startSearch()}
+                    onClick={startSearch}
+                    isLoading={!searchState.isLoaded}
+                    loadingText="Searching..."
+                    _hover={searchState.isLoaded ? { bg: lineBlue } : { bg: lineGrey}}
                 >
-                    <Box>{intl.formatMessage({ id: "search.search-bar.button-label" })}</Box>
+                    Search
                 </Button>
-                <IconButton
-                    aria-label="start search"
-                    size="sm"
-                    hideFrom="custombreak"
-                    onClick={() => startSearch()}
-                    icon={<SearchIcon />}
-                />
-            </HStack>
+            </Flex>
         </Box>
     );
-
-    function createResourceTypeSelectOptions() {
-        return resourceTypes.map((e, i) => (
-            <option value={e} key={i}>
-                {e}
-            </option>
-        ));
-    }
 }
