@@ -19,6 +19,14 @@ export const Metadata = (props: {
     const [expanded, setExpanded] = useState(expandedByDefault);
     const metadataElements = Object.values(props.metadataElements);
 
+    const allValuesUndefined = metadataElements.every(
+        (item) => item.val === undefined || item.val === null
+    );
+
+    if (allValuesUndefined) {
+        return null;
+    }
+
     return (
         <Box>
             <Box>

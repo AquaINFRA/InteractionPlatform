@@ -1,13 +1,16 @@
-export const areSearchParamsEqual = (currentParams: any, previousParams: any) => {
-    
+export const areSearchParamsEqual = (
+    currentParams: URLSearchParams,
+    previousParams?: URLSearchParams
+): boolean => {
+
     const otherParams = areSearchParamsEqualDp(currentParams, previousParams);
 
     const dataProviderNew = currentParams.getAll("dataProvider");
-    const dataProviderOld = previousParams?.getAll("dataProvider") || [];
+    const dataProviderOld = previousParams?.getAll("dataProvider") ?? [];
 
-    const arraysAreEqual = (arr1: string[], arr2: string[]) => {
+    const arraysAreEqual = (arr1: string[], arr2: string[]): boolean => {
         if (arr1.length !== arr2.length) return false;
-        return arr1.slice().sort().join() === arr2.slice().sort().join(); // Sort a copy to avoid mutation
+        return arr1.slice().sort().join() === arr2.slice().sort().join();
     };
 
     return (
@@ -16,16 +19,19 @@ export const areSearchParamsEqual = (currentParams: any, previousParams: any) =>
     );
 };
 
-export const areSearchParamsEqualDp = (currentParams: any, previousParams: any) => {
-    
+export const areSearchParamsEqualDp = (
+    currentParams: URLSearchParams,
+    previousParams?: URLSearchParams
+): boolean => {
+
     const searchTermNew = currentParams.get("searchterm");
-    const searchTermOld = previousParams?.get("searchterm") || null;
+    const searchTermOld = previousParams?.get("searchterm") ?? null;
 
     const downloadLinkNew = currentParams.get("rdl");
-    const downloadLinkOld = previousParams?.get("rdl") || null;
+    const downloadLinkOld = previousParams?.get("rdl") ?? null;
 
     const spatialFilterNew = currentParams.get("spatialfilter");
-    const spatialFilterOld = previousParams?.get("spatialfilter") || null;
+    const spatialFilterOld = previousParams?.get("spatialfilter") ?? null;
 
     return (
         searchTermNew === searchTermOld &&

@@ -6,12 +6,18 @@ import { SearchService } from "../../../services";
 import { useEffect, useState } from "react";
 import { ZenodoMetadataResponse } from "../../../services/interfaces";
 
+interface ZenodoSearchResponse {
+    hits: {
+        hits: ZenodoMetadataResponse[];
+    };
+}
+
 export const DemonstratorEntries = () => {
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const [demonstrators, setDemonstrators] = useState<ZenodoMetadataResponse[]>([]);
 
     useEffect(() => {
-        searchSrvc.getDataToKnowledgePackages().then((result: any) => {
+        searchSrvc.getDataToKnowledgePackages().then((result: ZenodoSearchResponse) => {
             if (result) {
                 setDemonstrators(result.hits.hits);
             } else {
@@ -32,7 +38,7 @@ export const DemonstratorEntries = () => {
                 spacing={5}
                 marginTop={"1%"}
             >
-                {demonstrators.map((demonstrator: any, index: number) => (
+                {demonstrators.map((demonstrator, index) => (
                     <DemonstratorEntry
                         key={index}
                         title={demonstrator.metadata.title || "Untitled"}

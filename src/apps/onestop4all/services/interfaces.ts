@@ -9,6 +9,7 @@ export interface RelatedIdentifier {
 
 export interface ZenodoMetadataResponse {
     title: string;
+    doi: string;
     updated: string;
     doi_url: string;
     provider: string;
@@ -25,6 +26,7 @@ export interface ZenodoMetadataResponse {
         archive: string;
     };
     metadata: {
+        title: string;
         description: string;
         creators: [{
             affiliation: string;
