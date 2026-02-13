@@ -20,7 +20,7 @@ export interface ProviderWithResults {
 export function DataProviderFacet() {
     const searchState = useSearchState();
     const [entries, setEntries] = useState<SelectableDataProvider[]>([]);
-    const [allSelected, setAllSelected] = useState(true);
+    const [allSelected, setAllSelected] = useState(false);
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const [loading, setLoading] = useState(true);
     const [searchParams] = useSearchParams();
@@ -36,12 +36,12 @@ export function DataProviderFacet() {
                 //filteredEntries = filteredEntries.filter((entry: any) => entry.id !== "gbif");
                 setEntries(sortedEntries);
 
-                const ids = sortedEntries.map((entry: any) => entry.id);
+                /*const ids = sortedEntries.map((entry: any) => entry.id);
                 if (searchState.selectedDataProvider.length === 0) {
                     searchState.setSelectedDataProvider(ids);
                     searchState.setSelectedDataProviderTmp(ids);
                 }
-                setAllSelected(true);
+                setAllSelected(false);*/
                 const providerTitles = sortedEntries.map((se: any) => {
                     return { title: se.title, id: se.id, description: se.description };
                 });

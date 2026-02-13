@@ -39,6 +39,12 @@ export interface ISearchState {
     setDownloadOption(downloadOption: boolean): void;
     selectedDataProvider: string[];
     setSelectedDataProvider(dataProvider: string[]): void;
+    /*
+        setSelectedDataProviderTmp is needed because if I use remove it and
+        use setSelectedDataProvider instead and listen to it in useEffect under 
+        Search.tsx, the search would update just by clicking on a checkbox. 
+        Hwoever, users should make the selection first and trigger search once done.
+    */ 
     selectedDataProviderTmp: string[];
     setSelectedDataProviderTmp(dataProvider: string[]): void;
     dkps: any[] | undefined;
@@ -59,6 +65,8 @@ export interface ISearchState {
     pageStart: number;
     setPageStart(pageSize: number): void;
     searchResults: SearchResult | undefined;
+    searchTriggered: boolean | undefined;
+    setSearchTriggered(searchTriggered: boolean | undefined): void;
     isLoaded: boolean;
     search(): void;
     searchParamsOld: any;
@@ -90,6 +98,7 @@ export const SearchState = (props: PropsWithChildren) => {
 
     // init search results and loading state
     const [searchResults, setSearchResults] = useState<SearchResult>();
+    const [searchTriggered, setSearchTriggered] = useState<boolean>();
     const [isLoaded, setIsLoaded] = useState(true);
     const [searchParamsOld, setSearchParamsOld] = useState<any>();
     const [providerWithResults, setProviderWithResults] = useState<ProviderWithResults[]>();
@@ -141,39 +150,44 @@ export const SearchState = (props: PropsWithChildren) => {
     const [spatialFilter, setSpatialFilter] = useState(sp);
     const [dataProviderTitles, setDataProviderTitles] = useState<string[]>([]);
 
-    function search() {
+    async function search() {
         setIsLoaded(false);
         setDataProviderTriggered(true);
-        selectedDataProvider.length > 0 && searchTerm.trim() !== ""
-            ? searchSrvc
-                .doSearch({
-                    searchTerm,
-                    dataProvider: selectedDataProvider,
-                    downloadOption,
-                    spatialFilter
-                })
-                .then((result) => {
-                    setIsLoaded(true);
-                    setSearchResults(result);
-                    const dataProviderFacet = result.facets.provider.map((dataprovider) => {
-                        return {
-                            id: dataprovider.title,
-                            title: dataprovider.title,
-                            selected:
-                                selectableDataProvider.findIndex(
-                                    (selectabledataprovider) =>
-                                        selectabledataprovider.title === dataprovider.title
-                                ) >= 0
-                        };
-                    });
-                    setSelectableDataProvider(dataProviderFacet);
-                })
-                .catch((error) => {
-                    setIsLoaded(true);
-                    console.error(error);
-                })
-            : setIsLoaded(true);
         setSearchResults(undefined);
+        setSearchTriggered(true);
+
+        const hasProvider = selectedDataProvider.length > 0;
+        const hasSearchTerm = searchTerm.trim() !== "";
+
+        if (!hasProvider || !hasSearchTerm) {
+            setIsLoaded(true);
+            return;
+        }
+
+        try {
+            const result = await searchSrvc.doSearch({
+                searchTerm,
+                dataProvider: selectedDataProvider,
+                downloadOption,
+                spatialFilter
+            });
+
+            setSearchResults(result);
+
+            const dataProviderFacet = result?.facets?.provider?.map(dp => ({
+                id: dp.title,
+                title: dp.title,
+                selected: selectableDataProvider.some(
+                    sdp => sdp.title === dp.title
+                )
+            })) ?? [];
+
+            setSelectableDataProvider(dataProviderFacet);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoaded(true);
+        }
     }
 
     const state: ISearchState = {
@@ -195,6 +209,8 @@ export const SearchState = (props: PropsWithChildren) => {
         pageStart,
         setPageStart,
         searchResults,
+        searchTriggered,
+        setSearchTriggered,
         isLoaded,
         search,
         setSelectedDataProvider,

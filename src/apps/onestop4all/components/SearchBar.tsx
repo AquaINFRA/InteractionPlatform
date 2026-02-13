@@ -17,7 +17,7 @@ export function SearchBar() {
 
     const startSearch = () => {
         searchState.setSearchTerm(searchTerm);
-        searchState.setSelectedDataProviderTmp(searchState.selectedDataProvider);
+        searchState.setSelectedDataProviderTmp(searchState.selectedDataProvider); //see searchState for more info on selectedDataProviderTmp
     
         if (location.pathname.endsWith("/search")) return;
     

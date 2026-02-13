@@ -77,7 +77,7 @@ export function SearchView() {
     }, [
         searchState.searchTerm,
         searchState.spatialFilter,
-        searchState.selectedDataProviderTmp,
+        searchState.selectedDataProviderTmp, //see searchState for more info on selectedDataProviderTmp
         searchState.downloadOption
     ]);
 
@@ -115,25 +115,30 @@ export function SearchView() {
                                     style={{ fontFamily: PrimaryFont, color: "red" }}
                                 >
                                     {(() => {
-                                        const { selectedDataProvider, searchResults, searchTerm } = searchState;
+                                        const { selectedDataProvider, searchResults, searchTerm, searchTriggered, setSearchTriggered } = searchState;
                                         const hasProvider = selectedDataProvider.length > 0;
                                         const hasSearchTerm = searchTerm.trim() !== "";
                                         const resultsCount = searchResults?.count;
-
-                                        if (hasProvider && !resultsCount && hasSearchTerm) {
-                                            return <span style={{ color: "black" }}>0 Results for your search</span>;
-                                        }
                                         if (resultsCount) {
                                             return <span style={{ color: "black" }}>{resultsCount} Results for your search</span>;
                                         }
                                         if (!hasProvider && !hasSearchTerm) {
-                                            return "Select a data provider on the right, type in a search term & press \"search\"";
+                                            return "Enter a search term, select a data provider on the right & press \"search\"";
                                         }
                                         if (!hasProvider && hasSearchTerm) {
+                                            setSearchTriggered(undefined);
                                             return "Select a data provider on the right and press \"search\"";
                                         }
                                         if (hasProvider && !hasSearchTerm) {
+                                            setSearchTriggered(undefined);
                                             return "Type in a search term and press \"search\"";
+                                        }
+                                        if (hasProvider && hasSearchTerm && !resultsCount && searchTriggered) {
+                                            return <span style={{ color: "black" }}>0 Results for your search</span>;
+                                        }
+                                        if (hasProvider && hasSearchTerm && !resultsCount && !searchTriggered) {
+                                            setSearchTriggered(undefined);
+                                            return "Press search";
                                         }
                                         return null;
                                     })()}
