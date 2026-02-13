@@ -17,7 +17,7 @@ export const RelatedTerms = () => {
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
     const [myJson, setMyJson] = useState<Array<object>>([]);
     const searchState = useSearchState();
-    const [expanded, setExpanded] = useState(true);
+    const [expanded, setExpanded] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -57,13 +57,13 @@ export const RelatedTerms = () => {
                     </AccordionPanel>
     
                     <AccordionButton justifyContent="center" onClick={() => setExpanded(!expanded)} mb="2%">
-                        <Flex alignItems="center" direction="column" gap="4px" mx="40%">
+                        <Flex alignItems="center" direction="column" gap="4px" mx="30%">
                             {expanded ? (
                                 <>
                                     <Box>
                                         <UpIcon />
                                     </Box>
-                                    <Box className="metadataShowHide">Hide related terms</Box>
+                                    <Box className="metadataShowHide">Hide</Box>
                                 </>
                             ) : (
                                 <>
