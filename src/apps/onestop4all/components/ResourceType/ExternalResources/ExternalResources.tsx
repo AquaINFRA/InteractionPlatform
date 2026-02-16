@@ -8,6 +8,7 @@ import { ImportToGalaxyBtn } from "./ImportToGalaxyBtn";
 import { DatasetUrlInput } from "./InsertUrl";
 import { LinkObject } from "../../../services/interfaces";
 import { scrollUp } from "../../../services/SearchUtils";
+import { TooltipActionButton } from "./TooltipActionButton";
 
 const EXCLUDED_TITLES = new Set([
     "The landing page of this server as HTML",
@@ -73,11 +74,11 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
         switch(link.type) {
             case "OGC API - Features":
                 return (
-                    <ActionButton
-                        label="OGC API Features"
-                        icon={<DownloadIcon color="white" />}
-                        variant="solid"
-                        fun={() => openBuilder(link.href)} 
+                    <TooltipActionButton
+                        href={link.href}
+                        label="Open"
+                        icon={<ExternalLinkIcon color="white" />}
+                        onClick={() => openBuilder(link.href)}
                     />
                 );
             case "application/zip":
@@ -96,28 +97,30 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
             case "json":
             case "application/json":
                 return (
-                    <Box>
-                        <ActionButton
+                    <>
+                        <TooltipActionButton
+                            href={link.href}
                             label="Download"
                             icon={<DownloadIcon color="white" />}
-                            variant="solid"
-                            fun={() => window.open(link.href as string, "_blank")}
+                            onClick={() => window.open(link.href as string, "_blank")}
                         />
+
                         <Box pt={3}>
-                            <ImportToGalaxyBtn url={link.href} disabled={urlToImport === link.href} />
+                            <ImportToGalaxyBtn
+                                url={link.href}
+                                disabled={urlToImport === link.href}
+                            />
                         </Box>
-                    </Box>
+                    </>
                 );
             default: 
                 return (
-                    <Box>
-                        <ActionButton
-                            label="Visit"
-                            icon={<ExternalLinkIcon color="white" />}
-                            variant="solid"
-                            fun={() => window.open(link.href as string, "_blank")}
-                        />
-                    </Box>
+                    <TooltipActionButton
+                        href={link.href}
+                        label="Open"
+                        icon={<ExternalLinkIcon color="white" />}
+                        onClick={() => window.open(link.href as string, "_blank")}
+                    />
                 );
         }
     };
@@ -138,12 +141,30 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
             {visibleLinks.map((link: LinkObject, i: number) => (
                 <Box key={i}>
                     {link.href && (
-                        <Box>
-                            <span className="sideButtonTag">Title: </span>
-                            <span className="sideButtonValue">
-                                {link.title ?? link.description ?? "No information available"}
-                            </span>
-                        </Box>
+                        <>
+                            <Box>
+                                <span className="sideButtonTag">Title: </span>
+                                <span className="sideButtonValue">
+                                    {link.title ?? link.description ?? "No title available"}
+                                </span>
+                            </Box>
+                            {link.protocol &&
+                                <Box>
+                                    <span className="sideButtonTag">Protocol: </span>
+                                    <span className="sideButtonValue">
+                                        {link.protocol}
+                                    </span>
+                                </Box>
+                            }
+                            {link.type &&
+                                <Box>
+                                    <span className="sideButtonTag">Type: </span>
+                                    <span className="sideButtonValue">
+                                        {link.type}
+                                    </span>
+                                </Box>
+                            }
+                        </>
                     )}
                     {
                         link.href !== "" ? (

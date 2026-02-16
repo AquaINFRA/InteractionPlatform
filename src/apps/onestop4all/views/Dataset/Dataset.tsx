@@ -20,7 +20,7 @@ export function DatasetView(props: DatasetViewProps) {
         <Box>
             {/* Desktop view */}
             <Flex gap="10%" hideBelow="custombreak">
-                <Box w="65%">
+                <Box w="60%">
                     {metadata.properties.title ? (
                         <Box className="title" pt="15px">
                             {metadata.properties.title}
@@ -38,9 +38,9 @@ export function DatasetView(props: DatasetViewProps) {
                         </Box>
                     ) : null}
                 </Box>
-                <Box w="25%">
+                <Box w="30%">
                     {metadata.links ? (
-                        <Box pt="8px">
+                        <Box pt="30px" marginBottom={"30px"}>
                             <ExternalResources links={metadata.links} />
                         </Box>
                     ) : null}
