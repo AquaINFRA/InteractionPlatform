@@ -60,7 +60,8 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                 !(
                     link.href?.includes(DDAS) &&
                     link.type !== "OGC API - Features" &&
-                    link.type !== "OGC API - Coverages"
+                    link.type !== "OGC API - Coverages" &&
+                    !link.title?.toLowerCase().includes("map view")
                 )
             )
         );
