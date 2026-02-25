@@ -15,19 +15,19 @@ import {
 } from "@open-pioneer/chakra-integration";
 import { useState, useEffect, useRef } from "react";
 import { CopyToClipboardButton } from "../ActionButton/CopyToClipboardButton";
-import { BBoxMap } from "./BBoxMap";
+import { BBoxMap } from "./BBoxMapFeatures";
 import DataPointsSelector from "./DataPointSelector";
 import QueryableSelector from "./QueryableSelector";
 import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import { ImportToGalaxyBtn } from "./ImportToGalaxyBtn";
 
-interface UrlBuilderPopupProps {
+interface OgcApiFeaturesBuilderProps {
     isOpen: boolean;
     onClose: () => void;
     ogc_features_url: string;
 }
 
-export const UrlBuilderPopup = ({ isOpen, onClose, ogc_features_url }: UrlBuilderPopupProps) => {
+export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: OgcApiFeaturesBuilderProps) => {
     const [sliderValue, setSliderValue] = useState(10);
     const [maxSliderValue, setMaxSliderValue] = useState(0);
     const [inputValue, setInputValue] = useState("10");

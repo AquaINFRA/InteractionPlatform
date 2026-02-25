@@ -3,12 +3,13 @@ import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 
 import { ActionButton } from "../ActionButton/ActionButton";
-import { UrlBuilderPopup } from "./UrlBuilderPopup";
+import { OgcApiFeaturesBuilder } from "./OgcApiFeaturesBuilder";
 import { ImportToGalaxyBtn } from "./ImportToGalaxyBtn";
 import { DatasetUrlInput } from "./InsertUrl";
 import { LinkObject } from "../../../services/interfaces";
 import { scrollUp } from "../../../services/SearchUtils";
 import { TooltipActionButton } from "./TooltipActionButton";
+import { OgcApiCoveragesBuilder } from "./OgcApiCoveragesBuilder";
 
 const EXCLUDED_TITLES = new Set([
     "The landing page of this server as HTML",
@@ -19,7 +20,8 @@ const EXCLUDED_TITLES = new Set([
 ]);
 
 const DDAS = "https://vm4072.kaj.pouta.csc.fi/ddas/";
-const COLLECTIONS = "https://vm4072.kaj.pouta.csc.fi/ddas/oapif/collections";
+const OAPIF_COLLECTIONS = "https://vm4072.kaj.pouta.csc.fi/ddas/oapif/collections";
+const OAPIC_COLLECTIONS = "https://vm4072.kaj.pouta.csc.fi/ddas/oapic/collections";
 const MAX_VISIBLE_LINKS = 5;
 
 export const ExternalResources = (props: { links: LinkObject[] }) => {
@@ -28,10 +30,15 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
     const [externalLinks, setExternalLinks] = useState<LinkObject[]>([]);
     const [urlToImport, setUrlToImport] = useState("");
     const [disableImportToGalaxy, setDisableImportToGalaxy] = useState(true);
-    const [urlBuilder, openUrlBuilder] = useState(false);
-    const [ogcApiFeatureService, setOgcApiFeatureService] = useState<string | null>(null);
     
-    const hasOgcApiFeatures = externalLinks?.some(link => link.type === "OGC API - Features");
+    const [featuresBuilder, openFeaturesBuilder] = useState(false);
+    const [coveragesBuilder, openCoveragesBuilder] = useState(false);
+    
+    const [featuresService, setFeaturesService] = useState<string | null>(null);
+    const [coveragesService, setCoveragesService] = useState<string | null>(null);
+    
+    const hasFeaturesService = externalLinks?.some(link => link.type === "OGC API - Features");
+    const hasCoveragesService = externalLinks?.some(link => link.type === "OGC API - Coverages");
     const hasDownloadableData = externalLinks?.some(link => 
         ["application/zip", "ZIP", "TIFF", "SHAPE-ZIP", "JSON", "GPKG", "application/x-netcdf", "application/geopackage+sqlite3", "application/json", "dBase", "VRT", "CSV", "application/x-ipynb+json", "text/x-python", "json"]
             .includes(link.type)
@@ -53,6 +60,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                 !(
                     link.href?.includes(DDAS) &&
                     link.type !== "OGC API - Features" &&
+                    link.type !== "OGC API - Coverages" &&
                     !link.title?.toLowerCase().includes("map view")
                 )
             )
@@ -64,10 +72,17 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
         setDisableImportToGalaxy(!isValid);
     };
 
-    const openBuilder = async (href: string) => {
-        if (href.includes(COLLECTIONS)) {
-            setOgcApiFeatureService(href);
-            openUrlBuilder(true);
+    const openFeaturesServiceBuilder = async (href: string) => {
+        if (href.includes(OAPIF_COLLECTIONS)) {
+            setFeaturesService(href);
+            openFeaturesBuilder(true);
+        }
+    };
+
+    const openCoveragesServiceBuilder = async (href: string) => {
+        if (href.includes(OAPIC_COLLECTIONS)) {
+            setCoveragesService(href);
+            openCoveragesBuilder(true);
         }
     };
 
@@ -79,7 +94,16 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                         href={link.href}
                         label="Open"
                         icon={<ExternalLinkIcon color="white" />}
-                        onClick={() => openBuilder(link.href)}
+                        onClick={() => openFeaturesServiceBuilder(link.href)}
+                    />
+                );
+            case "OGC API - Coverages":
+                return (
+                    <TooltipActionButton
+                        href={link.href}
+                        label="Open"
+                        icon={<ExternalLinkIcon color="white" />}
+                        onClick={() => openCoveragesServiceBuilder(link.href)}
                     />
                 );
             case "application/zip":
@@ -191,7 +215,7 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                     />
                 </Box>
             )}
-            {!hasOgcApiFeatures && !hasDownloadableData && (
+            {!hasFeaturesService && !hasCoveragesService && !hasDownloadableData && (
                 <Box pt={3}>
                     <Box pt={3}>
                         <div className="seperator" />
@@ -210,10 +234,15 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
                     </Box>
                 </Box>
             )}
-            {ogcApiFeatureService && <UrlBuilderPopup
-                isOpen={urlBuilder}
-                onClose={() => openUrlBuilder(false)}
-                ogc_features_url={ogcApiFeatureService}
+            {featuresService && <OgcApiFeaturesBuilder
+                isOpen={featuresBuilder}
+                onClose={() => openFeaturesBuilder(false)}
+                ogc_features_url={featuresService}
+            />}
+            {coveragesService && <OgcApiCoveragesBuilder
+                isOpen={coveragesBuilder}
+                onClose={() => openCoveragesBuilder(false)}
+                ogc_features_url={coveragesService}
             />}
         </Box>
     );

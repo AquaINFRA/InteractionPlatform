@@ -66,6 +66,9 @@ importers:
       ol:
         specifier: ^7.3.0
         version: 7.5.2
+      proj4:
+        specifier: 2.20.2
+        version: 2.20.2
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -811,27 +814,6 @@ packages:
   '@open-pioneer/core@1.3.0':
     resolution: {integrity: sha512-S6Pe7yW8CINqDdhX5v+zbldnClSBWZzx8LbXcr7fSoYv+GSZULM/+yvrTezf1rZsyibGXo5izfWk2Id85Jxbeg==}
 
-  '@open-pioneer/experimental-layout-sidebar@0.1.3':
-    resolution: {integrity: sha512-F+nCREaQitlYhd6787oEQ6MTeGlLOW59lG0uoXD8Nf5PYZsXfi9Tq2LL2tqphXcFYhIm3IRZCRLhq/dVfx/UWA==}
-    peerDependencies:
-      '@chakra-ui/icons': ^2.0.19
-      '@chakra-ui/system': ^2.5.7
-      '@emotion/react': ^11.11.0
-      '@emotion/styled': ^11.11.0
-      '@open-pioneer/chakra-integration': ^1.0.0
-      '@open-pioneer/runtime': ^1.0.0
-      react: ^18.2.0
-
-  '@open-pioneer/experimental-ol-layer-control@0.1.6':
-    resolution: {integrity: sha512-eIxooStN7/WfWdFjliBXMkJWSbSiEl3ljx5Up7GsXOqG31bmm6yr1E3QArptXQnMuJz1ccXiAEItob9Pd1MMIQ==}
-    peerDependencies:
-      '@open-pioneer/chakra-integration': ^1.0.0
-      '@open-pioneer/experimental-ol-map': ^0.1.6
-      '@open-pioneer/runtime': ^1.0.0
-      ol: ^7.3.0
-      react: ^18.2.0
-      react-use: ^17.4.0
-
   '@open-pioneer/experimental-ol-map@0.1.6':
     resolution: {integrity: sha512-31VJjri/l76o/x+7yaCGW4Oe5S54SbvZyNQEMNjWFn2fyxCnKNJkCFiEchrXEMDnCc1peh/VtXbPrPBMDL4Mxw==}
     peerDependencies:
@@ -840,11 +822,6 @@ packages:
       ol: ^7.3.0
       react: ^18.2.0
       react-use: ^17.4.0
-
-  '@open-pioneer/http@1.0.3':
-    resolution: {integrity: sha512-tpamO3RVRek1wII9otIUEndLADp6AsuQq6mmY/Zi4SuUFrekoQV0lQP6sZM6PrbCCHaCtmGr0pMas720Nol6EQ==}
-    peerDependencies:
-      '@open-pioneer/runtime': ^1.1.0
 
   '@open-pioneer/integration@1.0.3':
     resolution: {integrity: sha512-f+WSwmLkfCt43nrbiibo581bOC/UZsDmIpXNxBX0rz0WdiQ9J/pqAaTrLVPsrxl5bNV8mrwOeq/crcYe70tW0Q==}
@@ -3497,6 +3474,9 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
+  mgrs@1.0.0:
+    resolution: {integrity: sha512-awNbTOqCxK1DBGjalK3xqWIstBZgN6fxsMSiXLs9/spqWkF2pAhb2rrYCFSsr1/tT7PhcDGjZndG8SWYn0byYA==}
+
   micromark-core-commonmark@1.1.0:
     resolution: {integrity: sha512-BgHO1aRbolh2hcrzL2d1La37V0Aoz73ymF8rAcKnohLy93titmv62E0gP8Hrx9PKcKrqCZ1BbLGbP3bEhoXYlw==}
 
@@ -3944,6 +3924,9 @@ packages:
     resolution: {integrity: sha512-++Vn7NS4Xf9NacaU9Xq3URUuqZETPsf8L4j5/ckhaRYsfPeRyzGw+iDjFhV/Jr3uNmTvvddEJFWh5R1gRgUH8A==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
+  proj4@2.20.2:
+    resolution: {integrity: sha512-ipfBRfQly0HhHTO7hnC1GfaX8bvroO7VV4KH889ehmADSE8C/qzp2j+Jj6783S9Tj6c2qX/hhYm7oH0kgXzBAA==}
+
   prompts@2.4.2:
     resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==}
     engines: {node: '>= 6'}
@@ -4016,11 +3999,6 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
-
-  react-icons@4.8.0:
-    resolution: {integrity: sha512-N6+kOLcihDiAnj5Czu637waJqSnwlMNROzVZMhfX68V/9bu9qHaMIJC4UdozWoOk57gahFCNHwVvWzm0MTzRjg==}
-    peerDependencies:
-      react: '*'
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -5006,6 +4984,9 @@ packages:
     engines: {node: '>=8'}
     hasBin: true
 
+  wkt-parser@1.5.2:
+    resolution: {integrity: sha512-1ZUiV1FTwSiSrgWzV9KXJuOF2BVW91KY/mau04BhnmgOdroRQea7Q0s5TVqwGLm0D2tZwObd/tBYXW49sSxp3Q==}
+
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
     engines: {node: '>=0.10.0'}
@@ -5702,25 +5683,6 @@ snapshots:
 
   '@open-pioneer/core@1.3.0': {}
 
-  '@open-pioneer/experimental-layout-sidebar@0.1.3(16a365ee6597f88c71ceb3b846b6a1e2)':
-    dependencies:
-      '@chakra-ui/icons': 2.2.4(@chakra-ui/react@2.10.6(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(framer-motion@10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
-      '@chakra-ui/system': 2.6.2(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
-      '@emotion/react': 11.14.0(@types/react@18.3.18)(react@18.3.1)
-      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1)
-      '@open-pioneer/chakra-integration': 1.1.4(@chakra-ui/react@2.10.6(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(framer-motion@10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@emotion/cache@11.14.0)(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(framer-motion@10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@open-pioneer/runtime': 1.1.0(d77fd54c5fe3c1c2831e5277843d53b0)
-      react: 18.3.1
-
-  '@open-pioneer/experimental-ol-layer-control@0.1.6(a1fbe0bf2737ec879a60bfc32e55aa5d)':
-    dependencies:
-      '@open-pioneer/chakra-integration': 1.1.4(@chakra-ui/react@2.10.6(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(framer-motion@10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@emotion/cache@11.14.0)(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(framer-motion@10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@open-pioneer/experimental-ol-map': 0.1.6(@open-pioneer/core@1.3.0)(@open-pioneer/runtime@1.1.0(d77fd54c5fe3c1c2831e5277843d53b0))(ol@7.5.2)(react-use@17.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
-      '@open-pioneer/runtime': 1.1.0(d77fd54c5fe3c1c2831e5277843d53b0)
-      ol: 7.5.2
-      react: 18.3.1
-      react-use: 17.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-
   '@open-pioneer/experimental-ol-map@0.1.6(@open-pioneer/core@1.3.0)(@open-pioneer/runtime@1.1.0(d77fd54c5fe3c1c2831e5277843d53b0))(ol@7.5.2)(react-use@17.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@open-pioneer/core': 1.3.0
@@ -5728,10 +5690,6 @@ snapshots:
       ol: 7.5.2
       react: 18.3.1
       react-use: 17.6.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-
-  '@open-pioneer/http@1.0.3(@open-pioneer/runtime@1.1.0(d77fd54c5fe3c1c2831e5277843d53b0))':
-    dependencies:
-      '@open-pioneer/runtime': 1.1.0(d77fd54c5fe3c1c2831e5277843d53b0)
 
   '@open-pioneer/integration@1.0.3(@open-pioneer/runtime@1.1.0(d77fd54c5fe3c1c2831e5277843d53b0))':
     dependencies:
@@ -9621,6 +9579,8 @@ snapshots:
 
   merge2@1.4.1: {}
 
+  mgrs@1.0.0: {}
+
   micromark-core-commonmark@1.1.0:
     dependencies:
       decode-named-character-reference: 1.0.2
@@ -10260,6 +10220,11 @@ snapshots:
 
   proc-log@3.0.0: {}
 
+  proj4@2.20.2:
+    dependencies:
+      mgrs: 1.0.0
+      wkt-parser: 1.5.2
+
   prompts@2.4.2:
     dependencies:
       kleur: 3.0.3
@@ -10331,10 +10296,6 @@ snapshots:
       use-sidecar: 1.1.3(@types/react@18.3.18)(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.18
-
-  react-icons@4.8.0(react@18.3.1):
-    dependencies:
-      react: 18.3.1
 
   react-is@16.13.1: {}
 
@@ -11526,6 +11487,8 @@ snapshots:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
+
+  wkt-parser@1.5.2: {}
 
   word-wrap@1.2.5: {}
 

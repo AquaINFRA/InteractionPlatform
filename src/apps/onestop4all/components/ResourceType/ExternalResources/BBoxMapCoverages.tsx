@@ -8,16 +8,34 @@ import { Stroke, Style } from "ol/style";
 import { FacetBase } from "../../../views/Search/Facets/FacetBase/FacetBase";
 import { DeleteBbox } from "./DeleteBbox";
 import GeoJSON from "ol/format/GeoJSON";
+import Polygon from "ol/geom/Polygon";
+
+import proj4 from "proj4";
+import { register } from "ol/proj/proj4";
+import { Geometry } from "ol/geom";
+import { USED_EPSG_CODE } from "../../../views/Search/Facets/SpatialCoverageFacet/SpatialCoverageFacet";
+
+// EPSG:3067 definition
+proj4.defs(
+    "EPSG:3067",
+    "+proj=utm +zone=35 +ellps=GRS80 +units=m +no_defs"
+);
+
+proj4.defs(
+    "EPSG:3035",
+    "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs"
+);
+
+register(proj4);
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
-    onBboxChange: (bbox: number[]) => void;
+    onBboxChange: (bbox: Geometry) => void;
     ogcFeaturesExtent: number[];
+    crs?: string;
 }
 
-const usedEPSGCode = "EPSG:4326";
-
-export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCoverageFacetProps) {
+export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, crs }: SpatialCoverageFacetProps) {
     const { map } = useMap(mapId);
     const draw = useRef<Draw>();
 
@@ -112,8 +130,8 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCover
             const geometry = event.feature.getGeometry();
             if (geometry && map) {
                 const sourceEPSG = map.getView().getProjection().getCode();
-                const transformedBbox = geometry.clone().transform(sourceEPSG, usedEPSGCode);
-                onBboxChange(transformedBbox.getExtent());
+                const transformedBbox = geometry.clone().transform(sourceEPSG, USED_EPSG_CODE);
+                onBboxChange(transformedBbox);
             }
         });
         map?.addInteraction(newDraw);
@@ -128,7 +146,7 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCover
     function handleDeleteBbox() {
         removeInteraction();
         source.clear();
-        onBboxChange([]);
+        onBboxChange(new Polygon([]));
     }
 
     return (
