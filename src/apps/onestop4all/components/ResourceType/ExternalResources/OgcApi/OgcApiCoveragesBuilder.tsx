@@ -7,17 +7,16 @@ import {
     ModalHeader,
     ModalCloseButton,
     ModalBody,
-    ModalFooter,
-    Tooltip,
-    Icon
+    ModalFooter
 } from "@open-pioneer/chakra-integration";
 import { useState, useEffect, useRef } from "react";
-import { CopyToClipboardButton } from "../ActionButton/CopyToClipboardButton";
-import { BBoxMap } from "./BBoxMapCoverages";
-import { QuestionOutlineIcon } from "@chakra-ui/icons";
-import { ImportToGalaxyBtn } from "./ImportToGalaxyBtn";
+import { BBoxMap } from "./BuilderComponents/BBoxMap";
 import { Geometry } from "ol/geom";
-import { USED_EPSG_CODE } from "../../../views/Search/Facets/SpatialCoverageFacet/SpatialCoverageFacet";
+import { USED_EPSG_CODE } from "../../../../views/Search/Facets/SpatialCoverageFacet/SpatialCoverageFacet";
+import { ImportCopy } from "./BuilderComponents/ImportCopy";
+import { Note } from "./BuilderComponents/Note";
+import { MetaInfo } from "./BuilderComponents/MetaInfo";
+import { GenerateUrl } from "./BuilderComponents/GenerateUrl";
 
 interface OgcApiFeaturesBuilderProps {
     isOpen: boolean;
@@ -92,13 +91,13 @@ export const OgcApiCoveragesBuilder = ({ isOpen, onClose, ogc_features_url }: Og
         return sharedUrl.current;
     };
     
-    const requestUrlWithBbox = (bbox: Geometry) => {
-        const extent = bbox.getExtent();
+    const requestUrlWithBbox = (feature: Geometry) => {
+        const extent = feature.getExtent();
         if (baseUrl) {
             const url = getOrCreateUrl();
             if (extent[0] !== Infinity) {
                 const dest_crs = "EPSG:" + crs;
-                const transformed = bbox.clone().transform(USED_EPSG_CODE, dest_crs);
+                const transformed = feature.clone().transform(USED_EPSG_CODE, dest_crs);
                 const transformedExtent = transformed.getExtent();
                 const minX = transformedExtent[0];
                 const maxX = transformedExtent[2];
@@ -107,13 +106,11 @@ export const OgcApiCoveragesBuilder = ({ isOpen, onClose, ogc_features_url }: Og
                 const coords = "x(" + minX + ":" + maxX + "),y(" + minY + ":" + maxY + ")";
                 url.searchParams.set("subset", coords);
                 url.searchParams.set("f", "GTiff");
-                setRequestUrl(url.toString());
             } else {
-                console.log("delete");
                 url.searchParams.delete("subset");
                 url.searchParams.delete("f");
-                setRequestUrl(url.toString());
             }
+            setRequestUrl(url.toString());
         }
     };
     
@@ -132,39 +129,17 @@ export const OgcApiCoveragesBuilder = ({ isOpen, onClose, ogc_features_url }: Og
             <ModalContent width={"40%"} maxW={"700px"} minW={"500px"} maxHeight="90vh" overflow="auto" padding="1">
                 <ModalHeader>
                     OGC API Coverages Subsetting
-                    <Tooltip
+                    <Note 
                         label="In this modal, you can build a URL based on an OGC API Coverages services. You can set a bounding box and then copy the resulting URL or import it to Galaxy."
-                        placement="right"
-                        hasArrow
-                    >
-                        <span>
-                            <Icon
-                                as={QuestionOutlineIcon}
-                                boxSize={7}
-                                cursor="pointer"
-                                color="gray.500"
-                                marginLeft={2}
-                            />
-                        </span>
-                    </Tooltip>
+                    />
                 </ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                    <Box>
-                        <p><b>Title:</b> {metadata.title}</p>
-                        <p><b>Description:</b> {metadata.description}</p>
-                        <p>
-                            <b>Coordinate Reference System (CRS):</b>{" "}
-                            <a 
-                                href={metadata.crs} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                style={{ color: "#05668d", textDecoration: "underline" }}
-                            >
-                                {metadata.crs}
-                            </a>
-                        </p>
-                    </Box>
+                    <MetaInfo
+                        title={metadata.title}
+                        description={metadata.description}
+                        crs={metadata.crs}
+                    />
 
                     <Box padding={"12px 0px 20px"}>
                         <BBoxMap 
@@ -176,28 +151,17 @@ export const OgcApiCoveragesBuilder = ({ isOpen, onClose, ogc_features_url }: Og
                     </Box>
 
                     <Box mb={4} p={2} border="1px solid #ccc" borderRadius="md">
-                        <strong>Generated URL: </strong>
-                        <Button size="xs" w={"fit-content"} paddingLeft={"10px"} paddingRight={"10px"} marginRight={"10px"}>Regenerate</Button>
-                        <Button size="xs" w={"fit-content"} paddingLeft={"10px"} paddingRight={"10px"} onClick={()=>{reset();}}>Reset</Button>
-                        <Box wordBreak="break-all">{requestUrl}</Box>
+                        <GenerateUrl 
+                            fun={()=>{reset();}}
+                            url={requestUrl ?? undefined}
+                        />
                     </Box>
 
-                    <Box display="flex" gap={3}>
-                        {
-                            requestUrl && (
-                                <>
-                                    <ImportToGalaxyBtn 
-                                        url={requestUrl} 
-                                        disabled={!requestUrl} 
-                                    />
-                                    <CopyToClipboardButton
-                                        data={requestUrl ? requestUrl : baseUrl}
-                                        label={copyUrlText}
-                                    />
-                                </>
-                            )
-                        }
-                    </Box>
+                    <ImportCopy 
+                        url={requestUrl ? requestUrl : baseUrl}
+                        text={copyUrlText}
+                    />
+                    
                 </ModalBody>
                 <ModalFooter>
                     <Button onClick={closeBuilder}>Close</Button>

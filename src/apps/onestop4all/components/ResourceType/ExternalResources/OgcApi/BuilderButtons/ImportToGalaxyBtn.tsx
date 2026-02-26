@@ -1,10 +1,10 @@
 import { DownloadIcon } from "@chakra-ui/icons";
 import { useState } from "react";
-import { ActionButton } from "../ActionButton/ActionButton";
 import { useService } from "open-pioneer:react-hooks";
-import { SearchService } from "../../../services";
-import { isUrl } from "../Metadata/PersonalInfo";
-import { Box, Tooltip } from "@open-pioneer/chakra-integration";
+
+import { TooltipActionButton } from "../../../ActionButton/TooltipActionButton";
+import { isUrl } from "../../../Metadata/PersonalInfo";
+import { SearchService } from "../../../../../services";
 
 interface ImportToGalaxyBtnProps {
     url: string;
@@ -46,19 +46,15 @@ export const ImportToGalaxyBtn = (props: ImportToGalaxyBtnProps) => {
     };
 
     return (
-        <Tooltip label={GALAXY_IMPORT_URL} hasArrow placement="bottom" openDelay={100}>
-            <Box display="inline-block" w={"100%"}>
-                <ActionButton
-                    label={isSendingToGalaxy ? "Importing..." : "Import to Galaxy"}
-                    disabled={disabled || isSendingToGalaxy}
-                    icon={<DownloadIcon color="white" />}
-                    variant="solid"
-                    fun={() => setTimeout(() => {
-                        createTxtFile(url);
-                        setImported?.(true);
-                    }, 500)}
-                />
-            </Box>
-        </Tooltip>
+        <TooltipActionButton
+            href={GALAXY_IMPORT_URL}
+            label={isSendingToGalaxy ? "Importing..." : "Import to Galaxy"}
+            icon={<DownloadIcon color="white" />}
+            onClick={() => setTimeout(() => {
+                createTxtFile(url);
+                setImported?.(true);
+            }, 500)}
+            disabled={disabled}
+        />
     );
 };

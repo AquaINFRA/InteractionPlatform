@@ -2,7 +2,7 @@ import { Box, Flex, SimpleGrid, Heading, Text } from "@open-pioneer/chakra-integ
 import { useEffect, useState } from "react";
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
-import { ZenodoResources } from "../../components/ResourceType/ExternalResources/ZenodoResources";
+import { ZenodoResources } from "./ZenodoResources";
 import { RelatedContent } from "../../components/ResourceType/RelatedIdentifier/RelatedIdentifier";
 import { ComponentIcon, D2K_COMPONENT, EGI_REPLAY_URL, extractProgrammingLanguages, getComponentLabel, Identifier, parseRoCrate, renderGalaxyEmbed, renderPopupTitle, ZENODO_RECORDS, ZenodoViewProps } from "../../services/DkpUtils";
 import { IdentifierPopup } from "./IdentifierPopup";

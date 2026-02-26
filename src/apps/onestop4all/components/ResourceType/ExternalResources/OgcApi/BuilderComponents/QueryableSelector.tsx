@@ -1,5 +1,5 @@
 import { Box, Button, Select, Input } from "@open-pioneer/chakra-integration";
-import { FacetBase } from "../../../views/Search/Facets/FacetBase/FacetBase";
+import { FacetBase } from "../../../../../views/Search/Facets/FacetBase/FacetBase";
 
 interface QueryableSelectorProps {
     queryablesArray: { title: string; type: string }[];
@@ -10,7 +10,7 @@ interface QueryableSelectorProps {
     setQueryableValue: (value: string) => void;
 }
 
-const QueryableSelector = ({
+export const QueryableSelector = ({
     queryablesArray,
     onApply,
     selectedQueryable,
@@ -64,5 +64,3 @@ const QueryableSelector = ({
         </FacetBase>
     );
 };
-
-export default QueryableSelector;

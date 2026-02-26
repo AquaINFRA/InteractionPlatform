@@ -1,6 +1,6 @@
 import { Box, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Input } from "@open-pioneer/chakra-integration";
 import React from "react";
-import { FacetBase } from "../../../views/Search/Facets/FacetBase/FacetBase";
+import { FacetBase } from "../../../../../views/Search/Facets/FacetBase/FacetBase";
 
 interface DataPointsSelectorProps {
     maxSliderValue: number;
@@ -11,14 +11,14 @@ interface DataPointsSelectorProps {
     onInputBlur: () => void;
 }
 
-const DataPointsSelector: React.FC<DataPointsSelectorProps> = ({
+export const DataPointsSelector = ({
     maxSliderValue,
     sliderValue,
     inputValue,
     onSliderChange,
     onInputChange,
     onInputBlur,
-}) => {
+}: DataPointsSelectorProps) => {
     return (
         <FacetBase title="Limit data points" expanded={false}>
             <Box mb={4}>
@@ -61,5 +61,3 @@ const DataPointsSelector: React.FC<DataPointsSelectorProps> = ({
         </FacetBase>
     );
 };
-
-export default DataPointsSelector;
