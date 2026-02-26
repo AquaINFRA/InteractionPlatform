@@ -5,15 +5,14 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { useEffect, useRef, useState } from "react";
 import { Stroke, Style } from "ol/style";
-import { FacetBase } from "../../../views/Search/Facets/FacetBase/FacetBase";
-import { DeleteBbox } from "./DeleteBbox";
+import { FacetBase } from "../../../../../views/Search/Facets/FacetBase/FacetBase";
 import GeoJSON from "ol/format/GeoJSON";
-import Polygon from "ol/geom/Polygon";
+import { Geometry, Polygon } from "ol/geom";
 
 import proj4 from "proj4";
 import { register } from "ol/proj/proj4";
-import { Geometry } from "ol/geom";
-import { USED_EPSG_CODE } from "../../../views/Search/Facets/SpatialCoverageFacet/SpatialCoverageFacet";
+import { USED_EPSG_CODE } from "../../../../../views/Search/Facets/SpatialCoverageFacet/SpatialCoverageFacet";
+import { DeleteBbox } from "../BuilderButtons/DeleteBboxBtn";
 
 // EPSG:3067 definition
 proj4.defs(

@@ -4,7 +4,7 @@ import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ExternalResources } from "../../components/ResourceType/ExternalResources/ExternalResources";
 import { Map } from "../../components/ResourceType/Map/Map";
-import { DkpResources } from "../../components/ResourceType/ExternalResources/DkpResources";
+import { DkpResources } from "../../components/ResourceType/ExternalResources/Components/DkpResources";
 import { formatDate } from "../../services/ResourceTypeUtils";
 import { DatasetMetadataResponse } from "../../services/interfaces";
 

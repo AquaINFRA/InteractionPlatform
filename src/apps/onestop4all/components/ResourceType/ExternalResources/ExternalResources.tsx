@@ -3,13 +3,14 @@ import { DownloadIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 
 import { ActionButton } from "../ActionButton/ActionButton";
-import { OgcApiFeaturesBuilder } from "./OgcApiFeaturesBuilder";
-import { ImportToGalaxyBtn } from "./ImportToGalaxyBtn";
-import { DatasetUrlInput } from "./InsertUrl";
+import { OgcApiFeaturesBuilder } from "./OgcApi/OgcApiFeaturesBuilder";
+import { DatasetUrlInput } from "./Components/InsertUrl";
 import { LinkObject } from "../../../services/interfaces";
 import { scrollUp } from "../../../services/SearchUtils";
-import { TooltipActionButton } from "./TooltipActionButton";
-import { OgcApiCoveragesBuilder } from "./OgcApiCoveragesBuilder";
+import { TooltipActionButton } from "../ActionButton/TooltipActionButton";
+import { OgcApiCoveragesBuilder } from "./OgcApi/OgcApiCoveragesBuilder";
+import { ImportToGalaxyBtn } from "./OgcApi/BuilderButtons/ImportToGalaxyBtn";
+import { MetaInfo } from "./Components/Details";
 
 const EXCLUDED_TITLES = new Set([
     "The landing page of this server as HTML",
@@ -166,30 +167,12 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
             {visibleLinks.map((link: LinkObject, i: number) => (
                 <Box key={i}>
                     {link.href && (
-                        <>
-                            <Box>
-                                <span className="sideButtonTag">Title: </span>
-                                <span className="sideButtonValue">
-                                    {link.title ?? link.description ?? "No title available"}
-                                </span>
-                            </Box>
-                            {link.protocol &&
-                                <Box>
-                                    <span className="sideButtonTag">Protocol: </span>
-                                    <span className="sideButtonValue">
-                                        {link.protocol}
-                                    </span>
-                                </Box>
-                            }
-                            {link.type &&
-                                <Box>
-                                    <span className="sideButtonTag">Type: </span>
-                                    <span className="sideButtonValue">
-                                        {link.type}
-                                    </span>
-                                </Box>
-                            }
-                        </>
+                        <MetaInfo 
+                            title={link.title || link.description}
+                            protocol={link.protocol}
+                            type={link.type}
+                            description={link.description}
+                        />
                     )}
                     {
                         link.href !== "" ? (
@@ -217,33 +200,33 @@ export const ExternalResources = (props: { links: LinkObject[] }) => {
             )}
             {!hasFeaturesService && !hasCoveragesService && !hasDownloadableData && (
                 <Box pt={3}>
-                    <Box pt={3}>
-                        <div className="seperator" />
-                    </Box>
+                    <div className="seperator" />
                     <Box pt={3}>
                         <DatasetUrlInput
                             value={urlToImport}
                             onChange={handleDatasetUrlChange}
                             imported={imported}
-                        />
-                        <ImportToGalaxyBtn 
-                            url={urlToImport} 
                             disabled={disableImportToGalaxy}
-                            setImported={setImported}
                         />
                     </Box>
                 </Box>
             )}
-            {featuresService && <OgcApiFeaturesBuilder
-                isOpen={featuresBuilder}
-                onClose={() => openFeaturesBuilder(false)}
-                ogc_features_url={featuresService}
-            />}
-            {coveragesService && <OgcApiCoveragesBuilder
-                isOpen={coveragesBuilder}
-                onClose={() => openCoveragesBuilder(false)}
-                ogc_features_url={coveragesService}
-            />}
+            {
+                featuresService && 
+                    <OgcApiFeaturesBuilder
+                        isOpen={featuresBuilder}
+                        onClose={() => openFeaturesBuilder(false)}
+                        ogc_features_url={featuresService}
+                    />
+            }
+            {
+                coveragesService && 
+                    <OgcApiCoveragesBuilder
+                        isOpen={coveragesBuilder}
+                        onClose={() => openCoveragesBuilder(false)}
+                        ogc_features_url={coveragesService}
+                    />
+            }
         </Box>
     );
 };

@@ -9,17 +9,17 @@ import {
     ModalBody,
     ModalFooter,
     Skeleton,
-    Stack,
-    Tooltip,
-    Icon
+    Stack
 } from "@open-pioneer/chakra-integration";
 import { useState, useEffect, useRef } from "react";
-import { CopyToClipboardButton } from "../ActionButton/CopyToClipboardButton";
-import { BBoxMap } from "./BBoxMapFeatures";
-import DataPointsSelector from "./DataPointSelector";
-import QueryableSelector from "./QueryableSelector";
-import { QuestionOutlineIcon } from "@chakra-ui/icons";
-import { ImportToGalaxyBtn } from "./ImportToGalaxyBtn";
+import { BBoxMap } from "./BuilderComponents/BBoxMap";
+import { DataPointsSelector } from "./BuilderComponents/DataPointSelector";
+import { QueryableSelector } from "./BuilderComponents/QueryableSelector";
+import { ImportCopy } from "./BuilderComponents/ImportCopy";
+import { Note } from "./BuilderComponents/Note";
+import { MetaInfo } from "./BuilderComponents/MetaInfo";
+import { Geometry } from "ol/geom";
+import { GenerateUrl } from "./BuilderComponents/GenerateUrl";
 
 interface OgcApiFeaturesBuilderProps {
     isOpen: boolean;
@@ -77,6 +77,7 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
         try {
             const response = await fetch(url);
             const metadata = await response.json();
+            console.log(metadata);
             setMetadata(metadata);
 
             if (metadata.extent.spatial.bbox) {
@@ -166,7 +167,7 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
         setInputValue(value);
     };
 
-    const updateBbox = (newBbox: number[]) => {
+    const updateBbox = (newBbox: Geometry) => {
         requestUrlWithBbox(newBbox);
         setMaxValIsLoaded(false);
     };
@@ -197,11 +198,12 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
         }
     };
     
-    const requestUrlWithBbox = (bbox: number[]) => {
+    const requestUrlWithBbox = (feature: Geometry) => {
         if (baseUrl) {
             const url = getOrCreateUrl();
-            if (bbox && bbox.length === 4) {
-                url.searchParams.set("bbox", bbox.join(","));
+            const extent = feature.getExtent();
+            if (extent[0] !== Infinity) {
+                url.searchParams.set("bbox", extent.join(","));
             } else {
                 url.searchParams.delete("bbox");
             }
@@ -225,31 +227,24 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
             <ModalContent width={"40%"} maxW={"700px"} minW={"500px"} maxHeight="90vh" overflow="auto" padding="1">
                 <ModalHeader>
                     OGC API Features Subsetting
-                    <Tooltip
+                    <Note 
                         label="In this modal, you can build a URL based on an OGC API Features services. You can limit the number of data points, set a bounding box, or query single attributes. You can then copy the resulting URL or import it to Galaxy."
-                        placement="right"
-                        hasArrow
-                    >
-                        <span>
-                            <Icon
-                                as={QuestionOutlineIcon}
-                                boxSize={7}
-                                cursor="pointer"
-                                color="gray.500"
-                                marginLeft={2}
-                            />
-                        </span>
-                    </Tooltip>
+                    />
                 </ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                    <Box>
-                        <p><b>Title:</b> {metadata.title}</p>
-                        <p><b>Description:</b> {metadata.description}</p>
-                    </Box>
+                    <MetaInfo 
+                        title={metadata.title}
+                        description={metadata.description}
+                        crs={metadata.crs}
+                    />
 
                     <Box padding={"12px 0px 20px"}>
-                        <BBoxMap mapId="ogc" onBboxChange={updateBbox} ogcFeaturesExtent={ogcFeaturesExtent} />
+                        <BBoxMap 
+                            mapId="ogc" 
+                            onBboxChange={updateBbox} 
+                            ogcFeaturesExtent={ogcFeaturesExtent} 
+                        />
                     </Box>
 
                     <Box padding={"0px 0px 20px"}>
@@ -272,7 +267,7 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
                         )}
                     </Box>
                     
-                    {queryablesArray.length > 0 ?
+                    {queryablesArray.length > 0 &&
                         <Box padding={"0px 0px 20px"}>
                             <QueryableSelector
                                 queryablesArray={queryablesArray}
@@ -282,23 +277,20 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
                                 queryableValue={queryableValue}
                                 setQueryableValue={setQueryableValue}
                             />
-                        </Box> : null
+                        </Box>
                     }
 
                     <Box mb={4} p={2} border="1px solid #ccc" borderRadius="md">
-                        <strong>Generated URL: </strong>
-                        <Button size="xs" w={"fit-content"} paddingLeft={"10px"} paddingRight={"10px"} marginRight={"10px"}>Regenerate</Button>
-                        <Button size="xs" w={"fit-content"} paddingLeft={"10px"} paddingRight={"10px"} onClick={()=>{reset();}}>Reset</Button>
-                        <Box wordBreak="break-all">{requestUrl}</Box>
-                    </Box>
-
-                    <Box display="flex" justifyContent="space-between" mt={4} gap={3}>
-                        {requestUrl && <ImportToGalaxyBtn url={requestUrl} disabled={!requestUrl} />}
-                        <CopyToClipboardButton
-                            data={requestUrl ? requestUrl : baseUrl}
-                            label={copyUrlText}
+                        <GenerateUrl 
+                            fun={()=>{reset();}}
+                            url={requestUrl ?? undefined}
                         />
                     </Box>
+
+                    <ImportCopy 
+                        url={requestUrl ? requestUrl : baseUrl}
+                        text={copyUrlText}
+                    />
                 </ModalBody>
                 <ModalFooter>
                     <Button onClick={closeBuilder}>Close</Button>

@@ -2,9 +2,9 @@ import { Box, Flex } from "@open-pioneer/chakra-integration";
 
 import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
-import { ZenodoResources } from "../../components/ResourceType/ExternalResources/ZenodoResources";
+import { ZenodoResources } from "./ZenodoResources";
 import { RelatedContent } from "../../components/ResourceType/RelatedIdentifier/RelatedIdentifier";
-import { DkpResources } from "../../components/ResourceType/ExternalResources/DkpResources";
+import { DkpResources } from "../../components/ResourceType/ExternalResources/Components/DkpResources";
 import { ZenodoViewProps } from "../../services/DkpUtils";
 
 export function ZenodoView(props: ZenodoViewProps) {

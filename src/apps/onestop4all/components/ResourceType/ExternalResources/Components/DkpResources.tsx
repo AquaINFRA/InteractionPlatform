@@ -1,19 +1,19 @@
 import { Box } from "@open-pioneer/chakra-integration";
-import { ActionButton } from "../ActionButton/ActionButton";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { TooltipActionButton } from "../../ActionButton/TooltipActionButton";
 
 export const DkpResources = ({ dkps }: { dkps: any[] }) => {
     if (!dkps?.length) return null;
 
     return (
-        <Box pt={5}>
+        <Box>
             <div className="abstractSectionHeader">Data-to-Knowledge Package</div>
             {dkps.map((dkp, i) => {
                 const graph = dkp["@graph"]?.[1];
                 if (!graph) return null;
 
                 return (
-                    <Box key={i} pt={3}>
+                    <Box key={i}>
                         {graph.name && (
                             <div>
                                 <span className="sideButtonTag">Title: </span>
@@ -21,11 +21,12 @@ export const DkpResources = ({ dkps }: { dkps: any[] }) => {
                             </div>
                         )}
                         <Box pt={3}>
-                            <ActionButton
+                            <TooltipActionButton
+                                href={graph.url?.["@id"]}
                                 label="Visit"
                                 icon={<ExternalLinkIcon color="white" />}
                                 variant="solid"
-                                fun={() => window.open(graph.url?.["@id"], "_blank")}
+                                onClick={() => window.open(graph.url?.["@id"], "_blank")}
                             />
                         </Box>
                     </Box>

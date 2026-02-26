@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { ActionButton } from "./ActionButton";
 import { LinkIcon } from "@chakra-ui/icons";
+import { TooltipActionButton } from "../../../ActionButton/TooltipActionButton";
 
 export const CopyToClipboardButton = (props: { data: string; label: string }) => {
     const { data, label } = props;
@@ -23,11 +23,12 @@ export const CopyToClipboardButton = (props: { data: string; label: string }) =>
     };
 
     return (
-        <ActionButton
+        <TooltipActionButton
+            href={data}
             label={btnText}
             icon={<LinkIcon color="#05668D" />}
+            onClick={() => copyToClipBoard(data)}
             variant="outline"
-            fun={() => copyToClipBoard(data)}
         />
     );
 };
