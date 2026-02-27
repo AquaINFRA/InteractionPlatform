@@ -146,7 +146,6 @@ export const OgcApiCoveragesBuilder = ({ isOpen, onClose, ogc_features_url }: Og
                             mapId="ogc" 
                             onBboxChange={requestUrlWithBbox} 
                             ogcFeaturesExtent={ogcFeaturesExtent} 
-                            crs={metadata && metadata.crs && metadata.crs[0].split("/").pop()} 
                         />
                     </Box>
 

@@ -9,8 +9,6 @@ import { FacetBase } from "../../../../../views/Search/Facets/FacetBase/FacetBas
 import GeoJSON from "ol/format/GeoJSON";
 import { Geometry, Polygon } from "ol/geom";
 
-import Feature from "ol/Feature";
-
 import { USED_EPSG_CODE } from "../../../../../views/Search/Facets/SpatialCoverageFacet/SpatialCoverageFacet";
 import { DeleteBbox } from "../BuilderButtons/DeleteBboxBtn";
 import { setupProjections } from "../../../Map/mapUtils";
@@ -42,19 +40,6 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCover
             })
         })
     );
-
-    const [featuresList, setFeaturesList] = useState<Feature[]>([]);
-
-    const fetchFeatures = async (features: string) => {
-        try {
-            const res = await fetch(features);
-            const json = await res.json();
-            setFeaturesList(json.features);
-        } catch (err) {
-            console.log("Error fetching data:", err);
-        }
-
-    };
 
     useEffect(() => {
         const coords = [1489200, 6894026, 1489200, 6894026];
