@@ -134,10 +134,8 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCover
     }
 
     function handleDeleteBbox() {
-        removeInteraction();
         source.clear();
         onBboxChange(new Polygon([]));
-        setBboxActive(false);
     }
 
     return (
