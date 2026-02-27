@@ -9,34 +9,26 @@ import { FacetBase } from "../../../../../views/Search/Facets/FacetBase/FacetBas
 import GeoJSON from "ol/format/GeoJSON";
 import { Geometry, Polygon } from "ol/geom";
 
-import proj4 from "proj4";
-import { register } from "ol/proj/proj4";
+import Feature from "ol/Feature";
+
 import { USED_EPSG_CODE } from "../../../../../views/Search/Facets/SpatialCoverageFacet/SpatialCoverageFacet";
 import { DeleteBbox } from "../BuilderButtons/DeleteBboxBtn";
+import { setupProjections } from "../../../Map/mapUtils";
+import { DrawBboxButton } from "../../../../../views/Search/Facets/SpatialCoverageFacet/CatchmentComponents/DrawBboxButton";
 
-// EPSG:3067 definition
-proj4.defs(
-    "EPSG:3067",
-    "+proj=utm +zone=35 +ellps=GRS80 +units=m +no_defs"
-);
-
-proj4.defs(
-    "EPSG:3035",
-    "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs"
-);
-
-register(proj4);
+setupProjections();
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
     onBboxChange: (bbox: Geometry) => void;
     ogcFeaturesExtent: number[];
-    crs?: string;
 }
 
-export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, crs }: SpatialCoverageFacetProps) {
+export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent }: SpatialCoverageFacetProps) {
     const { map } = useMap(mapId);
     const draw = useRef<Draw>();
+
+    const [bboxActive, setBboxActive] = useState(false);
 
     const [source] = useState(new VectorSource({ wrapX: false }));
     const [vector] = useState(
@@ -51,9 +43,18 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, crs }: Spatial
         })
     );
 
-    useEffect(()=>{
-        selectBbox();
-    });
+    const [featuresList, setFeaturesList] = useState<Feature[]>([]);
+
+    const fetchFeatures = async (features: string) => {
+        try {
+            const res = await fetch(features);
+            const json = await res.json();
+            setFeaturesList(json.features);
+        } catch (err) {
+            console.log("Error fetching data:", err);
+        }
+
+    };
 
     useEffect(() => {
         const coords = [1489200, 6894026, 1489200, 6894026];
@@ -109,14 +110,19 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, crs }: Spatial
     
 
     function selectBbox(): void {
-        removeInteraction();
-        addInteraction(
-            new Draw({
-                source: source,
-                type: "Circle",
-                geometryFunction: createBox(),
-            })
-        );
+        if (bboxActive) {
+            removeInteraction();
+            setBboxActive(false);
+        } else {
+            addInteraction(
+                new Draw({
+                    source: source,
+                    type: "Circle",
+                    geometryFunction: createBox()
+                })
+            );
+            setBboxActive(true);
+        }
     }
 
     function addInteraction(newDraw: Draw) {
@@ -146,12 +152,16 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, crs }: Spatial
         removeInteraction();
         source.clear();
         onBboxChange(new Polygon([]));
+        setBboxActive(false);
     }
 
     return (
         <FacetBase title="Spatial Coverage" expanded={true}>
             <Box position="relative">
                 <Box height="200px" position="relative">
+                    <Box position="absolute" bottom="75px" right="10px" zIndex="10">
+                        <DrawBboxButton bboxActive={bboxActive} onClick={selectBbox} />
+                    </Box>
                     <DeleteBbox onClick={handleDeleteBbox} />
                     <MapContainer mapId={mapId} />
                 </Box>
