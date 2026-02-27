@@ -44,6 +44,7 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
     const [copyUrlText, setCopyUrlText] = useState("Copy URL");
     const [metadata, setMetadata] = useState({} as any);
     const [ogcFeaturesExtent, setOgcFeaturesExtent] = useState<number[]>([]);
+    const [resetBboxFlag, setResetBboxFlag] = useState(false);
 
     useEffect(() => {
         if (isOpen && ogc_features_url) {
@@ -71,6 +72,7 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
         setSelectedQueryable(null);
         setInputValue("10");
         clearSharedUrl();
+        setResetBboxFlag(true);
     };
 
     const fetchMetadata = async (url: string) => {
@@ -143,6 +145,13 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
 
     const handleSliderChange = (value: number) => {
         setSliderValue(value);
+        //setInputValue(String(value));
+        //requestUrlWithLimit(value);
+        //setCopyUrlText("Copy URL");
+    };
+
+    const handleSliderEnd = (value: number) => {
+        //setSliderValue(value);
         setInputValue(String(value));
         requestUrlWithLimit(value);
         setCopyUrlText("Copy URL");
@@ -170,6 +179,7 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
     const updateBbox = (newBbox: Geometry) => {
         requestUrlWithBbox(newBbox);
         setMaxValIsLoaded(false);
+        setResetBboxFlag(false);
     };
 
     const getOrCreateUrl = (): URL => {
@@ -239,33 +249,34 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
                         crs={metadata.crs}
                     />
 
-                    <Box padding={"12px 0px 20px"}>
+                    <Box padding={"12px 0px 5px"}>
                         <BBoxMap 
                             mapId="ogc" 
                             onBboxChange={updateBbox} 
-                            ogcFeaturesExtent={ogcFeaturesExtent} 
+                            ogcFeaturesExtent={ogcFeaturesExtent}
+                            features={requestUrl}
+                            delBbox={resetBboxFlag}
                         />
                     </Box>
 
-                    <Box padding={"0px 0px 20px"}>
-                        {maxValIsLoaded ? (
-                            <DataPointsSelector
-                                maxSliderValue={maxSliderValue}
-                                sliderValue={sliderValue}
-                                inputValue={inputValue}
-                                onSliderChange={handleSliderChange}
-                                onInputChange={handleInputChange}
-                                onInputBlur={handleInputBlur}
-                            />
-                        ) : (
-                            <Box marginBottom={"15"}>
-                                <Stack>
-                                    <Box>Loading...</Box>
-                                    <Skeleton height='15px' />
-                                </Stack>
-                            </Box>
-                        )}
-                    </Box>
+                    {maxValIsLoaded ? (
+                        <DataPointsSelector
+                            maxSliderValue={maxSliderValue}
+                            sliderValue={sliderValue}
+                            inputValue={inputValue}
+                            onSliderChange={handleSliderChange}
+                            onSliderChangeEnd={handleSliderEnd}
+                            onInputChange={handleInputChange}
+                            onInputBlur={handleInputBlur}
+                        />
+                    ) : (
+                        <Box marginBottom={"15"}>
+                            <Stack>
+                                <Box>Loading...</Box>
+                                <Skeleton height='15px' />
+                            </Stack>
+                        </Box>
+                    )}
                     
                     {queryablesArray.length > 0 &&
                         <Box padding={"0px 0px 20px"}>
@@ -280,7 +291,7 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
                         </Box>
                     }
 
-                    <Box mb={4} p={2} border="1px solid #ccc" borderRadius="md">
+                    <Box mb={4} p={1} border="1px solid #ccc" borderRadius="md">
                         <GenerateUrl 
                             fun={()=>{reset();}}
                             url={requestUrl ?? undefined}
@@ -292,9 +303,9 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
                         text={copyUrlText}
                     />
                 </ModalBody>
-                <ModalFooter>
+                {/*<ModalFooter>
                     <Button onClick={closeBuilder}>Close</Button>
-                </ModalFooter>
+                </ModalFooter>*/}
             </ModalContent>
         </Modal>
     );

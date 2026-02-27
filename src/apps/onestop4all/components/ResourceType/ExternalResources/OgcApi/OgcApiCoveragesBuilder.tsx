@@ -34,6 +34,7 @@ export const OgcApiCoveragesBuilder = ({ isOpen, onClose, ogc_features_url }: Og
     const [metadata, setMetadata] = useState({} as any);
     const [ogcFeaturesExtent, setOgcFeaturesExtent] = useState<number[]>([]);
     const [crs, setCrs] = useState("");
+    const [resetBboxFlag, setResetBboxFlag] = useState(false);
 
     useEffect(() => {
         if (isOpen && ogc_features_url) {
@@ -51,6 +52,7 @@ export const OgcApiCoveragesBuilder = ({ isOpen, onClose, ogc_features_url }: Og
     const reset = () => {
         setRequestUrl(baseUrl);
         clearSharedUrl();
+        setResetBboxFlag(true);
     };
 
     const fetchMetadata = async (url: string) => {
@@ -111,6 +113,7 @@ export const OgcApiCoveragesBuilder = ({ isOpen, onClose, ogc_features_url }: Og
                 url.searchParams.delete("f");
             }
             setRequestUrl(url.toString());
+            setResetBboxFlag(false);
         }
     };
     
@@ -141,11 +144,12 @@ export const OgcApiCoveragesBuilder = ({ isOpen, onClose, ogc_features_url }: Og
                         crs={metadata.crs}
                     />
 
-                    <Box padding={"12px 0px 20px"}>
+                    <Box padding={"12px 0px 5px"}>
                         <BBoxMap 
                             mapId="ogc" 
                             onBboxChange={requestUrlWithBbox} 
                             ogcFeaturesExtent={ogcFeaturesExtent} 
+                            delBbox={resetBboxFlag}
                         />
                     </Box>
 
@@ -162,9 +166,9 @@ export const OgcApiCoveragesBuilder = ({ isOpen, onClose, ogc_features_url }: Og
                     />
                     
                 </ModalBody>
-                <ModalFooter>
+                {/*<ModalFooter>
                     <Button onClick={closeBuilder}>Close</Button>
-                </ModalFooter>
+                </ModalFooter>*/}
             </ModalContent>
         </Modal>
     );
