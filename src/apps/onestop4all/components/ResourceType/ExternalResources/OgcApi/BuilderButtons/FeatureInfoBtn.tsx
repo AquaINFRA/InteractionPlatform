@@ -1,6 +1,6 @@
 import { IconButton } from "@open-pioneer/chakra-integration";
-import { QuestionmarkIcon } from "../../../../../components/Icons";
 import { ActiveControlColor, PrimaryColor } from "../../../../../Theme";
+import { InfoIcon } from "@chakra-ui/icons";
 
 interface FeatureInfoBtnProps {
     infoActive: boolean;
@@ -17,7 +17,7 @@ export function FeatureInfoBtn(props: FeatureInfoBtnProps) {
             title="Click here to draw a bounding box"
             bg={infoActive ? ActiveControlColor : PrimaryColor}
             onClick={() => onClick()}
-            icon={<QuestionmarkIcon />}
+            icon={<InfoIcon />}
         />
     );
 }
