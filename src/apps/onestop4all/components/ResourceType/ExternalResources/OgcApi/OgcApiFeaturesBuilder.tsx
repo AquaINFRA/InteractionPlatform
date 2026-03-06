@@ -1,13 +1,11 @@
 import {
     Box,
-    Button,
     Modal,
     ModalOverlay,
     ModalContent,
     ModalHeader,
     ModalCloseButton,
     ModalBody,
-    ModalFooter,
     Skeleton,
     Stack
 } from "@open-pioneer/chakra-integration";
@@ -30,7 +28,6 @@ interface OgcApiFeaturesBuilderProps {
 export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: OgcApiFeaturesBuilderProps) => {
     const [sliderValue, setSliderValue] = useState(10);
     const [maxSliderValue, setMaxSliderValue] = useState(0);
-    const [inputValue, setInputValue] = useState("10");
     
     const [baseUrl, setBaseUrl] = useState<string>(ogc_features_url);
     const [requestUrl, setRequestUrl] = useState<string | null>(null);
@@ -57,7 +54,6 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
         if (!isOpen) {
             setSliderValue(10);
             setQueryableValue("");
-            setInputValue("10");
             setMaxSliderValue(100);
             setRequestUrl(null);
             setCopyUrlText("Copy URL");
@@ -70,7 +66,6 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
         setSliderValue(10);
         setQueryableValue("");
         setSelectedQueryable(null);
-        setInputValue("10");
         clearSharedUrl();
         setResetBboxFlag(true);
     };
@@ -79,7 +74,6 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
         try {
             const response = await fetch(url);
             const metadata = await response.json();
-            console.log(metadata);
             setMetadata(metadata);
 
             if (metadata.extent.spatial.bbox) {
@@ -133,9 +127,11 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
             const responseData = await response.json();
             const numberMatched = responseData.numberMatched ? responseData.numberMatched : 111111;
             setMaxSliderValue(numberMatched);
-            const newSliderValue = Math.min(sliderValue, numberMatched);
+
+            const defaultLimit = 10;
+            const newSliderValue = Math.min(defaultLimit, numberMatched);
+
             setSliderValue(newSliderValue);
-            setInputValue(String(newSliderValue));
             setMaxValIsLoaded(true);
         } catch (error) {
             setMaxValIsLoaded(true);
@@ -145,27 +141,21 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
 
     const handleSliderChange = (value: number) => {
         setSliderValue(value);
-        //setInputValue(String(value));
-        //requestUrlWithLimit(value);
-        //setCopyUrlText("Copy URL");
     };
 
     const handleSliderEnd = (value: number) => {
-        //setSliderValue(value);
-        setInputValue(String(value));
+        setSliderValue(value);
         requestUrlWithLimit(value);
         setCopyUrlText("Copy URL");
     };
 
     const handleInputBlur = () => {
-        const value = parseInt(inputValue, 10);
+        const value = parseInt(String(sliderValue), 10);
         if (isNaN(value) || value < 1) {
-            setInputValue(String(10));
             setSliderValue(10);
             requestUrlWithLimit(10);
         } else {
             const newValue = Math.min(value, maxSliderValue);
-            setInputValue(String(newValue));
             setSliderValue(newValue);
             requestUrlWithLimit(newValue);
         }
@@ -173,11 +163,12 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        setInputValue(value);
+        setSliderValue(Number(value));
     };
 
     const updateBbox = (newBbox: Geometry) => {
         requestUrlWithBbox(newBbox);
+        requestUrlWithLimit(10);
         setMaxValIsLoaded(false);
         setResetBboxFlag(false);
     };
@@ -212,11 +203,18 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
         if (baseUrl) {
             const url = getOrCreateUrl();
             const extent = feature.getExtent();
+
             if (extent[0] !== Infinity) {
                 url.searchParams.set("bbox", extent.join(","));
             } else {
                 url.searchParams.delete("bbox");
+
+                // reset slider + limit when bbox deleted
+                const defaultLimit = 10;
+                url.searchParams.set("limit", defaultLimit.toString());
+                setSliderValue(defaultLimit);
             }
+
             setRequestUrl(url.toString());
             generateSliderMaxValue(url.toString());
         }
@@ -232,9 +230,9 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={closeBuilder} scrollBehavior="outside">
+        <Modal isOpen={isOpen} onClose={closeBuilder} scrollBehavior="outside" key={isOpen ? "open" : "closed"}>
             <ModalOverlay />
-            <ModalContent width={"40%"} maxW={"700px"} minW={"500px"} maxHeight="90vh" overflow="auto" padding="1">
+            <ModalContent maxW="50vw" maxHeight="90vh" overflow="auto" padding="1">
                 <ModalHeader>
                     OGC API Features Subsetting
                     <Note 
@@ -242,7 +240,7 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
                     />
                 </ModalHeader>
                 <ModalCloseButton />
-                <ModalBody>
+                <ModalBody overflowY="auto">
                     <MetaInfo 
                         title={metadata.title}
                         description={metadata.description}
@@ -256,6 +254,7 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
                             ogcFeaturesExtent={ogcFeaturesExtent}
                             features={requestUrl}
                             delBbox={resetBboxFlag}
+                            isOpen={isOpen}
                         />
                     </Box>
 
@@ -263,7 +262,7 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
                         <DataPointsSelector
                             maxSliderValue={maxSliderValue}
                             sliderValue={sliderValue}
-                            inputValue={inputValue}
+                            inputValue={String(sliderValue)}
                             onSliderChange={handleSliderChange}
                             onSliderChangeEnd={handleSliderEnd}
                             onInputChange={handleInputChange}
@@ -303,9 +302,6 @@ export const OgcApiFeaturesBuilder = ({ isOpen, onClose, ogc_features_url }: Ogc
                         text={copyUrlText}
                     />
                 </ModalBody>
-                {/*<ModalFooter>
-                    <Button onClick={closeBuilder}>Close</Button>
-                </ModalFooter>*/}
             </ModalContent>
         </Modal>
     );

@@ -20,13 +20,10 @@ import { DrawBboxButton } from "./CatchmentComponents/DrawBboxButton";
 import { hoverStyle, selectStyle } from "./Styles";
 import { useSearchState } from "../../SearchState";
 import { SearchService } from "../../../../services";
-import { computeBBox, createBboxLayer, createCatchmentLayer, intersectsBBox } from "./geometryUtils";
-import GeoJSON from "ol/format/GeoJSON";
+import { computeBBox, createBboxLayer, createCatchmentLayer, EPSG_CODE_4326, getCatchment, intersectsBBox } from "../../../../components/ResourceType/Map/geometryUtils";
 //import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
 import { defaults as defaultInteractions } from "ol/interaction.js";
-import { USED_EPSG_CODE } from "./SpatialCoverageFacet";
 import { useCatchmentMap } from "./useCatchmentMap";
-
 
 interface PopupOverlayProps {
     showPopup: boolean;
@@ -109,7 +106,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
             
             if (!coords) return;
             
-            const coords4326 = coords.map((coord: any) => transform(coord, "EPSG:3857", USED_EPSG_CODE));
+            const coords4326 = coords.map((coord: any) => transform(coord, "EPSG:3857", EPSG_CODE_4326));
             const intersectingFeatures = intersectsBBox(coords4326);
             getBBox(intersectingFeatures);
         });
@@ -172,7 +169,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         if (!bBox || !map) return;
         const geom = bBox[0]?.getGeometry();
         const sourceEPSG = map.getView().getProjection().getCode();
-        const transformedGeom = geom.clone().transform(sourceEPSG, USED_EPSG_CODE);
+        const transformedGeom = geom.clone().transform(sourceEPSG, EPSG_CODE_4326);
         if (transformedGeom instanceof Polygon) {
             const extent = transformedGeom.getExtent();
             closeMap();
@@ -256,30 +253,8 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         setShowErrorMessage(false);
 
         try {
-            const response = await searchSrvc.processCatchment(lonLat);
-
-            if (!response?.outputs?.polygon?.href) {
-                throw new Error("Invalid catchment response structure");
-            }
-
-            const polygonUrl = response.outputs.polygon.href;
-
-            const polygonResponse = await fetch(polygonUrl);
-
-            if (!polygonResponse.ok) {
-                throw new Error(`Failed to fetch polygon: ${polygonResponse.status}`);
-            }
-
-            const polygonGeoJson = await polygonResponse.json();
-
-            const geoJSONFormat = new GeoJSON();
-
-            const features = geoJSONFormat.readFeatures(polygonGeoJson, {
-                featureProjection: "EPSG:3857",
-            });
-
+            const features = await getCatchment(lonLat, searchSrvc);
             const bbox = computeBBox(features);
-
             addCatchmentFeaturesToMap(features, bbox);
 
         } catch (error) {

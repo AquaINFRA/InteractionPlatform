@@ -4,19 +4,21 @@ import Draw, { createBox } from "ol/interaction/Draw";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { useEffect, useRef, useState } from "react";
-import { Stroke, Style } from "ol/style";
 import { FacetBase } from "../../../../../views/Search/Facets/FacetBase/FacetBase";
 import GeoJSON from "ol/format/GeoJSON";
-import { Geometry, Polygon } from "ol/geom";
-import Overlay from "ol/Overlay";
+import { Geometry, Point } from "ol/geom";
+import Polygon from "ol/geom/Polygon";
 
-import { USED_EPSG_CODE } from "../../../../../views/Search/Facets/SpatialCoverageFacet/SpatialCoverageFacet";
 import { DeleteBbox } from "../BuilderButtons/DeleteBboxBtn";
-import { setupProjections } from "../../../Map/mapUtils";
 import { DrawBboxButton } from "../../../../../views/Search/Facets/SpatialCoverageFacet/CatchmentComponents/DrawBboxButton";
 import { Feature } from "ol";
 import { Loading } from "./Loading";
 import { FeatureInfoBtn } from "../BuilderButtons/FeatureInfoBtn";
+import { DrawnBboxVectorLayer, EPSG_CODE_3857, EPSG_CODE_4326, getBbox, getCatchment, PointFeatureVectorLayer, setupProjections, triggerSearch } from "../../../Map/geometryUtils";
+import { SearchService } from "../../../../../services";
+import { useService } from "open-pioneer:react-hooks";
+import { transform } from "ol/proj";
+import { FeaturePopupContent } from "./FeaturePopupContent";
 
 setupProjections();
 
@@ -26,185 +28,157 @@ export interface SpatialCoverageFacetProps {
     ogcFeaturesExtent: number[];
     features?: string | null;
     delBbox: boolean;
+    isOpen: boolean;
 }
 
-export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, features, delBbox }: SpatialCoverageFacetProps) {
+const COORDS = [1489200, 6894026, 1489200, 6894026];
+
+export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, features, delBbox, isOpen }: SpatialCoverageFacetProps) {
     const { map } = useMap(mapId);
+    const searchSrvc = useService("onestop4all.SearchService") as SearchService;
+
     const draw = useRef<Draw>();
+    
     const [isLoading, setIsLoading] = useState(false);
-
-    const [bboxActive, setBboxActive] = useState(false);
     const [featuresList, setFeaturesList] = useState<Feature[]>([]);
+    const [showSearchButton, setShowSearchButton] = useState(false);
+    const [bboxButtonActive, setBboxButtonActive] = useState(false);
+    const [infoButtonActive, setInfoButtonActive] = useState(true);
     
-    const extentLayerRef = useRef<VectorLayer<VectorSource> | null>(null);
-    const popupRef = useRef<HTMLDivElement | null>(null);
-    const overlayRef = useRef<Overlay | null>(null);
+    const featuresExtentRef = useRef<VectorLayer<VectorSource> | null>(null);
+    const catchmentRef = useRef<VectorSource | null>(null);
+    const catchmentExtentRef = useRef<VectorLayer<VectorSource> | null>(null);
 
-    const [featuresSource] = useState(new VectorSource());
-    const [featuresLayer] = useState(
-        new VectorLayer({
-            source: featuresSource
-        })
-    );
+    const [catchmentLayer, setCatchmentLayer] = useState<VectorLayer<VectorSource> | null>(null);
 
-    const [source] = useState(new VectorSource({ wrapX: false }));
-    const [vector] = useState(
-        new VectorLayer({
-            source: source,
-            style: new Style({
-                stroke: new Stroke({
-                    color: "black",
-                    width: 2
-                })
-            })
-        })
-    );
+    const [selectedFeature, setSelectedFeature] = useState<{ properties: any, coords: number[] } | null>(null);
 
-    useEffect(() => {
-        const coords = [1489200, 6894026, 1489200, 6894026];
-        if (map) {
-            if (ogcFeaturesExtent && ogcFeaturesExtent.length === 4) {
-                const polygonCoords = [
-                    [
-                        [ogcFeaturesExtent[0], ogcFeaturesExtent[1]],
-                        [ogcFeaturesExtent[2], ogcFeaturesExtent[1]],
-                        [ogcFeaturesExtent[2], ogcFeaturesExtent[3]],
-                        [ogcFeaturesExtent[0], ogcFeaturesExtent[3]],
-                        [ogcFeaturesExtent[0], ogcFeaturesExtent[1]] 
-                    ]
-                ];
-                const geometry = { type: "Polygon", coordinates: polygonCoords };
-                const geoJSONFormat = new GeoJSON();
-                const features = geoJSONFormat.readFeatures(geometry, {
-                    featureProjection: "EPSG:3857"
-                });
-    
-                const vectorSource = new VectorSource({
-                    features: features
-                });
-    
-                const vectorLayer = new VectorLayer({
-                    source: vectorSource
-                });
-    
-                const allLayers = map.getAllLayers();
+    const [pointFeaturesSource] = useState(new VectorSource());
+    const [pointFeaturesLayer] = useState(PointFeatureVectorLayer(pointFeaturesSource));
 
-                if (allLayers.length === 2 && allLayers[1]) {
-                    map.removeLayer(allLayers[1]);
-                }
-                
-                if (vectorLayer) {
-                    extentLayerRef.current = vectorLayer;
-                    map.addLayer(vectorLayer);
-                }
-            }
+    const [bboxSource] = useState(new VectorSource({ wrapX: false }));
+    const [bboxLayer] = useState(DrawnBboxVectorLayer(bboxSource));
 
-            if (vector) {
-                map.addLayer(vector);
-            }
-
-            map.getView().fit(coords, { maxZoom: 2.6 });
-            
-            return () => {
-                if (vector) {
-                    map.removeLayer(vector);
-                }
-                if (extentLayerRef.current) {
-                    map.removeLayer(extentLayerRef.current);
-                    extentLayerRef.current = null;
-                }
-                if (draw.current) {
-                    map.removeInteraction(draw.current);
-                    draw.current = undefined;
-                }
-            };
-        }
-    }, [map, vector, ogcFeaturesExtent]);
-
+    //Fetch point features
     useEffect(() => {
         if (!features) return;
         fetchFeatures(features);
     }, [features]);
 
     useEffect(() => {
+        if (isOpen) {
+            setInfoButtonActive(true);
+        }
+    }, [isOpen]);
 
+    //Set features extent 
+    useEffect(() => {
+        if (!map || !ogcFeaturesExtent || ogcFeaturesExtent.length !== 4) return;
+
+        const extentLayer = getBbox(ogcFeaturesExtent, EPSG_CODE_3857);
+
+        // Remove previous extent layer
+        if (featuresExtentRef.current) {
+            map.removeLayer(featuresExtentRef.current);
+        }
+
+        featuresExtentRef.current = extentLayer;
+        map.addLayer(extentLayer);
+        map.getView().fit(COORDS, { maxZoom: 2.6 });
+
+        return () => {
+            if (featuresExtentRef.current) {
+                map.removeLayer(featuresExtentRef.current);
+                featuresExtentRef.current = null;
+            }
+        };
+    }, [map, ogcFeaturesExtent]);
+
+    //set drawn bbox
+    useEffect(() => {
+        if (!map || !bboxLayer) return;
+
+        map.addLayer(bboxLayer);
+
+        return () => {
+            map.removeLayer(bboxLayer);
+        };
+    }, [map, bboxLayer]);
+
+    //add features to map
+    useEffect(() => {
         if (!map || !featuresList) return;
 
         const geoJSONFormat = new GeoJSON();
-
         const olFeatures = geoJSONFormat.readFeatures(
             {
                 type: "FeatureCollection",
                 features: featuresList
             },
             {
-                featureProjection: "EPSG:3857"
+                featureProjection: EPSG_CODE_3857
             }
         );
-        featuresSource.clear();
-        featuresSource.addFeatures(olFeatures);
+        pointFeaturesSource.clear();
+        pointFeaturesSource.addFeatures(olFeatures);
 
-        if (!map.getLayers().getArray().includes(featuresLayer)) {
-            map.addLayer(featuresLayer);
+        if (!map.getLayers().getArray().includes(pointFeaturesLayer)) {
+            map.addLayer(pointFeaturesLayer);
         }
 
     }, [map, featuresList]);
 
-    const [infoActive, setInfoActive] = useState(false);
     useEffect(() => {
-        if (!map || !popupRef.current) return;
+        const currentMap = map;
+        return () => {
+            cleanUp(currentMap);
+        };
+    }, [map]);
 
-        // create overlay
-        const overlay = new Overlay({
-            element: popupRef.current,
-            positioning: "bottom-center",
-            stopEvent: false,
-            offset: [0, -10]
-        });
-
-        overlayRef.current = overlay;
-        map.addOverlay(overlay);
+    //Get feature info
+    useEffect(() => {
+        if (!map) return;
 
         const handleClick = (evt: any) => {
-            console.log(infoActive);
-            if (!infoActive) return;
-            let featureFound = false;
-
+            if (!infoButtonActive) return;
             map.forEachFeatureAtPixel(evt.pixel, (feature) => {
-                featureFound = true;
+                const geometry = feature.getGeometry();
+                const props = feature.getProperties();
 
-                const properties = feature.getProperties();
-                console.log(properties);
+                if (!geometry || !(geometry instanceof Point)) return false;
 
-                popupRef.current!.innerHTML = `
-                    <strong>Feature Info</strong><br/>
-                    ${Object.entries(properties)
-        .filter(([k]) => k !== "geometry" /*&& 
-            k !== "visit_date" && 
-            k !== "longitude" && 
-            k !== "latitude" &&
-            k !== "color_id"*/
-        )
-        .map(([k, v]) => `${k}: ${v}`)
-        .join("<br/>")}
-                `;
+                const coords3857 = geometry.getCoordinates();
+                const coords = transform(coords3857, EPSG_CODE_3857, EPSG_CODE_4326);
+                setCatchment(coords);
 
-                overlay.setPosition(evt.coordinate);
+                setSelectedFeature({
+                    properties: props,
+                    coords: coords,
+                });
                 return true;
             });
-
-            if (!featureFound) {
-                overlay.setPosition(undefined); // hide popup
-            }
         };
 
         map.on("singleclick", handleClick);
+        return () => map.un("singleclick", handleClick);
+    }, [map, infoButtonActive]);
 
+    useEffect(() => {
         return () => {
-            map.un("singleclick", handleClick);
-            map.removeOverlay(overlay);
+            if (catchmentLayer && map) {
+                map.removeLayer(catchmentLayer);
+            }
         };
-    }, [map, infoActive]);
+    }, [catchmentLayer, map]);
+
+    useEffect(() => {
+        if (delBbox) {
+            handleDeleteBbox();
+            //console.log("deactivate");
+            ///setInfoButtonActive(false);
+            removeInteraction();
+        }
+    }, [delBbox]);
     
     const fetchFeatures = async (features: string) => {
         setIsLoading(true);
@@ -217,67 +191,110 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, features, delB
         } finally {
             setIsLoading(false);
         }
-
     };
+    
+    const setCatchment = async (lonLat: number[]) => {
+        try {
+            setIsLoading(true);
+            const catchment = await getCatchment(lonLat, searchSrvc);
 
-    function selectBbox(): void {
-        if (bboxActive) {
-            removeInteraction();
-            setBboxActive(false);
-        } else {
-            addInteraction(
-                new Draw({
-                    source: source,
-                    type: "Circle",
-                    geometryFunction: createBox()
-                })
-            );
-            setBboxActive(true);
+            if (!map || !catchment || catchment.length === 0) {
+                setShowSearchButton(false); // hide button if no catchment
+                return;
+            }
+
+            // Clear previous catchment
+            if (catchmentLayer) {
+                map.removeLayer(catchmentLayer);
+            }
+
+            const catchmentSource = new VectorSource({
+                features: catchment
+            });
+
+            catchmentRef.current = catchmentSource;
+
+            const newCatchmentLayer = new VectorLayer({
+                source: catchmentSource
+            });
+
+            map.addLayer(newCatchmentLayer);
+            setCatchmentLayer(newCatchmentLayer);
+
+            // Fit map view to the catchment
+            // Remove previous extent layer
+            if (catchmentExtentRef.current) {
+                map.removeLayer(catchmentExtentRef.current);
+            }
+
+            const catchmentExtent = catchmentSource.getExtent();
+
+            if (catchmentExtent) {
+                const catchmentExtentLayer = getBbox(catchmentExtent, EPSG_CODE_4326);
+                catchmentExtentRef.current = catchmentExtentLayer;
+                map.addLayer(catchmentExtentLayer);
+            }
+
+            //map.getView().fit(catchmentExtent, { maxZoom: 12, padding: [50, 50, 50, 50] });
+            setShowSearchButton(true);
+
+        } catch (error) {
+            console.error("Error processing catchment:", error);
+        } finally {
+            setIsLoading(false);
+            if (!catchmentRef.current || catchmentRef.current.getFeatures().length === 0) {
+                setShowSearchButton(false);
+            }
         }
-    }
+    };
 
     function addInteraction(newDraw: Draw) {
         removeInteraction();
+       
         draw.current = newDraw;
+        
         newDraw.on("drawstart", () => {
-            source.clear();
+            bboxSource.clear();
         });
+        
         newDraw.on("drawend", (event) => {
             const geometry = event.feature.getGeometry();
             if (geometry && map) {
                 const sourceEPSG = map.getView().getProjection().getCode();
-                const transformedBbox = geometry.clone().transform(sourceEPSG, USED_EPSG_CODE);
+                const transformedBbox = geometry.clone().transform(sourceEPSG, EPSG_CODE_4326);
                 onBboxChange(transformedBbox);
             }
         });
+        
         map?.addInteraction(newDraw);
     }
 
     function removeInteraction() {
         if (draw.current) {
             map?.removeInteraction(draw.current);
+            draw.current = undefined;
         }
     }
 
     useEffect(() => {
         if (delBbox) {
             handleDeleteBbox();
-            setBboxActive(false);
+            setBboxButtonActive(false);
             removeInteraction();
         }
     }, [delBbox]);
 
     function handleDeleteBbox() {
-        source.clear();
+        bboxSource.clear();
         onBboxChange(new Polygon([]));
     }
 
     function toggleInfoTool() {
-        setInfoActive(prev => {
+        setInfoButtonActive(prev => {
             const newValue = !prev;
 
             if (newValue) {
-                setBboxActive(false);
+                setBboxButtonActive(false);
                 removeInteraction();
             }
 
@@ -286,15 +303,15 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, features, delB
     }
 
     function toggleDrawTool() {
-        setBboxActive(prev => {
+        setBboxButtonActive(prev => {
             const newValue = !prev;
 
             if (newValue) {
-                setInfoActive(false);
+                setInfoButtonActive(false);
 
                 addInteraction(
                     new Draw({
-                        source: source,
+                        source: bboxSource,
                         type: "Circle",
                         geometryFunction: createBox()
                     })
@@ -307,32 +324,69 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, features, delB
         });
     }
 
+    function cleanUp(currentMap?: typeof map) {
+        if (!currentMap) return;
+
+        currentMap.getInteractions().forEach((interaction) => {
+            if (interaction instanceof Draw) {
+                currentMap.removeInteraction(interaction);
+            }
+        });
+
+        draw.current = undefined;
+
+        pointFeaturesSource.clear();
+
+        if (catchmentExtentRef.current) {
+            currentMap.removeLayer(catchmentExtentRef.current);
+        }
+
+        console.log("cleanUp done");
+    }
+
     return (
         <FacetBase title="Spatial Coverage" expanded={true}>
             <Box position="relative">
-                <Box height="350px" position="relative">
-                    {isLoading && (
-                        <Loading />
-                    )}
-                    <Box position="absolute" bottom="130px" right="10px" zIndex="10">
-                        <FeatureInfoBtn infoActive={infoActive} onClick={toggleInfoTool} />
-                    </Box>
-                    <Box position="absolute" bottom="75px" right="10px" zIndex="10">
-                        <DrawBboxButton bboxActive={bboxActive} onClick={toggleDrawTool} />
+                <Box height="20vw" position="relative">
+                    {
+                        isLoading &&
+                            <Loading />
+                    }
+                    {
+                        features && 
+                            <Box position="absolute" bottom="20px" right="130px" zIndex="10">
+                                <FeatureInfoBtn 
+                                    infoActive={infoButtonActive} 
+                                    onClick={toggleInfoTool} 
+                                />
+                            </Box>
+                    }
+                    <Box position="absolute" bottom="20px" right="70px" zIndex="10">
+                        <DrawBboxButton 
+                            bboxActive={bboxButtonActive} 
+                            onClick={toggleDrawTool} 
+                        />
                     </Box>
                     <DeleteBbox onClick={handleDeleteBbox} />
                     <MapContainer mapId={mapId} />
-                    <div
-                        ref={popupRef}
-                        style={{
-                            position: "absolute",
-                            background: "white",
-                            padding: "8px",
-                            borderRadius: "4px",
-                            border: "1px solid black",
-                            minWidth: "150px"
-                        }}
-                    />
+                    {
+                        selectedFeature &&
+                            <Box
+                                position="absolute"
+                                top="5px"
+                                right="5px"
+                                zIndex="1000"
+                                backgroundColor={"white"}
+                            >
+                                <FeaturePopupContent
+                                    properties={selectedFeature.properties}
+                                    onClick={() => {
+                                        triggerSearch(catchmentRef);
+                                    }}
+                                    showButton={showSearchButton}
+                                />
+                            </Box>
+                    }
                 </Box>
             </Box>
         </FacetBase>

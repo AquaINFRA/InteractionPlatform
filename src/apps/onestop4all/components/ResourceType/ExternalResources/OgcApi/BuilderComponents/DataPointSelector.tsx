@@ -1,6 +1,5 @@
 import { Box, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Input } from "@open-pioneer/chakra-integration";
 import React from "react";
-import { FacetBase } from "../../../../../views/Search/Facets/FacetBase/FacetBase";
 
 interface DataPointsSelectorProps {
     maxSliderValue: number;

@@ -25,12 +25,11 @@ import { useNavigate } from "react-router-dom";
 import { DrawBboxButton } from "./CatchmentComponents/DrawBboxButton";
 import { DatasetMetadataResponse } from "../../../../services/interfaces";
 import { scrollUp } from "../../../../services/SearchUtils";
+import { DrawnBboxVectorLayer, EPSG_CODE_4326 } from "../../../../components/ResourceType/Map/geometryUtils";
 
 export interface SpatialCoverageFacetProps {
     mapId: string;
 }
-
-export const USED_EPSG_CODE = "EPSG:4326";
 
 export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
     const { map } = useMap(mapId);
@@ -52,17 +51,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
 
     // VectorLayer to display the Spatial filter
     const [source] = useState(new VectorSource({ wrapX: false }));
-    const [vector] = useState(
-        new VectorLayer({
-            source: source,
-            style: new Style({
-                stroke: new Stroke({
-                    color: "black",
-                    width: 2
-                })
-            })
-        })
-    );
+    const [vector] = useState(DrawnBboxVectorLayer(source));
 
     // VectorLayer to display the search results
     const [resultsSource] = useState(new VectorSource());
@@ -182,7 +171,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
             const mapEPSG = map.getView().getProjection().getCode();
             source.clear();
             if (searchState.spatialFilter.length === 4) {
-                const bbox = fromExtent(searchState.spatialFilter).transform(USED_EPSG_CODE, mapEPSG);
+                const bbox = fromExtent(searchState.spatialFilter).transform(EPSG_CODE_4326, mapEPSG);
                 const bboxFeature = new Feature<Polygon>(bbox);
                 source.addFeature(bboxFeature);
             }
@@ -199,7 +188,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
         const geom = features[0]?.getGeometry();
         if (geom && map) {
             const sourceEPSG = map.getView().getProjection().getCode();
-            const transformedGeom = geom.clone().transform(sourceEPSG, USED_EPSG_CODE);
+            const transformedGeom = geom.clone().transform(sourceEPSG, EPSG_CODE_4326);
             if (transformedGeom instanceof Polygon) {
                 const extent = transformedGeom.getExtent();
                 searchState.setSpatialFilter(extent);
@@ -361,7 +350,7 @@ export function SpatialCoverageFacet({ mapId }: SpatialCoverageFacetProps) {
                         Delete selection
                     </Button>
                     {disabled && (
-                        <DisableOverlay label="The spatial filter isDisabled disabled because the current selection does not have spatial information."></DisableOverlay>
+                        <DisableOverlay label="The spatial filter isDisabled disabled because the current selection does not have spatial information." />
                     )}
                     <PopupOverlay 
                         showPopup={showPopup} 
