@@ -54,7 +54,7 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, features, delB
 
     const [catchmentLayer, setCatchmentLayer] = useState<VectorLayer<VectorSource> | null>(null);
 
-    const [selectedFeature, setSelectedFeature] = useState<{ properties: any, coords: number[] } | null>(null);
+    const [selectedFeature, setSelectedFeature] = useState<{ properties: any, coords: number[] | null } | null>(null);
 
     const [pointFeaturesSource] = useState(new VectorSource());
     const [pointFeaturesLayer] = useState(
@@ -172,26 +172,32 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, features, delB
 
         const handleClick = (evt: any) => {
             if (!infoButtonActive) return;
+
             map.forEachFeatureAtPixel(evt.pixel, (feature) => {
                 const geometry = feature.getGeometry();
                 const props = feature.getProperties();
 
-                if (!geometry || !(
-                    geometry instanceof Point 
-                    || geometry instanceof MultiPolygon 
-                    || geometry instanceof Polygon
-                    || geometry instanceof MultiLineString
-                    || geometry instanceof LineString
-                )) return false;
+                if (!geometry) return false;
 
-                const coords3857 = geometry.getCoordinates();
-                const coords = transform(coords3857, EPSG_CODE_3857, EPSG_CODE_4326);
-                setCatchment(coords);
+                // Only process catchment for Points
+                if (geometry instanceof Point) {
+                    const coords3857 = geometry.getCoordinates();
+                    const coords4326 = transform(coords3857, EPSG_CODE_3857, EPSG_CODE_4326);
 
-                setSelectedFeature({
-                    properties: props,
-                    coords: coords,
-                });
+                    setCatchment(coords4326);
+
+                    setSelectedFeature({
+                        properties: props,
+                        coords: coords4326,
+                    });
+                } else {
+                    // Other geometry types (Polygon, MultiPolygon, LineString, etc.)
+                    setSelectedFeature({
+                        properties: props,
+                        coords: null,
+                    });
+                }
+
                 return true;
             });
         };
