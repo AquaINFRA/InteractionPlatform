@@ -6,7 +6,7 @@ import VectorSource from "ol/source/Vector";
 import { useEffect, useRef, useState } from "react";
 import { FacetBase } from "../../../../../views/Search/Facets/FacetBase/FacetBase";
 import GeoJSON from "ol/format/GeoJSON";
-import { Geometry, Point } from "ol/geom";
+import { Geometry, LineString, MultiLineString, MultiPolygon, Point } from "ol/geom";
 import Polygon from "ol/geom/Polygon";
 
 import { DeleteBbox } from "../BuilderButtons/DeleteBboxBtn";
@@ -19,6 +19,9 @@ import { SearchService } from "../../../../../services";
 import { useService } from "open-pioneer:react-hooks";
 import { transform } from "ol/proj";
 import { FeaturePopupContent } from "./FeaturePopupContent";
+import { Fill, Stroke, Style } from "ol/style";
+import CircleStyle from "ol/style/Circle";
+import { PrimaryColor } from "../../../../../Theme";
 
 setupProjections();
 
@@ -54,7 +57,34 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, features, delB
     const [selectedFeature, setSelectedFeature] = useState<{ properties: any, coords: number[] } | null>(null);
 
     const [pointFeaturesSource] = useState(new VectorSource());
-    const [pointFeaturesLayer] = useState(PointFeatureVectorLayer(pointFeaturesSource));
+    const [pointFeaturesLayer] = useState(
+        new VectorLayer({
+            source: pointFeaturesSource,
+            style: (feature) => {
+                const type = feature.getGeometry()?.getType();
+
+                if (type === "Point") {
+                    return new Style({
+                        image: new CircleStyle({
+                            radius: 6,
+                            stroke: new Stroke({ color: PrimaryColor, width: 2 }),
+                            fill: new Fill({ color: "transparent" })
+                        })
+                    });
+                }
+
+                return new Style({
+                    stroke: new Stroke({
+                        color: PrimaryColor,
+                        width: 2
+                    }),
+                    fill: new Fill({
+                        color: "rgba(0,0,0,0)"
+                    })
+                });
+            }
+        })
+    );
 
     const [bboxSource] = useState(new VectorSource({ wrapX: false }));
     const [bboxLayer] = useState(DrawnBboxVectorLayer(bboxSource));
@@ -120,6 +150,7 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, features, delB
             }
         );
         pointFeaturesSource.clear();
+        console.log("olFeatures", olFeatures[0]?.getGeometry()?.getType());
         pointFeaturesSource.addFeatures(olFeatures);
 
         if (!map.getLayers().getArray().includes(pointFeaturesLayer)) {
@@ -145,7 +176,13 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, features, delB
                 const geometry = feature.getGeometry();
                 const props = feature.getProperties();
 
-                if (!geometry || !(geometry instanceof Point)) return false;
+                if (!geometry || !(
+                    geometry instanceof Point 
+                    || geometry instanceof MultiPolygon 
+                    || geometry instanceof Polygon
+                    || geometry instanceof MultiLineString
+                    || geometry instanceof LineString
+                )) return false;
 
                 const coords3857 = geometry.getCoordinates();
                 const coords = transform(coords3857, EPSG_CODE_3857, EPSG_CODE_4326);
