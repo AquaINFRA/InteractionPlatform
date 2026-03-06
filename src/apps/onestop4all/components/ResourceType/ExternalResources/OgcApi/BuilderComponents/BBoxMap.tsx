@@ -235,7 +235,7 @@ export function BBoxMap({ mapId, onBboxChange, ogcFeaturesExtent, features, delB
                 map.addLayer(catchmentExtentLayer);
             }
 
-            //map.getView().fit(catchmentExtent, { maxZoom: 12, padding: [50, 50, 50, 50] });
+            map.getView().fit(catchmentExtent, { maxZoom: 12, padding: [50, 50, 50, 50] });
             setShowSearchButton(true);
 
         } catch (error) {
