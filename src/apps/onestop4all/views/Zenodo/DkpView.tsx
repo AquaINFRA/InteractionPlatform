@@ -143,15 +143,7 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
 
     function renderComponents(components: any[], startIndex: number, priority: string) {
         
-        const updatedComponents = components.map(component => {
-            if (component.type === D2K_COMPONENT.VirtualLab) {
-                return {
-                    ...component,
-                    identifier: [...(component.identifier || []), EGI_REPLAY_URL]
-                };
-            }
-            return component;
-        });
+        const updatedComponents = components;
 
         const sortedComponents = [...updatedComponents].sort((a, b) =>
             a.type === priority ? -1 : b.type === priority ? 1 : 0
