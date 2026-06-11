@@ -5,6 +5,12 @@ import * as appMetadata from "open-pioneer:app";
 
 import { AppUI } from "./AppUI";
 
+export function helloWorld(): string {
+    return "Hello, world!";
+}
+
+console.log(helloWorld());
+
 fetch("/config.json").then((file) => {
     file.json().then((config) => {
         const Element = createCustomElement({
