@@ -20,7 +20,7 @@ import { DrawBboxButton } from "./CatchmentComponents/DrawBboxButton";
 import { hoverStyle, selectStyle } from "./Styles";
 import { useSearchState } from "../../SearchState";
 import { SearchService } from "../../../../services";
-import { computeBBox, createBboxLayer, createCatchmentLayer, EPSG_CODE_4326, getCatchment, intersectsBBox } from "../../../../components/ResourceType/Map/geometryUtils";
+import { computeBBox, createBboxLayer, createCatchmentLayer, EPSG_CODE_4326, getCatchment, getMatchingBasins, intersectsBBox } from "../../../../components/ResourceType/Map/geometryUtils";
 //import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
 import { defaults as defaultInteractions } from "ol/interaction.js";
 import { useCatchmentMap } from "./useCatchmentMap";
@@ -304,13 +304,20 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                 map.addInteraction(hoverName);
         
                 const handleSelect = () => {
-                    getBBox(selectClick.getFeatures().getArray());
+                    const selectedFeatures = selectClick.getFeatures().getArray();
+                    const combinedFeatures = selectedFeatures.flatMap((feature) => {
+                        const seaOid = feature.getProperties().sea_oid;
+                        return seaOid !== undefined
+                            ? [feature, ...getMatchingBasins(seaOid)]
+                            : [feature];
+                    });
+                    getBBox(combinedFeatures);
                 };
         
                 const handleHover = () => {
                     setTooltipContent("");
                     if (hoverName.getFeatures().getLength() > 0) {
-                        setTooltipContent(hoverName.getFeatures().item(0).getProperties().name);
+                        setTooltipContent(hoverName.getFeatures().item(0).getProperties().rb_name);
                     }
                 };
         

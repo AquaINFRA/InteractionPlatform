@@ -1,6 +1,8 @@
 import { Geometry, Polygon } from "ol/geom";
 import GeoJSON from "ol/format/GeoJSON";
-import catchments from "../../../services/sea_areas_catchments.json"; //before: "hydro90m_basins_combined_v2_webmercator_1perc.json";
+//import catchments from "../../../services/sea_areas_catchments.json"; //before: "hydro90m_basins_combined_v2_webmercator_1perc.json";
+import dataNew1 from "../../../services/regional_seas_europe_and_helcom_for_h90m_basins_v4_webmercator.json";
+import dataNew2 from "../../../services/hydro90m_basins_combined_marine_regions_v4_webmercator.json";
 import { Feature } from "ol";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
@@ -35,14 +37,28 @@ export function setupProjections() {
     register(proj4);
 }
 
+export function getMatchingBasins(seaOid: number) {
+    const geoJson = new GeoJSON();
+
+    const matchingRawFeatures = (dataNew2 as any).features.filter(
+        (feature: any) => feature.properties?.sea_OBJECTID === seaOid
+    );
+
+    return geoJson.readFeatures(
+        { type: "FeatureCollection", features: matchingRawFeatures },
+        { dataProjection: EPSG_CODE_3857, featureProjection: EPSG_CODE_3857 }
+    );
+}
+
 export function intersectsBBox(bboxCoords: number[][]) {
     const geoJson = new GeoJSON();
 
     const bbox = turf.polygon([bboxCoords]);
     
-    const catchmentsAreas = geoJson.readFeatures(catchments, {
-        featureProjection: "EPSG:3857"
-    });
+    const catchmentsAreas = [
+        ...geoJson.readFeatures(dataNew1, { featureProjection: "EPSG:3857" }),
+        ...geoJson.readFeatures(dataNew2, { featureProjection: "EPSG:3857" })
+    ];
 
     return catchmentsAreas.filter((catchmentsArea) => {
         const geometry = catchmentsArea.getGeometry() as Polygon;
