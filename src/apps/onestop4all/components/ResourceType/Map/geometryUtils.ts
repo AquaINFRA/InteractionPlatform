@@ -50,6 +50,19 @@ export function getMatchingBasins(seaOid: number) {
     );
 }
 
+export function getMatchingSeaRegion(seaOid: number) {
+    const geoJson = new GeoJSON();
+
+    const matchingRawFeatures = (dataNew1 as any).features.filter(
+        (feature: any) => feature.properties?.sea_oid === seaOid
+    );
+
+    return geoJson.readFeatures(
+        { type: "FeatureCollection", features: matchingRawFeatures },
+        { dataProjection: EPSG_CODE_3857, featureProjection: EPSG_CODE_3857 }
+    );
+}
+
 export function intersectsBBox(bboxCoords: number[][]) {
     const geoJson = new GeoJSON();
 

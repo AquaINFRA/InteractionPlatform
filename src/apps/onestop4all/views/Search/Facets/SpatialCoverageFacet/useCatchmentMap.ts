@@ -5,6 +5,7 @@ import { Feature } from "ol";
 import { Icon, Style } from "ol/style";
 import GeoJSON from "ol/format/GeoJSON";
 import dataNew1 from "../../../../services/regional_seas_europe_and_helcom_for_h90m_basins_v4_webmercator.json";
+import dataNew2 from "../../../../services/hydro90m_basins_combined_marine_regions_v4_webmercator.json";
 import { style } from "./Styles";
 
 export function useCatchmentMap(
@@ -36,9 +37,10 @@ export function useCatchmentMap(
 
     const vectorLayer = useMemo(() => {
         const geoJSONFormat = new GeoJSON();
-        const features = geoJSONFormat.readFeatures(dataNew1, {
-            featureProjection: "EPSG:3857",
-        });
+        const features = [
+            ...geoJSONFormat.readFeatures(dataNew1, { featureProjection: "EPSG:3857" }),
+            ...geoJSONFormat.readFeatures(dataNew2, { featureProjection: "EPSG:3857" })
+        ];
 
         const source = new VectorSource({ features });
 

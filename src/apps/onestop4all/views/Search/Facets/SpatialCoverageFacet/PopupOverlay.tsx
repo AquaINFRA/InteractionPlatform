@@ -20,7 +20,7 @@ import { DrawBboxButton } from "./CatchmentComponents/DrawBboxButton";
 import { hoverStyle, selectStyle } from "./Styles";
 import { useSearchState } from "../../SearchState";
 import { SearchService } from "../../../../services";
-import { computeBBox, createBboxLayer, createCatchmentLayer, EPSG_CODE_4326, getCatchment, getMatchingBasins, intersectsBBox } from "../../../../components/ResourceType/Map/geometryUtils";
+import { computeBBox, createBboxLayer, createCatchmentLayer, EPSG_CODE_4326, getCatchment, getMatchingBasins, getMatchingSeaRegion, intersectsBBox } from "../../../../components/ResourceType/Map/geometryUtils";
 //import dataNew from "../../../../services/hydro90m_basins_combined_v2_webmercator_1perc.json";
 import { defaults as defaultInteractions } from "ol/interaction.js";
 import { useCatchmentMap } from "./useCatchmentMap";
@@ -46,6 +46,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
     }, [showPopup]);
 
     const [source] = useState(new VectorSource({ wrapX: false }));
+    const [canExpandSelection, setCanExpandSelection] = useState(false);
     const draw = useRef<Draw>();
 
     const {
@@ -142,6 +143,17 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         };
     }, [map]);
 
+    function getRelatedFeatures(feature: Feature<Geometry>) {
+        const properties = feature.getProperties();
+        if (properties.sea_oid !== undefined) {
+            return getMatchingBasins(properties.sea_oid);
+        }
+        if (properties.sea_OBJECTID !== undefined) {
+            return getMatchingSeaRegion(properties.sea_OBJECTID);
+        }
+        return [];
+    }
+
     function getBBox(features: any) {
         cleanUpLayers();
         if (!map) return;
@@ -163,6 +175,16 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
         setBBoxVectorLayer(bboxLayer.layer);
         setBBox(bboxLayer.features);
+    }
+
+    function expandSelection(): void {
+        const selectedFeatures = selectClick.getFeatures().getArray();
+        const expandedFeatures = selectedFeatures.flatMap((feature) => [
+            feature,
+            ...getRelatedFeatures(feature)
+        ]);
+        getBBox(expandedFeatures);
+        setCanExpandSelection(false);
     }
 
     function setSearchArea(): void {
@@ -201,6 +223,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         catchmentBBoxSource?.clear();
         setBboxActive(false);
         setMarkerLonLat([]);
+        setCanExpandSelection(false);
     }
 
     function cleanUpLayers(): void {
@@ -305,13 +328,11 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         
                 const handleSelect = () => {
                     const selectedFeatures = selectClick.getFeatures().getArray();
-                    const combinedFeatures = selectedFeatures.flatMap((feature) => {
-                        const seaOid = feature.getProperties().sea_oid;
-                        return seaOid !== undefined
-                            ? [feature, ...getMatchingBasins(seaOid)]
-                            : [feature];
-                    });
-                    getBBox(combinedFeatures);
+                    const canExpand = selectedFeatures.some(
+                        (feature) => getRelatedFeatures(feature).length > 0
+                    );
+                    setCanExpandSelection(canExpand);
+                    getBBox(selectedFeatures);
                 };
         
                 const handleHover = () => {
@@ -404,10 +425,18 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                                 loading={loading}
                             />
                     }
-                    <CatchmentButton 
-                        active={bBox ? true : false} 
-                        onClick={setSearchArea} 
-                        text="Apply bounding box" 
+                    {
+                        canExpandSelection &&
+                            <CatchmentButton
+                                active={true}
+                                onClick={expandSelection}
+                                text="Expand selection"
+                            />
+                    }
+                    <CatchmentButton
+                        active={bBox ? true : false}
+                        onClick={setSearchArea}
+                        text="Apply bounding box"
                     />
                 </Flex>
             </Box>
