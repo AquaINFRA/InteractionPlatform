@@ -317,7 +317,8 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                 const handleHover = () => {
                     setTooltipContent("");
                     if (hoverName.getFeatures().getLength() > 0) {
-                        setTooltipContent(hoverName.getFeatures().item(0).getProperties().rb_name);
+                        const properties = hoverName.getFeatures().item(0).getProperties();
+                        setTooltipContent(properties.rb_name || properties.sea_name);
                     }
                 };
         
