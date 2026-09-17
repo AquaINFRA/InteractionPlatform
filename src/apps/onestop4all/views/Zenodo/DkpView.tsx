@@ -4,11 +4,11 @@ import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { ZenodoResources } from "./ZenodoResources";
 import { RelatedContent } from "../../components/ResourceType/RelatedIdentifier/RelatedIdentifier";
-import { ComponentIcon, D2K_COMPONENT, EGI_REPLAY_URL, extractProgrammingLanguages, getComponentLabel, Identifier, parseRoCrate, renderGalaxyEmbed, renderPopupTitle, ZENODO_RECORDS, ZenodoViewProps } from "../../services/DkpUtils";
+import { ComponentIcon, D2K_COMPONENT, EGI_REPLAY_URL, extractProgrammingLanguages, findRoCrateUrl, getComponentLabel, Identifier, parseRoCrate, renderGalaxyEmbed, renderPopupTitle, ZenodoViewProps } from "../../services/DkpUtils";
 import { IdentifierPopup } from "./IdentifierPopup";
 
 export function DkpView({ item: metadata }: ZenodoViewProps) {
-    const roCrateUrl = ZENODO_RECORDS + metadata.recid + "/files/ro-crate-metadata.json/content";
+    const roCrateUrl = findRoCrateUrl(metadata.files);
     const [roCrate, setRoCrate] = useState<any[]>([]);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
     const [showPopup, setShowPopup] = useState<boolean>(false);
@@ -16,6 +16,10 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
 
     useEffect(() => {
         async function fetchRoCrate() {
+            if (!roCrateUrl) {
+                console.error(`No RO-Crate metadata file found for record ${metadata.recid}`);
+                return;
+            }
             try {
                 const response = await fetch(roCrateUrl);
                 if (!response.ok) throw new Error(`Failed to fetch RO-Crate: ${response.statusText}`);
@@ -23,7 +27,7 @@ export function DkpView({ item: metadata }: ZenodoViewProps) {
                 setRoCrate(parseRoCrate(roCrateData));
             } catch (error) {
                 console.error(error);
-            } 
+            }
         }
         fetchRoCrate();
     }, []);

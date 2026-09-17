@@ -21,11 +21,12 @@ export interface ZenodoMetadataResponse {
     provider: string;
     dkps: any;
     recid: string;
-    files: [{
-        links:{
+    files: {
+        key: string;
+        links: {
             self: string;
         }
-    }];
+    }[];
     links?: {
         self: string;
         doi: string;
@@ -178,8 +179,15 @@ export function findAssociatedDkp(dkps: any[], resource_id: string): any[] {
     return associatedDkps;
 }
 
-export const ZENODO_RECORDS = "https://zenodo.org/api/records/";
 export const EGI_REPLAY_URL = "https://replay.notebooks.egi.eu/hub/hub/login";
+
+// Zenodo uploads aren't guaranteed to name the RO-Crate file exactly
+// "ro-crate-metadata.json" (e.g. some are uploaded as "ro-crate-metadata-v4-FINAL.json"),
+// so match by pattern instead of assuming a fixed filename.
+export function findRoCrateUrl(files?: { key: string; links: { self: string } }[]): string | null {
+    const roCrateFile = files?.find((file) => /^ro-crate-metadata.*\.json$/i.test(file.key));
+    return roCrateFile?.links.self ?? null;
+}
 
 export async function fetchAndStoreDkps(searchSrvc: any, searchState: any) {
     try {
@@ -189,7 +197,11 @@ export async function fetchAndStoreDkps(searchSrvc: any, searchState: any) {
         const dkps = result.hits.hits;
         const fetchedDkps = await Promise.all(
             dkps.map(async (element: any) => {
-                const roCrateUrl = `${ZENODO_RECORDS}${element.recid}/files/ro-crate-metadata.json/content`;
+                const roCrateUrl = findRoCrateUrl(element.files);
+                if (!roCrateUrl) {
+                    console.error(`No RO-Crate metadata file found for record ${element.recid}`);
+                    return null;
+                }
                 try {
                     const response = await fetch(roCrateUrl);
                     if (!response.ok) throw new Error(`Failed to fetch RO-Crate: ${response.statusText}`);
