@@ -13,13 +13,15 @@ import { BackToSearchLink } from "../../components/BackToSearchLink/BackToSearch
 import { ResourceTypeLabel } from "../../components/ResourceTypeLabel/ResourceTypeLabel";
 import { ZenodoView } from "../Zenodo/Zenodo";
 import { DkpView } from "../Zenodo/DkpView";
+import { B2ShareView } from "../B2Share/B2Share";
 import { fetchAndStoreDkps, findAssociatedDkp, ZenodoMetadataResponse } from "../../services/DkpUtils";
+import { B2ShareMetadataResponse } from "../../services/B2ShareUtils";
 import { DatasetMetadataResponse } from "../../services/interfaces";
 
 export function Result() {
     const resultId = useParams().id as string;
     const searchSrvc = useService("onestop4all.SearchService") as SearchService; 
-    const [searchResult, setSearchResult] = useState<SolrSearchResultItem | ZenodoMetadataResponse>();
+    const [searchResult, setSearchResult] = useState<SolrSearchResultItem | ZenodoMetadataResponse | B2ShareMetadataResponse>();
     const [resourceType, setResourceType] = useState<ResourceType>();
     const [loading, setLoading] = useState(true);
 
@@ -51,7 +53,7 @@ export function Result() {
                 searchSrvc.getZenodoMetadata(provider, id).then((result) => {
                     if (result) {
                         const associatedDkps = findAssociatedDkp(dkps ?? [], result.response.doi_url);
-                        
+
                         if (associatedDkps.length > 0) {
                             result.response.dkps = associatedDkps;
                         }
@@ -63,6 +65,25 @@ export function Result() {
                         } else {
                             setResourceType(getResourceType(result.response.metadata.resource_type.type));
                         }
+                        setLoading(false);
+                    }
+                });
+            }
+            else if (id && provider === "b2share") {
+                // B2Share's own API sends no CORS header, so it can't be fetched
+                // directly from the browser (unlike Zenodo). DDAS already harvests
+                // B2Share into its normalized shape, and that response is CORS-safe.
+                searchSrvc.getDdasMetadata(provider, id).then((result) => {
+                    if (result) {
+                        const associatedDkps = findAssociatedDkp(dkps ?? [], result.response.id);
+
+                        if (associatedDkps.length > 0) {
+                            result.response.dkps = associatedDkps;
+                        }
+
+                        result.response.provider = provider;
+                        setSearchResult(result.response);
+                        setResourceType(getResourceType(result.response.properties.type));
                         setLoading(false);
                     }
                 });
@@ -99,6 +120,9 @@ export function Result() {
                 if (searchResult?.provider === "zenodo") {
                     const item = searchResult as ZenodoMetadataResponse;
                     return <ZenodoView item={item} />;
+                } else if (searchResult?.provider === "b2share") {
+                    const item = searchResult as B2ShareMetadataResponse;
+                    return <B2ShareView item={item} />;
                 } else {
                     const item = searchResult as DatasetMetadataResponse;
                     return <DatasetView item={item} />;
@@ -115,6 +139,10 @@ export function Result() {
             case ResourceType.Poster:
             case ResourceType.PhysicalObject:
             case ResourceType.Event: {
+                if (searchResult?.provider === "b2share") {
+                    const item = searchResult as B2ShareMetadataResponse;
+                    return <B2ShareView item={item} />;
+                }
                 const item = searchResult as ZenodoMetadataResponse;
                 return <ZenodoView item={item} />;
             }

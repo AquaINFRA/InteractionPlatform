@@ -35,11 +35,11 @@ export interface ZenodoMetadataResponse {
     metadata: {
         title: string;
         description: string;
-        creators: [{
+        creators: {
             affiliation: string;
             orcid: string;
             name: string;
-        }];
+        }[];
         keywords: string[];
         publication_date: string;
         language: string[];
