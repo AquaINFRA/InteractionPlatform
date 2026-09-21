@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { ResultsNavigation } from "../../components/ResultsNavigation/ResultsNavigation";
 import { SearchBar } from "../../components/SearchBar";
-import { getResourceType, ResourceType } from "../../services/ResourceTypeUtils";
+import { getResourceType, isDkpKeyword, ResourceType } from "../../services/ResourceTypeUtils";
 import { SearchService, SolrSearchResultItem } from "../../services/SearchService";
 import { DatasetView } from "../Dataset/Dataset";
 import { useSearchState } from "../Search/SearchState";
@@ -60,7 +60,7 @@ export function Result() {
 
                         result.response.provider = provider;
                         setSearchResult(result.response);
-                        if (result.response.metadata.keywords?.includes("Data-to-Knowledge Package")) {
+                        if (result.response.metadata.keywords?.some(isDkpKeyword)) {
                             setResourceType(getResourceType("data-to-knowledge package"));
                         } else {
                             setResourceType(getResourceType(result.response.metadata.resource_type.type));

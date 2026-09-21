@@ -138,6 +138,12 @@ export function getResourceType(result: string): ResourceType {
     return getHandler(result).resourceType;
 }
 
+// Records aren't consistent about "Data-To-Knowledge Package" vs.
+// "Data-to-Knowledge-Package", so compare ignoring case and hyphen/space differences.
+export function isDkpKeyword(keyword: string): boolean {
+    return keyword.toLowerCase().replace(/[-\s]+/g, " ").trim() === "data to knowledge package";
+}
+
 export function formatDate(date: Date) {
     const pad = (n: number) => n.toString().padStart(2, "0");
 

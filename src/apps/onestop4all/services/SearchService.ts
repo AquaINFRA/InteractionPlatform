@@ -81,7 +81,10 @@ export interface TextFileResponse {
 
 const OAPIR_URL = import.meta.env.VITE_OAPIR_URL;
 const ZENODO_URL = "https://zenodo.org/api/records";
-const D2K = "/?communities=aquainfra&q=keywords:%22Data-To-Knowledge%20Package%22";
+// Matches both "Data-To-Knowledge Package" and "Data-to-Knowledge-Package" since
+// records aren't consistent about the space vs. hyphen in that keyword.
+const D2K =
+    "/?communities=aquainfra&q=keywords:%22Data-To-Knowledge%20Package%22%20OR%20keywords:%22Data-to-Knowledge-Package%22";
 const PROCESS_CATCHMENT = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-upstream-dissolved/execution";
 const RELATED_SEARCHTERM = "https://vm2558.kaj.pouta.csc.fi/rcsearch?keyword=";
 const CREATE_TXT_FILE = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-ddas-galaxy-link-textfile/execution";
