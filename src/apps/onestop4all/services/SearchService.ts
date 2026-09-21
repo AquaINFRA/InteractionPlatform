@@ -88,6 +88,12 @@ const CREATE_TXT_FILE = "https://aqua.igb-berlin.de/pygeoapi-dev/processes/get-d
 
 const SEARCH_RESULT_LIMIT = "100";
 
+// DDAS sometimes returns properties.description as a string array (e.g. deduplicated
+// OpenAIRE records merging multiple source descriptions) instead of a plain string.
+function normalizeDescription(description: unknown): string {
+    return Array.isArray(description) ? description.join(" ") : (description as string);
+}
+
 export class SearchService {
     doSearch(searchParams: SearchRequestParams): Promise<SearchResult> {
         const queryParams = this.createQueryParams();
@@ -109,6 +115,11 @@ export class SearchService {
                 const response = responseData;
 
                 if (response.numberMatched !== undefined && response.features !== undefined) {
+                    response.features.forEach((feature: SolrSearchResultItem) => {
+                        feature.properties.description = normalizeDescription(
+                            feature.properties.description
+                        );
+                    });
                     return {
                         count: response.features.length,
                         results: response.features,
@@ -149,6 +160,11 @@ export class SearchService {
         return fetch(url).then((response) =>
             response.json().then((responseData) => {
                 if (responseData) {
+                    if (responseData.properties) {
+                        responseData.properties.description = normalizeDescription(
+                            responseData.properties.description
+                        );
+                    }
                     return { response: responseData, provider: provider };
                 } else {
                     throw new Error("Unexpected response: " + JSON.stringify(responseData));
