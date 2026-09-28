@@ -1,0 +1,564 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        {
+            "@base": null
+        }
+    ],
+    "@graph": [
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            },
+            "about": {
+                "@id": "./"
+            }
+        },
+        {
+            "@id": "./",
+            "@type": [
+                "Dataset",
+                "Collection"
+            ],
+            "name": "A Data-to-Knowledge Package for Reproducible SWAT Watershed simulations",
+            "hasPart": [
+                {
+                    "@id": "#dataset_1"
+                },
+                {
+                    "@id": "#dataset_2"
+                },
+                {
+                    "@id": "#toolbox_1"
+                },
+                {
+                    "@id": "#virtual_lab_1"
+                },
+                {
+                    "@id": "#web_API_service_1"
+                },
+                {
+                    "@id": "#computational_workflow_1"
+                }
+            ],
+            "creator": [
+                {
+                    "@id": "#amanda_batlle"
+                },
+				{
+                    "@id": "#lluis_pesquer"
+                },
+                {
+                    "@id": "#markus_konkol"
+                },
+                {
+                    "@id": "#merret_buurman"
+                }
+            ],
+            "abstract": "This Data-to-Knowledge Package (DKP) links the data and computational workflows required to reproduce a Soil and Water Assessment Tool (SWAT) simulation workflow in Galaxy Virtual Resarch Environment (VRE). The DKP integrates and structures the relevant data, computational workflows, toolboxes and metadata into a reproducible framework for investigating the following research question: How can changes in Land Use/Land Cover (LULC) affect river flow and water temperature at the river mouth? What is the monthly water quality variability?",
+            "identifier": {
+                "@id": "https://doi.org/10.23728/b2share.8fys5-vpx64"
+            },
+            "version": "1.6",
+            "license": {
+                "@id": "https://creativecommons.org/licenses/by/4.0/legalcode"
+            },
+            "funding": {
+                "@id": "#aqua_funding"
+            },
+            "datePublished": "2025-02-19T05:00:00.000Z",
+            "keywords": "Data-to-Knowledge Package, D2K-Package, FAIR data, Open data, Open code, Workflow, OGC API Process, Hydrology, Catalonia, Tordera",
+            "url": {
+                "@id": "https://aquainfra.dev.52north.org/result/b2share:sec4z-qvw47"
+            }
+        },
+        {
+            "@id": "#dataset_1",
+            "@type": [
+                "Dataset"
+            ],
+            "name": "SWAT+ La Tordera watershed (Catalonia, Spain) model calibrated for water quantity (period 2000-2022)",
+            "description": "This dataset provides the input files and spatial layers required to run a SWAT+ model of the Tordera watershed (~880 km²), located in northeastern Catalonia (Spain).",
+            "@reverse": {
+                "hasPart": {
+                    "@id": "./"
+                }
+            },
+            "identifier": [
+                {
+                    "@id": "#link1"
+                },
+                {
+                    "@id": "#link2"
+                }
+            ]
+        },
+        {
+            "@id": "#dataset_2",
+            "@type": [
+                "Dataset"
+            ],
+            "name": "La Tordera SWAT model Land Use Land Cover change projection for 2036",
+            "description": "List of Land Use Land cover changes for SWAT scenario.",
+            "@reverse": {
+                "hasPart": {
+                    "@id": "./"
+                }
+            },
+            "identifier": [
+                {
+                    "@id": "#link3"
+                }
+            ]
+        },
+        {
+            "@id": "#toolbox_1",
+            "@type": [
+                "SoftwareSourceCode"
+            ],
+            "name": "A Toolbox for Soil and Water Assessment Tool (SWAT) watershed hydrological modelling",
+            "description": "This toolbox provides a set of predefined functions designed for watershed modelling with SWAT (Soil and Water Assessment Tool), allowing simplified model sharing and execution, as well as including SWAT into more complex cross-domain modelling frameworks (Example: Source-to-sea modeling with Marine Modelling System Tool box).",
+            "@reverse": {
+                "hasPart": {
+                    "@id": "./"
+                }
+            },
+            "identifier": [
+                {
+                    "@id": "#link5"
+                },
+                {
+                    "@id": "#link6"
+                },
+                {
+                    "@id": "#link7"
+                }
+            ]
+        },
+        {
+            "@id": "#virtual_lab_1",
+            "@type": [
+                "SoftwareApplication"
+            ],
+            "name": "A MyBinder-based virtual lab",
+            "description": "This virtual lab re-creates the computational environment in RStudio",
+            "identifier": {
+                "@id": "#link8"
+            },
+            "@reverse": {
+                "hasPart": {
+                    "@id": "./"
+                }
+            }
+        },
+        {
+            "@id": "#web_API_service_1",
+            "@type": [
+                "WebAPI"
+            ],
+            "name": "A pygeoapi-based web API service",
+            "description": "This pygeoapi instance provides the functions in the toolbox as web API services.",
+            "@reverse": {
+                "hasPart": {
+                    "@id": "./"
+                }
+            },
+            "identifier": [
+                {
+                    "@id": "#link9"
+                },
+                {
+                    "@id": "#link7"
+                },
+                {
+                    "@id": "#link5"
+                },
+                {
+                    "@id": "#link6"
+                }
+            ]
+        },
+        {
+            "@id": "#computational_workflow_1",
+            "@type": [
+                "ComputationalWorkflow"
+            ],
+            "name": "A Workflow for Soil and Water Assessment Tool (SWAT+) hydrological simulations with Land Use Land Cover Change scenario + Source-to-Sea interactions",
+            "description": "This workflow applies the Soil and Water Assessment Tool (SWAT+) to simulate streamflow and temperature variations under a Land Use and Land Cover (LULC) change scenario. The workflow outputs are specifically formatted to be directly connected as inputs to the Marine Modelling System Workflow in the AquaINFRA VRE.",
+            "@reverse": {
+                "hasPart": {
+                    "@id": "./"
+                }
+            },
+            "identifier": [
+                {
+                    "@id": "#link10"
+                },
+                {
+                    "@id": "#link11"
+                },
+                {
+                    "@id": "#link12"
+                }
+            ]
+        },
+        {
+            "@id": "#link1",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://doi.org/10.23728/b2share.am3bh-05a34",
+            "@reverse": {
+                "identifier": {
+                    "@id": "#dataset_1"
+                }
+            }
+        },
+        {
+            "@id": "#link3",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://github.com/AmandaBatlle/AquaINFRA_CaseUse_MedInlandModel/blob/main/example_inputs/lulc_changes-5-pix.csv",
+            "@reverse": {
+                "identifier": {
+                    "@id": "#dataset_2"
+                }
+            }
+        },
+        {
+            "@id": "#amanda_batlle",
+            "@type": [
+                "Person"
+            ],
+            "name": "Amanda Batlle-Morera",
+            "@reverse": {
+                "creator": {
+                    "@id": "./"
+                }
+            },
+            "identifier": {
+                "@id": "https://orcid.org/0000-0003-0275-8299"
+            },
+            "affiliation": {
+                "@id": "#creaf"
+            }
+        },
+        {
+            "@id": "https://orcid.org/0000-0003-0275-8299",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://orcid.org/0000-0003-0275-8299",
+            "@reverse": {
+                "identifier": {
+                    "@id": "#amanda_batlle"
+                }
+            }
+        },
+        {
+            "@id": "#creaf",
+            "@type": [
+                "Organization"
+            ],
+            "name": " Centre for Research on Ecology and Forestry Applications (CREAF)",
+            "@reverse": {
+                "affiliation": [
+                    {
+                        "@id": "#amanda_batlle"
+                    },
+                    {
+                        "@id": "#lluis_pesquer"
+                    }
+                ]
+            }
+        },
+        {
+            "@id": "#lluis_pesquer",
+            "@type": [
+                "Person"
+            ],
+            "name": "Lluís Pesquer Mayos",
+            "@reverse": {
+                "creator": {
+                    "@id": "./"
+                }
+            },
+            "identifier": {
+                "@id": "https://orcid.org/0000-0002-7396-2468"
+            },
+            "affiliation": {
+                "@id": "#creaf"
+            }
+        },
+        {
+            "@id": "https://orcid.org/0000-0002-7396-2468",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://orcid.org/0000-0002-7396-2468",
+            "@reverse": {
+                "identifier": {
+                    "@id": "#lluis_pesquer"
+                }
+            }
+        },
+        {
+            "@id": "#markus_konkol",
+            "@type": [
+                "Person"
+            ],
+            "name": "Markus Konkol",
+            "identifier": {
+                "@id": "https://orcid.org/0000-0001-6651-0976"
+            },
+            "affiliation": {
+                "@id": "#52n"
+            },
+            "@reverse": {
+                "creator": {
+                    "@id": "./"
+                }
+            }
+        },
+        {
+            "@id": "https://orcid.org/0000-0001-6651-0976",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://orcid.org/0000-0001-6651-0976",
+            "@reverse": {
+                "identifier": {
+                    "@id": "#markus_konkol"
+                }
+            }
+        },
+        {
+            "@id": "#52n",
+            "@type": [
+                "Organization"
+            ],
+            "name": "52°North Spatial Information Research",
+            "@reverse": {
+                "affiliation": {
+                    "@id": "#markus_konkol"
+                }
+            }
+        },
+        {
+            "@id": "#merret_buurman",
+            "@type": [
+                "Person"
+            ],
+            "name": "Merret Buurman",
+            "identifier": {
+                "@id": "https://orcid.org/0000-0001-6945-456X"
+            },
+            "affiliation": {
+                "@id": "#leibniz"
+            },
+            "@reverse": {
+                "creator": {
+                    "@id": "./"
+                }
+            }
+        },
+        {
+            "@id": "https://orcid.org/0000-0001-6945-456X",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://orcid.org/0000-0001-6945-456X",
+            "@reverse": {
+                "identifier": {
+                    "@id": "#merret_buurman"
+                }
+            }
+        },
+        {
+            "@id": "#leibniz",
+            "@type": [
+                "Organization"
+            ],
+            "name": "Leibniz Institute of Freshwater Ecology and Inland Fisheries",
+            "@reverse": {
+                "affiliation": {
+                    "@id": "#merret_buurman"
+                }
+            }
+        },
+        {
+            "@id": "https://doi.org/10.23728/b2share.sec4z-qvw47",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://doi.org/10.23728/b2share.sec4z-qvw47",
+            "@reverse": {
+                "identifier": {
+                    "@id": "./"
+                }
+            }
+        },
+        {
+            "@id": "https://creativecommons.org/licenses/by/4.0/legalcode",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://creativecommons.org/licenses/by/4.0/legalcode",
+            "@reverse": {
+                "license": {
+                    "@id": "./"
+                }
+            }
+        },
+        {
+            "@id": "#aqua_funding",
+            "@type": [
+                "Grant"
+            ],
+            "name": "AquaINFRA — Infrastructure for Marine and Inland Water Research 101094434 European Commission",
+            "@reverse": {
+                "funding": {
+                    "@id": "./"
+                }
+            }
+        },
+        {
+            "@id": "https://aquainfra.dev.52north.org/:sec4z-qvw47",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://aquainfra.dev.52north.org/result/b2share:sec4z-qvw47",
+            "@reverse": {
+                "url": {
+                    "@id": "./"
+                }
+            }
+        },
+        {
+            "@id": "#link2",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://aquainfra.dev.52north.org/result/b2share:am3bh-05a34",
+            "@reverse": {
+                "identifier": {
+                    "@id": "#dataset_1"
+                }
+            }
+        },
+        {
+            "@id": "#link5",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://doi.org/10.23728/b2share.jpck1-sya68",
+            "@reverse": {
+                "identifier": [
+                    {
+                        "@id": "#toolbox_1"
+                    },
+                    {
+                        "@id": "#web_API_service_1"
+                    }
+                ]
+            }
+        },
+        {
+            "@id": "#link6",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://github.com/AmandaBatlle/AquaINFRA_CaseUse_MedInlandModel.git",
+            "@reverse": {
+                "identifier": [
+                    {
+                        "@id": "#toolbox_1"
+                    },
+                    {
+                        "@id": "#web_API_service_1"
+                    }
+                ]
+            }
+        },
+        {
+            "@id": "#link7",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://aquainfra.dev.52north.org/result/b2share:jpck1-sya68",
+            "@reverse": {
+                "identifier": [
+                    {
+                        "@id": "#toolbox_1"
+                    },
+                    {
+                        "@id": "#web_API_service_1"
+                    }
+                ]
+            }
+        },
+        {
+            "@id": "#link9",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://aquainfra.ogc.igb-berlin.de/pygeoapi/processes?f=html",
+            "@reverse": {
+                "identifier": {
+                    "@id": "#web_API_service_1"
+                }
+            }
+        },
+        {
+            "@id": "#link8",
+            "@type": [
+                "URL"
+            ],
+            "name": " https://mybinder.org/v2/gh/AmandaBatlle/AquaINFRA_CaseUse_MedInlandModel.git/HEAD",
+            "@reverse": {
+                "identifier": {
+                    "@id": "#virtual_lab_1"
+                }
+            }
+        },
+        {
+            "@id": "#link10",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://aqua.usegalaxy.eu/u/amanda_batlle/w/aquainfra-swat-modeling-la-toredera-spain-lulcc-scenario",
+            "@reverse": {
+                "identifier": {
+                    "@id": "#computational_workflow_1"
+                }
+            }
+        },
+        {
+            "@id": "#link11",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://doi.org/10.23728/b2share.pp23y-vqq72",
+            "@reverse": {
+                "identifier": {
+                    "@id": "#computational_workflow_1"
+                }
+            }
+        },
+        {
+            "@id": "#link12",
+            "@type": [
+                "URL"
+            ],
+            "name": "https://aquainfra.dev.52north.org/result/b2share:pp23y-vqq72",
+            "@reverse": {
+                "identifier": {
+                    "@id": "#computational_workflow_1"
+                }
+            }
+        }
+    ]
+}

@@ -3,6 +3,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@chakra-ui/react";
 import { scrollUp } from "../../../services/SearchUtils";
+import { DkpProvider } from "../../../services/DkpUtils";
+
+const PROVIDER_LABELS: Record<DkpProvider, string> = {
+    zenodo: "Zenodo",
+    b2share: "B2Share"
+};
 
 export interface DemonstratorEntryMetadata {
     name: string;
@@ -22,14 +28,14 @@ export interface DemonstratorEntryResult {
     };
 }
 
-export const DemonstratorEntry = (props: { title: string; id: string; }) => {
+export const DemonstratorEntry = (props: { title: string; provider: DkpProvider; id: string; }) => {
     const [hovered, setHovered] = useState(false);
     const navigate = useNavigate();
     
-    const {title, id} = props;
+    const {title, provider, id} = props;
 
-    const handleClick = (id: string) => {
-        navigate(`/result/` + id.split("/")[1]?.replace(".", ":")); //replace is needed as DDAS separates by colon, zenodo by point
+    const handleClick = () => {
+        navigate(`/result/${provider}:${id}`);
         scrollUp(0);
     };
 
@@ -43,13 +49,16 @@ export const DemonstratorEntry = (props: { title: string; id: string; }) => {
                 className={`how-to-entry ${hovered ? "hover" : "default"}`}
                 onMouseLeave={() => setHovered(false)}
                 onMouseEnter={() => setHovered(true)}
-                onClick={() => handleClick(id)}
+                onClick={handleClick}
                 boxShadow="md"
                 backgroundColor={hovered ? "gray.100" : "white"}
             >
                 <Box className="frame" display="flex" flexDirection="column" height="100%">
                     <Box className="heading" fontSize="lg">{title}</Box>
-                    <Badge colorScheme="purple">Data-to-Knowledge Package</Badge>
+                    <Box display="flex" gap={2} flexWrap="wrap">
+                        <Badge colorScheme="purple">Data-to-Knowledge Package</Badge>
+                        <Badge colorScheme="gray">{PROVIDER_LABELS[provider]}</Badge>
+                    </Box>
                 </Box>
             </Box>
         </Box>

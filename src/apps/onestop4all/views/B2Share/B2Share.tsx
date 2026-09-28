@@ -4,6 +4,7 @@ import { Metadata } from "../../components/ResourceType/Metadata/Metadata";
 import { Abstract } from "../../components/ResourceType/Abstract/Abstract";
 import { DkpResources } from "../../components/ResourceType/ExternalResources/Components/DkpResources";
 import { B2ShareResources } from "./B2ShareResources";
+import { DkpComponents } from "../Zenodo/DkpComponents";
 import {
     B2ShareViewProps,
     getB2ShareAuthors,
@@ -11,7 +12,8 @@ import {
     getB2ShareDownloads,
     getB2ShareKeywords,
     getB2ShareOriginalMetadataUrl,
-    getB2ShareOriginalPageUrl
+    getB2ShareOriginalPageUrl,
+    getB2ShareRoCrateUrl
 } from "../../services/B2ShareUtils";
 
 export function B2ShareView(props: B2ShareViewProps) {
@@ -21,6 +23,7 @@ export function B2ShareView(props: B2ShareViewProps) {
     const authors = getB2ShareAuthors(metadata);
     const keywords = getB2ShareKeywords(metadata);
     const doi = getB2ShareDoi(metadata);
+    const roCrateUrl = props.isDkp ? getB2ShareRoCrateUrl(metadata) : null;
 
     return (
         <Box>
@@ -36,6 +39,11 @@ export function B2ShareView(props: B2ShareViewProps) {
                     {properties.description ? (
                         <Box pt="80px">
                             <Abstract abstractText={properties.description} />
+                        </Box>
+                    ) : null}
+                    {props.isDkp ? (
+                        <Box pt="30px">
+                            <DkpComponents roCrateUrl={roCrateUrl} />
                         </Box>
                     ) : null}
                 </Box>
@@ -65,6 +73,11 @@ export function B2ShareView(props: B2ShareViewProps) {
                 {properties.description ? (
                     <Box pt="40px">
                         <Abstract abstractText={properties.description} />
+                    </Box>
+                ) : null}
+                {props.isDkp ? (
+                    <Box pt="30px">
+                        <DkpComponents roCrateUrl={roCrateUrl} />
                     </Box>
                 ) : null}
                 {metadata.dkps ? (

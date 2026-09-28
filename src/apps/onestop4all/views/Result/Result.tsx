@@ -15,7 +15,7 @@ import { ZenodoView } from "../Zenodo/Zenodo";
 import { DkpView } from "../Zenodo/DkpView";
 import { B2ShareView } from "../B2Share/B2Share";
 import { fetchAndStoreDkps, findAssociatedDkp, ZenodoMetadataResponse } from "../../services/DkpUtils";
-import { B2ShareMetadataResponse } from "../../services/B2ShareUtils";
+import { B2ShareMetadataResponse, isB2ShareDkp } from "../../services/B2ShareUtils";
 import { DatasetMetadataResponse } from "../../services/interfaces";
 
 export function Result() {
@@ -83,7 +83,11 @@ export function Result() {
 
                         result.response.provider = provider;
                         setSearchResult(result.response);
-                        setResourceType(getResourceType(result.response.properties.type));
+                        if (isB2ShareDkp(result.response)) {
+                            setResourceType(getResourceType("data-to-knowledge package"));
+                        } else {
+                            setResourceType(getResourceType(result.response.properties.type));
+                        }
                         setLoading(false);
                     }
                 });
@@ -147,6 +151,10 @@ export function Result() {
                 return <ZenodoView item={item} />;
             }
             case ResourceType.DKP: {
+                if (searchResult?.provider === "b2share") {
+                    const item = searchResult as B2ShareMetadataResponse;
+                    return <B2ShareView item={item} isDkp />;
+                }
                 const item = searchResult as ZenodoMetadataResponse;
                 return <DkpView item={item} />;
             }

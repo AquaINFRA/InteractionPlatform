@@ -189,30 +189,81 @@ export function findRoCrateUrl(files?: { key: string; links: { self: string } }[
     return roCrateFile?.links.self ?? null;
 }
 
+export type DkpProvider = "zenodo" | "b2share";
+
+// A DKP record from either repository, reduced to what the start page and the
+// RO-Crate lookup need.
+export interface DkpRecord {
+    provider: DkpProvider;
+    id: string;
+    title: string;
+    roCrateUrl: string | null;
+}
+
+// B2Share's API sends no CORS headers, so B2Share DKPs can't be discovered or
+// have their RO-Crates fetched from the browser. Until that's solved, they are
+// registered here with a local copy of their RO-Crate (served from src/public).
+export const B2SHARE_TEST_DKPS: DkpRecord[] = [
+    {
+        provider: "b2share",
+        id: "sec4z-qvw47",
+        title: "A Data-to-Knowledge Package for Reproducible SWAT Watershed simulations of Land Use Land Cover scenarios + Source-to-Sea interactions",
+        roCrateUrl: "/ro-crate-metadata.json"
+    }
+];
+
+export function findB2ShareTestDkp(id: string): DkpRecord | undefined {
+    return B2SHARE_TEST_DKPS.find((record) => record.id === id);
+}
+
+function fromZenodoRecord(record: ZenodoMetadataResponse & { id: number }): DkpRecord {
+    return {
+        provider: "zenodo",
+        id: String(record.id),
+        title: record.metadata.title,
+        roCrateUrl: findRoCrateUrl(record.files)
+    };
+}
+
+// Merges the DKPs found on Zenodo with the locally registered B2Share ones. If
+// Zenodo fails, the error is logged and the B2Share DKPs still show up.
+export async function getDkpRecords(searchSrvc: any): Promise<DkpRecord[]> {
+    const records: DkpRecord[] = [];
+    try {
+        const zenodo = await searchSrvc.getDataToKnowledgePackages();
+        records.push(...(zenodo?.hits?.hits ?? []).map(fromZenodoRecord));
+    } catch (error) {
+        console.error("Error fetching DKPs from Zenodo:", error);
+    }
+    records.push(...B2SHARE_TEST_DKPS);
+    return records;
+}
+
+export async function fetchRoCrate(url: string): Promise<any> {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Failed to fetch RO-Crate: ${response.statusText}`);
+    return response.json();
+}
+
 export async function fetchAndStoreDkps(searchSrvc: any, searchState: any) {
     try {
-        const result = await searchSrvc.getDataToKnowledgePackages();
-        if (!result) return;
-
-        const dkps = result.hits.hits;
+        const records = await getDkpRecords(searchSrvc);
         const fetchedDkps = await Promise.all(
-            dkps.map(async (element: any) => {
-                const roCrateUrl = findRoCrateUrl(element.files);
-                if (!roCrateUrl) {
-                    console.error(`No RO-Crate metadata file found for record ${element.recid}`);
+            records.map(async (record) => {
+                if (!record.roCrateUrl) {
+                    console.error(`No RO-Crate metadata file found for ${record.provider} record ${record.id}`);
                     return null;
                 }
                 try {
-                    const response = await fetch(roCrateUrl);
-                    if (!response.ok) throw new Error(`Failed to fetch RO-Crate: ${response.statusText}`);
-                    return await response.json();
+                    return await fetchRoCrate(record.roCrateUrl);
                 } catch (error) {
                     console.error(error);
                     return null;
                 }
             })
         );
-        return fetchedDkps;
+        // findAssociatedDkp reads "@graph" from every entry, so drop failed fetches
+        return fetchedDkps.filter(Boolean);
     } catch (error) {
         console.error("Error fetching DKPs:", error);
     }

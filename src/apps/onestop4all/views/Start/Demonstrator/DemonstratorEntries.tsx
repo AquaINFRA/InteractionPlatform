@@ -4,26 +4,14 @@ import { useService } from "open-pioneer:react-hooks";
 import { DemonstratorEntry } from "./DemonstratorEntry";
 import { SearchService } from "../../../services";
 import { useEffect, useState } from "react";
-import { ZenodoMetadataResponse } from "../../../services/DkpUtils";
-
-interface ZenodoSearchResponse {
-    hits: {
-        hits: ZenodoMetadataResponse[];
-    };
-}
+import { DkpRecord, getDkpRecords } from "../../../services/DkpUtils";
 
 export const DemonstratorEntries = () => {
     const searchSrvc = useService("onestop4all.SearchService") as SearchService;
-    const [demonstrators, setDemonstrators] = useState<ZenodoMetadataResponse[]>([]);
+    const [demonstrators, setDemonstrators] = useState<DkpRecord[]>([]);
 
     useEffect(() => {
-        searchSrvc.getDataToKnowledgePackages().then((result: ZenodoSearchResponse) => {
-            if (result) {
-                setDemonstrators(result.hits.hits);
-            } else {
-                console.error("Unexpected response:", result);
-            }
-        });
+        getDkpRecords(searchSrvc).then(setDemonstrators);
     }, [searchSrvc]);
 
     return (
@@ -38,11 +26,12 @@ export const DemonstratorEntries = () => {
                 spacing={5}
                 marginTop={"1%"}
             >
-                {demonstrators.map((demonstrator, index) => (
+                {demonstrators.map((demonstrator) => (
                     <DemonstratorEntry
-                        key={index}
-                        title={demonstrator.metadata.title || "Untitled"}
-                        id={demonstrator.doi}
+                        key={`${demonstrator.provider}:${demonstrator.id}`}
+                        title={demonstrator.title || "Untitled"}
+                        provider={demonstrator.provider}
+                        id={demonstrator.id}
                     />
                 ))}
             </SimpleGrid>

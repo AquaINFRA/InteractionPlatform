@@ -1,3 +1,5 @@
+import { findB2ShareTestDkp } from "./DkpUtils";
+
 // B2Share's own API doesn't send CORS headers, so it can't be fetched directly
 // from the browser (unlike Zenodo). Records are instead sourced through DDAS
 // (getDdasMetadata), which already harvests B2Share into this normalized shape.
@@ -34,6 +36,7 @@ export interface B2ShareMetadataResponse {
 
 export interface B2ShareViewProps {
     item: B2ShareMetadataResponse;
+    isDkp?: boolean;
 }
 
 export function getB2ShareAuthors(record: B2ShareMetadataResponse) {
@@ -64,4 +67,14 @@ export function getB2ShareOriginalMetadataUrl(record: B2ShareMetadataResponse): 
 
 export function getB2ShareDownloads(record: B2ShareMetadataResponse): B2ShareLink[] {
     return record.links.filter((link) => link.rel === "describes");
+}
+
+// B2Share RO-Crates can't be fetched from the browser (no CORS headers), so
+// only the locally registered test DKPs are treated as DKPs for now.
+export function getB2ShareRoCrateUrl(record: B2ShareMetadataResponse): string | null {
+    return findB2ShareTestDkp(record.id)?.roCrateUrl ?? null;
+}
+
+export function isB2ShareDkp(record: B2ShareMetadataResponse): boolean {
+    return getB2ShareRoCrateUrl(record) !== null;
 }
