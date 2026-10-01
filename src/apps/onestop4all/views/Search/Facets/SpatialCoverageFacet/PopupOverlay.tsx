@@ -47,6 +47,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
 
     const [source] = useState(new VectorSource({ wrapX: false }));
     const [canExpandSelection, setCanExpandSelection] = useState(false);
+    const [expandLabel, setExpandLabel] = useState("Expand selection");
     const draw = useRef<Draw>();
 
     const {
@@ -152,6 +153,15 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
             return getMatchingSeaRegion(properties.sea_OBJECTID);
         }
         return [];
+    }
+
+    function getExpandLabel(features: Feature<Geometry>[]): string {
+        const expandable = features.filter((feature) => getRelatedFeatures(feature).length > 0);
+        const allSeas = expandable.every((feature) => feature.get("sea_oid") !== undefined);
+        const allBasins = expandable.every((feature) => feature.get("sea_OBJECTID") !== undefined);
+        if (allSeas) return "Expand selection (click sea)";
+        if (allBasins) return "Expand selection (click land)";
+        return "Expand selection";
     }
 
     function getBBox(features: any) {
@@ -332,6 +342,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                         (feature) => getRelatedFeatures(feature).length > 0
                     );
                     setCanExpandSelection(canExpand);
+                    if (canExpand) setExpandLabel(getExpandLabel(selectedFeatures));
                     getBBox(selectedFeatures);
                 };
         
@@ -430,7 +441,7 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
                             <CatchmentButton
                                 active={true}
                                 onClick={expandSelection}
-                                text="Expand selection"
+                                text={expandLabel}
                             />
                     }
                     <CatchmentButton
