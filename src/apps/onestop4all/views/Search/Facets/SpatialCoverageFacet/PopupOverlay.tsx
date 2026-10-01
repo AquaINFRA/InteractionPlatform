@@ -159,8 +159,8 @@ export function PopupOverlay({ showPopup, onClose, selectedOption, setSelectedOp
         const expandable = features.filter((feature) => getRelatedFeatures(feature).length > 0);
         const allSeas = expandable.every((feature) => feature.get("sea_oid") !== undefined);
         const allBasins = expandable.every((feature) => feature.get("sea_OBJECTID") !== undefined);
-        if (allSeas) return "Expand selection (click sea)";
-        if (allBasins) return "Expand selection (click land)";
+        if (allSeas) return "Expand to land";
+        if (allBasins) return "Expand to sea";
         return "Expand selection";
     }
 
